@@ -10,7 +10,7 @@ Two roots:
 * ``data_root()``      — the private per-athlete data repo (e.g.
                           ``coachctl-personal``). Hosts ``profile/`` (was
                           ``wiki/personal/<profile>/``), ``data/activities.db``,
-                          ``dist/data.json`` (baked dashboard payload),
+                          ``deploy/dist/data.json`` (baked dashboard payload),
                           ``raw/`` (personal source documents), and ``.env``.
 
 Resolution order for ``data_root()``:
@@ -144,24 +144,25 @@ def db_path() -> Path:
 
 
 def data_json() -> Path:
-    """``<DATA_ROOT>/dist/data.json`` — baked dashboard payload.
+    """``<DATA_ROOT>/deploy/dist/data.json`` — baked dashboard payload.
 
-    Lives in ``dist/`` (sibling of ``profile/``) so that authored content stays
-    separate from generated build artifacts. The legacy fallback keeps the
-    historical location under ``wiki/personal/<profile>/`` for back-compat.
+    Lives inside ``deploy/`` (the Vercel project root) so the artifact is
+    bundled into the serverless function alongside ``web.py``. The legacy
+    fallback keeps the historical location under ``wiki/personal/<profile>/``
+    for back-compat.
     """
     r = _resolve_data_root()
     if isinstance(r, _LegacyRoot):
         return code_root() / "wiki" / "personal" / r.profile / "data.json"
-    return r / "dist" / "data.json"
+    return r / "deploy" / "dist" / "data.json"
 
 
 def dist_dir() -> Path:
-    """``<DATA_ROOT>/dist/`` — generated build artifacts (data.json, etc.)."""
+    """``<DATA_ROOT>/deploy/dist/`` — generated build artifacts (data.json, etc.)."""
     r = _resolve_data_root()
     if isinstance(r, _LegacyRoot):
         return code_root() / "wiki" / "personal" / r.profile
-    return r / "dist"
+    return r / "deploy" / "dist"
 
 
 def raw_personal_dir() -> Path:

@@ -3,7 +3,7 @@
 
 Workflow:
   1. ``sync`` — pull new Strava activities into ``activities.db``.
-  2. ``bake`` — compute dashboard data → ``<DATA_ROOT>/dist/data.json``.
+  2. ``bake`` — compute dashboard data → ``<DATA_ROOT>/deploy/dist/data.json``.
   3. ``git add/commit/push`` inside the personal data repo (triggers Vercel).
 
 The public code repo is never touched.

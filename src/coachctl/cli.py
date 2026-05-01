@@ -67,7 +67,7 @@ def sync_cmd(
         _sync(full=full)
 
 
-@app.command("bake", help="Compute dashboard data and write <DATA_ROOT>/dist/data.json.")
+@app.command("bake", help="Compute dashboard data and write <DATA_ROOT>/deploy/dist/data.json.")
 def bake_cmd() -> None:
     from .site import bake as _bake
 

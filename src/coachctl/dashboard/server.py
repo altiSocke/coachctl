@@ -31,7 +31,7 @@ def _setup_html(error: str | None) -> str:
 <p>No <code>data.json</code> available yet.</p>
 <p>Run <code>bake</code> in your personal repo to generate it, then commit and push:</p>
 <pre>uv run bake
-git -C $AGENT_DATA_ROOT add dist/data.json
+git -C $AGENT_DATA_ROOT add deploy/dist/data.json
 git -C $AGENT_DATA_ROOT commit -m "bake $(date -I)"
 git -C $AGENT_DATA_ROOT push</pre>
 <p>Vercel will redeploy automatically once the new commit lands.</p>

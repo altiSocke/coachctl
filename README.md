@@ -131,7 +131,7 @@ The dashboard deploys from the **personal repo**, not this one.
 1. In the personal repo, ensure `deploy/` contains `web.py`, `vercel.json`,
    `requirements.txt` (scaffolded by `coachctl new-profile`).
 2. In Vercel: import the private personal repo. Set **root directory** to
-   `deploy/`. No env vars needed — the dashboard reads `dist/data.json` at
+   `deploy/`. No env vars needed — the dashboard reads `deploy/dist/data.json` at
    cold-start.
 3. Each `uv run coachctl update` commits & pushes the refreshed `data.json`,
    triggering an auto-redeploy.
@@ -164,7 +164,7 @@ uv run coachctl web --reload --port 8000 # auto-reload mode
 | Command | Purpose |
 |---|---|
 | `coachctl sync [--auth] [--full]` | Sync Strava activities (or run OAuth flow) |
-| `coachctl bake` | Build `dist/data.json` from the activities DB |
+| `coachctl bake` | Build `deploy/dist/data.json` from the activities DB |
 | `coachctl update` | sync → bake → git commit/push (in personal repo) |
 | `coachctl new-profile --target <dir>` | Scaffold a new personal repo |
 | `coachctl web [--port N] [--reload]` | Serve dashboard locally |

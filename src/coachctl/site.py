@@ -4,7 +4,7 @@ Dashboard data assembly and JSON bake.
 Usage:
     bake
 
-Outputs: ``<DATA_ROOT>/dist/data.json`` (see ``paths.py`` for resolution).
+Outputs: ``<DATA_ROOT>/deploy/dist/data.json`` (see ``paths.py`` for resolution).
 """
 
 from __future__ import annotations
@@ -664,7 +664,7 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
 
 def bake(plan_path: Path | None = None) -> Path:
     """
-    Compute dashboard data and write it to ``<DATA_ROOT>/dist/data.json``.
+    Compute dashboard data and write it to ``<DATA_ROOT>/deploy/dist/data.json``.
 
     This is the only output artifact — no HTML is generated. The dashboard
     server (``coachctl.dashboard``) reads this file at request time.
