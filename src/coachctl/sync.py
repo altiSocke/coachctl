@@ -1,0 +1,414 @@
+"""
+Strava OAuth2 + activity sync.
+
+First-time setup:
+    python -m coachctl.sync --auth
+
+Subsequent syncs (incremental):
+    python -m coachctl.sync
+    python -m coachctl.sync --full   # re-pull everything
+"""
+
+import argparse
+import json
+import os
+import time
+import webbrowser
+from datetime import datetime, timezone
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import parse_qs, urlencode, urlparse
+
+import httpx
+from dotenv import load_dotenv
+
+from . import paths
+from .db import get_conn, init_db
+from .metrics import compute_activity_metrics, compute_fitness_series, get_daily_tss_from_db
+
+STRAVA_AUTH_URL = "https://www.strava.com/oauth/authorize"
+STRAVA_TOKEN_URL = "https://www.strava.com/oauth/token"
+STRAVA_API_BASE = "https://www.strava.com/api/v3"
+REDIRECT_URI = "http://localhost:8765/callback"
+SCOPE = "activity:read_all"
+
+
+def _load_env():
+    """Load the active profile's .env into the process environment."""
+    load_dotenv(paths.env_file(), override=True)
+
+
+def _client_id() -> str:
+    return os.environ.get("STRAVA_CLIENT_ID", "")
+
+
+def _client_secret() -> str:
+    return os.environ.get("STRAVA_CLIENT_SECRET", "")
+
+
+# ── OAuth helpers ─────────────────────────────────────────────────────────────
+
+
+def get_access_token(refresh_token: str) -> str:
+    """Exchange refresh token for a fresh access token."""
+    _load_env()
+    resp = httpx.post(
+        STRAVA_TOKEN_URL,
+        data={
+            "client_id": _client_id(),
+            "client_secret": _client_secret(),
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        },
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    # Persist potentially-rotated refresh token
+    _update_env_file("STRAVA_REFRESH_TOKEN", data["refresh_token"])
+    return data["access_token"]
+
+
+def get_strava_access_token() -> str:
+    """Load refresh token from profile .env and exchange for a fresh access token."""
+    _load_env()
+    refresh_token = os.environ.get("STRAVA_REFRESH_TOKEN")
+    if not refresh_token:
+        raise RuntimeError("No STRAVA_REFRESH_TOKEN in .env — run sync_activities --auth first.")
+    return get_access_token(refresh_token)
+
+
+def _update_env_file(key: str, value: str):
+    """Update a single key in the active profile's .env file."""
+    env = paths.env_file()
+    if not env.exists():
+        env.write_text(f"{key}={value}\n")
+        return
+    lines = env.read_text().splitlines()
+    updated = False
+    for i, line in enumerate(lines):
+        if line.startswith(f"{key}="):
+            lines[i] = f"{key}={value}"
+            updated = True
+            break
+    if not updated:
+        lines.append(f"{key}={value}")
+    env.write_text("\n".join(lines) + "\n")
+
+
+def do_auth_flow():
+    """Interactive OAuth flow — opens browser, captures code via local server."""
+    _load_env()
+    auth_url = (
+        f"{STRAVA_AUTH_URL}?client_id={_client_id()}"
+        f"&redirect_uri={REDIRECT_URI}"
+        f"&response_type=code&scope={SCOPE}"
+        f"&approval_prompt=force"
+    )
+    print(f"\nOpening Strava authorisation...\n{auth_url}\n")
+    webbrowser.open(auth_url)
+
+    code_holder = {}
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            params = parse_qs(urlparse(self.path).query)
+            code_holder["code"] = params.get("code", [None])[0]
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"<h2>Authorised! You can close this tab.</h2>")
+
+        def log_message(self, *args):
+            pass  # suppress server logs
+
+    server = HTTPServer(("localhost", 8765), Handler)
+    server.handle_request()
+
+    code = code_holder.get("code")
+    if not code:
+        raise RuntimeError("No auth code received from Strava.")
+
+    resp = httpx.post(
+        STRAVA_TOKEN_URL,
+        data={
+            "client_id": _client_id(),
+            "client_secret": _client_secret(),
+            "code": code,
+            "grant_type": "authorization_code",
+        },
+    )
+    resp.raise_for_status()
+    data = resp.json()
+
+    _update_env_file("STRAVA_REFRESH_TOKEN", data["refresh_token"])
+    print(f"\nAuthorisation successful! Refresh token saved to {paths.env_file()}")
+    print(f"Athlete: {data['athlete']['firstname']} {data['athlete']['lastname']}")
+    return data["access_token"]
+
+
+# ── Strava API ────────────────────────────────────────────────────────────────
+
+
+def fetch_activities(access_token: str, after: int | None = None, per_page: int = 100):
+    """Yield all activities, paginated. Retries up to 3 times on transient errors."""
+    page = 1
+    headers = {"Authorization": f"Bearer {access_token}"}
+    while True:
+        params = {"per_page": per_page, "page": page}
+        if after:
+            params["after"] = after
+        for attempt in range(3):
+            try:
+                resp = httpx.get(
+                    f"{STRAVA_API_BASE}/athlete/activities",
+                    headers=headers,
+                    params=params,
+                    timeout=30,
+                )
+                resp.raise_for_status()
+                break
+            except (httpx.HTTPStatusError, httpx.TransportError) as exc:
+                if attempt == 2:
+                    raise
+                wait = 2**attempt
+                print(f"  Retrying page {page} after {wait}s ({exc})...")
+                time.sleep(wait)
+        batch = resp.json()
+        if not batch:
+            break
+        yield from batch
+        page += 1
+        time.sleep(0.3)  # respect rate limit (~100 req/15min)
+
+
+def fetch_activity_streams(access_token: str, activity_id: int) -> dict:
+    """Fetch time-series streams for power curve / pace analysis."""
+    headers = {"Authorization": f"Bearer {access_token}"}
+    keys = "time,heartrate,watts,velocity_smooth,altitude,cadence"
+    resp = httpx.get(
+        f"{STRAVA_API_BASE}/activities/{activity_id}/streams",
+        headers=headers,
+        params={"keys": keys, "key_by_type": "true"},
+    )
+    if resp.status_code == 404:
+        return {}
+    resp.raise_for_status()
+    return resp.json()
+
+
+def fetch_activity_laps(access_token: str, activity_id: int) -> list[dict]:
+    """Fetch lap data for an activity from the Strava API."""
+    headers = {"Authorization": f"Bearer {access_token}"}
+    resp = httpx.get(
+        f"{STRAVA_API_BASE}/activities/{activity_id}/laps",
+        headers=headers,
+    )
+    if resp.status_code == 404:
+        return []
+    resp.raise_for_status()
+    return resp.json()
+
+
+# ── Routes ────────────────────────────────────────────────────────────────────
+
+
+def fetch_athlete_routes(access_token: str, per_page: int = 50) -> list[dict]:
+    """List the authenticated athlete's saved routes."""
+    headers = {"Authorization": f"Bearer {access_token}"}
+    # Need athlete ID first
+    resp = httpx.get(f"{STRAVA_API_BASE}/athlete", headers=headers)
+    resp.raise_for_status()
+    athlete_id = resp.json()["id"]
+
+    routes: list[dict] = []
+    page = 1
+    while True:
+        resp = httpx.get(
+            f"{STRAVA_API_BASE}/athletes/{athlete_id}/routes",
+            headers=headers,
+            params={"per_page": per_page, "page": page},
+        )
+        resp.raise_for_status()
+        batch = resp.json()
+        if not batch:
+            break
+        routes.extend(batch)
+        page += 1
+        time.sleep(0.3)
+    return routes
+
+
+def fetch_route(access_token: str, route_id: int) -> dict:
+    """Get detailed route info by ID."""
+    headers = {"Authorization": f"Bearer {access_token}"}
+    resp = httpx.get(f"{STRAVA_API_BASE}/routes/{route_id}", headers=headers)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def fetch_route_streams(access_token: str, route_id: int) -> dict:
+    """Fetch altitude/distance/latlng streams for a route."""
+    headers = {"Authorization": f"Bearer {access_token}"}
+    resp = httpx.get(
+        f"{STRAVA_API_BASE}/routes/{route_id}/streams",
+        headers=headers,
+    )
+    if resp.status_code == 404:
+        return {}
+    resp.raise_for_status()
+    # Route streams return as a list of stream objects, convert to dict keyed by type
+    data = resp.json()
+    if isinstance(data, list):
+        return {s["type"]: s for s in data}
+    return data
+
+
+# ── Upsert activity ───────────────────────────────────────────────────────────
+
+
+def upsert_activity(conn, activity: dict, streams: dict | None = None):
+    """Insert or replace an activity with computed metrics."""
+    metrics = compute_activity_metrics(activity, streams)
+
+    conn.execute(
+        """
+        INSERT INTO activities (
+            id, name, sport_type, start_date, elapsed_time, moving_time,
+            distance, total_elevation_gain, average_speed, max_speed,
+            average_heartrate, max_heartrate, average_watts, weighted_avg_watts,
+            average_cadence, suffer_score,
+            tss, np, intensity_factor, hrss, rtss, ngp, rtss_power, raw_json
+        ) VALUES (
+            :id, :name, :sport_type, :start_date, :elapsed_time, :moving_time,
+            :distance, :total_elevation_gain, :average_speed, :max_speed,
+            :average_heartrate, :max_heartrate, :average_watts, :weighted_avg_watts,
+            :average_cadence, :suffer_score,
+            :tss, :np, :intensity_factor, :hrss, :rtss, :ngp, :rtss_power, :raw_json
+        )
+        ON CONFLICT(id) DO UPDATE SET
+            name=excluded.name,
+            sport_type=excluded.sport_type,
+            start_date=excluded.start_date,
+            elapsed_time=excluded.elapsed_time,
+            moving_time=excluded.moving_time,
+            distance=excluded.distance,
+            total_elevation_gain=excluded.total_elevation_gain,
+            average_heartrate=excluded.average_heartrate,
+            max_heartrate=excluded.max_heartrate,
+            average_watts=excluded.average_watts,
+            weighted_avg_watts=excluded.weighted_avg_watts,
+            tss=excluded.tss, np=excluded.np,
+            intensity_factor=excluded.intensity_factor, hrss=excluded.hrss,
+            rtss=excluded.rtss, ngp=excluded.ngp,
+            rtss_power=excluded.rtss_power,
+            synced_at=datetime('now')
+    """,
+        {
+            **{
+                k: activity.get(k)
+                for k in [
+                    "id",
+                    "name",
+                    "elapsed_time",
+                    "moving_time",
+                    "distance",
+                    "total_elevation_gain",
+                    "average_speed",
+                    "max_speed",
+                    "average_heartrate",
+                    "max_heartrate",
+                    "average_watts",
+                    "average_cadence",
+                    "suffer_score",
+                ]
+            },
+            "weighted_avg_watts": activity.get("weighted_average_watts"),
+            "sport_type": activity.get("sport_type") or activity.get("type", "Unknown"),
+            "start_date": activity.get("start_date"),
+            "raw_json": json.dumps(activity),
+            **metrics,
+        },
+    )
+
+
+# ── Main sync ─────────────────────────────────────────────────────────────────
+
+
+def sync(full: bool = False, access_token: str | None = None):
+    """Pull activities from Strava into SQLite."""
+    init_db()
+
+    if not access_token:
+        # Re-read profile .env to pick up any freshly-written refresh token
+        _load_env()
+        refresh_token = os.environ.get("STRAVA_REFRESH_TOKEN")
+        if not refresh_token:
+            raise RuntimeError("No STRAVA_REFRESH_TOKEN in .env — run with --auth first.")
+        access_token = get_access_token(refresh_token)
+
+    with get_conn() as conn:
+        after = None
+        if not full:
+            row = conn.execute(
+                "SELECT value FROM sync_state WHERE key='last_sync_epoch'"
+            ).fetchone()
+            if row:
+                after = int(row["value"])
+
+        count = 0
+        for activity in fetch_activities(access_token, after=after):
+            upsert_activity(conn, activity)
+            count += 1
+            if count % 20 == 0:
+                print(f"  synced {count} activities...")
+
+        # Update last sync timestamp
+        conn.execute(
+            """
+            INSERT INTO sync_state(key, value) VALUES('last_sync_epoch', :ts)
+            ON CONFLICT(key) DO UPDATE SET value=:ts
+        """,
+            {"ts": str(int(time.time()))},
+        )
+
+    # Recompute and persist CTL/ATL/TSB for all sport categories
+    _refresh_fitness_table()
+
+    print(f"Sync complete — {count} activities processed.")
+
+
+def _refresh_fitness_table():
+    """Recompute full CTL/ATL/TSB history and write to the fitness table."""
+    from datetime import date as _date
+
+    with get_conn() as conn:
+        for category in ("all", "run", "ride"):
+            daily_tss = get_daily_tss_from_db(conn, category)
+            if not daily_tss:
+                continue
+            series = compute_fitness_series(daily_tss)
+            conn.executemany(
+                """
+                INSERT INTO fitness (date, sport_category, ctl, atl, tsb)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(date, sport_category) DO UPDATE SET
+                    ctl=excluded.ctl, atl=excluded.atl, tsb=excluded.tsb
+                """,
+                [(row["date"], category, row["ctl"], row["atl"], row["tsb"]) for row in series],
+            )
+    print("Fitness table updated.")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Sync Strava activities")
+    parser.add_argument("--auth", action="store_true", help="Run OAuth flow")
+    parser.add_argument("--full", action="store_true", help="Re-sync all activities")
+    args = parser.parse_args()
+
+    if args.auth:
+        token = do_auth_flow()
+        sync(full=args.full, access_token=token)
+    else:
+        sync(full=args.full)
+
+
+if __name__ == "__main__":
+    main()

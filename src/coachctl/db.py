@@ -1,0 +1,187 @@
+"""
+SQLite database layer — schema creation and core queries.
+Database path resolves to ``<DATA_ROOT>/data/activities.db`` (see ``paths.db_path``).
+"""
+
+import logging
+import sqlite3
+from contextlib import contextmanager
+
+from . import paths
+
+logger = logging.getLogger(__name__)
+
+_DB_INITIALISED = False
+
+
+@contextmanager
+def get_conn():
+    conn = sqlite3.connect(paths.db_path())
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA foreign_keys=ON")
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def init_db():
+    """Create all tables if they don't exist. Idempotent — safe to call multiple times."""
+    global _DB_INITIALISED
+    if _DB_INITIALISED:
+        return
+    with get_conn() as conn:
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS activities (
+                id              INTEGER PRIMARY KEY,   -- Strava activity ID
+                name            TEXT NOT NULL,
+                sport_type      TEXT NOT NULL,         -- Run, Ride, VirtualRide, etc.
+                start_date      TEXT NOT NULL,         -- ISO8601 UTC
+                elapsed_time    INTEGER,               -- seconds
+                moving_time     INTEGER,               -- seconds
+                distance        REAL,                  -- metres
+                total_elevation_gain REAL,             -- metres
+                average_speed   REAL,                  -- m/s
+                max_speed       REAL,
+                average_heartrate REAL,
+                max_heartrate   REAL,
+                average_watts   REAL,                  -- cycling power
+                weighted_avg_watts REAL,               -- NP proxy from Strava
+                average_cadence REAL,
+                suffer_score    INTEGER,               -- Strava suffer score
+                -- computed metrics stored after sync
+                tss             REAL,                  -- Training Stress Score
+                np              REAL,                  -- Normalised Power (cycling)
+                intensity_factor REAL,                 -- IF = NP/FTP
+                hrss            REAL,                  -- HR-based TSS
+                rtss            REAL,                  -- Running TSS
+                ngp             REAL,                  -- Normalised Graded Pace (m/s)
+                raw_json        TEXT,                  -- full Strava JSON blob
+                synced_at       TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_activities_start_date
+                ON activities(start_date);
+            CREATE INDEX IF NOT EXISTS idx_activities_sport_type
+                ON activities(sport_type);
+
+            CREATE TABLE IF NOT EXISTS fitness (
+                -- Daily snapshot of CTL/ATL/TSB per sport category
+                date            TEXT NOT NULL,
+                sport_category  TEXT NOT NULL,         -- 'all', 'run', 'ride'
+                ctl             REAL,                  -- chronic training load (42-day)
+                atl             REAL,                  -- acute training load (7-day)
+                tsb             REAL,                  -- form = CTL - ATL
+                PRIMARY KEY (date, sport_category)
+            );
+
+            CREATE TABLE IF NOT EXISTS feedback (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                activity_date   TEXT NOT NULL,         -- YYYY-MM-DD
+                activity_id     INTEGER REFERENCES activities(id),
+                rpe             INTEGER,               -- 1-10
+                felt            TEXT,                  -- 'great','good','ok','bad','terrible'
+                notes           TEXT,
+                created_at      TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE IF NOT EXISTS sync_state (
+                key             TEXT PRIMARY KEY,
+                value           TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS untracked_activities (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                activity_date   TEXT NOT NULL,             -- YYYY-MM-DD
+                sport           TEXT NOT NULL,             -- e.g. 'hockey', 'gym', 'yoga'
+                duration_min    INTEGER,                   -- minutes
+                intensity       TEXT DEFAULT 'moderate',  -- 'easy','moderate','hard','race'
+                tss_estimate    REAL,                      -- manually estimated or auto-computed
+                notes           TEXT,
+                created_at      TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_untracked_date
+                ON untracked_activities(activity_date);
+
+            CREATE TABLE IF NOT EXISTS untracked_checkins (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                week_start      TEXT NOT NULL UNIQUE,      -- YYYY-MM-DD (Monday of the week)
+                checked_at      TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE IF NOT EXISTS calendar_events (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                activity_date   TEXT NOT NULL,             -- YYYY-MM-DD
+                session_title   TEXT NOT NULL,
+                session_hash    TEXT,                      -- hash of date+title+details for diffing
+                google_event_id TEXT,                      -- Google Calendar event ID
+                calendar_id     TEXT,                      -- Google Calendar ID
+                pushed_at       TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_calendar_events_date
+                ON calendar_events(activity_date);
+
+            CREATE TABLE IF NOT EXISTS activity_streams (
+                activity_id     INTEGER PRIMARY KEY REFERENCES activities(id),
+                streams_json    TEXT NOT NULL,          -- cached Strava streams response
+                fetched_at      TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE TABLE IF NOT EXISTS readiness_checkins (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                checkin_date    TEXT NOT NULL UNIQUE,   -- YYYY-MM-DD
+                sleep           INTEGER,                -- 1-5 (1=terrible, 5=great)
+                energy          INTEGER,                -- 1-5 (1=exhausted, 5=great)
+                soreness        INTEGER,                -- 1-5 (1=very sore, 5=fresh legs)
+                notes           TEXT,
+                created_at      TEXT DEFAULT (datetime('now'))
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_readiness_checkins_date
+                ON readiness_checkins(checkin_date);
+
+            CREATE TABLE IF NOT EXISTS schedule_overrides (
+                id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                plan_file     TEXT NOT NULL,   -- basename of plan .md file
+                session_date  TEXT NOT NULL,   -- YYYY-MM-DD
+                original_name TEXT,            -- original session name from plan
+                new_name      TEXT,            -- NULL = session dropped / rest day
+                new_details   TEXT,            -- replacement details text
+                reason        TEXT,            -- e.g. "traveling", "fatigue"
+                created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_overrides_plan_date
+                ON schedule_overrides(plan_file, session_date);
+        """)
+
+        # Idempotent column additions (ALTER TABLE IF NOT EXISTS not supported in older SQLite)
+        existing_cols = {row[1] for row in conn.execute("PRAGMA table_info(activities)").fetchall()}
+        if "reviewed_at" not in existing_cols:
+            conn.execute("ALTER TABLE activities ADD COLUMN reviewed_at TEXT")
+        if "rtss_power" not in existing_cols:
+            conn.execute(
+                "ALTER TABLE activities ADD COLUMN rtss_power REAL"
+            )  # power-based running TSS
+
+    _DB_INITIALISED = True
+    logger.info("Database initialised at %s", paths.db_path())
+
+
+def migrate_and_drop_legacy() -> None:
+    """
+    One-time migration: ensure DB schema is up to date.
+    Safe to call multiple times — idempotent.
+    """
+    init_db()
+
+
+if __name__ == "__main__":
+    init_db()

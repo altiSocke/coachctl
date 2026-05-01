@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>coachctl</title>
+<style>
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+}
+
+/* ── Tokens (dark default) ─────────────────────────────────────────────────── */
+:root {
+  --bg:           #0c0c15;
+  --surface:      #13131f;
+  --surface-2:    #1b1b2e;
+  --border:       #252540;
+  --text:         #e2e2f0;
+  --muted:        #7070a0;
+  --dim:          #45455a;
+  --accent:       #6366f1;
+  --accent-bg:    rgba(99,102,241,.12);
+  --success:      #22c55e;
+  --success-bg:   rgba(34,197,94,.1);
+  --warning:      #f59e0b;
+  --warning-bg:   rgba(245,158,11,.1);
+  --danger:       #ef4444;
+  --danger-bg:    rgba(239,68,68,.1);
+  --info-bg:      rgba(34,197,94,.08);
+  --radius:       12px;
+  --radius-sm:    8px;
+  --gap:          16px;
+  --hdr:          52px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:        #f1f1f9;
+    --surface:   #ffffff;
+    --surface-2: #ededf8;
+    --border:    #dcdcee;
+    --text:      #1a1a2e;
+    --muted:     #606080;
+    --dim:       #aaaac0;
+    --accent-bg: rgba(99,102,241,.07);
+    --success-bg:rgba(34,197,94,.07);
+    --warning-bg:rgba(245,158,11,.07);
+    --danger-bg: rgba(239,68,68,.07);
+    --info-bg:   rgba(34,197,94,.06);
+  }
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+header {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--hdr);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 var(--gap); gap: 10px;
+}
+.logo {
+  font-size: .9rem; font-weight: 700; letter-spacing: -.02em; color: var(--accent);
+  flex-shrink: 0;
+}
+.hdr-title {
+  flex: 1; font-size: .72rem; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sync-btn {
+  flex-shrink: 0; font-size: .75rem; font-weight: 600;
+  background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); border-radius: 6px; padding: 5px 12px;
+  cursor: pointer; font-family: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  transition: background .15s, border-color .15s, color .15s;
+  line-height: 1.3;
+}
+.sync-btn:active { opacity: .55; }
+.sync-btn .btn-label { font-size: .75rem; font-weight: 600; }
+.sync-btn .btn-sub   { font-size: .58rem; font-weight: 400; color: var(--dim); letter-spacing: .01em; }
+.sync-btn.loading {
+  pointer-events: none;
+  border-color: var(--accent); color: var(--accent);
+}
+.sync-btn.loading .btn-sub { color: var(--accent); opacity: .7; }
+.sync-btn.ok {
+  background: var(--success-bg); border-color: var(--success); color: var(--success);
+  pointer-events: none;
+}
+.sync-btn.ok .btn-sub { color: var(--success); opacity: .8; }
+.sync-btn.err {
+  background: var(--danger-bg); border-color: var(--danger); color: var(--danger);
+  pointer-events: none;
+}
+.sync-btn.err .btn-sub { color: var(--danger); opacity: .8; }
+
+/* inline spinner for button */
+
+/* ── Main container ────────────────────────────────────────────────────────── */
+main {
+  max-width: 600px; margin: 0 auto;
+  padding: var(--gap);
+  padding-bottom: calc(var(--gap) * 2 + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+/* ── Loading / error ───────────────────────────────────────────────────────── */
+.state-loading {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 14px; padding: 80px 0; color: var(--muted);
+  font-size: .85rem;
+}
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .65s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.state-error {
+  padding: 20px; border-radius: var(--radius);
+  background: var(--danger-bg); border: 1px solid var(--danger);
+  color: var(--danger); font-size: .85rem; line-height: 1.5;
+}
+.hidden { display: none !important; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+}
+
+/* ── Section label ─────────────────────────────────────────────────────────── */
+.lbl {
+  font-size: .62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .11em; color: var(--muted); margin-bottom: 10px;
+}
+
+/* ── Event cards (horizontal strip) ───────────────────────────────────────── */
+.events-strip {
+  display: flex; gap: 8px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding-bottom: 2px;
+}
+.events-strip::-webkit-scrollbar { display: none; }
+
+.ev-card {
+  flex-shrink: 0; min-width: 148px;
+  border-radius: var(--radius-sm); border: 1px solid; padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.ev-card.pA { background: rgba(239,68,68,.07);  border-color: rgba(239,68,68,.3); }
+.ev-card.pB { background: rgba(245,158,11,.07); border-color: rgba(245,158,11,.3); }
+.ev-card.pC { background: var(--surface);       border-color: var(--border); }
+
+.ev-prio  { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+.pA .ev-prio { color: #ef4444; }
+.pB .ev-prio { color: #f59e0b; }
+.pC .ev-prio { color: var(--muted); }
+.ev-name  { font-size: .84rem; font-weight: 600; color: var(--text); }
+.ev-date  { font-size: .72rem; color: var(--muted); }
+.ev-date strong { color: var(--text); font-variant-numeric: tabular-nums; }
+.ev-goal  { font-size: .7rem; color: var(--muted); margin-top: 1px; }
+
+/* ── Phase timeline ────────────────────────────────────────────────────────── */
+.phase-bar {
+  display: flex; height: 7px; gap: 3px;
+  border-radius: 4px; overflow: hidden; margin-bottom: 9px;
+}
+.phase-seg {
+  border-radius: 3px; position: relative; overflow: hidden; min-width: 6px;
+  transition: opacity .2s;
+}
+.phase-seg.dim { opacity: .22; }
+.phase-seg-fill {
+  position: absolute; inset: 0; right: auto;
+}
+.phase-info {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.phase-name { font-size: .88rem; font-weight: 600; }
+.phase-sub  { font-size: .72rem; color: var(--muted); }
+
+/* ── Week navigator ────────────────────────────────────────────────────────── */
+.week-nav {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.nav-btn {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--text); font-size: .95rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: inherit; transition: opacity .15s;
+}
+.nav-btn:active   { opacity: .5; }
+.nav-btn:disabled { opacity: .2; cursor: default; }
+.week-ctr { flex: 1; text-align: center; }
+.week-num { font-size: .9rem; font-weight: 600; color: var(--text); line-height: 1.2; }
+.week-sub { font-size: .7rem; color: var(--muted); }
+
+.week-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding-bottom: 12px; margin-bottom: 10px; border-bottom: 1px solid var(--border);
+  min-height: 28px;
+}
+.phase-tag {
+  display: inline-block; font-size: .65rem; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px; color: #fff; letter-spacing: .02em;
+}
+.tss-target { font-size: .75rem; color: var(--muted); }
+
+/* ── Sessions ──────────────────────────────────────────────────────────────── */
+.session-list { display: flex; flex-direction: column; gap: 5px; }
+
+.sess {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface-2);
+  cursor: pointer; user-select: none;
+  transition: border-color .12s, background .12s;
+}
+.sess:active       { opacity: .7; }
+.sess.rest         { opacity: .38; cursor: default; }
+.sess.rest:active  { opacity: .38; }
+.sess.done         { border-left: 3px solid var(--success); }
+.sess.stale        { opacity: .55; }
+
+.sess-date { flex-shrink: 0; width: 72px; }
+.sess-dname {
+  font-size: .65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--muted);
+}
+.sess-dnum { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); line-height: 1.1; }
+
+.sess-body { flex: 1; min-width: 0; }
+.sess-name { font-size: .86rem; font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sess-hint { font-size: .72rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+
+.sess-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+.badge {
+  font-size: .6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; padding: 2px 6px; border-radius: 4px;
+}
+.badge-done { background: var(--success-bg); color: var(--success); }
+.badge-rpe  { border: 1px solid; }
+
+/* ── Fitness pills ─────────────────────────────────────────────────────────── */
+.fit-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-bottom: 10px;
+}
+.fit-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 10px;
+}
+.fit-pill {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+}
+.fit-lbl { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+.fit-val { font-size: 1.45rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.fit-sub { font-size: .62rem; color: var(--muted); margin-top: 1px; }
+
+.ctl  .fit-val { color: #6366f1; }
+.atl  .fit-val { color: #f59e0b; }
+.tsb-pos  .fit-val { color: var(--success); }
+.tsb-zero .fit-val { color: var(--muted); }
+.tsb-warn .fit-val { color: var(--warning); }
+.tsb-crit .fit-val { color: var(--danger); }
+.mono-ok   .fit-val { color: var(--success); }
+.mono-warn .fit-val { color: var(--warning); }
+.mono-crit .fit-val { color: var(--danger); }
+
+.fit-date { font-size: .68rem; color: var(--dim); margin-top: 4px; }
+
+/* ── Alerts ────────────────────────────────────────────────────────────────── */
+.alert {
+  margin-top: 8px; padding: 9px 12px;
+  border-radius: var(--radius-sm); border-left: 3px solid;
+  font-size: .78rem; line-height: 1.5;
+}
+.alert.high   { background: var(--danger-bg);  border-color: var(--danger);  color: var(--danger); }
+.alert.medium { background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
+.alert.info   { background: var(--info-bg);    border-color: var(--success); color: var(--success); }
+
+/* ── Chart containers ──────────────────────────────────────────────────────── */
+.chart-wrap { position: relative; width: 100%; height: 175px; }
+
+/* ── Goals ─────────────────────────────────────────────────────────────────── */
+.goal-sport { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 10px 0 4px; }
+.goal-sport:first-child { margin-top: 0; }
+.goal-item { font-size: .82rem; color: var(--text); padding: 6px 10px; background: var(--surface-2); border-radius: 6px; margin-bottom: 4px; }
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+.footer { text-align: center; font-size: .65rem; color: var(--dim); padding: 6px 0; }
+
+/* ── Bottom sheet ──────────────────────────────────────────────────────────── */
+.backdrop {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(0,0,0,.52); backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.backdrop.open { opacity: 1; pointer-events: auto; }
+
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: var(--surface); border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  max-height: 85dvh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.32,.72,0,1);
+  will-change: transform;
+}
+.sheet.open { transform: translateY(0); }
+
+.sheet-handle {
+  width: 40px; height: 4px; background: var(--border);
+  border-radius: 2px; margin: 12px auto 2px;
+}
+.sheet-inner { padding: 2px 20px 28px; }
+
+.sh-date  { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 4px; }
+.sh-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.sh-ptag  { display: inline-block; font-size: .65rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; color: #fff; margin-bottom: 14px; }
+
+.sh-override {
+  margin-bottom: 12px; font-size: .73rem; padding: 7px 10px;
+  border-radius: 6px; background: var(--warning-bg); color: var(--warning);
+}
+
+.sh-detail { font-size: .83rem; line-height: 1.72; color: var(--text); }
+.sh-detail strong { font-weight: 700; }
+.sh-detail em { font-style: italic; }
+.sh-detail code { font-family: monospace; font-size: .8em; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
+
+.sh-divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+.fb-block { background: var(--surface-2); border-radius: var(--radius-sm); padding: 12px; }
+.fb-lbl   { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
+.fb-row   { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fb-rpe   { font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid; }
+.fb-felt  { font-size: .78rem; padding: 4px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+.fb-notes { font-size: .8rem; color: var(--muted); line-height: 1.55; margin-top: 8px; }
+
+/* ── Recent runs table ──────────────────────────────────────────────────────── */
+.runs-table {
+  width: 100%; border-collapse: collapse; font-size: .78rem;
+}
+.runs-table th {
+  text-align: right; font-size: .6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); padding: 0 4px 6px;
+}
+.runs-table th:first-child { text-align: left; }
+.runs-table td {
+  text-align: right; padding: 5px 4px; border-top: 1px solid var(--border);
+  color: var(--text); font-variant-numeric: tabular-nums;
+}
+.runs-table td:first-child { text-align: left; color: var(--muted); }
+.runs-table td.run-name { color: var(--text); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rtss-p { color: #22c55e; font-weight: 600; }
+.rtss-delta { font-size: .7rem; color: var(--muted); }
+.rtss-delta.up { color: #f59e0b; }
+
+/* ── Desktop ────────────────────────────────────────────────────────────────── */
+@media (min-width: 600px) {
+  main { padding: 20px; gap: 12px; }
+  .chart-wrap { height: 210px; }
+  .fit-grid { gap: 12px; }
+  .fit-val { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">coachctl</span>
+  <span class="hdr-title" id="hdr-title"></span>
+  <button class="sync-btn" id="sync-btn">
+    <span class="btn-label">Refresh</span>
+    <span class="btn-sub">reload from DB</span>
+  </button>
+</header>
+
+<main id="main">
+  <div class="state-loading" id="state-loading">
+    <div class="spinner"></div>
+    <span>Loading training data...</span>
+  </div>
+
+  <div id="dashboard" class="hidden">
+
+    <!-- Goal event cards -->
+    <div class="events-strip" id="events-strip"></div>
+
+    <!-- Phase timeline -->
+    <div class="card" id="phase-card">
+      <div class="lbl">Training Phase</div>
+      <div id="phase-content"></div>
+    </div>
+
+    <!-- Week navigator + sessions -->
+    <div class="card" id="week-card">
+      <div class="week-nav">
+        <button class="nav-btn" id="prev-btn">&#8592;</button>
+        <div class="week-ctr">
+          <div class="week-num" id="week-num"></div>
+          <div class="week-sub" id="week-sub"></div>
+        </div>
+        <button class="nav-btn" id="next-btn">&#8594;</button>
+      </div>
+      <div class="week-meta" id="week-meta"></div>
+      <div class="session-list" id="session-list"></div>
+    </div>
+
+    <!-- Fitness state -->
+    <div class="card" id="fitness-card">
+      <div class="lbl">Fitness State</div>
+      <div class="fit-grid" id="fit-grid"></div>
+      <div class="fit-grid fit-grid-2" id="fit-grid-mono" style="margin-top:8px"></div>
+      <div id="fit-date" class="fit-date"></div>
+      <div id="fit-alerts"></div>
+    </div>
+
+    <!-- Fitness trend chart -->
+    <div class="card">
+      <div class="lbl">CTL &nbsp;/&nbsp; ATL &nbsp;/&nbsp; Form</div>
+      <div class="chart-wrap"><canvas id="chart-fitness"></canvas></div>
+    </div>
+
+    <!-- Weekly load chart -->
+    <div class="card">
+      <div class="lbl">Weekly Training Load</div>
+      <div class="chart-wrap"><canvas id="chart-tss"></canvas></div>
+    </div>
+
+    <!-- Training Monotony chart -->
+    <div class="card">
+      <div class="lbl">Training Monotony &amp; Strain</div>
+      <div class="chart-wrap"><canvas id="chart-monotony"></canvas></div>
+    </div>
+
+    <!-- rTSS comparison chart -->
+    <div class="card" id="rtss-chart-card">
+      <div class="lbl">Weekly Run Load &mdash; Pace vs Power rTSS</div>
+      <div class="chart-wrap"><canvas id="chart-rtss"></canvas></div>
+    </div>
+
+    <!-- Recent runs table -->
+    <div class="card" id="recent-runs-card">
+      <div class="lbl">Recent Runs &mdash; rTSS vs rTSS<sub>P</sub></div>
+      <div id="recent-runs-table"></div>
+    </div>
+
+    <!-- Sport goals -->
+    <div class="card" id="goals-card">
+      <div class="lbl">Sport Goals</div>
+      <div id="goals-list"></div>
+    </div>
+
+    <div class="footer" id="footer"></div>
+  </div>
+</main>
+
+<!-- Bottom sheet -->
+<div class="backdrop" id="backdrop"></div>
+<div class="sheet"    id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-inner" id="sheet-inner"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3/dist/chartjs-plugin-annotation.min.js"></script>
+<script>
+'use strict';
+
+// ── Constants ────────────────────────────────────────────────────────────────
+
+const PHASE_COLORS = ['#6366f1','#0891b2','#16a34a','#d97706','#dc2626','#7c3aed','#db2777'];
+
+// ── State ────────────────────────────────────────────────────────────────────
+
+let DATA        = null;
+let curWeek     = 1;
+let chartFit    = null;
+let chartTss    = null;
+let chartMono   = null;
+let chartRtss   = null;
+let isDark      = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetchData();
+  document.getElementById('sync-btn') .addEventListener('click', doSync);
+  document.getElementById('prev-btn') .addEventListener('click', () => stepWeek(-1));
+  document.getElementById('next-btn') .addEventListener('click', () => stepWeek(+1));
+  document.getElementById('backdrop') .addEventListener('click', closeSheet);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    isDark = e.matches;
+    if (DATA) { renderFitnessChart(); renderTssChart(); renderMonotonyChart(); renderRtssChart(); }
+  });
+});
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+async function fetchData() {
+  show('state-loading'); hide('dashboard');
+  try {
+    const r = await fetch('/api/data');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    DATA    = await r.json();
+    if (DATA.error) throw new Error(DATA.error);
+    curWeek = DATA.plan.current_week || 1;
+    renderAll();
+  } catch(e) {
+    document.getElementById('state-loading').innerHTML =
+      `<div class="state-error">Could not load data: ${esc(e.message)}</div>`;
+  }
+}
+
+async function doSync() {
+  const btn   = document.getElementById('sync-btn');
+  const label = btn.querySelector('.btn-label');
+  const sub   = btn.querySelector('.btn-sub');
+
+  btn.classList.add('loading');
+  label.textContent = 'Refreshing...';
+  sub.textContent   = 'reading database';
+
+  let ok = false;
+  try {
+    const r = await fetch('/refresh', { method: 'POST' });
+    ok = r.ok;
+    await fetchData();
+  } catch(_) { ok = false; }
+
+  btn.classList.remove('loading');
+  btn.classList.add(ok ? 'ok' : 'err');
+  label.textContent = ok ? 'Done'  : 'Error';
+  sub.textContent   = ok ? 'up to date' : 'check logs';
+
+  setTimeout(() => {
+    btn.classList.remove('ok', 'err');
+    label.textContent = 'Refresh';
+    sub.textContent   = 'reload from DB';
+  }, 2000);
+}
+
+// ── Render all ───────────────────────────────────────────────────────────────
+
+function renderAll() {
+  hide('state-loading'); show('dashboard');
+  const t = DATA.plan.title || '';
+  document.getElementById('hdr-title').textContent = t;
+  document.title = t ? 'coachctl — ' + t : 'coachctl';
+
+  renderEvents();
+  renderPhase();
+  renderWeek(curWeek);
+  renderFitness();
+  renderFitnessChart();
+  renderTssChart();
+  renderMonotonyChart();
+  renderRtssChart();
+  renderRecentRuns();
+  renderGoals();
+
+  const ts = DATA.generated_at ? new Date(DATA.generated_at) : null;
+  document.getElementById('footer').textContent = ts
+    ? 'Updated ' + ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : '';
+}
+
+// ── Events ───────────────────────────────────────────────────────────────────
+
+function renderEvents() {
+  const strip = document.getElementById('events-strip');
+  strip.innerHTML = '';
+  (DATA.events || []).forEach(ev => {
+    const days = ev.days_out;
+    const daysStr = days === 0 ? 'Today'
+      : days === 1 ? '1 day'
+      : days < 0  ? Math.abs(days) + ' days ago'
+      : days + ' days';
+    const card = el('div', `ev-card p${ev.priority}`);
+    card.innerHTML = `
+      <div class="ev-prio">${esc(ev.priority)}-Race</div>
+      <div class="ev-name">${esc(ev.name)}</div>
+      <div class="ev-date">in <strong>${esc(daysStr)}</strong> &bull; ${fmtDate(ev.date)}</div>
+      ${ev.goal_time ? `<div class="ev-goal">Goal ${esc(ev.goal_time)}</div>` : ''}
+    `;
+    strip.appendChild(card);
+  });
+}
+
+// ── Phase timeline ────────────────────────────────────────────────────────────
+
+function renderPhase() {
+  const phases  = DATA.phases || [];
+  const total   = DATA.plan.total_weeks;
+  const content = document.getElementById('phase-content');
+
+  if (!phases.length) { hide('phase-card'); return; }
+  show('phase-card');
+
+  const activeIdx = phases.findIndex(p => curWeek >= p.start_week && curWeek <= p.end_week);
+  const active    = phases[activeIdx] || phases[0];
+  const activePct = Math.min(100, ((curWeek - active.start_week + 1) / active.week_count * 100)).toFixed(1);
+
+  // Bar
+  let barHtml = '<div class="phase-bar">';
+  phases.forEach((ph, i) => {
+    const col    = PHASE_COLORS[i % PHASE_COLORS.length];
+    const isAct  = i === activeIdx;
+    const fill   = isAct ? `<div class="phase-seg-fill" style="width:${activePct}%;background:${col}"></div>` : '';
+    barHtml += `<div class="phase-seg ${isAct ? '' : 'dim'}"
+      style="flex:${ph.week_count};background:${col}20;border:1px solid ${col}44"
+      title="${esc(ph.name)} W${ph.start_week}–W${ph.end_week}">${fill}</div>`;
+  });
+  barHtml += '</div>';
+
+  const col = PHASE_COLORS[activeIdx % PHASE_COLORS.length];
+  const wInPhase  = curWeek - active.start_week + 1;
+  content.innerHTML = barHtml + `
+    <div class="phase-info">
+      <span class="phase-name" style="color:${col}">${esc(active.name)}</span>
+      <span class="phase-sub">week ${wInPhase} of ${active.week_count} &bull; overall W${curWeek} / W${total}</span>
+    </div>`;
+}
+
+// ── Week calendar ─────────────────────────────────────────────────────────────
+
+function stepWeek(d) {
+  const total = DATA.plan.total_weeks;
+  curWeek = Math.max(1, Math.min(total, curWeek + d));
+  renderWeek(curWeek);
+  renderPhase();
+}
+
+function renderWeek(n) {
+  const week  = DATA.plan.weeks.find(w => w.number === n);
+  if (!week) return;
+  const total = DATA.plan.total_weeks;
+
+  document.getElementById('prev-btn').disabled = n <= 1;
+  document.getElementById('next-btn').disabled = n >= total;
+  document.getElementById('week-num').textContent = `Week ${n} of ${total}`;
+  document.getElementById('week-sub').textContent = week.title || '';
+
+  const phaseIdx = (DATA.phases || []).findIndex(p => n >= p.start_week && n <= p.end_week);
+  const phase    = DATA.phases[phaseIdx] || null;
+  const pColor   = phase ? PHASE_COLORS[phaseIdx % PHASE_COLORS.length] : '#6366f1';
+
+  const meta = document.getElementById('week-meta');
+  meta.innerHTML = '';
+  if (phase) {
+    const tag = el('span', 'phase-tag');
+    tag.style.background = pColor;
+    tag.textContent = phase.name;
+    meta.appendChild(tag);
+  }
+  if (week.target_tss) {
+    const t = el('span', 'tss-target');
+    t.textContent = `Target TSS: ${week.target_tss}`;
+    meta.appendChild(t);
+  }
+
+  const list  = document.getElementById('session-list');
+  list.innerHTML = '';
+  const today = new Date().toISOString().slice(0, 10);
+
+  (week.sessions || []).forEach(s => {
+    const isRest = /^rest$/i.test(s.name.trim());
+    const isPast = s.date && s.date < today;
+
+    const row = el('div', 'sess'
+      + (isRest       ? ' rest'  : '')
+      + (s.completed  ? ' done'  : '')
+      + (!s.completed && isPast && !isRest ? ' stale' : ''));
+
+    const [dname, dnum] = splitDayLabel(s.day_label);
+
+    // RPE badge style
+    let rpeHtml = '';
+    if (s.feedback && s.feedback.rpe != null) {
+      const r = s.feedback.rpe;
+      const rColor = r >= 9 ? '#ef4444' : r >= 7 ? '#f59e0b' : '#22c55e';
+      rpeHtml = `<span class="badge badge-rpe" style="color:${rColor};border-color:${rColor}55;background:${rColor}14">RPE ${r}</span>`;
+    }
+
+    row.innerHTML = `
+      <div class="sess-date">
+        <div class="sess-dname">${esc(dname)}</div>
+        <div class="sess-dnum">${esc(dnum)}</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-name">${esc(s.name)}</div>
+        ${!isRest ? `<div class="sess-hint">${esc(shortDetail(s.details))}</div>` : ''}
+      </div>
+      <div class="sess-right">
+        ${s.completed ? '<span class="badge badge-done">Done</span>' : ''}
+        ${rpeHtml}
+      </div>`;
+
+    if (!isRest) row.addEventListener('click', () => openSheet(s, phase, pColor));
+    list.appendChild(row);
+  });
+}
+
+// ── Bottom sheet ──────────────────────────────────────────────────────────────
+
+function openSheet(sess, phase, pColor) {
+  const fb = sess.feedback;
+
+  let fbHtml = '';
+  if (fb) {
+    const r = fb.rpe;
+    const rColor = r >= 9 ? '#ef4444' : r >= 7 ? '#f59e0b' : '#22c55e';
+    fbHtml = `
+      <div class="sh-divider"></div>
+      <div class="fb-block">
+        <div class="fb-lbl">Session Feedback</div>
+        <div class="fb-row">
+          ${r != null ? `<span class="fb-rpe" style="color:${rColor};border-color:${rColor}55;background:${rColor}14">RPE ${r}</span>` : ''}
+          ${fb.felt ? `<span class="fb-felt">${esc(fb.felt)}</span>` : ''}
+        </div>
+        ${fb.notes ? `<div class="fb-notes">${esc(fb.notes)}</div>` : ''}
+      </div>`;
+  }
+
+  const overHtml = (sess.overridden && sess.override_reason)
+    ? `<div class="sh-override">Rescheduled: ${esc(sess.override_reason)}</div>` : '';
+
+  document.getElementById('sheet-inner').innerHTML = `
+    <div class="sh-date">${esc(sess.day_label)}</div>
+    <div class="sh-title">${esc(sess.name)}</div>
+    ${phase ? `<span class="sh-ptag" style="background:${pColor}">${esc(phase.name)}</span>` : ''}
+    ${overHtml}
+    <div class="sh-detail">${mdToHtml(sess.details)}</div>
+    ${fbHtml}`;
+
+  document.getElementById('sheet')   .classList.add('open');
+  document.getElementById('backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSheet() {
+  document.getElementById('sheet')   .classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Fitness ───────────────────────────────────────────────────────────────────
+
+function renderFitness() {
+  const f  = DATA.fitness;
+  const tsb = parseFloat(f.tsb);
+  const tsbClass = isNaN(tsb)  ? 'tsb-zero'
+    : tsb >= 10  ? 'tsb-pos'
+    : tsb >= -5  ? 'tsb-zero'
+    : tsb >= -20 ? 'tsb-warn'
+    : 'tsb-crit';
+  const sign = (!isNaN(tsb) && tsb > 0) ? '+' : '';
+
+  document.getElementById('fit-grid').innerHTML = `
+    <div class="fit-pill ctl">
+      <div class="fit-lbl">Fitness</div>
+      <div class="fit-val">${f.ctl}</div>
+      <div class="fit-sub">CTL</div>
+    </div>
+    <div class="fit-pill atl">
+      <div class="fit-lbl">Fatigue</div>
+      <div class="fit-val">${f.atl}</div>
+      <div class="fit-sub">ATL</div>
+    </div>
+    <div class="fit-pill ${tsbClass}">
+      <div class="fit-lbl">Form</div>
+      <div class="fit-val">${sign}${f.tsb}</div>
+      <div class="fit-sub">TSB</div>
+    </div>`;
+
+  document.getElementById('fit-date').textContent = f.date ? 'As of ' + fmtDate(f.date) : '';
+
+  // Monotony + Strain pills
+  const mono = DATA.monotony || {};
+  const monoVal = parseFloat(mono.monotony);
+  const monoClass = isNaN(monoVal) ? 'mono-ok'
+    : monoVal > 2.0 ? 'mono-crit'
+    : monoVal > 1.5 ? 'mono-warn'
+    : 'mono-ok';
+  const strainVal = parseFloat(mono.strain);
+  const strainClass = isNaN(strainVal) ? 'mono-ok'
+    : strainVal > 2000 ? 'mono-crit'
+    : strainVal > 1200 ? 'mono-warn'
+    : 'mono-ok';
+
+  const monoGrid = document.getElementById('fit-grid-mono');
+  if (monoGrid) {
+    monoGrid.innerHTML = `
+      <div class="fit-pill ${monoClass}">
+        <div class="fit-lbl">Monotony</div>
+        <div class="fit-val">${isNaN(monoVal) ? '—' : monoVal.toFixed(2)}</div>
+        <div class="fit-sub">&lt;1.5 ideal · &gt;2.0 risky</div>
+      </div>
+      <div class="fit-pill ${strainClass}">
+        <div class="fit-lbl">Strain</div>
+        <div class="fit-val">${isNaN(strainVal) ? '—' : Math.round(strainVal)}</div>
+        <div class="fit-sub">7d TSS × Monotony</div>
+      </div>`;
+  }
+
+  const alerts = document.getElementById('fit-alerts');
+  alerts.innerHTML = '';
+  (DATA.danger_zones || []).forEach(z => {
+    const d = el('div', `alert ${z.severity}`);
+    d.textContent = z.message;
+    alerts.appendChild(d);
+  });
+}
+
+// ── Charts ────────────────────────────────────────────────────────────────────
+
+function chartColors() {
+  return {
+    grid:   isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)',
+    tick:   isDark ? '#7070a0' : '#606080',
+    tip_bg: isDark ? '#1b1b2e' : '#ffffff',
+    tip_tx: isDark ? '#e2e2f0' : '#1a1a2e',
+    tip_bd: isDark ? '#252540' : '#dcdcee',
+    target: isDark ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+  };
+}
+
+function renderFitnessChart() {
+  const trend  = DATA.trend     || [];
+  const proj   = DATA.projected || [];
+  const events = DATA.events    || [];
+  const C      = chartColors();
+
+  const lastTrendDate = trend.length ? trend[trend.length - 1].date : null;
+  const projFilt = proj.filter(d => !lastTrendDate || d.date > lastTrendDate);
+
+  const labels = [...trend.map(d => d.date), ...projFilt.map(d => d.date)];
+  const split  = trend.length;
+  const pad    = projFilt.length;
+
+  const ctlA = [...trend.map(d => d.ctl),  ...Array(pad).fill(null)];
+  const atlA = [...trend.map(d => d.atl),  ...Array(pad).fill(null)];
+  const tsbA = [...trend.map(d => d.tsb),  ...Array(pad).fill(null)];
+  const ctlP = [...Array(split).fill(null), ...projFilt.map(d => d.ctl)];
+  const atlP = [...Array(split).fill(null), ...projFilt.map(d => d.atl)];
+  const tsbP = [...Array(split).fill(null), ...projFilt.map(d => d.tsb)];
+
+  const anns = {
+    tsbBand: {
+      type: 'box', yMin: 15, yMax: 25,
+      backgroundColor: 'rgba(34,197,94,.06)', borderColor: 'rgba(34,197,94,.18)', borderWidth: 1,
+    },
+    overreach: {
+      type: 'line', yMin: -30, yMax: -30,
+      borderColor: 'rgba(239,68,68,.3)', borderWidth: 1, borderDash: [4,4],
+    },
+  };
+  events.forEach((ev, i) => {
+    if (!labels.includes(ev.date)) return;
+    const c = ev.priority === 'A' ? '#ef4444' : ev.priority === 'B' ? '#f59e0b' : '#6366f1';
+    anns['ev' + i] = {
+      type: 'line', xMin: ev.date, xMax: ev.date,
+      borderColor: c + '88', borderWidth: ev.priority === 'A' ? 2 : 1,
+      label: {
+        display: true, content: ev.name, position: 'start',
+        backgroundColor: c, color: '#fff',
+        font: { size: 9 }, padding: { x: 4, y: 2 }, borderRadius: 3,
+      },
+    };
+  });
+
+  const opts = {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        display: true, position: 'top', align: 'start',
+        labels: { font: { size: 10 }, color: C.tick, boxWidth: 14, padding: 8,
+          filter: item => !item.text.endsWith('*') },
+      },
+      annotation: { annotations: anns },
+      tooltip: {
+        backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
+        borderColor: C.tip_bd, borderWidth: 1,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(1) ?? ''}` },
+      },
+    },
+    scales: {
+      x: {
+        type: 'category',
+        ticks: { color: C.tick, font: { size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
+        grid: { color: C.grid }, border: { display: false },
+      },
+      y: {
+        ticks: { color: C.tick, font: { size: 9 } },
+        grid: { color: C.grid }, border: { display: false },
+      },
+    },
+  };
+
+  const datasets = [
+    { label: 'CTL',   data: ctlA, borderColor: '#6366f1', borderWidth: 2, pointRadius: 0, tension: .3 },
+    { label: 'ATL',   data: atlA, borderColor: '#f59e0b', borderWidth: 2, pointRadius: 0, tension: .3 },
+    { label: 'Form',  data: tsbA, borderColor: '#22c55e', borderWidth: 2, pointRadius: 0, tension: .3 },
+    { label: 'CTL*',  data: ctlP, borderColor: '#6366f188', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+    { label: 'ATL*',  data: atlP, borderColor: '#f59e0b88', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+    { label: 'Form*', data: tsbP, borderColor: '#22c55e88', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+  ].map(d => ({ ...d, backgroundColor: 'transparent', fill: false }));
+
+  const ctx = document.getElementById('chart-fitness').getContext('2d');
+  if (chartFit) chartFit.destroy();
+  chartFit = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: opts });
+}
+
+function renderTssChart() {
+  const weekly = DATA.weekly_tss || [];
+  const C      = chartColors();
+
+  const labels = weekly.map(w => w.week.slice(5));
+  const run    = weekly.map(w => w.run   || 0);
+  const ride   = weekly.map(w => w.ride  || 0);
+  const other  = weekly.map(w => w.other || 0);
+  const target = weekly.map(w => w.target || null);
+
+  const ctx = document.getElementById('chart-tss').getContext('2d');
+  if (chartTss) chartTss.destroy();
+  chartTss = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Run',    data: run,    backgroundColor: '#6366f1aa', stack: 'tss', borderRadius: 2 },
+        { label: 'Ride',   data: ride,   backgroundColor: '#f59e0baa', stack: 'tss', borderRadius: 2 },
+        { label: 'Other',  data: other,  backgroundColor: '#7070a088', stack: 'tss', borderRadius: 2 },
+        { label: 'Target', data: target, type: 'line',
+          borderColor: C.target, backgroundColor: 'transparent',
+          borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true, position: 'top', align: 'start',
+          labels: { font: { size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+        },
+        tooltip: {
+          backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
+          borderColor: C.tip_bd, borderWidth: 1,
+        },
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { color: C.tick, font: { size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          grid: { display: false }, border: { display: false },
+        },
+        y: {
+          stacked: true,
+          ticks: { color: C.tick, font: { size: 9 } },
+          grid: { color: C.grid }, border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+// ── Goals ─────────────────────────────────────────────────────────────────────
+
+function renderMonotonyChart() {
+  const trend = DATA.monotony_trend || [];
+  const C     = chartColors();
+  if (!trend.length) return;
+
+  const labels   = trend.map(d => d.date.slice(5));
+  const monotony = trend.map(d => d.monotony);
+  const strain   = trend.map(d => d.strain);
+
+  const anns = {
+    monoWarn: {
+      type: 'line', yMin: 1.5, yMax: 1.5, yScaleID: 'yMono',
+      borderColor: 'rgba(245,158,11,.4)', borderWidth: 1, borderDash: [4,3],
+      label: { display: true, content: '1.5', position: 'end',
+        backgroundColor: 'transparent', color: 'rgba(245,158,11,.7)',
+        font: { size: 8 }, padding: { x: 2, y: 0 } },
+    },
+    monoCrit: {
+      type: 'line', yMin: 2.0, yMax: 2.0, yScaleID: 'yMono',
+      borderColor: 'rgba(239,68,68,.4)', borderWidth: 1, borderDash: [4,3],
+      label: { display: true, content: '2.0', position: 'end',
+        backgroundColor: 'transparent', color: 'rgba(239,68,68,.7)',
+        font: { size: 8 }, padding: { x: 2, y: 0 } },
+    },
+  };
+
+  const ctx = document.getElementById('chart-monotony').getContext('2d');
+  if (chartMono) chartMono.destroy();
+  chartMono = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Monotony', data: monotony, yAxisID: 'yMono',
+          borderColor: '#a78bfa', borderWidth: 2, pointRadius: 0, tension: .3,
+          backgroundColor: 'transparent', fill: false,
+        },
+        {
+          label: 'Strain', data: strain, yAxisID: 'yStrain',
+          borderColor: '#fb923c', borderWidth: 1.5, pointRadius: 0, tension: .3,
+          backgroundColor: 'rgba(251,146,60,.08)', fill: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true, position: 'top', align: 'start',
+          labels: { font: { size: 10 }, color: C.tick, boxWidth: 14, padding: 8 },
+        },
+        annotation: { annotations: anns },
+        tooltip: {
+          backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
+          borderColor: C.tip_bd, borderWidth: 1,
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v == null) return '';
+              return ctx.dataset.yAxisID === 'yMono'
+                ? ` Monotony: ${v.toFixed(2)}`
+                : ` Strain: ${Math.round(v)}`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          type: 'category',
+          ticks: { color: C.tick, font: { size: 9 }, maxTicksLimit: 10, maxRotation: 0 },
+          grid: { color: C.grid }, border: { display: false },
+        },
+        yMono: {
+          type: 'linear', position: 'left',
+          min: 0, max: 3,
+          ticks: { color: '#a78bfa', font: { size: 9 }, stepSize: 0.5 },
+          grid: { color: C.grid }, border: { display: false },
+        },
+        yStrain: {
+          type: 'linear', position: 'right',
+          ticks: { color: '#fb923c', font: { size: 9 } },
+          grid: { drawOnChartArea: false }, border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function renderGoals() {
+  const goals = DATA.goals || {};
+  const list  = document.getElementById('goals-list');
+  list.innerHTML = '';
+  let any = false;
+  ['running', 'cycling'].forEach(sport => {
+    const items = goals[sport] || [];
+    if (!items.length) return;
+    any = true;
+    const lbl = el('div', 'goal-sport');
+    lbl.textContent = sport.charAt(0).toUpperCase() + sport.slice(1);
+    list.appendChild(lbl);
+    items.forEach(g => {
+      const item = el('div', 'goal-item');
+      item.textContent = g;
+      list.appendChild(item);
+    });
+  });
+  if (!any) hide('goals-card');
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+
+function show(id) { document.getElementById(id)?.classList.remove('hidden'); }
+function hide(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function splitDayLabel(label) {
+  // "Mon Apr 20" → ["MON", "Apr 20"]
+  const parts = (label || '').split(' ');
+  if (parts.length >= 3) return [parts[0].toUpperCase(), parts.slice(1).join(' ')];
+  return [(label || '').toUpperCase(), ''];
+}
+
+function shortDetail(d) {
+  if (!d) return '';
+  const s = d
+    .replace(/\|[^\n]+/g, '')   // strip table rows
+    .replace(/~~(.+?)~~/g, '$1') // drop strikethrough markers, keep text
+    .replace(/\*\*/g, '')        // strip bold markers
+    .replace(/\*/g,  '')         // strip italic markers
+    .replace(/`/g,   '')         // strip code markers
+    .replace(/\n/g,  ' ')
+    .trim();
+  return s.length > 90 ? s.slice(0, 90) + '...' : s;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function renderRtssChart() {
+  const weekly = DATA.weekly_run_tss || [];
+  const C      = chartColors();
+  if (!weekly.length) { hide('rtss-chart-card'); return; }
+  show('rtss-chart-card');
+
+  const labels     = weekly.map(w => w.week.slice(5));
+  const rtss       = weekly.map(w => w.rtss   || 0);
+  const rtss_power = weekly.map(w => w.rtss_power != null ? w.rtss_power : null);
+
+  const ctx = document.getElementById('chart-rtss').getContext('2d');
+  if (chartRtss) chartRtss.destroy();
+  chartRtss = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'rTSS (pace)',  data: rtss,       backgroundColor: '#6366f1aa', borderRadius: 2 },
+        { label: 'rTSS_P (power)', data: rtss_power, backgroundColor: '#22c55eaa', borderRadius: 2,
+          type: 'line', borderColor: '#22c55e', borderWidth: 2, pointRadius: 3,
+          pointBackgroundColor: '#22c55e', tension: .2, fill: false },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true, position: 'top', align: 'start',
+          labels: { font: { size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+        },
+        tooltip: {
+          backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
+          borderColor: C.tip_bd, borderWidth: 1,
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v == null) return '';
+              const label = ctx.dataset.label;
+              return ` ${label}: ${Math.round(v)}`;
+            },
+            afterBody: items => {
+              const pace  = items.find(i => i.dataset.label.includes('pace'));
+              const power = items.find(i => i.dataset.label.includes('power'));
+              if (pace && power && power.parsed.y != null && pace.parsed.y > 0) {
+                const delta = Math.round(power.parsed.y - pace.parsed.y);
+                const pct   = Math.round((power.parsed.y / pace.parsed.y - 1) * 100);
+                return [`  Δ ${delta > 0 ? '+' : ''}${delta} (${pct > 0 ? '+' : ''}${pct}%)`];
+              }
+              return [];
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: { color: C.tick, font: { size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          grid: { display: false }, border: { display: false },
+        },
+        y: {
+          ticks: { color: C.tick, font: { size: 9 } },
+          grid: { color: C.grid }, border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function renderRecentRuns() {
+  const runs = DATA.recent_runs || [];
+  const container = document.getElementById('recent-runs-table');
+  if (!runs.length) { hide('recent-runs-card'); return; }
+  show('recent-runs-card');
+
+  // Only show runs that have at least one of rtss or rtss_power
+  const filtered = runs.filter(r => r.rtss != null || r.rtss_power != null);
+  if (!filtered.length) { hide('recent-runs-card'); return; }
+
+  let html = `<table class="runs-table">
+    <thead><tr>
+      <th>Date</th>
+      <th>km</th>
+      <th>+m</th>
+      <th>rTSS</th>
+      <th>rTSS<sub>P</sub></th>
+      <th>Δ%</th>
+    </tr></thead><tbody>`;
+
+  filtered.forEach(r => {
+    const rtss  = r.rtss  != null ? r.rtss.toFixed(0)  : '—';
+    const rtssP = r.rtss_power != null ? r.rtss_power.toFixed(0) : '—';
+    let delta = '';
+    if (r.rtss != null && r.rtss_power != null && r.rtss > 0) {
+      const pct = Math.round((r.rtss_power / r.rtss - 1) * 100);
+      delta = `<span class="rtss-delta ${pct > 10 ? 'up' : ''}">${pct > 0 ? '+' : ''}${pct}%</span>`;
+    }
+    const shortName = (r.name || '').length > 18 ? r.name.slice(0, 18) + '…' : r.name;
+    html += `<tr>
+      <td class="run-name" title="${esc(r.name)}">${esc(r.date ? r.date.slice(5) : '')} <span style="color:var(--muted);font-size:.7rem">${esc(shortName)}</span></td>
+      <td>${r.dist_km != null ? r.dist_km : '—'}</td>
+      <td>${r.elev_m  != null ? r.elev_m  : '—'}</td>
+      <td>${rtss}</td>
+      <td class="rtss-p">${rtssP}</td>
+      <td>${delta}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function mdToHtml(text) {
+  if (!text) return '';
+  // Escape HTML first, then apply markdown transforms
+  let h = esc(text);
+  // Strip table rows (| ... |) — they don't render well in prose
+  h = h.replace(/\|[^\n]+(\n|$)/g, '');
+  // Strikethrough ~~text~~
+  h = h.replace(/~~(.+?)~~/g, '<s>$1</s>');
+  // Bold **text**
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic *text* (only if not already consumed by bold)
+  h = h.replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
+  // Inline code `text`
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Line breaks
+  h = h.replace(/\n/g, '<br>');
+  return h;
+}
+</script>
+</body>
+</html>

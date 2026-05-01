@@ -1,0 +1,21 @@
+.env
+__pycache__/
+*.pyc
+.ruff_cache/
+.venv/
+dist/
+*.egg-info/
+
+# opencode local config — contains live API tokens; use opencode.json.example as template
+opencode.json
+
+# Editor / IDE state
+.obsidian/
+.idea/
+*.code-workspace
+
+# Defensive — these directories belong in the personal repo, never here
+wiki/personal/
+data/
+config/profiles/
+profile/
