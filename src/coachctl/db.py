@@ -160,6 +160,47 @@ def init_db():
 
             CREATE UNIQUE INDEX IF NOT EXISTS idx_overrides_plan_date
                 ON schedule_overrides(plan_file, session_date);
+
+            -- ── Calendar (single source of truth for date-anchored items) ──
+            -- Plans are versioned overview snapshots. Live training-session
+            -- truth is the rows in `events` referencing this plan_id.
+            CREATE TABLE IF NOT EXISTS plans (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                slug            TEXT UNIQUE NOT NULL,    -- e.g. 'half-marathon-1h35-2026'
+                title           TEXT,
+                start_date      TEXT,                    -- ISO YYYY-MM-DD
+                end_date        TEXT,                    -- ISO YYYY-MM-DD
+                active          INTEGER DEFAULT 1,       -- 1 = current plan
+                overview_md     TEXT,                    -- high-level narrative (phases, focus, goals)
+                source_md_path  TEXT,                    -- archive path under profile/plans/
+                created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+
+            -- Events: one row per scheduled or logged date-anchored item.
+            -- kind in ('race','training','untracked','appointment').
+            -- payload_json holds kind-specific structured content (race card,
+            -- intervals, etc). status in ('planned','completed','cancelled').
+            CREATE TABLE IF NOT EXISTS events (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                slug            TEXT UNIQUE NOT NULL,
+                kind            TEXT NOT NULL,
+                date            TEXT NOT NULL,            -- ISO YYYY-MM-DD
+                start_time      TEXT,                     -- HH:MM (local)
+                duration_min    INTEGER,
+                name            TEXT NOT NULL,
+                summary         TEXT,
+                estimated_tss   REAL,
+                status          TEXT DEFAULT 'planned',
+                payload_json    TEXT,                     -- JSON, kind-specific
+                plan_id         INTEGER REFERENCES plans(id),
+                activity_id     INTEGER REFERENCES activities(id),
+                notes           TEXT,
+                created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+                updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+            );
+            CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
+            CREATE INDEX IF NOT EXISTS idx_events_kind ON events(kind);
+            CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
         """)
 
         # Idempotent column additions (ALTER TABLE IF NOT EXISTS not supported in older SQLite)

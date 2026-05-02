@@ -235,6 +235,35 @@ def _get_upcoming_events() -> list[dict]:
     return sorted(events, key=lambda x: x["days_out"])
 
 
+def _get_calendar_window_for_dashboard(past_days: int = 7, future_days: int = 200) -> list[dict]:
+    """
+    Project the unified events table for the dashboard.
+    Returns a list of event dicts (race, training, untracked, appointment,
+    activity) ready for ``data.json``.
+    """
+    try:
+        from .events import get_calendar
+    except Exception:
+        return []
+    today = date.today()
+    start = (today - timedelta(days=past_days)).isoformat()
+    end = (today + timedelta(days=future_days)).isoformat()
+    try:
+        events = get_calendar(start, end)
+    except Exception:
+        return []
+    out = []
+    for e in events:
+        d = e.to_dict()
+        try:
+            ev_date = date.fromisoformat(d["date"])
+            d["days_out"] = (ev_date - today).days
+        except Exception:
+            d["days_out"] = None
+        out.append(d)
+    return out
+
+
 def _determine_current_week(plan: Plan) -> int:
     """Find which week number we're currently in based on session dates."""
     today = str(date.today())
@@ -591,6 +620,7 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
     trend = _get_fitness_trend(16)
     weekly_tss = _get_weekly_tss(plan, 16)
     events = _get_upcoming_events()
+    calendar = _get_calendar_window_for_dashboard()
     projected = _project_fitness(plan, fitness, weeks=16)
     current_week = _determine_current_week(plan)
     phases = _extract_phases(plan)
@@ -656,6 +686,7 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         "projected": projected,
         "weekly_tss": weekly_tss,
         "events": events,
+        "calendar": calendar,
         "goals": goals,
         "recent_runs": recent_runs,
         "weekly_run_tss": weekly_run_tss,
