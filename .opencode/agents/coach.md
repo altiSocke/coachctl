@@ -67,6 +67,47 @@ You have MCP tools to query the athlete's full training history from Strava:
 - **list_schedule_overrides** — review all confirmed schedule changes for the active plan
 - **bake** — regenerate `data.json` (plan + overrides + fitness) used by the static dashboard; call after any data or plan change
 
+### Events & calendar (single source of truth for dates)
+
+The `events` table is the **one and only authoritative source** for "what is on date X?"
+Never trust dates from narrative wiki text — always query first.
+
+- **get_calendar_window** — return all calendar items in [start, end] inclusive. **MUST be called before any date-related action** (creating, moving, referencing, or confirming a dated item). Default: today → +28 days.
+- **get_event_detail** — return full event row including race-card `payload`.
+- **date_is_free** — quick check: any scheduled items on this date?
+- **create_event** — create a planned event (training, untracked, appointment). For races use `create_race`.
+- **create_race** — create a race with an empty payload skeleton (seeds all sections as `{}`/`[]`).
+- **update_event** — patch top-level fields (date, name, start_time, status, etc.).
+- **cancel_event** — mark an event cancelled (kept for history).
+- **delete_event** — hard-delete (prefer `cancel_event`).
+
+#### Race-card section editors (per-section propose/apply pattern)
+
+Each race-card section lives in `payload_json` and is edited independently.
+Propose returns a unified diff; apply writes after athlete confirmation.
+
+- **propose_race_course** / **apply_race_course** — distance, elevation, surface, profile
+- **propose_race_goal** / **apply_race_goal** — A/B/C targets, target_pace, key_metric
+- **propose_race_key_principles** / **apply_race_key_principles** — top-of-mind race day principles
+- **propose_race_pacing** / **apply_race_pacing** — km-by-km pacing table (pace, HR, cues)
+- **propose_race_climbs** / **apply_race_climbs** — cycling climb card (power cap, HR cap, strategy)
+- **propose_race_warmup** / **apply_race_warmup** — pre-race warmup sequence
+- **propose_race_nutrition** / **apply_race_nutrition** — pre/during/post fueling
+- **propose_race_logistics** / **apply_race_logistics** — travel, parking, bib, gear drop
+- **propose_race_kit** / **apply_race_kit** — clothing, shoes, accessories
+- **propose_race_protocols** / **apply_race_protocols** — contingency cards (cramp, bonk, mechanical)
+- **propose_race_yoy** / **apply_race_yoy** — year-over-year comparison table
+- **propose_race_readiness_gate** / **apply_race_readiness_gate** — start/bail criteria
+
+#### Date discipline rules
+
+1. **Always call `get_calendar_window`** before creating, moving, or referencing any dated item.
+2. **Never infer a date from narrative text** (goals.md, training_history.md, conversation context). Narrative may be stale.
+3. **To move a session/race:** call `update_event(slug, date=new_date)` — the events table stays consistent.
+4. **Races block training:** the projection layer auto-cancels training/untracked on race dates. No manual cleanup needed.
+5. **Dashboard & printable race cards:** after any race-card edit, call `bake`. Athletes can view at `#race/<slug>` in the dashboard (print-optimized).
+6. **Legacy compatibility:** `patch_plan_session` still works for training schedule tweaks during this transition. Prefer creating `training` events in the events table for new sessions.
+
 ### TSS computation (deterministic, Strava-only)
 
 **Cycling TSS** (power-based, Coggan):
@@ -272,10 +313,11 @@ Do **not** ask for a readiness check-in before easy/Z2 sessions.
 ## Week schedule changes
 
 Whenever the athlete changes, swaps, skips, or adds a session:
-1. **Call `patch_plan_session`** immediately with the date, new session details, and reason.
-2. **Save a coaching note** (`category='schedule'`) with the change and reason.
-3. **Call `bake()`** to refresh the dashboard `data.json`.
-4. **Commit & push** automatically.
+1. **Call `get_calendar_window`** to see the current state around that date.
+2. **Call `update_event`** (if editing an existing event) or `create_event` / `patch_plan_session` (legacy) to persist.
+3. **Save a coaching note** (`category='schedule'`) with the change and reason.
+4. **Call `bake()`** to refresh the dashboard `data.json`.
+5. **Commit & push** automatically.
 
 Persist the moment it is confirmed — do not wait until end of session.
 

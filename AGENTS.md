@@ -246,6 +246,17 @@ A coaching session that updates both layers will commit to two repos:
 
 - **SQLite** for activity storage — queryable, portable. Lives in the personal
   repo, committed (Git LFS recommended once >50MB).
+- **`events` table as single calendar truth.** All date-anchored items (races,
+  training sessions, untracked activities, appointments) live in one table.
+  The projection layer (`events.py`) merges events-table rows with activities
+  and legacy sources (plan markdown, schedule_overrides, untracked_activities)
+  during migration. Races block training/untracked on the same date. Consumers
+  (`bake`, `calendar_sync`, MCP tools) read from `get_calendar()` — never from
+  narrative wiki text.
+- **Race cards as structured payload.** Each race event has a `payload_json`
+  column holding all sections (pacing, climbs, nutrition, kit, logistics,
+  protocols, YoY, readiness gate). Edited per-section via `propose_race_*` /
+  `apply_race_*` MCP tools with unified-diff confirmation flow.
 - **YAML** for feedback, **Markdown** for plans — human-readable, git-diffable.
 - **No multi-tenant code repo.** One personal repo per athlete; switch via
   `AGENT_DATA_ROOT`.
