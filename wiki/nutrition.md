@@ -1,6 +1,6 @@
 # Endurance Nutrition — Science Reference
 
-> Personal protocols and athlete-specific plans live in wiki/nutrition.md.
+> Personal protocols and athlete-specific plans live in the personal repo's `profile/nutrition.md`.
 > Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al. 2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al. 2020 (PMID 33428210), Guest et al. 2021 (caffeine, PMID 33388079), Diaz-Lara et al. 2025 (train-low, PMID 39352665), Caravaca et al. 2023 (PMID 37449467), Bourdas et al. 2021 (PMID 34959776).
 
 ---

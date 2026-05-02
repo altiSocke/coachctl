@@ -1,6 +1,6 @@
 # Tour de l'Uetliberg (TdU)
 
-> Personal race strategy and results live in wiki/personal/&lt;profile&gt;/goals.md
+> Personal race strategy and results live in the events table (`propose_race_*` / `apply_race_*`).
 
 ---
 

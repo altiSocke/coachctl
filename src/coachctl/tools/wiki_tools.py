@@ -84,7 +84,7 @@ def register(mcp) -> None:  # noqa: ANN001
     @mcp.tool()
     def read_general_wiki(topic: str = "") -> str:
         """
-        Read from the general fitness knowledge wiki (wiki/general/).
+        Read from the general fitness knowledge wiki (wiki/).
         The general wiki is LLM-maintained — update it via
         propose_general_wiki_update / apply_general_wiki_update when new
         raw/ sources arrive or content needs revision.
@@ -97,12 +97,12 @@ def register(mcp) -> None:  # noqa: ANN001
         """
         wiki_dir = paths.general_wiki_dir()
         if not wiki_dir.exists():
-            return "wiki/general/ directory not found."
+            return "wiki/ directory not found."
 
         if not topic:
             files = sorted(wiki_dir.rglob("*.md"))
             if not files:
-                return "No knowledge files found in wiki/general/."
+                return "No knowledge files found in wiki/."
             lines = ["Available general wiki files:\n"]
             for f in files:
                 lines.append(f"  - {f.relative_to(wiki_dir)}")
@@ -131,14 +131,14 @@ def register(mcp) -> None:  # noqa: ANN001
         Use this when:
         - A new raw/ source has been added and general wiki needs updating.
         - Existing general wiki content is outdated or incorrect.
-        - A new topic page needs to be created in wiki/general/.
+        - A new topic page needs to be created in wiki/.
 
         IMPORTANT: Only write content that applies to any athlete (physiology,
         training theory, course facts, nutrition science). Athlete-specific data
         (personal results, personal targets, personal incidents) belongs in
         wiki/personal/ — use propose_wiki_update instead.
 
-        topic: relative path within wiki/general/, e.g. 'nutrition',
+        topic: relative path within wiki/, e.g. 'nutrition',
                'races/alpenbrevet', 'recovery/percussion_massage'.
                A new file will be created if it doesn't exist.
         proposed_content: the full new content for the file (Markdown).
@@ -150,7 +150,7 @@ def register(mcp) -> None:  # noqa: ANN001
             return f"Error: {e}"
 
         return (
-            f"**Proposed update to wiki/general/{topic}**\n"
+            f"**Proposed update to wiki/{topic}**\n"
             f"Reason: {reason}\n\n"
             f"```diff\n{diff_text}\n```\n\n"
             "Reply 'yes' to apply, or suggest changes."
@@ -161,9 +161,9 @@ def register(mcp) -> None:  # noqa: ANN001
         """
         Write a confirmed update to a general wiki file.
         Only call this after the proposed diff has been reviewed and approved.
-        Logs the change to wiki/general/log.md.
+        Logs the change to wiki/log.md.
 
-        topic: relative path within wiki/general/, e.g. 'nutrition',
+        topic: relative path within wiki/, e.g. 'nutrition',
                'races/alpenbrevet'. Parent directories are created automatically.
         content: the full new content for the file (Markdown).
         """
@@ -173,4 +173,4 @@ def register(mcp) -> None:  # noqa: ANN001
             return f"Error: {e}"
 
         append_general_log(f"apply_general_wiki_update: {topic}")
-        return f"General wiki updated: wiki/general/{p.relative_to(paths.general_wiki_dir())}"
+        return f"General wiki updated: wiki/{p.relative_to(paths.general_wiki_dir())}"

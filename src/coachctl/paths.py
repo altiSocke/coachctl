@@ -4,7 +4,7 @@ Central path resolver — splits public code paths from private personal data.
 Two roots:
 
 * ``code_root()``      — the public coachctl checkout (this package's repo).
-                          Hosts general knowledge: ``wiki/general/``, ``raw/general/``,
+                          Hosts general knowledge: ``wiki/``, ``raw/``,
                           dashboard UI source, code templates.
 
 * ``data_root()``      — the private per-athlete data repo (e.g.
@@ -177,13 +177,13 @@ def raw_personal_dir() -> Path:
 
 
 def general_wiki_dir() -> Path:
-    """``<CODE_ROOT>/wiki/general/`` — LLM-maintained, athlete-agnostic."""
-    return code_root() / "wiki" / "general"
+    """``<CODE_ROOT>/wiki/`` — LLM-maintained, athlete-agnostic knowledge."""
+    return code_root() / "wiki"
 
 
 def raw_general_dir() -> Path:
-    """``<CODE_ROOT>/raw/general/`` — public source documents."""
-    return code_root() / "raw" / "general"
+    """``<CODE_ROOT>/raw/`` — public source documents."""
+    return code_root() / "raw"
 
 
 # ── Bootstrap ────────────────────────────────────────────────────────────────

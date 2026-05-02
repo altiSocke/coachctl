@@ -1,6 +1,6 @@
 # Alpenbrevet — Race Reference
 
-> Personal results, targets, and race strategy live in `wiki/personal/<profile>/goals.md`.
+> Personal results, targets, and race strategy live in the events table (`propose_race_*` / `apply_race_*`).
 
 ---
 

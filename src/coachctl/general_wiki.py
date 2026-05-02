@@ -1,7 +1,7 @@
 """
 General Wiki — LLM-maintained, athlete-agnostic fitness knowledge layer.
 
-Thin wrapper around `wiki_base` bound to `wiki/general/`. All paths are
+Thin wrapper around `wiki_base` bound to `wiki/`. All paths are
 validated to stay inside that directory; `raw/` is never touched.
 """
 
@@ -20,7 +20,7 @@ def _base() -> Path:
 
 
 def list_files() -> list[str]:
-    """Return sorted list of relative paths for all .md files in wiki/general/."""
+    """Return sorted list of relative paths for all .md files in wiki/."""
     base = _base()
     if not base.exists():
         return []
@@ -28,7 +28,7 @@ def list_files() -> list[str]:
 
 
 def resolve_topic(topic: str) -> list[Path]:
-    """Resolve a fuzzy topic string to one or more files in wiki/general/."""
+    """Resolve a fuzzy topic string to one or more files in wiki/."""
     return wiki_base.resolve_topic(_base(), topic)
 
 
@@ -51,7 +51,7 @@ def write_general_section(rel_path: str, content: str) -> Path:
 
 
 def append_general_log(entry: str) -> Path:
-    """Append a timestamped entry to wiki/general/log.md."""
+    """Append a timestamped entry to wiki/log.md."""
     return wiki_base.append_log(
         _base() / "log.md",
         header="General Wiki Log",

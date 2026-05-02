@@ -21,7 +21,7 @@ anything about the private repo.
 
 ```
  ┌──────────────── coachctl  (public)  ────────────────┐
- │  raw/general/        wiki/general/    src/...       │
+ │  raw/                 wiki/           src/...       │
  │  (sources)           (synthesis)      (code + UI)   │
  └──────────────┬──────────────────────────────┬───────┘
                 │ read at session time         │ pip install
@@ -72,9 +72,9 @@ src/coachctl/         ← Python package
     __main__.py            — `strava-web` CLI entry (local dev)
   tools/                   — MCP @tool registrations (one module per domain)
 
-raw/general/              ← Layer 1 — public, immutable source documents
+raw/                      ← Layer 1 — public, immutable source documents
   races/...
-wiki/general/              ← Layer 2a — LLM-maintained, athlete-agnostic knowledge
+wiki/                      ← Layer 2a — LLM-maintained, athlete-agnostic knowledge
 
 config/athlete.yaml.template
 .opencode/agents/coach.md  ← coach agent operational workflows
@@ -115,7 +115,7 @@ The knowledge model has three layers with strictly different write rules.
 
 Source material as it arrived. Split across the two repos:
 
-* `<code_root>/raw/general/` — public sources: peer-reviewed papers, race-website
+* `<code_root>/raw/` — public sources: peer-reviewed papers, race-website
   captures, public data exports.
 * `<data_root>/raw/` — personal sources: your GPX files, race photos, scans,
   training-camp notes.
@@ -130,9 +130,9 @@ Source material as it arrived. Split across the two repos:
 > If the LLM produces a synthesis (paper catalogue, course summary, distilled
 > protocol), that synthesis lives in a `wiki/` layer — never in `raw/`.
 
-### Layer 2a — `wiki/general/` (LLM-maintained, athlete-agnostic, public)
+### Layer 2a — `wiki/` (LLM-maintained, athlete-agnostic, public)
 
-Lives in the public code repo. Synthesised from `raw/general/` and from coaching
+Lives in the public code repo. Synthesised from `raw/` and from coaching
 expertise. Useful to **any** athlete using the system.
 
 - **Write rule:** content here must be useful to *any* athlete using the system.
@@ -144,15 +144,15 @@ expertise. Useful to **any** athlete using the system.
   2. Draft updated content incorporating the new source.
   3. `propose_general_wiki_update(topic, content, reason)` — present diff.
   4. Athlete approves → `apply_general_wiki_update(topic, content)`.
-- Auto-logged to `wiki/general/log.md`.
-- Pages may include a `## Sources` section listing the `raw/general/` paths they
+- Auto-logged to `wiki/log.md`.
+- Pages may include a `## Sources` section listing the `raw/` paths they
   synthesise.
 
 #### Subdirectories
 
-- `wiki/general/sources/` — paper catalogues (abstracts + citations).
-- `wiki/general/races/` — course facts, profiles, logistics, athlete-agnostic.
-- `wiki/general/recovery/` — protocol-level guides.
+- `wiki/sources/` — paper catalogues (abstracts + citations).
+- `wiki/races/` — course facts, profiles, logistics, athlete-agnostic.
+- `wiki/recovery/` — protocol-level guides.
 
 ### Layer 2b — `<data_root>/profile/` (LLM-maintained, this athlete, private)
 
@@ -208,7 +208,7 @@ strategy → personal.
 
 #### Cheat sheet
 
-| Goes to **public** `wiki/general/` | Goes to **private** `profile/` |
+| Goes to **public** `wiki/` | Goes to **private** `profile/` |
 |---|---|
 | Course profile facts, climb gradients, cutoffs | "I cramped on Furka in 2024" |
 | Polarized training theory, periodization models | My Z2 HR cap is 148 |

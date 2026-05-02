@@ -1,11 +1,11 @@
 # SOLA-Stafette
 
-**Source:** [asvz.ch/event/643-strecken](https://asvz.ch/event/643-strecken) | Raw: `raw/general/races/sola_strecken_asvz.md`
+**Source:** [asvz.ch/event/643-strecken](https://asvz.ch/event/643-strecken) | Raw: `raw/races/sola_strecken_asvz.md`
 **Race date:** May 2026 (annually, 3rd Saturday of May)
 **Overall:** 113km / 2600hm / 14 legs / Zürich area
 **Full map & GPX:** https://trackmaxx.ch/maps/?m=ec368d93-aff4-4a7e-b0a5-24b7f9683a32&view=teilnehmende
 
-> Personal leg assignment, target time, race strategy, and logistics checklist live in `wiki/personal/<profile>/goals.md`.
+> Personal leg assignment, target time, race strategy, and logistics checklist live in the events table (`propose_race_*` / `apply_race_*`).
 
 ---
 

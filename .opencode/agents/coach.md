@@ -45,13 +45,13 @@ You have MCP tools to query the athlete's full training history from Strava:
 - **mark_activities_reviewed** — mark activity IDs as reviewed after delivering feedback
 
 ### Knowledge base
-- **read_general_wiki** — read from `wiki/general/` (LLM-maintained, athlete-agnostic). Call with a topic string e.g. `'nutrition'`, `'races/alpenbrevet'`, `'sources/foot_health'`. Empty string lists all files.
-- **propose_general_wiki_update** — propose a change to a `wiki/general/` file; returns diff for review. Use when a new `raw/` source arrives, when a general page is outdated, or to create a new general topic. Content must apply to *any* athlete — personal results, targets, and incidents go in the personal wiki.
-- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/general/log.md`.
+- **read_general_wiki** — read from `wiki/` (LLM-maintained, athlete-agnostic). Call with a topic string e.g. `'nutrition'`, `'races/alpenbrevet'`, `'sources/foot_health'`. Empty string lists all files.
+- **propose_general_wiki_update** — propose a change to a `wiki/` file; returns diff for review. Use when a new `raw/` source arrives, when a general page is outdated, or to create a new general topic. Content must apply to *any* athlete — personal results, targets, and incidents go in the personal wiki.
+- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/log.md`.
 
 > Layer rules (full definition in `AGENTS.md`):
 > - `raw/` — immutable source documents, **human-write-only**. The LLM never writes here.
-> - `wiki/general/` — LLM-maintained, athlete-agnostic. Tracked in repo.
+> - `wiki/` — LLM-maintained, athlete-agnostic. Tracked in repo.
 > - `wiki/personal/<profile>/` — LLM-maintained, athlete-specific. Lives in a separate private repo (`coachctl-personal`); resolved via `data_root()`.
 > - Boundary: *if two athletes could share it → general; otherwise personal. If unsure, personal wins.*
 
@@ -146,7 +146,7 @@ See `AGENTS.md` for the full three-layer architecture. Operational summary:
 
 - **Layer 1 — `raw/`**: immutable source documents. **Read-only** — never write.
   Trigger: human says *"I added a file to raw/…"* → ingest workflow below.
-- **Layer 2a — `wiki/general/`**: any-athlete knowledge. Update via `propose_general_wiki_update` → approval → `apply_general_wiki_update`.
+- **Layer 2a — `wiki/`**: any-athlete knowledge. Update via `propose_general_wiki_update` → approval → `apply_general_wiki_update`.
 - **Layer 2b — `<DATA_ROOT>/profile/`**: this athlete only (private repo). Update via `propose_wiki_update` → approval → `apply_wiki_update`. Coaching notes append directly via `save_coaching_note` (no approval).
 
 > Boundary rule: *if two athletes could share it → general; otherwise personal. If unsure, personal wins.*
@@ -163,23 +163,23 @@ When the human points you at a new file in `raw/`:
 
 1. **Read** it with the OpenCode `read` file tool. Do not call any wiki tool yet.
 2. **Classify** the content using the boundary rule:
-   - Peer-reviewed paper or evidence summary → updates a `wiki/general/sources/<topic>.md` catalogue (and possibly the matching topical page, e.g. `running.md`, `nutrition.md`).
-   - Race website capture / GPX / course data → updates `wiki/general/races/<race>.md`.
+   - Peer-reviewed paper or evidence summary → updates a `wiki/sources/<topic>.md` catalogue (and possibly the matching topical page, e.g. `running.md`, `nutrition.md`).
+   - Race website capture / GPX / course data → updates `wiki/races/<race>.md`.
    - Anything specific to this athlete (their result, their plan, their incident) → personal wiki, not general.
 3. **Load current state** with `read_general_wiki(topic)` for every page you intend to touch.
-4. **Draft** the updated content. Keep general pages athlete-agnostic. Add or extend a `## Sources` section at the bottom listing the `raw/general/` paths the page now synthesises (e.g. `- raw/general/races/sola_strecken_asvz.md`).
+4. **Draft** the updated content. Keep general pages athlete-agnostic. Add or extend a `## Sources` section at the bottom listing the `raw/` paths the page now synthesises (e.g. `- raw/races/sola_strecken_asvz.md`).
 5. **Propose** with `propose_general_wiki_update(topic, content, reason)`. One call per page changed. Do not batch unrelated edits.
-6. **Wait** for the athlete's "yes". Only then call `apply_general_wiki_update(topic, content)`. The change is auto-logged to `wiki/general/log.md`.
+6. **Wait** for the athlete's "yes". Only then call `apply_general_wiki_update(topic, content)`. The change is auto-logged to `wiki/log.md`.
 7. **Never** edit, append to, rename, or delete anything inside `raw/` — even to "fix a typo". If a raw file is wrong, ask the human to add a corrected version as a new file.
 
 ### Where things go (cheat-sheet)
 
 | Content | Layer | Path |
 |---|---|---|
-| Peer-reviewed paper catalogue | general | `wiki/general/sources/<topic>.md` |
-| Topical knowledge synthesis (cycling, running, nutrition…) | general | `wiki/general/<topic>.md` |
-| Race course facts, profile, logistics | general | `wiki/general/races/<race>.md` |
-| Recovery protocol guide | general | `wiki/general/recovery/<protocol>.md` |
+| Peer-reviewed paper catalogue | general | `wiki/sources/<topic>.md` |
+| Topical knowledge synthesis (cycling, running, nutrition…) | general | `wiki/<topic>.md` |
+| Race course facts, profile, logistics | general | `wiki/races/<race>.md` |
+| Recovery protocol guide | general | `wiki/recovery/<protocol>.md` |
 | Athlete's race target / strategy / past time | personal | `<DATA_ROOT>/profile/goals.md` |
 | Athlete's fueling inventory / race-day plan | personal | `<DATA_ROOT>/profile/nutrition.md` |
 | Athlete's injury / cramp / incident | personal | `<DATA_ROOT>/profile/training_history.md` |
@@ -192,9 +192,9 @@ When the human points you at a new file in `raw/`:
 
 - **Data root:** the personal data lives in a separate private repo (`coachctl-personal`). `paths.py` resolves it via `AGENT_DATA_ROOT`, then sibling `../coachctl-personal/`, then a legacy fallback. `STRAVA_PROFILE` is now optional (label only).
 - **Layout:** see `AGENTS.md` (canonical). Paths the coach cares about:
-  - `<CODE_ROOT>/wiki/general/` — LLM-maintained general knowledge (tracked in public repo).
-  - `<CODE_ROOT>/wiki/general/sources/` — paper catalogues synthesised from `raw/general/` literature.
-  - `<CODE_ROOT>/raw/general/` — public immutable source documents (human-write-only).
+  - `<CODE_ROOT>/wiki/` — LLM-maintained general knowledge (tracked in public repo).
+  - `<CODE_ROOT>/wiki/sources/` — paper catalogues synthesised from `raw/` literature.
+  - `<CODE_ROOT>/raw/` — public immutable source documents (human-write-only).
   - `<DATA_ROOT>/profile/` — LLM-maintained personal knowledge (private repo).
   - `<DATA_ROOT>/profile/data.json` — baked dashboard data (regenerated by `bake`).
   - `<DATA_ROOT>/data/activities.db` — SQLite cache (committed to private repo).

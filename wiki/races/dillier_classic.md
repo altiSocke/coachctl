@@ -1,6 +1,6 @@
 # Dillier Classic — Race Reference
 
-> Personal results, race strategy, power card, and cramp prevention notes live in `wiki/personal/<profile>/goals.md` and `wiki/personal/<profile>/training_history.md`.
+> Personal results, race strategy, power card, and cramp prevention notes live in the events table (`propose_race_*` / `apply_race_*`).
 
 ---
 
