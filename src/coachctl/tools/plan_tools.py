@@ -3,12 +3,89 @@
 from __future__ import annotations
 
 import json
+import logging
 from datetime import date, timedelta
 from pathlib import Path
 
 from .. import paths
 from ..db import get_conn
 from ..wiki import build_plans_index_content, diff_section
+
+logger = logging.getLogger(__name__)
+
+
+def _insert_plan_and_events(
+    plan_path: Path, slug: str, event_name: str, event_date: str
+) -> int | None:
+    """Parse a saved plan, insert a plans row, and upsert training events for each dated session."""
+    try:
+        from ..plan_parser import parse_plan_file
+        from ..events import Event, KIND_TRAINING, STATUS_PLANNED, upsert_event
+    except Exception:
+        return None
+
+    try:
+        plan = parse_plan_file(plan_path)
+    except Exception as e:
+        logger.warning("Could not parse plan for events insertion: %s", e)
+        return None
+
+    # Insert/update plans table row
+    plan_slug = f"{plan_path.stem}"
+    now = date.today().isoformat()
+    with get_conn() as conn:
+        # Deactivate other plans
+        conn.execute("UPDATE plans SET active = 0 WHERE active = 1")
+        # Find start/end dates from sessions
+        dates = sorted(s.date for w in plan.weeks for s in w.sessions if s.date)
+        start_date = dates[0] if dates else now
+        end_date = dates[-1] if dates else None
+        conn.execute(
+            """
+            INSERT INTO plans (slug, title, start_date, end_date, active, overview_md, source_md_path)
+            VALUES (?, ?, ?, ?, 1, ?, ?)
+            ON CONFLICT(slug) DO UPDATE SET
+                title = excluded.title, start_date = excluded.start_date,
+                end_date = excluded.end_date, active = 1,
+                overview_md = excluded.overview_md, source_md_path = excluded.source_md_path
+            """,
+            (plan_slug, plan.title or event_name, start_date, end_date, plan.title, plan_path.name),
+        )
+        row = conn.execute("SELECT id FROM plans WHERE slug = ?", (plan_slug,)).fetchone()
+        plan_id = row["id"] if row else None
+
+    if not plan_id:
+        return None
+
+    # Insert training events for each dated session
+    inserted = 0
+    for w in plan.weeks:
+        for s in w.sessions:
+            if not s.date:
+                continue
+            # Skip rest days
+            if "rest" in (s.name or "").lower():
+                continue
+            ev_slug = f"plan-{plan_slug}-{s.date}"
+            ev = Event(
+                slug=ev_slug,
+                kind=KIND_TRAINING,
+                date=s.date,
+                name=s.name,
+                summary=s.details[:120] if s.details else None,
+                status=STATUS_PLANNED,
+                payload={
+                    "details": s.details,
+                    "week_number": w.number,
+                    "phase": w.phase,
+                },
+                plan_id=plan_id,
+            )
+            upsert_event(ev)
+            inserted += 1
+
+    logger.info("Plan '%s': inserted %d training events (plan_id=%d)", plan_slug, inserted, plan_id)
+    return plan_id
 
 
 def register(mcp) -> None:  # noqa: ANN001
@@ -17,6 +94,8 @@ def register(mcp) -> None:  # noqa: ANN001
     def save_plan(plan_markdown: str, event_name: str = "", event_date: str = "") -> str:
         """
         Persist a generated training plan as a Markdown file in plans/.
+        Also inserts a row in the ``plans`` table and creates ``training``
+        events in the events table for each dated session.
         plan_markdown: the full plan text (must be non-empty)
         event_name: optional target event
         event_date: optional event date (YYYY-MM-DD)
@@ -32,10 +111,15 @@ def register(mcp) -> None:  # noqa: ANN001
         plan_path = paths.plans_dir() / filename
         plan_path.write_text(plan_markdown, encoding="utf-8")
 
+        # Parse plan and insert into events table
+        plan_row_id = _insert_plan_and_events(plan_path, slug, event_name, event_date)
+
         new_index = build_plans_index_content()
         index_diff = diff_section("plans_index.md", new_index)
 
         result = f"Plan saved: {plan_path.name}"
+        if plan_row_id:
+            result += f" (plan_id={plan_row_id}, sessions inserted into events table)"
         if index_diff != "(no changes)":
             result += (
                 "\n\nProposed update to plans_index.md:\n"
@@ -79,6 +163,11 @@ def register(mcp) -> None:  # noqa: ANN001
     ) -> str:
         """
         Persist a schedule change for a specific plan session.
+
+        .. deprecated::
+            Prefer ``update_event(slug, ...)`` from event_tools for new changes.
+            This tool remains functional during the transition period but writes
+            to the legacy ``schedule_overrides`` table only.
 
         Stores the override in the schedule_overrides DB table. The original plan
         Markdown file is never modified — overrides are applied at bake time,
