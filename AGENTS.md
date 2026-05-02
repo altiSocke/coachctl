@@ -60,7 +60,6 @@ src/coachctl/         ← Python package
   metrics.py               — TSS, CTL/ATL/TSB, NGP, zone calculations
   plan_parser.py           — Markdown plan → dataclasses
   site.py                  — bake data.json
-  calendar.py              — Google Calendar push
   new_profile.py           — scaffolds a new coachctl-personal repo
   update.py                — sync + bake + git push (in personal repo)
   wiki_base.py             — shared diff/write/log/safe-resolve helpers
@@ -251,7 +250,7 @@ A coaching session that updates both layers will commit to two repos:
   The projection layer (`events.py`) merges events-table rows with activities
   and legacy sources (plan markdown, schedule_overrides, untracked_activities)
   during migration. Races block training/untracked on the same date. Consumers
-  (`bake`, `calendar_sync`, MCP tools) read from `get_calendar()` — never from
+  (`bake`, MCP tools) read from `get_calendar()` — never from
   narrative wiki text.
 - **Race cards as structured payload.** Each race event has a `payload_json`
   column holding all sections (pacing, climbs, nutrition, kit, logistics,

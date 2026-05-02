@@ -3,7 +3,6 @@ Calendar projection layer — the single source of truth for date-anchored items
 
 Every consumer that needs to know "what's on date X" reads from here:
   * bake / dashboard
-  * calendar_sync (Google Calendar push)
   * coach agent (via `get_calendar_window` MCP tool)
 
 Sources merged (in order of precedence on date conflict):

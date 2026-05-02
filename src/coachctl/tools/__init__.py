@@ -8,7 +8,6 @@ registers its tools on the shared FastMCP instance.
 from . import (
     activity_tools,
     athlete_tools,
-    calendar_tools,
     env_tools,
     event_tools,
     feedback_tools,
@@ -34,7 +33,6 @@ _MODULES = [
     untracked_tools,
     readiness_tools,
     site_tools,
-    calendar_tools,
 ]
 
 

@@ -115,19 +115,6 @@ def init_db():
                 checked_at      TEXT DEFAULT (datetime('now'))
             );
 
-            CREATE TABLE IF NOT EXISTS calendar_events (
-                id              INTEGER PRIMARY KEY AUTOINCREMENT,
-                activity_date   TEXT NOT NULL,             -- YYYY-MM-DD
-                session_title   TEXT NOT NULL,
-                session_hash    TEXT,                      -- hash of date+title+details for diffing
-                google_event_id TEXT,                      -- Google Calendar event ID
-                calendar_id     TEXT,                      -- Google Calendar ID
-                pushed_at       TEXT DEFAULT (datetime('now'))
-            );
-
-            CREATE INDEX IF NOT EXISTS idx_calendar_events_date
-                ON calendar_events(activity_date);
-
             CREATE TABLE IF NOT EXISTS activity_streams (
                 activity_id     INTEGER PRIMARY KEY REFERENCES activities(id),
                 streams_json    TEXT NOT NULL,          -- cached Strava streams response
