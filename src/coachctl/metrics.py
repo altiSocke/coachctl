@@ -133,7 +133,11 @@ def compute_activity_metrics(activity: dict, streams: dict | None = None) -> dic
                     rtss = (moving_time * ngp_ms * ri) / (rftp_ms * 3600) * 100
                     result["ngp"] = round(ngp_ms, 4)
                     result["rtss"] = round(rtss, 1)
-                    if not result["tss"]:
+                    # For road/track runs: pace-based rTSS is primary (Minetti accurate on flat)
+                    # For trail runs: defer to rtss_power if available (computed below);
+                    # fall back to rtss if power not available.
+                    is_trail = "trail" in sport
+                    if not result["tss"] and not is_trail:
                         result["tss"] = round(rtss, 1)
 
     # ── Running: power-based rTSS (parallel metric, Coggan formula) ──────────
@@ -145,12 +149,19 @@ def compute_activity_metrics(activity: dict, streams: dict | None = None) -> dic
     if "run" in sport and moving_time > 0:
         rftp_watts = athlete.get("rftp_watts")
         # Prefer weighted_average_watts (NP proxy) over average_watts
-        run_np = activity.get("weighted_average_watts") or activity.get("weighted_avg_watts") or activity.get("average_watts")
+        run_np = (
+            activity.get("weighted_average_watts")
+            or activity.get("weighted_avg_watts")
+            or activity.get("average_watts")
+        )
         if rftp_watts and rftp_watts > 0 and run_np and run_np > 0:
             run_np = float(run_np)
             run_if = run_np / rftp_watts
             rtss_power = (moving_time * run_np * run_if) / (rftp_watts * 3600) * 100
             result["rtss_power"] = round(rtss_power, 1)
+            # Trail runs: use power-based TSS as primary (more accurate on variable terrain)
+            if "trail" in sport and not result["tss"]:
+                result["tss"] = round(rtss_power, 1)
 
     # ── HR-based TSS (fallback for any sport) ────────────────────────────────
     avg_hr = activity.get("average_heartrate")
@@ -168,6 +179,14 @@ def compute_activity_metrics(activity: dict, streams: dict | None = None) -> dic
             # Use hrTSS if no power/pace TSS computed
             if not result["tss"]:
                 result["tss"] = round(hrss, 1)
+
+    # Trail run fallback: if power unavailable, use pace-based rtss
+    if (
+        "trail" in (activity.get("sport_type") or "").lower()
+        and not result["tss"]
+        and result["rtss"]
+    ):
+        result["tss"] = result["rtss"]
 
     return result
 

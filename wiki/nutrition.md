@@ -152,6 +152,77 @@ Athletes new to 80–90g/hr should ramp up over 4–6 weeks, starting at 40–50
 | Sucrose (table sugar) | Both (splits 50/50) | ~60g/hr | Cheap, effective, 1:1 ratio |
 | Sucrose + maltodextrin mix | Both | ~80–90g/hr | Best DIY option for high absorption |
 
+### Gel ratio selection guide
+
+Gel carbohydrate ratios (glucose/maltodextrin : fructose) affect **gut tolerance**, not just absorption rate. The right ratio depends on intake volume and gut stress conditions — not on absorption capacity alone.
+
+| Ratio | Fructose content | Best used when | Avoid when |
+|---|---|---|---|
+| **2:1** | Low (~33%) | Early in a race; gut nervous or cold; intake <60g/hr; GI history | Targeting >80g/hr absorption (wastes transporter capacity) |
+| **1:0.8** | Moderate (~44%) | Main race fuel at 60–90g/hr; gut is warm and trained | First hour of a race; GI issues present |
+| **1:1** (sucrose) | High (50%) | DIY mixes, cheap and effective; gut well-trained | Sensitive athletes at high intake rates |
+
+**The key insight:** at intake rates below ~60g/hr, any ratio works — GLUT5 is not saturated and fructose tolerance isn't tested. The 2:1 advantage is **gut insurance**, not performance gain. It reduces the risk of GLUT5 saturation when:
+1. Total intake is high (>60g/hr)
+2. Gut blood flow is reduced (high intensity)
+3. Gut is cold or stressed (early race, nervousness, heat)
+4. The athlete has a history of GI distress
+
+**At low intake rates (<60g/hr) or in easy training sessions, gel ratio is practically irrelevant.** Use whatever you have open.
+
+### Soft drinks as race fuel
+
+Soft drinks (Coke, Red Bull, alcohol-free beer) are **palatability and caffeine tools**, not gel replacements. Carb density is low relative to volume — gels always win on fuel efficiency.
+
+| Drink | Carbs/330ml | Caffeine | Best race use | Limitation |
+|---|---|---|---|---|
+| Coca-Cola (flat) | ~27g | ~34mg | Late-race palatability fix; feed station when gels are intolerable | Carbonation slows gastric emptying; gas at high intensity. Shake/open early to flatten. |
+| Red Bull (330ml) | ~35g | ~80mg | Mid-race caffeine boost at a feed stop | Carbonation; low carb density; taurine adds nothing evidence-based |
+| Alcohol-free beer | ~8g | 0 | Post-race recovery drink | Negligible fuel value during exercise |
+
+**Flat Coke** is the most useful of the three mid-race: the caffeine + sucrose + palatability combination works well when flavour fatigue has set in and the athlete can no longer face gels. Cold Coke on a descent after a long climb is a classic ultra-endurance tool.
+
+**Alcohol-free beer** (e.g. Erdinger Alkoholfrei): isotonic, contains polyphenols and B-vitamins, hydrating. Evidence supports it as a recovery drink. During exercise: not useful for fuelling.
+
+**Carbonation rule:** never drink carbonated drinks on a climb or at high intensity — the gas cannot escape the stomach under GI stress and will cause bloating and nausea. Either flatten the drink first or save it for recovery segments.
+
+---
+
+## Mid-Race GI Distress — Rescue Protocol
+
+GI problems are common in endurance racing. The primary lever is almost always **intensity** — gut blood flow recovers as effort drops. Address the cause, not just the symptom.
+
+### Nausea
+
+1. Stop all gels and food immediately
+2. Water only — small sips, do not chug
+3. Reduce intensity — splanchnic blood flow recovers within 5–10 min at lower effort
+4. After 15 min settled: introduce electrolytes (sodium helps settle the gut)
+5. If available at a feed station: small sips of flat Coke — the sugar + carbonation-free liquid can help settle the stomach and restore palatability
+6. **Never take a gel when nauseous** — it will make it worse. Wait until fully settled, then restart at half dose with a 2:1 ratio gel
+
+### Bloating / gas
+
+- Usually caused by excess fructose (GLUT5 saturation) or carbonated drinks at high intensity
+- Back off all intake for 20–30 min, water only
+- Reduce intensity to restore gut blood flow
+- If on a climb: hold on — bloating resolves faster on the descent when intensity drops
+- When restarting: switch to 2:1 ratio gel, half dose (~20g), longer interval (every 40 min instead of 25)
+
+### Flavour fatigue / can't face another gel
+
+- Switch format entirely: salty real food (rice cake, pretzel, banana, boiled potato with salt)
+- Plain water + solid food at next feed station
+- Flat Coke works well — different flavour profile + caffeine + sucrose resets the palate
+- Resume gels only after stomach has settled with real food
+
+### General rules
+
+1. **Reduce before stopping** — dropping from 80g/hr to zero risks a bonk 20 min later. Step down to 30–40g/hr while gut recovers, then rebuild.
+2. **Intensity is the primary lever** — most GI issues resolve with 10–15% effort reduction for 10 min. Fix intensity first.
+3. **Heat multiplies GI risk** — hot conditions double distress likelihood. In heat: switch to liquid carbs, reduce gel frequency, prioritise electrolytes.
+4. **Do not ignore early signals** — mild nausea caught early resolves in 10 min. Ignored nausea becomes vomiting, which ends races.
+
 ---
 
 ## Electrolytes
