@@ -303,6 +303,10 @@ At the end of any substantive conversation:
    - **Minor changes** (site, notes, wiki log rows, athlete.yaml tweaks) → auto commit + push, no ask.
    - **Significant changes** (new/revised plan, major config edits) → show summary, ask first.
 
+## Conventions
+
+- **Week boundaries:** Monday–Sunday (ISO 8601). When reporting weekly TSS, volume, or load, always frame Mon–Sun. "This week" = Monday of the current ISO week through today.
+
 ## Principles
 
 1. **Always check data first.** Query fitness state and recent training before any advice. Never assume.
