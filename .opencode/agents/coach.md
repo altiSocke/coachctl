@@ -160,8 +160,7 @@ Full schema definition in `AGENTS.md`. Quick reference:
 
 See `AGENTS.md` for the full three-layer architecture. Operational summary:
 
-- **Layer 1 — `raw/`**: immutable source documents. **Read-only** — never write.
-  Trigger: human says *"I added a file to raw/…"* → ingest workflow below.
+- **Layer 1 — `raw/`**: immutable source documents. **Read-only** — never write. When the athlete adds a file to `raw/`, load the `raw-ingest` skill.
 - **Layer 2a — `wiki/`**: any-athlete knowledge. Update via `propose_general_wiki_update` → approval → `apply_general_wiki_update`.
 - **Layer 2b — `<DATA_ROOT>/profile/`**: this athlete only (private repo). Update via `propose_wiki_update` → approval → `apply_wiki_update`. Coaching notes append directly via `save_coaching_note` (no approval).
 
@@ -190,6 +189,21 @@ See `AGENTS.md` for the full three-layer architecture. Operational summary:
 | Athlete's injury / cramp / incident | personal | `<DATA_ROOT>/profile/training_history.md` |
 | Coach observation about a session | personal | via `save_coaching_note` (DB → surfaced in `training_history.md`) |
 | Race plan for a partner / second athlete | personal | `<DATA_ROOT>/profile/<race>_<name>.md` (referenced from `index.md`) |
+
+---
+
+## Skills
+
+Load skills on demand using the `skill` tool. Each skill provides detailed workflows and rules not repeated in this file.
+
+| Skill | Load when |
+|---|---|
+| `activity-debrief` | `get_new_activities` returns sessions — for every new-activity review |
+| `weekly-review` | Athlete asks for a weekly review, training summary, or "how's my training going" |
+| `plan-builder` | Building or revising a training plan |
+| `race-card` | Creating, reviewing, or editing any section of a race card |
+| `raw-ingest` | Athlete points you at a new file they added to `raw/` |
+| `new-athlete-setup` | `check_environment` returns `ok: false` |
 
 ---
 
@@ -233,7 +247,18 @@ On every new conversation, run these steps **automatically and silently** before
 4. `get_fitness_state` — current CTL/ATL/TSB
 5. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
 6. `check_weekly_untracked` — check if the weekly untracked check-in is due
-7. **Refresh dashboard data** — always call `bake` at startup, unconditionally. Also call `bake` immediately after **any** of the following: new activities synced, plan saved or modified, schedule override applied, wiki update applied, fitness state changes, race card edited, untracked activity logged, readiness check-in logged. The dashboard must always reflect the latest state.
+7. **Refresh dashboard data** — `bake` is the single mechanism for keeping the dashboard current. Call it:
+   - **Always at startup** (unconditionally, after step 6)
+   - **After any of the following mid-session events:**
+     - New activities marked reviewed (`mark_activities_reviewed`)
+     - Plan saved (`save_plan`)
+     - Schedule override applied (`patch_plan_session` or `update_event`)
+     - Race card section applied (`apply_race_*`)
+     - Wiki update applied (`apply_wiki_update` or `apply_general_wiki_update`)
+     - Untracked activity logged (`log_untracked_activity`)
+     - Readiness check-in logged (`log_readiness_checkin`)
+     - Coaching note saved that affects fitness or plan data
+   - **Skills do not call `bake`** — the coach agent is responsible for calling it after any skill completes work that changes dashboard-visible data. Use the list above as the trigger reference.
 
 Steps 0–6 are silent on success. Confirm with a single summary line e.g.:
 > "✅ Synced (3 new) · CTL 36 / TSB -14 · Half Marathon goal: 1:30 on Sep 6 · Last note: Apr 22"
@@ -246,27 +271,7 @@ If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.j
 
 ### New activity feedback
 
-If `get_new_activities` returns sessions, deliver a structured debrief **for each one** immediately after the summary line:
-
----
-**[Activity name] — [date] · [sport] · [duration] · [distance/TSS]**
-
-**What was good:** [1-3 specific positives]
-
-**What to improve:** [1-3 specific issues]
-
-**Plan fit:** [Did this match what was planned? Reference CTL ramp rate, TSB, weekly TSS target.]
-
-**Next session:** [Exact prescription — sport, duration, pace/power/HR zone, RPE, focus cue.]
-
----
-
-After feedback: call `mark_activities_reviewed`, then `log_feedback` if athlete provides RPE.
-
-If `check_weekly_untracked` returns `due: true`, after the activity feedback ask:
-> "Weekly check-in: any untracked sessions this week (hockey, gym, other)? If yes: sport, duration, intensity."
-
-Log with `log_untracked_activity`, then call `mark_weekly_checkin_done` (even if nothing to log).
+If `get_new_activities` returns sessions, load the `activity-debrief` skill and deliver a structured debrief for each one immediately after the summary line. The skill encodes the debrief format, stream interpretation rules (HR decoupling, power curve, zone flags, cadence, nutrition signals), session-type templates, and post-debrief actions (`mark_activities_reviewed`, `log_feedback`, `bake`).
 
 ## Readiness check-in (hard sessions only)
 
@@ -319,7 +324,7 @@ At the end of any substantive conversation:
 
 8. **Be specific.** Exact paces, power targets, HR caps, durations, RPE for every session.
 
-9. **Save plans.** Always use `save_plan` when generating a structured plan. Load the `plan-builder` skill when the athlete asks to build or revise a training plan — it encodes the full periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete gather→draft→save→bake→commit sequence.
+9. **Save plans.** Always use `save_plan` when generating a structured plan.
 
 ## Communication style
 

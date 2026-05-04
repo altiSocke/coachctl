@@ -54,7 +54,6 @@ For every section edit:
 3. **Present the diff** to the athlete. Do not apply yet.
 4. **Wait for explicit approval** ("yes", "looks good", "apply it")
 5. **Apply:** call `apply_race_<section>(slug, content)`
-6. **Bake:** call `bake()` after each apply so the dashboard stays current
 
 Never batch multiple section applies without confirmation between them. One section at a time.
 
@@ -142,10 +141,9 @@ Table format: `| # | Km | Gain | Power cap | HR cap | Notes |`
 
 ## After the card is complete
 
-1. Call `bake()` to push the card to the dashboard.
-2. Tell the athlete they can view the printable card at `#race/<slug>` in the dashboard.
-3. Save a coaching note summarising the strategy decisions made: `save_coaching_note(note, category='race', tags='race-card,<event-name>')`.
-4. Commit and push the personal repo.
+1. Tell the athlete they can view the printable card at `#race/<slug>` in the dashboard.
+2. Save a coaching note summarising the strategy decisions made: `save_coaching_note(note, category='race', tags='race-card,<event-name>')`.
+3. Commit and push the personal repo.
 
 ---
 
@@ -155,5 +153,5 @@ When the athlete wants to revise a section:
 1. `get_event_detail(slug)` — load current payload
 2. Identify the specific section to change
 3. Draft revised content for that section only
-4. Propose → confirm → apply → bake
+4. Propose → confirm → apply
 5. No need to re-run other sections unless they're affected by the change

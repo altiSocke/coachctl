@@ -1,6 +1,6 @@
 ---
 name: plan-builder
-description: Build or revise a periodized endurance training plan. Load when the athlete asks to create a new plan, revise an existing one, or adjust the phase structure. Encodes the full generic periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete save→bake→commit sequence.
+description: Build or revise a periodized endurance training plan. Load when the athlete asks to create a new plan, revise an existing one, or adjust the phase structure. Encodes the full generic periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete save→commit sequence.
 compatibility: opencode
 ---
 
@@ -183,20 +183,19 @@ Below the table, add a **Phase summary** block:
 
 ---
 
-## Step 7 — Save, bake, commit
+## Step 7 — Save and commit
 
 After athlete approves the plan:
 
 ```
 save_plan(plan_markdown, event_name, event_date)
-bake()
 ```
 
 Then commit and push both repos:
 - Personal repo: `git add -A && git commit -m "Add <event> training plan" && git push`
 - Public repo: commit only if general wiki was updated during this session
 
-Confirm to the athlete: plan saved, dashboard updated, link to view it.
+Confirm to the athlete: plan saved, dashboard will refresh automatically.
 
 ---
 
@@ -207,7 +206,6 @@ When revising an existing plan (not building from scratch):
 2. Identify what changed (injury, new race, fitness update, schedule change)
 3. Only modify affected weeks — do not rebuild the whole plan unless the A event date changed
 4. Re-run `save_plan` with the full revised markdown (it overwrites the previous file)
-5. `bake()` after saving
 
 ---
 
