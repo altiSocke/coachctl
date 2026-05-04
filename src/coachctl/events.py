@@ -8,12 +8,7 @@ Every consumer that needs to know "what's on date X" reads from here:
 Sources merged (in order of precedence on date conflict):
   1. ``events`` table, kind='race'  → race events (block training that day)
   2. ``events`` table, kind='training'/'untracked'/'appointment'
-  3. ``schedule_overrides`` rows applied to plan-markdown sessions (legacy)
-  4. ``plans/*.md`` parsed sessions (legacy, only if not yet migrated to ``events``)
-  5. ``activities`` rows projected as kind='activity'
-  6. ``untracked_activities`` rows projected as kind='untracked' (legacy)
-
-Once migration to events-only is complete, sources 3, 4, 6 disappear.
+  3. ``activities`` rows projected as kind='activity'
 """
 
 from __future__ import annotations
@@ -128,7 +123,6 @@ def get_calendar(
     start: str | Date,
     end: str | Date,
     kinds: Iterable[str] | None = None,
-    include_legacy: bool = True,
 ) -> list[Event]:
     """
     Return all events in [start, end] inclusive, sorted by (date, start_time).
@@ -139,9 +133,6 @@ def get_calendar(
         ISO date strings or ``datetime.date`` objects.
     kinds :
         Filter to specific kinds. Default: all kinds.
-    include_legacy :
-        If True, also project plan-markdown sessions and untracked_activities
-        rows that haven't been migrated into the ``events`` table.
     """
     if isinstance(start, Date):
         start = start.isoformat()
@@ -208,132 +199,11 @@ def get_calendar(
                     )
                 )
 
-        # Source 3 (legacy): untracked_activities, only if not already in events
-        if include_legacy and KIND_UNTRACKED in kinds_set:
-            existing_dates = {e.date for e in events if e.kind == KIND_UNTRACKED}
-            urows = conn.execute(
-                """
-                SELECT id, activity_date, sport, duration_min, intensity,
-                       tss_estimate, notes
-                FROM untracked_activities
-                WHERE activity_date BETWEEN ? AND ?
-                ORDER BY activity_date
-                """,
-                (start, end),
-            ).fetchall()
-            for ur in urows:
-                # avoid double-counting if migrated already (slug convention below)
-                slug_guess = f"untracked-{ur['id']}"
-                if any(e.slug == slug_guess for e in events):
-                    continue
-                events.append(
-                    Event(
-                        slug=slug_guess,
-                        kind=KIND_UNTRACKED,
-                        date=ur["activity_date"],
-                        name=ur["sport"],
-                        summary=f"{ur['sport']} ({ur['intensity']})",
-                        duration_min=ur["duration_min"],
-                        estimated_tss=ur["tss_estimate"],
-                        status=STATUS_COMPLETED,
-                        payload={
-                            "sport": ur["sport"],
-                            "intensity": ur["intensity"],
-                            "notes": ur["notes"],
-                        },
-                        notes=ur["notes"],
-                        source=("untracked_activities_legacy", str(ur["id"])),
-                    )
-                )
-
-    # Source 4 (legacy): plan markdown + schedule_overrides — only training sessions
-    # not yet present in events table for that date.
-    if include_legacy and KIND_TRAINING in kinds_set:
-        events.extend(_legacy_plan_training_events(start, end, existing=events))
-
     # Conflict resolution: race events block training/untracked on the same date
     events = _resolve_conflicts(events)
 
     events.sort(key=lambda e: (e.date, e.start_time or "00:00"))
     return events
-
-
-def _legacy_plan_training_events(start: str, end: str, existing: list[Event]) -> list[Event]:
-    """Project training sessions from plan markdown + overrides as Events."""
-    from .plan_parser import get_latest_plan_path, parse_plan_file
-
-    plan_path = get_latest_plan_path()
-    if not plan_path:
-        return []
-
-    try:
-        plan = parse_plan_file(plan_path)
-    except Exception:
-        return []
-
-    # Load overrides keyed by date
-    overrides: dict[str, dict] = {}
-    with get_conn() as conn:
-        rows = conn.execute(
-            """
-            SELECT session_date, original_name, new_name, new_details, reason
-            FROM schedule_overrides
-            WHERE plan_file = ?
-            """,
-            (plan_path.name,),
-        ).fetchall()
-    for r in rows:
-        overrides[r["session_date"]] = {
-            "name": r["new_name"],
-            "details": r["new_details"],
-            "reason": r["reason"],
-        }
-
-    existing_by_date_kind = {(e.date, e.kind) for e in existing}
-    out: list[Event] = []
-    for w in plan.weeks:
-        for s in w.sessions:
-            if not s.date or s.date < start or s.date > end:
-                continue
-            ov = overrides.get(s.date)
-            if ov:
-                name = ov["name"] or "Rest"
-                details = ov["details"] or ""
-                notes = ov["reason"]
-            else:
-                name = s.name
-                details = s.details
-                notes = None
-            if "rest" in (name or "").lower():
-                continue
-            slug = f"plan-{plan_path.stem}-{s.date}"
-            # Skip if a training event already exists for this date in the events table
-            if (s.date, KIND_TRAINING) in existing_by_date_kind:
-                continue
-            out.append(
-                Event(
-                    slug=slug,
-                    kind=KIND_TRAINING,
-                    date=s.date,
-                    name=name,
-                    summary=_first_line(details),
-                    payload={
-                        "details": details,
-                        "week_number": w.number,
-                        "phase": w.phase,
-                    },
-                    notes=notes,
-                    source=("plan_markdown", plan_path.name),
-                )
-            )
-    return out
-
-
-def _first_line(text: str | None, max_len: int = 120) -> str | None:
-    if not text:
-        return None
-    line = text.splitlines()[0].strip()
-    return line if len(line) <= max_len else line[: max_len - 1] + "…"
 
 
 def _resolve_conflicts(events: list[Event]) -> list[Event]:

@@ -20,5 +20,5 @@ def load_athlete() -> dict:
     if not p.exists():
         logger.warning("athlete.yaml not found at %s — using empty config", p)
         return {}
-    with open(p) as f:
+    with open(p, encoding="utf-8") as f:
         return yaml.safe_load(f) or {}

@@ -10,12 +10,12 @@ Outputs: ``<DATA_ROOT>/deploy/dist/data.json`` (see ``paths.py`` for resolution)
 from __future__ import annotations
 
 import json
+import re as _re
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from . import paths
 from .db import get_conn
-from .plan_parser import Plan, get_latest_plan_path, parse_plan_file
 
 
 def _get_fitness_state() -> dict:
@@ -61,8 +61,8 @@ def _get_fitness_trend(weeks: int = 12) -> list[dict]:
     ]
 
 
-def _get_weekly_tss(plan: Plan, weeks: int = 12) -> list[dict]:
-    """Weekly TSS by sport category + plan target TSS."""
+def _get_weekly_tss(plan_id: int | None, weeks: int = 12) -> list[dict]:
+    """Weekly TSS by sport category + plan target TSS (from plans.week_tss_json)."""
     if not paths.db_path().exists():
         return []
 
@@ -70,14 +70,37 @@ def _get_weekly_tss(plan: Plan, weeks: int = 12) -> list[dict]:
         "date(start_date, '-' || cast((strftime('%w', start_date) + 6) % 7 as text) || ' days')"
     )
 
+    # Load target TSS map from DB: week_number → tss
+    # We need to map that to Monday dates via the training events for that plan.
     target_map: dict[str, int] = {}
-    for w in plan.weeks:
-        if w.target_tss:
-            dates = [s.date for s in w.sessions if s.date]
-            if dates:
-                first = date.fromisoformat(min(dates))
-                mon = first - timedelta(days=first.weekday())
-                target_map[str(mon)] = w.target_tss
+    if plan_id is not None:
+        with get_conn() as conn:
+            plan_row = conn.execute(
+                "SELECT week_tss_json FROM plans WHERE id = ?", (plan_id,)
+            ).fetchone()
+            if plan_row and plan_row["week_tss_json"]:
+                try:
+                    week_tss_by_num: dict[str, int] = json.loads(plan_row["week_tss_json"])
+                except (json.JSONDecodeError, TypeError):
+                    week_tss_by_num = {}
+
+                # Map week_number → earliest session date → Monday of that week
+                ev_rows = conn.execute(
+                    """
+                    SELECT MIN(date) as first_date,
+                           json_extract(payload_json, '$.week_number') as week_num
+                    FROM events
+                    WHERE plan_id = ? AND kind = 'training'
+                    GROUP BY week_num
+                    """,
+                    (plan_id,),
+                ).fetchall()
+                for er in ev_rows:
+                    wn = str(er["week_num"])
+                    if wn in week_tss_by_num and er["first_date"]:
+                        first = date.fromisoformat(er["first_date"])
+                        mon = first - timedelta(days=first.weekday())
+                        target_map[str(mon)] = week_tss_by_num[wn]
 
     with get_conn() as conn:
         rows = conn.execute(
@@ -134,56 +157,77 @@ def _get_weekly_tss(plan: Plan, weeks: int = 12) -> list[dict]:
     return result
 
 
-def _project_fitness(plan: Plan, fitness: dict, weeks: int = 8) -> list[dict]:
+def _project_fitness(plan_id: int | None, fitness: dict, weeks: int = 8) -> list[dict]:
     """
-    Project CTL/ATL/TSB forward using plan sessions day-by-day.
+    Project CTL/ATL/TSB forward using training events for the active plan.
 
-    For each future session:
-    - If details contain 'Est. TSS ~NN', use that directly.
-    - Otherwise distribute the week's remaining target TSS evenly across
-      non-rest training days.
-    Rest days and unplanned days get TSS = 0.
+    For each future training event:
+    - If payload.details contains 'Est. TSS ~NN', use that directly.
+    - Otherwise distribute the week's target TSS evenly across unassigned sessions
+      for that week (from plans.week_tss_json).
     """
-    import re as _re
-
     try:
         ctl = float(fitness["ctl"])
         atl = float(fitness["atl"])
     except (ValueError, KeyError):
         return []
 
+    if plan_id is None or not paths.db_path().exists():
+        return []
+
     today = date.today()
 
+    # Load week_tss_json from plans table
+    week_tss_by_num: dict[str, int] = {}
+    with get_conn() as conn:
+        plan_row = conn.execute(
+            "SELECT week_tss_json FROM plans WHERE id = ?", (plan_id,)
+        ).fetchone()
+        if plan_row and plan_row["week_tss_json"]:
+            try:
+                week_tss_by_num = json.loads(plan_row["week_tss_json"])
+            except (json.JSONDecodeError, TypeError):
+                week_tss_by_num = {}
+
+        # Load future training events
+        ev_rows = conn.execute(
+            """
+            SELECT date, payload_json,
+                   json_extract(payload_json, '$.week_number') as week_num
+            FROM events
+            WHERE plan_id = ? AND kind = 'training' AND date > ?
+            ORDER BY date
+            """,
+            (plan_id, str(today)),
+        ).fetchall()
+
+    # Build daily_tss map
     daily_tss: dict[str, float] = {}
 
-    for w in plan.weeks:
-        if not w.target_tss:
-            continue
+    # Group events by week_num so we can distribute remaining TSS
+    from collections import defaultdict
+    week_sessions: dict[str, list[dict]] = defaultdict(list)
+    for er in ev_rows:
+        wn = str(er["week_num"]) if er["week_num"] is not None else "0"
+        payload = {}
+        try:
+            payload = json.loads(er["payload_json"]) if er["payload_json"] else {}
+        except (json.JSONDecodeError, TypeError):
+            pass
+        week_sessions[wn].append({"date": er["date"], "details": payload.get("details", "")})
 
-        training_sessions = []
-        for s in w.sessions:
-            if not s.date or s.date <= str(today):
-                continue
-            if "rest" in s.name.lower():
-                daily_tss[s.date] = 0.0
-            else:
-                training_sessions.append(s)
-
-        if not training_sessions:
-            continue
-
+    for wn, sessions in week_sessions.items():
+        target = week_tss_by_num.get(wn, 0)
         assigned: dict[str, float] = {}
-        for s in training_sessions:
-            m = _re.search(r"[Ee]st\.?\s*TSS\s*[~≈]?\s*(\d+)", s.details)
+        for s in sessions:
+            m = _re.search(r"[Ee]st\.?\s*TSS\s*[~≈]?\s*(\d+)", s["details"])
             if m:
-                assigned[s.date] = float(m.group(1))
-
-        remaining_tss = w.target_tss - sum(assigned.values())
-        unassigned = [s for s in training_sessions if s.date not in assigned]
-        per_session = (remaining_tss / len(unassigned)) if unassigned else 0.0
-
-        for s in training_sessions:
-            daily_tss[s.date] = assigned.get(s.date, max(0.0, per_session))
+                assigned[s["date"]] = float(m.group(1))
+        remaining = max(0.0, target - sum(assigned.values()))
+        unassigned = [s for s in sessions if s["date"] not in assigned]
+        per_session = (remaining / len(unassigned)) if unassigned else 0.0
+        for s in sessions:
+            daily_tss[s["date"]] = assigned.get(s["date"], max(0.0, per_session))
 
     projected = []
     for i in range(1, weeks * 7 + 1):
@@ -203,36 +247,45 @@ def _project_fitness(plan: Plan, fitness: dict, weeks: int = 8) -> list[dict]:
     return projected
 
 
-def _get_upcoming_events() -> list[dict]:
-    """Return upcoming events from athlete.yaml with days-out."""
+def _get_race_events_from_db() -> list[dict]:
+    """Return upcoming race events from the events table with days-out."""
+    if not paths.db_path().exists():
+        return []
+    today = date.today()
+    cutoff = (today - timedelta(days=7)).isoformat()
     try:
-        from .config import load_athlete
-
-        cfg = load_athlete()
+        with get_conn() as conn:
+            rows = conn.execute(
+                """
+                SELECT slug, name, date, payload_json
+                FROM events
+                WHERE kind = 'race' AND date >= ? AND status != 'cancelled'
+                ORDER BY date
+                """,
+                (cutoff,),
+            ).fetchall()
     except Exception:
         return []
 
-    today = date.today()
-    events = []
-    for e in cfg.get("events", []):
-        ev_date = e.get("date")
-        if not ev_date:
-            continue
-        if isinstance(ev_date, str):
-            ev_date = date.fromisoformat(ev_date)
+    result = []
+    for r in rows:
+        ev_date = date.fromisoformat(r["date"])
         days_out = (ev_date - today).days
-        if days_out < -7:
-            continue
-        events.append(
+        payload: dict = {}
+        try:
+            payload = json.loads(r["payload_json"]) if r["payload_json"] else {}
+        except (json.JSONDecodeError, TypeError):
+            pass
+        result.append(
             {
-                "name": e.get("name", ""),
-                "date": str(ev_date),
+                "name": r["name"],
+                "date": r["date"],
                 "days_out": days_out,
-                "priority": e.get("priority", "C"),
-                "goal_time": e.get("goal_time"),
+                "priority": payload.get("priority", "C"),
+                "goal_time": payload.get("goal", {}).get("target_time") if isinstance(payload.get("goal"), dict) else payload.get("goal_time"),
             }
         )
-    return sorted(events, key=lambda x: x["days_out"])
+    return result
 
 
 def _get_calendar_window_for_dashboard(past_days: int = 7, future_days: int = 200) -> list[dict]:
@@ -264,100 +317,151 @@ def _get_calendar_window_for_dashboard(past_days: int = 7, future_days: int = 20
     return out
 
 
-def _determine_current_week(plan: Plan) -> int:
-    """Find which week number we're currently in based on session dates."""
-    today = str(date.today())
-    for week in plan.weeks:
-        dates = [s.date for s in week.sessions if s.date]
-        if dates and dates[0] and dates[-1]:
-            if dates[0] <= today <= dates[-1]:
-                return week.number
-    for week in plan.weeks:
-        if not all(s.completed for s in week.sessions):
-            return week.number
-    return 1
+def _get_plan_from_db() -> dict | None:
+    """
+    Load the active plan and its training events from the DB.
 
-
-def _mark_completion_from_db(plan: Plan) -> None:
-    """Cross-reference plan sessions with activities DB to mark completed."""
-    import sqlite3
-
-    db = paths.db_path()
-    if not db.exists():
-        return
-
-    conn = sqlite3.connect(str(db))
-    rows = conn.execute("SELECT DISTINCT date(start_date) as d FROM activities").fetchall()
-    conn.close()
-
-    activity_dates = {r[0] for r in rows}
-
-    for week in plan.weeks:
-        for session in week.sessions:
-            if (
-                session.date
-                and session.date in activity_dates
-                and "rest" not in session.name.lower()
-            ):
-                session.completed = True
-
-
-def _add_all_completed_flag(plan: Plan) -> None:
-    """Add a helper flag to weeks for tab styling."""
-    for week in plan.weeks:
-        non_rest = [s for s in week.sessions if "rest" not in s.name.lower()]
-        week.all_completed = len(non_rest) > 0 and all(s.completed for s in non_rest)  # type: ignore[attr-defined]
-
-
-def _load_overrides(plan_path: Path) -> dict[str, dict]:
-    """Load schedule_overrides from DB for the given plan file."""
+    Returns a dict with keys: plan_id, title, period, event, current_week,
+    total_weeks, weeks (list of week dicts). Returns None if no active plan.
+    """
     if not paths.db_path().exists():
-        return {}
+        return None
 
-    plan_file = plan_path.name
     with get_conn() as conn:
-        rows = conn.execute(
+        plan_row = conn.execute(
+            "SELECT id, title, start_date, end_date, source_md_path FROM plans WHERE active = 1 ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+        if not plan_row:
+            return None
+        plan_id = plan_row["id"]
+
+        ev_rows = conn.execute(
             """
-            SELECT session_date, original_name, new_name, new_details, reason
-            FROM schedule_overrides
-            WHERE plan_file = ?
+            SELECT date, name, summary, status, notes, payload_json
+            FROM events
+            WHERE plan_id = ? AND kind = 'training'
+            ORDER BY date
             """,
-            (plan_file,),
+            (plan_id,),
         ).fetchall()
 
-    return {
-        r["session_date"]: {
-            "new_name": r["new_name"],
-            "new_details": r["new_details"],
-            "reason": r["reason"],
-            "original_name": r["original_name"],
+        # Also fetch activity dates for completion cross-reference
+        activity_dates = {
+            r[0]
+            for r in conn.execute(
+                "SELECT DISTINCT date(start_date) FROM activities"
+            ).fetchall()
         }
-        for r in rows
+
+    # Group events by week_number from payload
+    from collections import defaultdict
+    weeks_map: dict[int, list[dict]] = defaultdict(list)
+    phases_map: dict[int, str] = {}
+    today = str(date.today())
+
+    for er in ev_rows:
+        payload: dict = {}
+        try:
+            payload = json.loads(er["payload_json"]) if er["payload_json"] else {}
+        except (json.JSONDecodeError, TypeError):
+            pass
+        wn: int = payload.get("week_number", 1)
+        phases_map[wn] = payload.get("phase", "")
+        completed = er["status"] == "completed" or er["date"] in activity_dates
+        weeks_map[wn].append(
+            {
+                "day_label": _day_label(er["date"]),
+                "date": er["date"],
+                "name": er["name"],
+                "details": payload.get("details", er["summary"] or ""),
+                "completed": completed,
+                "overridden": payload.get("overridden", False),
+                "override_reason": er["notes"] or "",
+                "feedback": None,  # populated later
+            }
+        )
+
+    if not weeks_map:
+        return None
+
+    # Determine current week
+    current_week = 1
+    for wn in sorted(weeks_map.keys()):
+        sessions = weeks_map[wn]
+        dates = [s["date"] for s in sessions if s["date"]]
+        if dates and dates[0] <= today <= dates[-1]:
+            current_week = wn
+            break
+    else:
+        # Default to first incomplete week
+        for wn in sorted(weeks_map.keys()):
+            if not all(s["completed"] for s in weeks_map[wn]):
+                current_week = wn
+                break
+
+    weeks_data = []
+    for wn in sorted(weeks_map.keys()):
+        sessions = weeks_map[wn]
+        non_rest = [s for s in sessions if "rest" not in s["name"].lower()]
+        all_completed = bool(non_rest) and all(s["completed"] for s in non_rest)
+        weeks_data.append(
+            {
+                "number": wn,
+                "title": f"Week {wn}",
+                "target_tss": None,  # populated from week_tss_json if needed
+                "phase": phases_map.get(wn, ""),
+                "all_completed": all_completed,
+                "sessions": sessions,
+            }
+        )
+
+    # Populate target_tss per week from plans.week_tss_json
+    with get_conn() as conn:
+        ptss_row = conn.execute(
+            "SELECT week_tss_json FROM plans WHERE id = ?", (plan_id,)
+        ).fetchone()
+    if ptss_row and ptss_row["week_tss_json"]:
+        try:
+            week_tss_map: dict[str, int] = json.loads(ptss_row["week_tss_json"])
+            for wd in weeks_data:
+                wd["target_tss"] = week_tss_map.get(str(wd["number"]))
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    title = plan_row["title"] or ""
+    start_date = plan_row["start_date"] or ""
+    end_date = plan_row["end_date"] or ""
+    period = f"{start_date} – {end_date}" if start_date and end_date else ""
+    # Extract event name from source_md_path if title doesn't carry it
+    event_name = ""
+    if plan_row["source_md_path"]:
+        stem = plan_row["source_md_path"].replace(".md", "")
+        event_name = stem.replace("-", " ").title()
+
+    return {
+        "plan_id": plan_id,
+        "title": title,
+        "period": period,
+        "event": event_name,
+        "current_week": current_week,
+        "total_weeks": len(weeks_data),
+        "weeks": weeks_data,
     }
 
 
-def _apply_overrides(plan: Plan, overrides: dict[str, dict]) -> None:
-    """Mutate plan sessions in-place to reflect schedule overrides."""
-    for week in plan.weeks:
-        for session in week.sessions:
-            if session.date and session.date in overrides:
-                ov = overrides[session.date]
-                if ov["new_name"] is not None:
-                    session.name = ov["new_name"]
-                else:
-                    session.name = "Rest"
-                session.details = ov["new_details"] or ""
-                session.overridden = True  # type: ignore[attr-defined]
-                session.override_reason = ov["reason"] or ""  # type: ignore[attr-defined]
+def _day_label(iso_date: str) -> str:
+    """Return short day label from an ISO date string, e.g. 'Mon'."""
+    try:
+        return date.fromisoformat(iso_date).strftime("%a")
+    except (ValueError, TypeError):
+        return ""
 
 
-def _extract_phases(plan: Plan) -> list[dict]:
+def _extract_phases(weeks_data: list[dict]) -> list[dict]:
     """Group consecutive weeks with the same phase into phase blocks."""
-    import re as _re
-
     phases: list[dict] = []
-    for week in plan.weeks:
-        phase_raw = week.phase or "Training"
+    for week in weeks_data:
+        phase_raw = week.get("phase") or "Training"
         if not phases or phases[-1]["_raw"] != phase_raw:
             m = _re.search(r"—\s*(.+?)(?:\s*\(|$)", phase_raw)
             short = m.group(1).strip() if m else phase_raw
@@ -367,12 +471,12 @@ def _extract_phases(plan: Plan) -> list[dict]:
                     "_raw": phase_raw,
                     "name": short,
                     "number": int(nm.group(1)) if nm else len(phases) + 1,
-                    "start_week": week.number,
-                    "end_week": week.number,
+                    "start_week": week["number"],
+                    "end_week": week["number"],
                 }
             )
         else:
-            phases[-1]["end_week"] = week.number
+            phases[-1]["end_week"] = week["number"]
 
     for p in phases:
         p["week_count"] = p["end_week"] - p["start_week"] + 1
@@ -605,26 +709,26 @@ def _get_weekly_run_tss(weeks: int = 12) -> list[dict]:
 
 def get_dashboard_data(plan_path: Path | None = None) -> dict:
     """Assemble all dashboard data as a JSON-serialisable dict."""
-    if plan_path is None:
-        plan_path = get_latest_plan_path()
-    if plan_path is None:
-        raise FileNotFoundError("No training plan found in plans directory")
+    # plan_path argument retained for API compatibility but ignored —
+    # plan data now comes from the events/plans tables.
+    plan_data = _get_plan_from_db()
+    plan_id = plan_data["plan_id"] if plan_data else None
 
-    plan = parse_plan_file(plan_path)
-    overrides = _load_overrides(plan_path)
-    _apply_overrides(plan, overrides)
-    _mark_completion_from_db(plan)
-    _add_all_completed_flag(plan)
+    # Inject feedback into session dicts
+    if plan_data:
+        feedback = _get_feedback_by_date()
+        for week in plan_data["weeks"]:
+            for session in week["sessions"]:
+                if session.get("date"):
+                    session["feedback"] = feedback.get(session["date"])
 
     fitness = _get_fitness_state()
     trend = _get_fitness_trend(16)
-    weekly_tss = _get_weekly_tss(plan, 16)
-    events = _get_upcoming_events()
+    weekly_tss = _get_weekly_tss(plan_id, 16)
+    events = _get_race_events_from_db()
     calendar = _get_calendar_window_for_dashboard()
-    projected = _project_fitness(plan, fitness, weeks=16)
-    current_week = _determine_current_week(plan)
-    phases = _extract_phases(plan)
-    feedback = _get_feedback_by_date()
+    projected = _project_fitness(plan_id, fitness, weeks=16)
+    phases = _extract_phases(plan_data["weeks"]) if plan_data else []
     monotony_trend = _get_training_monotony()
     monotony_snapshot = _get_monotony_snapshot()
     danger_zones = _compute_danger_zones(fitness, trend, monotony_snapshot)
@@ -633,50 +737,21 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
 
     try:
         from .config import load_athlete
-
         cfg = load_athlete()
         goals = cfg.get("goals", {})
     except Exception:
         goals = {}
 
-    weeks_data = []
-    for w in plan.weeks:
-        sessions_data = []
-        for s in w.sessions:
-            fb = feedback.get(s.date) if s.date else None
-            sessions_data.append(
-                {
-                    "day_label": s.day_label,
-                    "date": s.date,
-                    "name": s.name,
-                    "details": s.details,
-                    "completed": s.completed,
-                    "overridden": getattr(s, "overridden", False),
-                    "override_reason": getattr(s, "override_reason", ""),
-                    "feedback": fb,
-                }
-            )
-        weeks_data.append(
-            {
-                "number": w.number,
-                "title": w.title,
-                "target_tss": w.target_tss,
-                "phase": w.phase,
-                "all_completed": w.all_completed,
-                "sessions": sessions_data,
-            }
-        )
-
     return {
         "generated_at": datetime.now().isoformat(),
         "plan": {
-            "title": plan.title,
-            "period": plan.period,
-            "event": plan.event,
-            "current_week": current_week,
-            "total_weeks": len(plan.weeks),
-            "weeks": weeks_data,
-        },
+            "title": plan_data["title"],
+            "period": plan_data["period"],
+            "event": plan_data["event"],
+            "current_week": plan_data["current_week"],
+            "total_weeks": plan_data["total_weeks"],
+            "weeks": plan_data["weeks"],
+        } if plan_data else None,
         "phases": phases,
         "fitness": fitness,
         "monotony": monotony_snapshot,

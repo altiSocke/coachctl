@@ -199,16 +199,23 @@ def init_db():
                 "ALTER TABLE activities ADD COLUMN rtss_power REAL"
             )  # power-based running TSS
 
+        plans_cols = {row[1] for row in conn.execute("PRAGMA table_info(plans)").fetchall()}
+        if "week_tss_json" not in plans_cols:
+            conn.execute("ALTER TABLE plans ADD COLUMN week_tss_json TEXT")
+
     _DB_INITIALISED = True
     logger.info("Database initialised at %s", paths.db_path())
 
 
 def migrate_and_drop_legacy() -> None:
     """
-    One-time migration: ensure DB schema is up to date.
-    Safe to call multiple times — idempotent.
+    One-time migration: ensure DB schema is up to date and migrate legacy data
+    into the events table. Safe to call multiple times — idempotent.
     """
     init_db()
+    from .migrate import run_all
+    with get_conn() as conn:
+        run_all(conn)
 
 
 if __name__ == "__main__":

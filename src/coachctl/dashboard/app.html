@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>coachctl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 15px; -webkit-tap-highlight-color: transparent; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -19,43 +22,59 @@ body {
 
 /* ── Tokens (dark default) ─────────────────────────────────────────────────── */
 :root {
-  --bg:           #0c0c15;
-  --surface:      #13131f;
-  --surface-2:    #1b1b2e;
-  --border:       #252540;
-  --text:         #e2e2f0;
-  --muted:        #7070a0;
-  --dim:          #45455a;
-  --accent:       #6366f1;
-  --accent-bg:    rgba(99,102,241,.12);
+  --bg:           #111111;
+  --surface:      #1a1a1a;
+  --surface-2:    #222222;
+  --border:       #2a2a2a;
+  --text:         #efefef;
+  --muted:        #777777;
+  --dim:          #444444;
+  --accent:       #f5a623;
+  --accent-bg:    rgba(245,166,35,.10);
+  --accent-dim:   rgba(245,166,35,.25);
   --success:      #22c55e;
-  --success-bg:   rgba(34,197,94,.1);
-  --warning:      #f59e0b;
-  --warning-bg:   rgba(245,158,11,.1);
-  --danger:       #ef4444;
-  --danger-bg:    rgba(239,68,68,.1);
-  --info-bg:      rgba(34,197,94,.08);
-  --radius:       12px;
-  --radius-sm:    8px;
-  --gap:          16px;
-  --hdr:          52px;
+  --success-bg:   rgba(34,197,94,.10);
+  --warning:      #f5a623;
+  --warning-bg:   rgba(245,166,35,.10);
+  --danger:       #e63946;
+  --danger-bg:    rgba(230,57,70,.10);
+  --run:          #6366f1;
+  --ride:         #f5a623;
+  --radius:       4px;
+  --radius-sm:    3px;
+  --gap:          14px;
+  --hdr:          48px;
+  --font-display: 'Barlow Condensed', system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg:        #f1f1f9;
+    --bg:        #f0f0f0;
     --surface:   #ffffff;
-    --surface-2: #ededf8;
-    --border:    #dcdcee;
-    --text:      #1a1a2e;
-    --muted:     #606080;
-    --dim:       #aaaac0;
-    --accent-bg: rgba(99,102,241,.07);
+    --surface-2: #f5f5f5;
+    --border:    #e0e0e0;
+    --text:      #111111;
+    --muted:     #666666;
+    --dim:       #bbbbbb;
+    --accent-bg: rgba(245,166,35,.08);
+    --accent-dim:rgba(245,166,35,.20);
     --success-bg:rgba(34,197,94,.07);
-    --warning-bg:rgba(245,158,11,.07);
-    --danger-bg: rgba(239,68,68,.07);
-    --info-bg:   rgba(34,197,94,.06);
+    --warning-bg:rgba(245,166,35,.07);
+    --danger-bg: rgba(230,57,70,.07);
   }
+}
+
+/* ── Entrance animation ─────────────────────────────────────────────────────── */
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes phaseIn {
+  from { width: 0; }
+  to   { width: var(--pct); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ── Header ────────────────────────────────────────────────────────────────── */
@@ -68,42 +87,38 @@ header {
   padding: 0 var(--gap); gap: 10px;
 }
 .logo {
-  font-size: .9rem; font-weight: 700; letter-spacing: -.02em; color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 700; letter-spacing: .02em; color: var(--accent);
+  flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+}
+.logo-mark {
+  width: 14px; height: 14px;
+  background: var(--accent);
+  display: inline-block;
   flex-shrink: 0;
 }
 .hdr-title {
-  flex: 1; font-size: .72rem; color: var(--muted);
+  flex: 1; font-size: .72rem; font-weight: 500; color: var(--muted);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  letter-spacing: .01em;
 }
 .sync-btn {
-  flex-shrink: 0; font-size: .75rem; font-weight: 600;
+  flex-shrink: 0;
+  width: 32px; height: 32px;
   background: var(--surface-2); border: 1px solid var(--border);
-  color: var(--text); border-radius: 6px; padding: 5px 12px;
+  color: var(--muted); border-radius: 50%;
   cursor: pointer; font-family: inherit;
-  display: flex; flex-direction: column; align-items: center; gap: 0;
-  transition: background .15s, border-color .15s, color .15s;
-  line-height: 1.3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; line-height: 1;
+  transition: color .15s, border-color .15s, background .15s;
 }
-.sync-btn:active { opacity: .55; }
-.sync-btn .btn-label { font-size: .75rem; font-weight: 600; }
-.sync-btn .btn-sub   { font-size: .58rem; font-weight: 400; color: var(--dim); letter-spacing: .01em; }
-.sync-btn.loading {
-  pointer-events: none;
-  border-color: var(--accent); color: var(--accent);
-}
-.sync-btn.loading .btn-sub { color: var(--accent); opacity: .7; }
-.sync-btn.ok {
-  background: var(--success-bg); border-color: var(--success); color: var(--success);
-  pointer-events: none;
-}
-.sync-btn.ok .btn-sub { color: var(--success); opacity: .8; }
-.sync-btn.err {
-  background: var(--danger-bg); border-color: var(--danger); color: var(--danger);
-  pointer-events: none;
-}
-.sync-btn.err .btn-sub { color: var(--danger); opacity: .8; }
-
-/* inline spinner for button */
+.sync-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+.sync-btn:active { opacity: .6; }
+.sync-btn.loading { pointer-events: none; }
+.sync-btn.loading .sync-icon { animation: spin .8s linear infinite; display: inline-block; }
+.sync-btn.ok { border-color: var(--success); color: var(--success); pointer-events: none; }
+.sync-btn.err { border-color: var(--danger); color: var(--danger); pointer-events: none; }
+.sync-last { font-size: .6rem; color: var(--dim); margin-left: -2px; }
 
 /* ── Main container ────────────────────────────────────────────────────────── */
 main {
@@ -120,980 +135,1097 @@ main {
   font-size: .85rem;
 }
 .spinner {
-  width: 28px; height: 28px;
-  border: 2px solid var(--border); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin .65s linear infinite;
+  width: 28px; height: 28px; border: 2px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin .8s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 .state-error {
-  padding: 20px; border-radius: var(--radius);
+  margin: var(--gap); padding: 20px;
   background: var(--danger-bg); border: 1px solid var(--danger);
-  color: var(--danger); font-size: .85rem; line-height: 1.5;
+  border-radius: var(--radius); color: var(--danger); font-size: .85rem;
 }
-.hidden { display: none !important; }
 
 /* ── Card ──────────────────────────────────────────────────────────────────── */
 .card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 14px 12px;
+  animation: cardEntrance .28s ease-out both;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: .7rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
 }
 
-/* ── Section label ─────────────────────────────────────────────────────────── */
-.lbl {
-  font-size: .62rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .11em; color: var(--muted); margin-bottom: 10px;
-}
+/* ── Hidden ────────────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
 
-/* ── Event cards (horizontal strip) ───────────────────────────────────────── */
+/* ── Events strip ──────────────────────────────────────────────────────────── */
 .events-strip {
   display: flex; gap: 8px;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; padding-bottom: 2px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 2px;
+  -ms-overflow-style: none; scrollbar-width: none;
 }
 .events-strip::-webkit-scrollbar { display: none; }
+.event-card {
+  flex-shrink: 0; scroll-snap-align: start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  min-width: 130px; max-width: 160px;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.event-card:hover { border-color: var(--dim); }
+.event-card::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+}
+.event-card.pri-A::before { background: var(--danger); }
+.event-card.pri-B::before { background: var(--accent); }
+.event-card.pri-C::before { background: var(--dim); }
+.ev-countdown {
+  font-family: var(--font-display);
+  font-size: 2rem; font-weight: 700; line-height: 1;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+.ev-countdown-unit {
+  font-family: var(--font-display);
+  font-size: .75rem; font-weight: 600; color: var(--muted);
+  letter-spacing: .04em; text-transform: uppercase;
+  margin-top: 1px;
+}
+.ev-name {
+  font-size: .78rem; font-weight: 500; color: var(--text);
+  margin-top: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ev-date { font-size: .68rem; color: var(--muted); margin-top: 1px; }
+.ev-pri {
+  position: absolute; top: 8px; right: 8px;
+  font-family: var(--font-display);
+  font-size: .6rem; font-weight: 700; letter-spacing: .06em;
+  padding: 1px 4px; border-radius: 2px;
+}
+.ev-pri.A { background: var(--danger-bg); color: var(--danger); }
+.ev-pri.B { background: var(--accent-bg); color: var(--accent); }
+.ev-pri.C { background: transparent; color: var(--dim); }
+.event-card.past { opacity: .45; }
+.event-card.today .ev-countdown { color: var(--accent); }
 
-.ev-card {
-  flex-shrink: 0; min-width: 148px;
-  border-radius: var(--radius-sm); border: 1px solid; padding: 10px 14px;
-  display: flex; flex-direction: column; gap: 3px;
+/* ── Phase bar ──────────────────────────────────────────────────────────────── */
+.phase-wrap { padding: 0 2px; }
+.phase-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
 }
-.ev-card.pA { background: rgba(239,68,68,.07);  border-color: rgba(239,68,68,.3); }
-.ev-card.pB { background: rgba(245,158,11,.07); border-color: rgba(245,158,11,.3); }
-.ev-card.pC { background: var(--surface);       border-color: var(--border); }
+.phase-name {
+  font-family: var(--font-display);
+  font-size: .95rem; font-weight: 700; color: var(--text);
+  letter-spacing: .02em;
+}
+.phase-detail { font-size: .7rem; color: var(--muted); }
+.phase-track {
+  height: 10px; background: var(--surface-2);
+  border-radius: 5px; overflow: hidden;
+}
+.phase-fill {
+  height: 100%; border-radius: 5px;
+  background: var(--accent);
+  width: 0;
+  animation: phaseIn .6s ease-out forwards;
+}
+.phase-sub { font-size: .68rem; color: var(--dim); margin-top: 5px; }
 
-.ev-prio  { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
-.pA .ev-prio { color: #ef4444; }
-.pB .ev-prio { color: #f59e0b; }
-.pC .ev-prio { color: var(--muted); }
-.ev-name  { font-size: .84rem; font-weight: 600; color: var(--text); }
-.ev-date  { font-size: .72rem; color: var(--muted); }
-.ev-date strong { color: var(--text); font-variant-numeric: tabular-nums; }
-.ev-goal  { font-size: .7rem; color: var(--muted); margin-top: 1px; }
+/* ── Fitness pills ──────────────────────────────────────────────────────────── */
+.fit-pills {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.fit-pill {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 10px 8px;
+  text-align: center;
+}
+.fit-val {
+  font-family: var(--font-display);
+  font-size: 2.2rem; font-weight: 700; line-height: 1;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.fit-lbl {
+  font-size: .6rem; font-weight: 500; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-top: 4px;
+}
+.fit-sub { font-size: .62rem; color: var(--dim); margin-top: 2px; }
+.fit-pill.positive .fit-val { color: var(--success); }
+.fit-pill.negative .fit-val { color: var(--danger); }
+.fit-pill.warn .fit-val { color: var(--warning); }
+.fit-pill.ok .fit-val { color: var(--success); }
 
-/* ── Phase timeline ────────────────────────────────────────────────────────── */
-.phase-bar {
-  display: flex; height: 7px; gap: 3px;
-  border-radius: 4px; overflow: hidden; margin-bottom: 9px;
+/* Monotony + Strain inline row */
+.mono-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-top: 2px;
 }
-.phase-seg {
-  border-radius: 3px; position: relative; overflow: hidden; min-width: 6px;
-  transition: opacity .2s;
+.mono-stat {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  display: flex; align-items: baseline; justify-content: space-between;
 }
-.phase-seg.dim { opacity: .22; }
-.phase-seg-fill {
-  position: absolute; inset: 0; right: auto;
+.mono-stat-lbl {
+  font-size: .65rem; font-weight: 500; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .08em;
 }
-.phase-info {
-  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+.mono-stat-val {
+  font-family: var(--font-display);
+  font-size: 1.5rem; font-weight: 700;
+  font-variant-numeric: tabular-nums; line-height: 1;
 }
-.phase-name { font-size: .88rem; font-weight: 600; }
-.phase-sub  { font-size: .72rem; color: var(--muted); }
+.mono-stat-badge {
+  font-size: .6rem; font-weight: 500; letter-spacing: .04em;
+  padding: 1px 5px; border-radius: 2px; margin-left: 6px;
+}
+.mono-ok   .mono-stat-val  { color: var(--success); }
+.mono-warn .mono-stat-val  { color: var(--warning); }
+.mono-crit .mono-stat-val  { color: var(--danger); }
+.mono-ok   .mono-stat-badge { background: var(--success-bg); color: var(--success); }
+.mono-warn .mono-stat-badge { background: var(--warning-bg); color: var(--warning); }
+.mono-crit .mono-stat-badge { background: var(--danger-bg);  color: var(--danger);  }
 
-/* ── Week navigator ────────────────────────────────────────────────────────── */
+/* ── Fit alerts ──────────────────────────────────────────────────────────────── */
+#fit-alerts { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
+.alert {
+  padding: 7px 10px; border-radius: var(--radius);
+  font-size: .75rem; font-weight: 500;
+  border-left: 3px solid;
+}
+.alert.warning { background: var(--warning-bg); color: var(--warning); border-color: var(--warning); }
+.alert.danger  { background: var(--danger-bg);  color: var(--danger);  border-color: var(--danger);  }
+.alert.info    { background: var(--success-bg); color: var(--success); border-color: var(--success); }
+
+/* ── Chart cards ─────────────────────────────────────────────────────────────── */
+.chart-wrap { position: relative; height: 220px; }
+.chart-wrap canvas { display: block; }
+
+/* ── Zone bar ────────────────────────────────────────────────────────────────── */
+.zone-bar {
+  display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 2px;
+  margin-bottom: 10px;
+}
+.zone-seg { height: 100%; border-radius: 2px; min-width: 2px; transition: width .4s ease; }
+.zone-legend {
+  display: flex; flex-wrap: wrap; gap: 6px 10px;
+}
+.zone-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: .68rem; color: var(--muted);
+}
+.zone-dot {
+  width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
+}
+.zone-pct { font-weight: 500; color: var(--text); }
+
+/* ── Sessions / week ─────────────────────────────────────────────────────────── */
 .week-nav {
   display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
 }
-.nav-btn {
-  width: 36px; height: 36px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--surface-2);
-  color: var(--text); font-size: .95rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; font-family: inherit; transition: opacity .15s;
-}
-.nav-btn:active   { opacity: .5; }
-.nav-btn:disabled { opacity: .2; cursor: default; }
-.week-ctr { flex: 1; text-align: center; }
-.week-num { font-size: .9rem; font-weight: 600; color: var(--text); line-height: 1.2; }
-.week-sub { font-size: .7rem; color: var(--muted); }
-
-.week-meta {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  padding-bottom: 12px; margin-bottom: 10px; border-bottom: 1px solid var(--border);
-  min-height: 28px;
-}
-.phase-tag {
-  display: inline-block; font-size: .65rem; font-weight: 600;
-  padding: 3px 9px; border-radius: 20px; color: #fff; letter-spacing: .02em;
-}
-.tss-target { font-size: .75rem; color: var(--muted); }
-
-/* ── Sessions ──────────────────────────────────────────────────────────────── */
-.session-list { display: flex; flex-direction: column; gap: 5px; }
-
-.sess {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 11px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--surface-2);
-  cursor: pointer; user-select: none;
-  transition: border-color .12s, background .12s;
-}
-.sess:active       { opacity: .7; }
-.sess.rest         { opacity: .38; cursor: default; }
-.sess.rest:active  { opacity: .38; }
-.sess.done         { border-left: 3px solid var(--success); }
-.sess.stale        { opacity: .55; }
-
-.sess-date { flex-shrink: 0; width: 72px; }
-.sess-dname {
-  font-size: .65rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .07em; color: var(--muted);
-}
-.sess-dnum { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); line-height: 1.1; }
-
-.sess-body { flex: 1; min-width: 0; }
-.sess-name { font-size: .86rem; font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sess-hint { font-size: .72rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
-
-.sess-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-
-.badge {
-  font-size: .6rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .05em; padding: 2px 6px; border-radius: 4px;
-}
-.badge-done { background: var(--success-bg); color: var(--success); }
-.badge-rpe  { border: 1px solid; }
-
-/* ── Fitness pills ─────────────────────────────────────────────────────────── */
-.fit-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-  margin-bottom: 10px;
-}
-.fit-grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 10px;
-}
-.fit-pill {
+.week-btn {
   background: var(--surface-2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 10px 12px;
+  color: var(--muted); border-radius: var(--radius-sm);
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: .8rem; flex-shrink: 0;
+  transition: color .12s, border-color .12s;
 }
-.fit-lbl { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
-.fit-val { font-size: 1.45rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
-.fit-sub { font-size: .62rem; color: var(--muted); margin-top: 1px; }
-
-.ctl  .fit-val { color: #6366f1; }
-.atl  .fit-val { color: #f59e0b; }
-.tsb-pos  .fit-val { color: var(--success); }
-.tsb-zero .fit-val { color: var(--muted); }
-.tsb-warn .fit-val { color: var(--warning); }
-.tsb-crit .fit-val { color: var(--danger); }
-.mono-ok   .fit-val { color: var(--success); }
-.mono-warn .fit-val { color: var(--warning); }
-.mono-crit .fit-val { color: var(--danger); }
-
-.fit-date { font-size: .68rem; color: var(--dim); margin-top: 4px; }
-
-/* ── Alerts ────────────────────────────────────────────────────────────────── */
-.alert {
-  margin-top: 8px; padding: 9px 12px;
-  border-radius: var(--radius-sm); border-left: 3px solid;
-  font-size: .78rem; line-height: 1.5;
+.week-btn:hover { color: var(--text); border-color: var(--dim); }
+.week-label {
+  flex: 1; text-align: center;
+  font-family: var(--font-display);
+  font-size: .85rem; font-weight: 700; letter-spacing: .04em;
+  color: var(--text); text-transform: uppercase;
 }
-.alert.high   { background: var(--danger-bg);  border-color: var(--danger);  color: var(--danger); }
-.alert.medium { background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
-.alert.info   { background: var(--info-bg);    border-color: var(--success); color: var(--success); }
-
-/* ── Chart containers ──────────────────────────────────────────────────────── */
-.chart-wrap { position: relative; width: 100%; height: 175px; }
-
-/* ── Goals ─────────────────────────────────────────────────────────────────── */
-.goal-sport { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 10px 0 4px; }
-.goal-sport:first-child { margin-top: 0; }
-.goal-item { font-size: .82rem; color: var(--text); padding: 6px 10px; background: var(--surface-2); border-radius: 6px; margin-bottom: 4px; }
-
-/* ── Footer ────────────────────────────────────────────────────────────────── */
-.footer { text-align: center; font-size: .65rem; color: var(--dim); padding: 6px 0; }
-
-/* ── Bottom sheet ──────────────────────────────────────────────────────────── */
-.backdrop {
-  position: fixed; inset: 0; z-index: 40;
-  background: rgba(0,0,0,.52); backdrop-filter: blur(2px);
-  opacity: 0; pointer-events: none; transition: opacity .25s;
+.week-tss {
+  font-size: .7rem; color: var(--muted);
+  white-space: nowrap;
 }
-.backdrop.open { opacity: 1; pointer-events: auto; }
-
-.sheet {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
-  background: var(--surface); border-top: 1px solid var(--border);
-  border-radius: 20px 20px 0 0;
-  max-height: 85dvh; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding-bottom: env(safe-area-inset-bottom, 16px);
-  transform: translateY(100%);
-  transition: transform .3s cubic-bezier(.32,.72,0,1);
-  will-change: transform;
+.sessions-list {
+  display: flex; flex-direction: column;
+  border-left: 2px solid var(--border);
+  margin-left: 6px;
 }
-.sheet.open { transform: translateY(0); }
-
-.sheet-handle {
-  width: 40px; height: 4px; background: var(--border);
-  border-radius: 2px; margin: 12px auto 2px;
+.session-row {
+  display: flex; gap: 0; cursor: pointer;
+  transition: background .1s;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  position: relative;
 }
-.sheet-inner { padding: 2px 20px 28px; }
+.session-row:hover { background: var(--surface-2); }
+.session-timeline {
+  width: 22px; flex-shrink: 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 12px;
+  position: relative;
+}
+.session-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--dim); flex-shrink: 0; margin-top: 1px;
+  position: relative; z-index: 1;
+}
+.session-row.today .session-dot { background: var(--accent); }
+.session-row.rest  .session-dot { background: var(--dim); }
+.session-body {
+  flex: 1; padding: 9px 8px 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.session-row:last-child .session-body { border-bottom: none; }
+.session-head {
+  display: flex; align-items: center; gap: 6px;
+}
+.session-day {
+  font-family: var(--font-display);
+  font-size: .75rem; font-weight: 700; color: var(--muted);
+  letter-spacing: .06em; text-transform: uppercase; min-width: 28px;
+}
+.session-row.today .session-day { color: var(--accent); }
+.session-row.past  { opacity: .55; }
+.today-badge {
+  font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--accent-bg); color: var(--accent);
+  padding: 1px 5px; border-radius: 2px;
+}
+.session-type-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.sport-run   { background: var(--run); }
+.sport-ride  { background: var(--ride); }
+.sport-rest  { background: var(--dim); }
+.sport-race  { background: var(--danger); }
+.sport-other { background: var(--muted); }
 
-.sh-date  { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 4px; }
-.sh-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-.sh-ptag  { display: inline-block; font-size: .65rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; color: #fff; margin-bottom: 14px; }
-
-.sh-override {
-  margin-bottom: 12px; font-size: .73rem; padding: 7px 10px;
-  border-radius: 6px; background: var(--warning-bg); color: var(--warning);
+/* Race session badge in week view */
+.race-session-badge {
+  font-family: var(--font-display);
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 1px 5px; border: 1px solid; border-radius: 3px;
+  flex-shrink: 0;
+}
+.session-title {
+  font-size: .8rem; font-weight: 500; color: var(--text);
+  flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.session-tss {
+  font-family: var(--font-display);
+  font-size: .8rem; font-weight: 600; color: var(--muted);
+  white-space: nowrap;
+}
+.session-detail {
+  font-size: .7rem; color: var(--muted); margin-top: 3px; line-height: 1.4;
 }
 
-.sh-detail { font-size: .83rem; line-height: 1.72; color: var(--text); }
-.sh-detail strong { font-weight: 700; }
-.sh-detail em { font-style: italic; }
-.sh-detail code { font-family: monospace; font-size: .8em; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
-
-.sh-divider { height: 1px; background: var(--border); margin: 16px 0; }
-
-.fb-block { background: var(--surface-2); border-radius: var(--radius-sm); padding: 12px; }
-.fb-lbl   { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
-.fb-row   { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.fb-rpe   { font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid; }
-.fb-felt  { font-size: .78rem; padding: 4px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
-.fb-notes { font-size: .8rem; color: var(--muted); line-height: 1.55; margin-top: 8px; }
-
-/* ── Recent runs table ──────────────────────────────────────────────────────── */
+/* ── Recent runs table ────────────────────────────────────────────────────────── */
 .runs-table {
-  width: 100%; border-collapse: collapse; font-size: .78rem;
+  width: 100%; border-collapse: collapse;
+  font-size: .75rem;
 }
 .runs-table th {
-  text-align: right; font-size: .6rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--muted); padding: 0 4px 6px;
+  font-family: var(--font-display);
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: right; padding: 0 6px 8px;
+  border-bottom: 1px solid var(--border);
 }
 .runs-table th:first-child { text-align: left; }
 .runs-table td {
-  text-align: right; padding: 5px 4px; border-top: 1px solid var(--border);
-  color: var(--text); font-variant-numeric: tabular-nums;
+  padding: 6px 6px; text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
 }
-.runs-table td:first-child { text-align: left; color: var(--muted); }
-.runs-table td.run-name { color: var(--text); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rtss-p { color: #22c55e; font-weight: 600; }
-.rtss-delta { font-size: .7rem; color: var(--muted); }
-.rtss-delta.up { color: #f59e0b; }
+.runs-table tr:last-child td { border-bottom: none; }
+.runs-table td:first-child { text-align: left; }
+.rtss-p { color: var(--success); font-weight: 500; }
+.rtss-delta { color: var(--muted); }
+.rtss-delta.up { color: var(--success); }
+.run-name { max-width: 130px; }
 
-/* Markdown tables (rendered inside session/race-card prose) */
-.md-table {
-  width: 100%; border-collapse: collapse; font-size: .78rem;
-  margin: 8px 0; background: var(--card-bg, transparent);
+/* ── Goals ───────────────────────────────────────────────────────────────────── */
+.goal-sport {
+  font-family: var(--font-display);
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 4px; margin-top: 8px;
 }
-.md-table th, .md-table td {
-  padding: 5px 8px; border: 1px solid var(--border);
-  text-align: left; font-variant-numeric: tabular-nums;
+.goal-sport:first-child { margin-top: 0; }
+.goal-item {
+  font-size: .78rem; color: var(--text);
+  padding: 4px 0; border-bottom: 1px solid var(--border);
+  line-height: 1.4;
 }
-.md-table th {
-  font-size: .65rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .06em; color: var(--muted); background: rgba(127,127,127,.06);
-}
-.md-table tr:nth-child(even) td { background: rgba(127,127,127,.03); }
+.goal-item:last-child { border-bottom: none; }
 
-/* ── Race cards ─────────────────────────────────────────────────────────── */
-.race-card {
-  font-size: .9rem; color: var(--text);
+/* ── Bottom sheet ────────────────────────────────────────────────────────────── */
+.sheet-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 40;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(2px);
 }
-.race-head {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 12px; margin-bottom: 14px;
-  border-bottom: 1px solid var(--border); padding-bottom: 10px;
+.sheet-backdrop.open { display: block; }
+.bottom-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+  max-width: 600px; margin: 0 auto;
+  background: var(--surface); border-top: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  padding: 0 var(--gap) calc(var(--gap) + env(safe-area-inset-bottom, 0px));
+  transform: translateY(100%); transition: transform .25s ease;
+  max-height: 80dvh; overflow-y: auto;
 }
-.race-prio-tag {
-  display: inline-block; font-size: .65rem; font-weight: 800;
-  letter-spacing: .1em; padding: 2px 8px; border-radius: 999px;
-  background: var(--border); color: var(--muted); margin-bottom: 4px;
+.bottom-sheet.open { transform: translateY(0); }
+.sheet-handle {
+  width: 36px; height: 4px; border-radius: 2px;
+  background: var(--dim); margin: 10px auto 14px;
 }
-.race-prio-A .race-prio-tag { background: #dc2626; color: #fff; }
-.race-prio-B .race-prio-tag { background: #d97706; color: #fff; }
-.race-prio-C .race-prio-tag { background: #6b7280; color: #fff; }
-.race-title { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
-.race-meta { color: var(--muted); font-size: .8rem; margin-top: 4px; }
-.race-summary { margin-top: 8px; font-size: .88rem; color: var(--text); }
-.race-print-link {
-  flex-shrink: 0; font-size: .75rem; color: var(--muted);
-  text-decoration: none; padding: 4px 10px; border: 1px solid var(--border);
-  border-radius: 6px; white-space: nowrap;
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 700; letter-spacing: .02em;
+  color: var(--text); margin-bottom: 4px;
 }
-.race-print-link:hover { color: var(--text); border-color: var(--text); }
-.race-section { margin: 16px 0; }
-.race-section h3 {
-  margin: 0 0 8px; font-size: .72rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+.sheet-sub {
+  font-size: .75rem; color: var(--muted); margin-bottom: 14px;
 }
-.race-bullets { margin: 0; padding-left: 20px; }
-.race-bullets li { margin: 4px 0; }
-.race-prose { font-size: .88rem; line-height: 1.45; }
-.race-table-wrap { overflow-x: auto; }
-.race-protocols { display: grid; gap: 8px; grid-template-columns: 1fr; }
-.race-protocol {
-  padding: 10px 12px; border: 1px solid var(--border);
-  border-left: 3px solid #6366f1; border-radius: 6px;
-  background: rgba(127,127,127,.04);
-}
-.rp-title { font-weight: 700; font-size: .85rem; margin-bottom: 4px; }
-.rp-body { font-size: .82rem; line-height: 1.4; color: var(--text); }
-.kv-block { display: grid; gap: 4px 12px; grid-template-columns: max-content 1fr; }
-.kv-key {
-  font-size: .7rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .06em; color: var(--muted); padding-top: 2px;
-}
-.kv-val { font-size: .85rem; line-height: 1.4; }
-.kv-val pre {
-  margin: 0; padding: 6px 8px; background: rgba(127,127,127,.06);
-  border-radius: 4px; font-size: .75rem; overflow-x: auto; white-space: pre-wrap;
-}
+.sheet-body { font-size: .8rem; color: var(--text); line-height: 1.6; }
+.sheet-body strong { color: var(--text); font-weight: 600; }
+.sheet-body em { font-style: italic; color: var(--muted); }
+.sheet-body code { font-size: .75em; background: var(--surface-2); padding: 1px 4px; border-radius: 3px; }
+.sheet-body br { display: block; margin-bottom: .1em; }
+.sheet-body s { text-decoration: line-through; opacity: .5; }
 
-/* Full-page race view */
+/* Markdown table inside sheet */
+.sheet-body .md-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .75rem; margin: 8px 0;
+}
+.sheet-body .md-table th {
+  font-family: var(--font-display);
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: left; padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.sheet-body .md-table td {
+  padding: 5px 8px; border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.sheet-body .md-table tr:last-child td { border-bottom: none; }
+
+/* ── Race full-page ───────────────────────────────────────────────────────────── */
 #race-page {
-  max-width: 800px; margin: 0 auto; padding: 20px;
-  background: var(--bg); color: var(--text);
+  position: fixed; inset: 0; z-index: 60;
+  background: var(--bg); overflow-y: auto;
+  display: none;
 }
-.race-page-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px;
+#race-page.open { display: block; }
+.race-hdr {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 var(--gap); height: var(--hdr);
 }
 .race-back {
-  text-decoration: none; color: var(--muted); font-size: .85rem;
+  background: none; border: none; color: var(--accent);
+  font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500;
+  cursor: pointer; padding: 4px 0; display: flex; align-items: center; gap: 4px;
+  transition: opacity .15s;
 }
-.race-print-btn {
-  background: var(--text); color: var(--bg); border: 0;
-  padding: 6px 14px; border-radius: 6px; font-weight: 600; cursor: pointer;
+.race-back:hover { opacity: .75; }
+.race-hdr-title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 700; letter-spacing: .02em; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-body.race-page-mode > main,
-body.race-page-mode > header,
-body.race-page-mode > .backdrop,
-body.race-page-mode > .sheet { display: none !important; }
+.race-content {
+  max-width: 600px; margin: 0 auto;
+  padding: var(--gap);
+  padding-bottom: calc(var(--gap) * 2 + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 10px;
+}
+.race-section { margin-bottom: 2px; }
+.race-section-title {
+  font-family: var(--font-display);
+  font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+.race-section-body { font-size: .8rem; color: var(--text); line-height: 1.6; }
+.race-section-body strong { font-weight: 600; }
+.race-section-body em { font-style: italic; color: var(--muted); }
+.race-section-body code { font-size: .75em; background: var(--surface-2); padding: 1px 4px; border-radius: 3px; }
+.race-section-body s { text-decoration: line-through; opacity: .5; }
+.race-section-body .md-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .75rem; margin: 8px 0;
+}
+.race-section-body .md-table th {
+  font-family: var(--font-display);
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: left; padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.race-section-body .md-table td {
+  padding: 5px 8px; border-bottom: 1px solid var(--border); color: var(--text);
+}
+.race-section-body .md-table tr:last-child td { border-bottom: none; }
+.race-empty { font-size: .78rem; color: var(--dim); font-style: italic; }
 
-/* Print-optimized */
-@media print {
-  body { background: #fff !important; color: #000 !important; }
-  body * { visibility: hidden; }
-  #race-page, #race-page * { visibility: visible; }
-  #race-page { position: absolute; inset: 0; max-width: none; padding: 12mm; }
-  .race-page-bar, .race-print-link { display: none !important; }
-  .race-card { font-size: 10pt; }
-  .race-section { page-break-inside: avoid; }
-  .md-table { border-collapse: collapse; }
-  .md-table th, .md-table td { border: 1px solid #999; }
-}
+/* Race section structured renderers */
+.race-list { margin: 4px 0 0 0; padding-left: 1.1rem; }
+.race-list li { margin-bottom: 4px; }
+.race-obj { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.race-obj:last-child { border-bottom: none; }
+.race-obj-key { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); white-space: nowrap; }
+.race-obj-val { font-size: .78rem; color: var(--text); }
+.race-dl { margin: 4px 0 0 0; }
+.race-dl-row { display: flex; gap: 8px; padding: 3px 0; border-bottom: 1px solid var(--border); }
+.race-dl-row:last-child { border-bottom: none; }
+.race-dl dt { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); min-width: 90px; flex-shrink: 0; padding-top: 2px; }
+.race-dl dd { font-size: .78rem; color: var(--text); margin: 0; }
 
-/* ── Desktop ────────────────────────────────────────────────────────────────── */
-@media (min-width: 600px) {
-  main { padding: 20px; gap: 12px; }
-  .chart-wrap { height: 210px; }
-  .fit-grid { gap: 12px; }
-  .fit-val { font-size: 1.6rem; }
+/* Race hero card */
+.race-hero { margin-bottom: 2px; }
+.race-hero-inner {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.race-hero-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 700; letter-spacing: .02em;
+  color: var(--text); line-height: 1.2; margin-bottom: 6px;
+}
+.race-hero-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  font-size: .75rem; color: var(--muted);
+}
+.race-hero-pri {
+  font-family: var(--font-display);
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 2px 6px; border: 1px solid; border-radius: 3px;
+}
+.race-hero-goal { color: var(--text); font-weight: 500; }
+.race-hero-countdown {
+  text-align: center; flex-shrink: 0;
+}
+.race-hero-days {
+  font-family: var(--font-display);
+  font-size: 2.2rem; font-weight: 700; line-height: 1;
+}
+.race-hero-unit {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--muted); margin-top: 2px;
+}
+.race-hero-summary {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: .8rem; color: var(--text); line-height: 1.6;
 }
 </style>
 </head>
 <body>
 
 <header>
-  <span class="logo">coachctl</span>
-  <span class="hdr-title" id="hdr-title"></span>
-  <button class="sync-btn" id="sync-btn">
-    <span class="btn-label">Refresh</span>
-    <span class="btn-sub">reload from DB</span>
+  <div class="logo">
+    <span class="logo-mark"></span>coachctl
+  </div>
+  <div class="hdr-title" id="hdr-title">—</div>
+  <button class="sync-btn" id="sync-btn" title="Sync activities">
+    <span class="sync-icon">↻</span>
   </button>
 </header>
 
-<main id="main">
-  <div class="state-loading" id="state-loading">
+<!-- Loading -->
+<main id="loading-state">
+  <div class="state-loading">
     <div class="spinner"></div>
-    <span>Loading training data...</span>
-  </div>
-
-  <div id="dashboard" class="hidden">
-
-    <!-- Goal event cards -->
-    <div class="events-strip" id="events-strip"></div>
-
-    <!-- Phase timeline -->
-    <div class="card" id="phase-card">
-      <div class="lbl">Training Phase</div>
-      <div id="phase-content"></div>
-    </div>
-
-    <!-- Week navigator + sessions -->
-    <div class="card" id="week-card">
-      <div class="week-nav">
-        <button class="nav-btn" id="prev-btn">&#8592;</button>
-        <div class="week-ctr">
-          <div class="week-num" id="week-num"></div>
-          <div class="week-sub" id="week-sub"></div>
-        </div>
-        <button class="nav-btn" id="next-btn">&#8594;</button>
-      </div>
-      <div class="week-meta" id="week-meta"></div>
-      <div class="session-list" id="session-list"></div>
-    </div>
-
-    <!-- Fitness state -->
-    <div class="card" id="fitness-card">
-      <div class="lbl">Fitness State</div>
-      <div class="fit-grid" id="fit-grid"></div>
-      <div class="fit-grid fit-grid-2" id="fit-grid-mono" style="margin-top:8px"></div>
-      <div id="fit-date" class="fit-date"></div>
-      <div id="fit-alerts"></div>
-    </div>
-
-    <!-- Fitness trend chart -->
-    <div class="card">
-      <div class="lbl">CTL &nbsp;/&nbsp; ATL &nbsp;/&nbsp; Form</div>
-      <div class="chart-wrap"><canvas id="chart-fitness"></canvas></div>
-    </div>
-
-    <!-- Weekly load chart -->
-    <div class="card">
-      <div class="lbl">Weekly Training Load</div>
-      <div class="chart-wrap"><canvas id="chart-tss"></canvas></div>
-    </div>
-
-    <!-- Training Monotony chart -->
-    <div class="card">
-      <div class="lbl">Training Monotony &amp; Strain</div>
-      <div class="chart-wrap"><canvas id="chart-monotony"></canvas></div>
-    </div>
-
-    <!-- rTSS comparison chart -->
-    <div class="card" id="rtss-chart-card">
-      <div class="lbl">Weekly Run Load &mdash; Pace vs Power rTSS</div>
-      <div class="chart-wrap"><canvas id="chart-rtss"></canvas></div>
-    </div>
-
-    <!-- Recent runs table -->
-    <div class="card" id="recent-runs-card">
-      <div class="lbl">Recent Runs &mdash; rTSS vs rTSS<sub>P</sub></div>
-      <div id="recent-runs-table"></div>
-    </div>
-
-    <!-- Sport goals -->
-    <div class="card" id="goals-card">
-      <div class="lbl">Sport Goals</div>
-      <div id="goals-list"></div>
-    </div>
-
-    <div class="footer" id="footer"></div>
+    <span>Loading…</span>
   </div>
 </main>
 
+<!-- Main content -->
+<main id="main-content" class="hidden">
+
+  <!-- Phase bar -->
+  <div class="card" id="phase-card">
+    <div class="phase-wrap">
+      <div class="phase-meta">
+        <span class="phase-name" id="phase-name">—</span>
+        <span class="phase-detail" id="phase-detail"></span>
+      </div>
+      <div class="phase-track">
+        <div class="phase-fill" id="phase-fill" style="--pct: 0%"></div>
+      </div>
+      <div class="phase-sub" id="phase-sub"></div>
+    </div>
+  </div>
+
+  <!-- Current week — TODAY'S ACTIVITY FIRST -->
+  <div class="card" id="week-card">
+    <div class="card-title">This Week</div>
+    <div class="week-nav">
+      <button class="week-btn" id="week-prev">‹</button>
+      <span class="week-label" id="week-label">—</span>
+      <span class="week-tss" id="week-tss-label"></span>
+      <button class="week-btn" id="week-next">›</button>
+    </div>
+    <div class="sessions-list" id="sessions-list"></div>
+  </div>
+
+  <!-- Upcoming races -->
+  <div id="events-strip" class="events-strip"></div>
+
+  <!-- Fitness pills -->
+  <div class="card" id="fitness-card">
+    <div class="card-title">Fitness</div>
+    <div class="fit-pills" id="fit-pills"></div>
+    <div id="fit-alerts"></div>
+  </div>
+
+  <!-- Fitness chart + Weekly TSS — grouped: both answer "load trend?" -->
+  <div class="card" id="fitness-chart-card">
+    <div class="card-title">CTL · ATL · Form</div>
+    <div class="chart-wrap"><canvas id="chart-fitness"></canvas></div>
+    <div class="mono-row" id="mono-row"></div>
+  </div>
+
+  <div class="card" id="tss-chart-card">
+    <div class="card-title">Weekly Load (TSS)</div>
+    <div class="chart-wrap"><canvas id="chart-tss"></canvas></div>
+  </div>
+
+  <!-- Monotony / Strain — load quality, after load volume -->
+  <div class="card hidden" id="mono-chart-card">
+    <div class="card-title">Monotony · Strain</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="chart-monotony"></canvas></div>
+  </div>
+
+  <!-- Zone distribution -->
+  <div class="card hidden" id="zones-card">
+    <div class="card-title">Zone Distribution (8w)</div>
+    <div class="zone-bar" id="zone-bar"></div>
+    <div class="zone-legend" id="zone-legend"></div>
+  </div>
+
+  <!-- Running specifics — grouped -->
+  <div class="card hidden" id="rtss-chart-card">
+    <div class="card-title">Running Load (rTSS)</div>
+    <div class="chart-wrap"><canvas id="chart-rtss"></canvas></div>
+  </div>
+
+  <div class="card hidden" id="recent-runs-card">
+    <div class="card-title">Recent Runs</div>
+    <div id="recent-runs-table"></div>
+  </div>
+
+  <!-- Goals -->
+  <div class="card hidden" id="goals-card">
+    <div class="card-title">Goals</div>
+    <div id="goals-list"></div>
+  </div>
+
+</main>
+
+<!-- Error state -->
+<div id="error-state" class="state-error hidden"></div>
+
 <!-- Bottom sheet -->
-<div class="backdrop" id="backdrop"></div>
-<div class="sheet"    id="sheet">
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="bottom-sheet" id="bottom-sheet">
   <div class="sheet-handle"></div>
-  <div class="sheet-inner" id="sheet-inner"></div>
+  <div class="sheet-title" id="sheet-title"></div>
+  <div class="sheet-sub"   id="sheet-sub"></div>
+  <div class="sheet-body"  id="sheet-body"></div>
 </div>
 
-<!-- Full-page race card (shown only when route matches #race/<slug>) -->
-<div id="race-page" style="display:none"></div>
+<!-- Race full-page -->
+<div id="race-page">
+  <div class="race-hdr">
+    <button class="race-back" id="race-back">← Back</button>
+    <div class="race-hdr-title" id="race-hdr-title"></div>
+  </div>
+  <div class="race-content" id="race-content"></div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3/dist/chartjs-plugin-annotation.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 <script>
 'use strict';
 
-// ── Constants ────────────────────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────────────────
 
-const PHASE_COLORS = ['#6366f1','#0891b2','#16a34a','#d97706','#dc2626','#7c3aed','#db2777'];
+let DATA       = null;
+let weekOffset = 0;
+let chartFit   = null;
+let chartTss   = null;
+let chartMono  = null;
+let chartRtss  = null;
+const isDark   = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-// ── State ────────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-let DATA        = null;
-let curWeek     = 1;
-let chartFit    = null;
-let chartTss    = null;
-let chartMono   = null;
-let chartRtss   = null;
-let isDark      = window.matchMedia('(prefers-color-scheme: dark)').matches;
+// Today from fitness.date (most reliable) or system clock
+function today() {
+  return (DATA && DATA.fitness && DATA.fitness.date)
+    ? DATA.fitness.date
+    : new Date().toISOString().slice(0, 10);
+}
 
-// ── Boot ─────────────────────────────────────────────────────────────────────
+// Race events from calendar (have slug + payload)
+function raceEvents() {
+  return (DATA && DATA.calendar ? DATA.calendar : []).filter(e => e.kind === 'race');
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetchData();
-  document.getElementById('sync-btn') .addEventListener('click', doSync);
-  document.getElementById('prev-btn') .addEventListener('click', () => stepWeek(-1));
-  document.getElementById('next-btn') .addEventListener('click', () => stepWeek(+1));
-  document.getElementById('backdrop') .addEventListener('click', closeSheet);
-  window.addEventListener('hashchange', handleRoute);
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    isDark = e.matches;
-    if (DATA) { renderFitnessChart(); renderTssChart(); renderMonotonyChart(); renderRtssChart(); }
-  });
-});
+// ── Boot ──────────────────────────────────────────────────────────────────────
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+loadData();
 
-async function fetchData() {
-  show('state-loading'); hide('dashboard');
+async function loadData() {
   try {
     const r = await fetch('/api/data');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    DATA    = await r.json();
-    if (DATA.error) throw new Error(DATA.error);
-    curWeek = DATA.plan.current_week || 1;
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    DATA = await r.json();
+    show('main-content');
+    hide('loading-state');
     renderAll();
-    handleRoute();
-  } catch(e) {
-    document.getElementById('state-loading').innerHTML =
-      `<div class="state-error">Could not load data: ${esc(e.message)}</div>`;
+  } catch (e) {
+    hide('loading-state');
+    const errEl = document.getElementById('error-state');
+    errEl.textContent = 'Failed to load data: ' + e.message;
+    errEl.classList.remove('hidden');
   }
 }
 
-async function doSync() {
-  const btn   = document.getElementById('sync-btn');
-  const label = btn.querySelector('.btn-label');
-  const sub   = btn.querySelector('.btn-sub');
+// ── Sync button ────────────────────────────────────────────────────────────── 
 
+document.getElementById('sync-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('sync-btn');
   btn.classList.add('loading');
-  label.textContent = 'Refreshing...';
-  sub.textContent   = 'reading database';
-
-  let ok = false;
   try {
-    const r = await fetch('/refresh', { method: 'POST' });
-    ok = r.ok;
-    await fetchData();
-  } catch(_) { ok = false; }
+    await fetch('/refresh', { method: 'POST' });
+    const r = await fetch('/api/data');
+    if (!r.ok) throw new Error();
+    DATA = await r.json();
+    renderAll();
+    btn.classList.remove('loading');
+    btn.classList.add('ok');
+    setTimeout(() => btn.classList.remove('ok'), 2000);
+  } catch {
+    btn.classList.remove('loading');
+    btn.classList.add('err');
+    setTimeout(() => btn.classList.remove('err'), 2000);
+  }
+});
 
-  btn.classList.remove('loading');
-  btn.classList.add(ok ? 'ok' : 'err');
-  label.textContent = ok ? 'Done'  : 'Error';
-  sub.textContent   = ok ? 'up to date' : 'check logs';
+// ── Hash routing (race page) ───────────────────────────────────────────────── 
 
-  setTimeout(() => {
-    btn.classList.remove('ok', 'err');
-    label.textContent = 'Refresh';
-    sub.textContent   = 'reload from DB';
-  }, 2000);
+window.addEventListener('hashchange', routeHash);
+document.getElementById('race-back').addEventListener('click', () => { history.back(); });
+
+function routeHash() {
+  const hash = location.hash;
+  const racePage = document.getElementById('race-page');
+  if (hash.startsWith('#race/') && DATA) {
+    const slug = hash.slice(6);
+    const ev = raceEvents().find(e => e.slug === slug);
+    if (ev) { openRacePage(ev); return; }
+  }
+  racePage.classList.remove('open');
 }
 
-// ── Render all ───────────────────────────────────────────────────────────────
+function openRacePage(ev) {
+  document.getElementById('race-hdr-title').textContent = ev.name;
+  const content = document.getElementById('race-content');
+  content.innerHTML = '';
+  const payload = ev.payload || {};
+
+  // Priority colour
+  const evPri = payload.priority || ev.priority || 'C';
+  const priColor = evPri === 'A' ? 'var(--danger)' : evPri === 'B' ? 'var(--accent)' : 'var(--muted)';
+
+  // Hero header card — always shown
+  const daysOut = ev.days_out != null ? ev.days_out : Math.round(
+    (new Date(ev.date + 'T00:00:00') - new Date(today() + 'T00:00:00')) / 86400000
+  );
+  const countdownTxt = daysOut < 0 ? `${Math.abs(daysOut)} days ago`
+    : daysOut === 0 ? 'Today'
+    : `${daysOut} days out`;
+
+  const goalObj = payload.goal || {};
+  const goalTime = typeof goalObj === 'object'
+    ? (goalObj.target_time || goalObj.goal_time || '')
+    : (typeof goalObj === 'string' ? goalObj : '');
+
+  const heroCard = document.createElement('div');
+  heroCard.className = 'race-section card race-hero';
+  heroCard.innerHTML = `
+    <div class="race-hero-inner">
+      <div>
+        <div class="race-hero-name">${esc(ev.name)}</div>
+        <div class="race-hero-meta">
+          <span>${fmtDate(ev.date)}</span>
+          <span class="race-hero-pri" style="color:${priColor};border-color:${priColor}">Priority ${esc(evPri)}</span>
+          ${goalTime ? `<span class="race-hero-goal">🎯 ${esc(goalTime)}</span>` : ''}
+        </div>
+      </div>
+      <div class="race-hero-countdown" style="color:${priColor}">
+        <div class="race-hero-days">${daysOut < 0 ? Math.abs(daysOut) : daysOut}</div>
+        <div class="race-hero-unit">${daysOut < 0 ? 'days ago' : daysOut === 0 ? 'today' : 'days out'}</div>
+      </div>
+    </div>
+    ${ev.summary ? `<div class="race-hero-summary">${mdToHtml(ev.summary)}</div>` : ''}`;
+  content.appendChild(heroCard);
+
+  // Render a race card section value as readable HTML
+  function renderSectionValue(body) {
+    if (!body) return '';
+    // Plain string — just render as markdown
+    if (typeof body === 'string') return mdToHtml(body);
+    // Array of strings → bullet list
+    if (Array.isArray(body) && body.every(i => typeof i === 'string')) {
+      return '<ul class="race-list">' + body.map(i => `<li>${mdToHtml(i)}</li>`).join('') + '</ul>';
+    }
+    // Array of objects → each object as a definition block
+    if (Array.isArray(body)) {
+      return body.map(item => {
+        if (typeof item !== 'object' || !item) return mdToHtml(String(item));
+        return '<div class="race-obj">' +
+          Object.entries(item)
+            .filter(([, v]) => v != null && String(v).trim())
+            .map(([k, v]) => `<span class="race-obj-key">${esc(k.replace(/_/g,' '))}</span> <span class="race-obj-val">${esc(String(v))}</span>`)
+            .join('') +
+          '</div>';
+      }).join('');
+    }
+    // Plain object → key: value list (skip empty values)
+    if (typeof body === 'object') {
+      const entries = Object.entries(body).filter(([, v]) => v != null && String(v).trim());
+      if (!entries.length) return '';
+      return '<dl class="race-dl">' +
+        entries.map(([k, v]) =>
+          `<div class="race-dl-row"><dt>${esc(k.replace(/_/g,' '))}</dt><dd>${mdToHtml(String(v))}</dd></div>`
+        ).join('') +
+        '</dl>';
+    }
+    return mdToHtml(String(body));
+  }
+  const RACE_CARD_KEYS = ['course','key_principles','pacing','climbs','warmup','nutrition','logistics','kit','protocols','yoy','readiness_gate'];
+  const RACE_CARD_LABELS = {
+    course: 'Course', key_principles: 'Key Principles', pacing: 'Pacing',
+    climbs: 'Climbs', warmup: 'Warmup', nutrition: 'Nutrition',
+    logistics: 'Logistics', kit: 'Kit', protocols: 'Protocols',
+    yoy: 'Year-on-Year', readiness_gate: 'Readiness Gate',
+  };
+
+  // Goal section (object with multiple fields)
+  if (goalObj && typeof goalObj === 'object') {
+    const goalLines = Object.entries(goalObj)
+      .filter(([, v]) => v != null && String(v).trim())
+      .map(([k, v]) => `**${k.replace(/_/g,' ')}**: ${v}`)
+      .join('\n');
+    if (goalLines) {
+      const sec = document.createElement('div');
+      sec.className = 'race-section card';
+      sec.innerHTML = `<div class="race-section-title">Goal</div>
+        <div class="race-section-body">${mdToHtml(goalLines)}</div>`;
+      content.appendChild(sec);
+    }
+  } else if (goalObj && typeof goalObj === 'string' && goalObj.trim()) {
+    const sec = document.createElement('div');
+    sec.className = 'race-section card';
+    sec.innerHTML = `<div class="race-section-title">Goal</div>
+      <div class="race-section-body">${mdToHtml(goalObj)}</div>`;
+    content.appendChild(sec);
+  }
+
+  RACE_CARD_KEYS.forEach(key => {
+    const body = payload[key];
+    if (body == null) return;
+    const rendered = renderSectionValue(body);
+    if (!rendered || !rendered.trim()) return;
+    const sec = document.createElement('div');
+    sec.className = 'race-section card';
+    sec.innerHTML = `<div class="race-section-title">${esc(RACE_CARD_LABELS[key] || key)}</div>
+      <div class="race-section-body">${rendered}</div>`;
+    content.appendChild(sec);
+  });
+
+  // Empty state (only hero was added)
+  if (content.children.length === 1) {
+    const empty = document.createElement('div');
+    empty.className = 'race-section card';
+    empty.innerHTML = `<p class="race-empty">No race card sections filled in yet.<br>
+      <span style="color:var(--muted);font-size:.8rem">Use the coach agent to build a race card for this event.</span></p>`;
+    content.appendChild(empty);
+  }
+
+  document.getElementById('race-page').classList.add('open');
+}
+
+// ── Bottom sheet ───────────────────────────────────────────────────────────── 
+
+const backdrop = document.getElementById('sheet-backdrop');
+const sheet    = document.getElementById('bottom-sheet');
+backdrop.addEventListener('click', closeSheet);
+
+function openSheet(title, sub, body) {
+  document.getElementById('sheet-title').textContent = title;
+  document.getElementById('sheet-sub').textContent   = sub || '';
+  document.getElementById('sheet-body').innerHTML    = body || '';
+  sheet.classList.add('open');
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSheet() {
+  sheet.classList.remove('open');
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Render all ─────────────────────────────────────────────────────────────── 
 
 function renderAll() {
-  hide('state-loading'); show('dashboard');
-  const t = DATA.plan.title || '';
-  document.getElementById('hdr-title').textContent = t;
-  document.title = t ? 'coachctl — ' + t : 'coachctl';
-
-  renderEvents();
+  weekOffset = 0;
+  renderHeader();
   renderPhase();
-  renderWeek(curWeek);
+  renderEvents();
   renderFitness();
+  renderWeek();
+  renderZones();
   renderFitnessChart();
   renderTssChart();
   renderMonotonyChart();
   renderRtssChart();
   renderRecentRuns();
   renderGoals();
-
-  const ts = DATA.generated_at ? new Date(DATA.generated_at) : null;
-  document.getElementById('footer').textContent = ts
-    ? 'Updated ' + ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : '';
-}
-
-// ── Events ───────────────────────────────────────────────────────────────────
-
-function renderEvents() {
-  const strip = document.getElementById('events-strip');
-  strip.innerHTML = '';
-  // Prefer the unified calendar (events table); fall back to legacy yaml events.
-  const races = racesList();
-  const source = races.length
-    ? races.map(r => ({
-        name: r.name, date: r.date, days_out: r.days_out,
-        priority: (r.payload && r.payload.priority) || 'C',
-        goal_time: (r.payload && r.payload.goal && (r.payload.goal.target_time || r.payload.goal.primary_time || r.payload.goal.target_time_raw)) || '',
-        slug: r.slug,
-      }))
-    : (DATA.events || []);
-  source.forEach(ev => {
-    const days = ev.days_out;
-    const daysStr = days == null ? ''
-      : days === 0 ? 'Today'
-      : days === 1 ? '1 day'
-      : days < 0  ? Math.abs(days) + ' days ago'
-      : days + ' days';
-    const card = el('div', `ev-card p${ev.priority}`);
-    card.innerHTML = `
-      <div class="ev-prio">${esc(ev.priority)}-Race</div>
-      <div class="ev-name">${esc(ev.name)}</div>
-      <div class="ev-date">${days == null ? '' : 'in <strong>' + esc(daysStr) + '</strong> &bull; '}${fmtDate(ev.date)}</div>
-      ${ev.goal_time ? `<div class="ev-goal">Goal ${esc(ev.goal_time)}</div>` : ''}
-    `;
-    if (ev.slug) {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', () => {
-        const race = raceBySlug(ev.slug);
-        if (race) openRaceCardSheet(race);
-      });
-    }
-    strip.appendChild(card);
+  // stagger card entrance
+  document.querySelectorAll('#main-content .card').forEach((c, i) => {
+    c.style.animationDelay = `${i * 0.04}s`;
   });
+  routeHash();
 }
 
-// ── Phase timeline ────────────────────────────────────────────────────────────
+// ── Header ────────────────────────────────────────────────────────────────── 
+
+function renderHeader() {
+  const plan = DATA.plan || {};
+  // plan.title is the field name in the actual data
+  const title = plan.title || plan.name || '';
+  document.getElementById('hdr-title').textContent = title || 'No plan loaded';
+}
+
+// ── Phase bar ─────────────────────────────────────────────────────────────── 
 
 function renderPhase() {
-  const phases  = DATA.phases || [];
-  const total   = DATA.plan.total_weeks;
-  const content = document.getElementById('phase-content');
+  const phases = DATA.phases || [];
+  const plan   = DATA.plan   || {};
+  const t      = today();
 
   if (!phases.length) { hide('phase-card'); return; }
   show('phase-card');
 
-  const activeIdx = phases.findIndex(p => curWeek >= p.start_week && curWeek <= p.end_week);
-  const active    = phases[activeIdx] || phases[0];
-  const activePct = Math.min(100, ((curWeek - active.start_week + 1) / active.week_count * 100)).toFixed(1);
-
-  // Bar
-  let barHtml = '<div class="phase-bar">';
-  phases.forEach((ph, i) => {
-    const col    = PHASE_COLORS[i % PHASE_COLORS.length];
-    const isAct  = i === activeIdx;
-    const fill   = isAct ? `<div class="phase-seg-fill" style="width:${activePct}%;background:${col}"></div>` : '';
-    barHtml += `<div class="phase-seg ${isAct ? '' : 'dim'}"
-      style="flex:${ph.week_count};background:${col}20;border:1px solid ${col}44"
-      title="${esc(ph.name)} W${ph.start_week}–W${ph.end_week}">${fill}</div>`;
-  });
-  barHtml += '</div>';
-
-  const col = PHASE_COLORS[activeIdx % PHASE_COLORS.length];
-  const wInPhase  = curWeek - active.start_week + 1;
-  content.innerHTML = barHtml + `
-    <div class="phase-info">
-      <span class="phase-name" style="color:${col}">${esc(active.name)}</span>
-      <span class="phase-sub">week ${wInPhase} of ${active.week_count} &bull; overall W${curWeek} / W${total}</span>
-    </div>`;
-}
-
-// ── Week calendar ─────────────────────────────────────────────────────────────
-
-function stepWeek(d) {
-  const total = DATA.plan.total_weeks;
-  curWeek = Math.max(1, Math.min(total, curWeek + d));
-  renderWeek(curWeek);
-  renderPhase();
-}
-
-function renderWeek(n) {
-  const week  = DATA.plan.weeks.find(w => w.number === n);
-  if (!week) return;
-  const total = DATA.plan.total_weeks;
-
-  document.getElementById('prev-btn').disabled = n <= 1;
-  document.getElementById('next-btn').disabled = n >= total;
-  document.getElementById('week-num').textContent = `Week ${n} of ${total}`;
-  document.getElementById('week-sub').textContent = week.title || '';
-
-  const phaseIdx = (DATA.phases || []).findIndex(p => n >= p.start_week && n <= p.end_week);
-  const phase    = DATA.phases[phaseIdx] || null;
-  const pColor   = phase ? PHASE_COLORS[phaseIdx % PHASE_COLORS.length] : '#6366f1';
-
-  const meta = document.getElementById('week-meta');
-  meta.innerHTML = '';
-  if (phase) {
-    const tag = el('span', 'phase-tag');
-    tag.style.background = pColor;
-    tag.textContent = phase.name;
-    meta.appendChild(tag);
-  }
-  if (week.target_tss) {
-    const t = el('span', 'tss-target');
-    t.textContent = `Target TSS: ${week.target_tss}`;
-    meta.appendChild(t);
+  // Phases have start_week / end_week (week numbers), not dates.
+  // Derive dates from plan.period or plan.weeks[].
+  // plan.period is e.g. "2026-04-18 – 2026-09-19" (with en-dash U+2013)
+  // Also handle double-encoded form: "2026-04-18 â€" 2026-09-19"
+  let planStart = null;
+  if (plan.period) {
+    // Match the first ISO date in the string (handles any separator)
+    const m = plan.period.match(/(\d{4}-\d{2}-\d{2})/);
+    planStart = m ? m[1] : null;
   }
 
-  const list  = document.getElementById('session-list');
-  list.innerHTML = '';
-  const today = new Date().toISOString().slice(0, 10);
+  function phaseDate(weekNum) {
+    if (!planStart) return null;
+    const d = new Date(planStart + 'T00:00:00');
+    d.setDate(d.getDate() + weekNum * 7);
+    return d.toISOString().slice(0, 10);
+  }
 
-  (week.sessions || []).forEach(s => {
-    const isRest = /^rest$/i.test(s.name.trim());
-    const isPast = s.date && s.date < today;
+  const active = phases.find(p => {
+    const s = phaseDate(p.start_week);
+    const e = phaseDate((p.end_week || p.start_week) + 1); // end of last week
+    return s && e && t >= s && t < e;
+  }) || phases[0];
 
-    const row = el('div', 'sess'
-      + (isRest       ? ' rest'  : '')
-      + (s.completed  ? ' done'  : '')
-      + (!s.completed && isPast && !isRest ? ' stale' : ''));
+  document.getElementById('phase-name').textContent = active.name || '—';
 
-    const [dname, dnum] = splitDayLabel(s.day_label);
+  const startDate = phaseDate(active.start_week);
+  const endDate   = phaseDate((active.end_week != null ? active.end_week : active.start_week) + 1);
 
-    // RPE badge style
-    let rpeHtml = '';
-    if (s.feedback && s.feedback.rpe != null) {
-      const r = s.feedback.rpe;
-      const rColor = r >= 9 ? '#ef4444' : r >= 7 ? '#f59e0b' : '#22c55e';
-      rpeHtml = `<span class="badge badge-rpe" style="color:${rColor};border-color:${rColor}55;background:${rColor}14">RPE ${r}</span>`;
+  let pct = 0, weeksLeft = 0;
+  if (startDate && endDate) {
+    const s = new Date(startDate + 'T00:00:00');
+    const e = new Date(endDate   + 'T00:00:00');
+    const n = new Date(t         + 'T00:00:00');
+    const total = Math.max(1, (e - s) / 86400000);
+    const done  = Math.max(0, Math.min(total, (n - s) / 86400000));
+    pct = Math.round(done / total * 100);
+    weeksLeft = Math.max(0, Math.ceil((e - n) / 604800000));
+  }
+
+  document.getElementById('phase-fill').style.setProperty('--pct', pct + '%');
+  document.getElementById('phase-detail').textContent = `${pct}%`;
+
+  const weekLabel = active.week_count != null
+    ? `${active.week_count}w phase`
+    : '';
+  document.getElementById('phase-sub').textContent =
+    `Week ${plan.current_week || '?'} of ${plan.total_weeks || '?'}  ·  ${weeksLeft}w left in phase`;
+}
+
+// ── Events strip ───────────────────────────────────────────────────────────── 
+
+function renderEvents() {
+  const strip  = document.getElementById('events-strip');
+  strip.innerHTML = '';
+  const t      = today();
+  // Use calendar race events (have slug + full payload)
+  const events = raceEvents();
+  if (!events.length) return;
+
+  events.sort((a, b) => a.date.localeCompare(b.date));
+
+  events.forEach((ev, i) => {
+    const diff = Math.round(
+      (new Date(ev.date + 'T00:00:00') - new Date(t + 'T00:00:00')) / 86400000
+    );
+
+    const card = document.createElement('div');
+    const evPriority = (ev.payload && ev.payload.priority) || ev.priority || 'C';
+    card.className = `event-card pri-${evPriority}`;
+    if (diff < 0)   card.classList.add('past');
+    if (diff === 0) card.classList.add('today');
+    card.style.animation = `cardEntrance .28s ease-out ${i * 0.05}s both`;
+
+    let countdownHtml;
+    if (diff < 0) {
+      countdownHtml = `<div class="ev-countdown">${Math.abs(diff)}</div>
+        <div class="ev-countdown-unit">days ago</div>`;
+    } else if (diff === 0) {
+      countdownHtml = `<div class="ev-countdown" style="color:var(--accent)">Today</div>
+        <div class="ev-countdown-unit">race day</div>`;
+    } else {
+      countdownHtml = `<div class="ev-countdown">${diff}</div>
+        <div class="ev-countdown-unit">days out</div>`;
     }
 
-    row.innerHTML = `
-      <div class="sess-date">
-        <div class="sess-dname">${esc(dname)}</div>
-        <div class="sess-dnum">${esc(dnum)}</div>
-      </div>
-      <div class="sess-body">
-        <div class="sess-name">${esc(s.name)}</div>
-        ${!isRest ? `<div class="sess-hint">${esc(shortDetail(s.details))}</div>` : ''}
-      </div>
-      <div class="sess-right">
-        ${s.completed ? '<span class="badge badge-done">Done</span>' : ''}
-        ${rpeHtml}
-      </div>`;
+    const pri = evPriority;
+    card.innerHTML = `
+      ${countdownHtml}
+      <div class="ev-name">${esc(ev.name)}</div>
+      <div class="ev-date">${fmtDate(ev.date)}</div>
+      <div class="ev-pri ${pri}">${pri}</div>`;
 
-    if (!isRest) row.addEventListener('click', () => openSheet(s, phase, pColor));
-    list.appendChild(row);
+    card.addEventListener('click', () => {
+      location.hash = '#race/' + ev.slug;
+    });
+    strip.appendChild(card);
   });
 }
 
-// ── Bottom sheet ──────────────────────────────────────────────────────────────
-
-function openSheet(sess, phase, pColor) {
-  const fb = sess.feedback;
-
-  // If this date has a race event, render the race card instead of the
-  // generic session view.
-  const race = raceOnDate(sess.date);
-  if (race) {
-    openRaceCardSheet(race);
-    return;
-  }
-
-  let fbHtml = '';
-  if (fb) {
-    const r = fb.rpe;
-    const rColor = r >= 9 ? '#ef4444' : r >= 7 ? '#f59e0b' : '#22c55e';
-    fbHtml = `
-      <div class="sh-divider"></div>
-      <div class="fb-block">
-        <div class="fb-lbl">Session Feedback</div>
-        <div class="fb-row">
-          ${r != null ? `<span class="fb-rpe" style="color:${rColor};border-color:${rColor}55;background:${rColor}14">RPE ${r}</span>` : ''}
-          ${fb.felt ? `<span class="fb-felt">${esc(fb.felt)}</span>` : ''}
-        </div>
-        ${fb.notes ? `<div class="fb-notes">${esc(fb.notes)}</div>` : ''}
-      </div>`;
-  }
-
-  const overHtml = (sess.overridden && sess.override_reason)
-    ? `<div class="sh-override">Rescheduled: ${esc(sess.override_reason)}</div>` : '';
-
-  document.getElementById('sheet-inner').innerHTML = `
-    <div class="sh-date">${esc(sess.day_label)}</div>
-    <div class="sh-title">${esc(sess.name)}</div>
-    ${phase ? `<span class="sh-ptag" style="background:${pColor}">${esc(phase.name)}</span>` : ''}
-    ${overHtml}
-    <div class="sh-detail">${mdToHtml(sess.details)}</div>
-    ${fbHtml}`;
-
-  document.getElementById('sheet')   .classList.add('open');
-  document.getElementById('backdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeSheet() {
-  document.getElementById('sheet')   .classList.remove('open');
-  document.getElementById('backdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ── Race cards ────────────────────────────────────────────────────────────────
-
-function racesList() {
-  return (DATA.calendar || []).filter(e => e.kind === 'race');
-}
-function raceOnDate(d) {
-  if (!d) return null;
-  return racesList().find(r => r.date === d) || null;
-}
-function raceBySlug(slug) {
-  return racesList().find(r => r.slug === slug) || null;
-}
-
-function renderRaceCard(race, opts) {
-  opts = opts || {};
-  const p = race.payload || {};
-  const prio = p.priority || 'C';
-  const days = race.days_out;
-  const daysStr = days == null ? ''
-    : days === 0 ? 'Today'
-    : days < 0 ? `${Math.abs(days)}d ago`
-    : `in ${days}d`;
-  const printLink = opts.printLink !== false
-    ? `<a class="race-print-link" href="#race/${esc(race.slug)}">🖨 Open full card</a>` : '';
-
-  return `
-    <div class="race-card race-prio-${esc(prio)}">
-      <div class="race-head">
-        <div>
-          <div class="race-prio-tag">${esc(prio)}-Race</div>
-          <h2 class="race-title">${esc(race.name)}</h2>
-          <div class="race-meta">${esc(fmtDate(race.date))}${race.start_time ? ` · ${esc(race.start_time)}` : ''} · ${esc(daysStr)}</div>
-          ${race.summary ? `<div class="race-summary">${esc(race.summary)}</div>` : ''}
-        </div>
-        ${printLink}
-      </div>
-      ${renderRaceCourse(p.course)}
-      ${renderRaceGoal(p.goal)}
-      ${renderRaceList('Key principles', p.key_principles)}
-      ${renderRaceTable('Pacing', p.pacing)}
-      ${renderRaceTable('Climbs', p.climbs)}
-      ${renderRaceTable('Warm-up', p.warmup)}
-      ${renderRaceKeyValue('Nutrition', p.nutrition)}
-      ${renderRaceKeyValue('Logistics', p.logistics)}
-      ${renderRaceKeyValue('Kit', p.kit)}
-      ${renderRaceProtocols(p.protocols)}
-      ${renderRaceYoy(p.yoy)}
-      ${p.readiness_gate ? `<section class="race-section"><h3>Readiness gate</h3><div class="race-prose">${esc(p.readiness_gate)}</div></section>` : ''}
-    </div>`;
-}
-
-function renderRaceCourse(c) {
-  if (!c || !Object.keys(c).length) return '';
-  return `<section class="race-section"><h3>Course</h3>${kvBlock(c)}</section>`;
-}
-function renderRaceGoal(g) {
-  if (!g || !Object.keys(g).length) return '';
-  return `<section class="race-section race-goal"><h3>Goal</h3>${kvBlock(g)}</section>`;
-}
-function renderRaceList(title, items) {
-  if (!items || !items.length) return '';
-  const lis = items.map(i => `<li>${esc(String(i))}</li>`).join('');
-  return `<section class="race-section"><h3>${esc(title)}</h3><ul class="race-bullets">${lis}</ul></section>`;
-}
-function renderRaceTable(title, rows) {
-  if (!rows || !rows.length) return '';
-  // dynamic columns — union of keys, preserving first row's order
-  const cols = [];
-  const seen = new Set();
-  rows.forEach(r => Object.keys(r).forEach(k => { if (!seen.has(k)) { seen.add(k); cols.push(k); } }));
-  const th = cols.map(c => `<th>${esc(prettyKey(c))}</th>`).join('');
-  const trs = rows.map(r =>
-    '<tr>' + cols.map(c => `<td>${esc(r[c] == null ? '' : String(r[c]))}</td>`).join('') + '</tr>'
-  ).join('');
-  return `<section class="race-section"><h3>${esc(title)}</h3>
-    <div class="race-table-wrap"><table class="md-table">
-      <thead><tr>${th}</tr></thead><tbody>${trs}</tbody>
-    </table></div></section>`;
-}
-function renderRaceKeyValue(title, obj) {
-  if (!obj || !Object.keys(obj).length) return '';
-  return `<section class="race-section"><h3>${esc(title)}</h3>${kvBlock(obj)}</section>`;
-}
-function renderRaceProtocols(list) {
-  if (!list || !list.length) return '';
-  const cards = list.map(p =>
-    `<div class="race-protocol"><div class="rp-title">${esc(p.title || '')}</div><div class="rp-body">${esc(p.body || '')}</div></div>`
-  ).join('');
-  return `<section class="race-section"><h3>Protocols</h3><div class="race-protocols">${cards}</div></section>`;
-}
-function renderRaceYoy(y) {
-  if (!y || !y.columns || !y.rows) return '';
-  const th = y.columns.map(c => `<th>${esc(c)}</th>`).join('');
-  const trs = y.rows.map(r =>
-    '<tr>' + r.map(c => `<td>${esc(c == null ? '' : String(c))}</td>`).join('') + '</tr>'
-  ).join('');
-  return `<section class="race-section"><h3>Year-over-year</h3>
-    <div class="race-table-wrap"><table class="md-table">
-      <thead><tr>${th}</tr></thead><tbody>${trs}</tbody>
-    </table></div></section>`;
-}
-function kvBlock(obj) {
-  const rows = Object.entries(obj).map(([k, v]) => {
-    const valHtml = (v && typeof v === 'object') ? `<pre>${esc(JSON.stringify(v, null, 2))}</pre>` : esc(String(v));
-    return `<div class="kv-row"><div class="kv-key">${esc(prettyKey(k))}</div><div class="kv-val">${valHtml}</div></div>`;
-  }).join('');
-  return `<div class="kv-block">${rows}</div>`;
-}
-function prettyKey(k) {
-  return String(k).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-}
-
-function openRaceCardSheet(race) {
-  document.getElementById('sheet-inner').innerHTML = renderRaceCard(race, { printLink: true });
-  document.getElementById('sheet')   .classList.add('open');
-  document.getElementById('backdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-// Full-page printable race view triggered by #race/<slug>
-function handleRoute() {
-  const h = window.location.hash || '';
-  const m = h.match(/^#race\/(.+)$/);
-  const page = document.getElementById('race-page');
-  if (!m) {
-    if (page) { page.style.display = 'none'; page.innerHTML = ''; }
-    document.body.classList.remove('race-page-mode');
-    return;
-  }
-  const race = raceBySlug(decodeURIComponent(m[1]));
-  if (!race) return;
-  closeSheet();
-  document.body.classList.add('race-page-mode');
-  page.style.display = 'block';
-  page.innerHTML = `
-    <div class="race-page-bar">
-      <a href="#" class="race-back">← back</a>
-      <button class="race-print-btn" onclick="window.print()">Print</button>
-    </div>
-    ${renderRaceCard(race, { printLink: false })}`;
-  window.scrollTo(0, 0);
-}
-
-// ── Fitness ───────────────────────────────────────────────────────────────────
+// ── Fitness ───────────────────────────────────────────────────────────────── 
 
 function renderFitness() {
-  const f  = DATA.fitness;
-  const tsb = parseFloat(f.tsb);
-  const tsbClass = isNaN(tsb)  ? 'tsb-zero'
-    : tsb >= 10  ? 'tsb-pos'
-    : tsb >= -5  ? 'tsb-zero'
-    : tsb >= -20 ? 'tsb-warn'
-    : 'tsb-crit';
-  const sign = (!isNaN(tsb) && tsb > 0) ? '+' : '';
+  const fit  = DATA.fitness  || {};
+  const mono = DATA.monotony || {};
 
-  document.getElementById('fit-grid').innerHTML = `
-    <div class="fit-pill ctl">
-      <div class="fit-lbl">Fitness</div>
-      <div class="fit-val">${f.ctl}</div>
-      <div class="fit-sub">CTL</div>
+  const ctl = fit.ctl != null ? +fit.ctl : null;
+  const atl = fit.atl != null ? +fit.atl : null;
+  const tsb = fit.tsb != null ? +fit.tsb : null;
+
+  function tsbClass(val) {
+    if (val == null || isNaN(val)) return '';
+    if (val >= 15) return 'positive';
+    if (val <= -20) return 'negative';
+    if (val < 0) return 'warn';
+    return 'ok';
+  }
+
+  const pillsEl = document.getElementById('fit-pills');
+  pillsEl.innerHTML = `
+    <div class="fit-pill">
+      <div class="fit-val">${ctl != null ? Math.round(ctl) : '—'}</div>
+      <div class="fit-lbl">CTL</div>
+      <div class="fit-sub">Fitness</div>
     </div>
-    <div class="fit-pill atl">
-      <div class="fit-lbl">Fatigue</div>
-      <div class="fit-val">${f.atl}</div>
-      <div class="fit-sub">ATL</div>
+    <div class="fit-pill">
+      <div class="fit-val">${atl != null ? Math.round(atl) : '—'}</div>
+      <div class="fit-lbl">ATL</div>
+      <div class="fit-sub">Fatigue</div>
     </div>
-    <div class="fit-pill ${tsbClass}">
+    <div class="fit-pill ${tsbClass(tsb)}">
+      <div class="fit-val">${tsb != null ? (tsb > 0 ? '+' : '') + Math.round(tsb) : '—'}</div>
       <div class="fit-lbl">Form</div>
-      <div class="fit-val">${sign}${f.tsb}</div>
       <div class="fit-sub">TSB</div>
     </div>`;
 
-  document.getElementById('fit-date').textContent = f.date ? 'As of ' + fmtDate(f.date) : '';
+  // Monotony + Strain row
+  const monoVal   = mono.monotony != null ? +mono.monotony : null;
+  const strainVal = mono.strain   != null ? +mono.strain   : null;
 
-  // Monotony + Strain pills
-  const mono = DATA.monotony || {};
-  const monoVal = parseFloat(mono.monotony);
-  const monoClass = isNaN(monoVal) ? 'mono-ok'
-    : monoVal > 2.0 ? 'mono-crit'
-    : monoVal > 1.5 ? 'mono-warn'
-    : 'mono-ok';
-  const strainVal = parseFloat(mono.strain);
-  const strainClass = isNaN(strainVal) ? 'mono-ok'
-    : strainVal > 2000 ? 'mono-crit'
-    : strainVal > 1200 ? 'mono-warn'
-    : 'mono-ok';
+  function monoClass(v) {
+    if (v == null || isNaN(v)) return '';
+    if (v >= 2.0) return 'mono-crit';
+    if (v >= 1.5) return 'mono-warn';
+    return 'mono-ok';
+  }
+  function strainBadge(v) {
+    if (v == null || isNaN(v)) return '';
+    if (v >= 2000) return 'HIGH';
+    if (v >= 1200) return 'MOD';
+    return 'OK';
+  }
+  function strainClass(v) {
+    if (v == null || isNaN(v)) return '';
+    if (v >= 2000) return 'mono-crit';
+    if (v >= 1200) return 'mono-warn';
+    return 'mono-ok';
+  }
 
-  const monoGrid = document.getElementById('fit-grid-mono');
-  if (monoGrid) {
-    monoGrid.innerHTML = `
-      <div class="fit-pill ${monoClass}">
-        <div class="fit-lbl">Monotony</div>
-        <div class="fit-val">${isNaN(monoVal) ? '—' : monoVal.toFixed(2)}</div>
-        <div class="fit-sub">&lt;1.5 ideal · &gt;2.0 risky</div>
+  const monoRow = document.getElementById('mono-row');
+  if (monoVal != null || strainVal != null) {
+    monoRow.innerHTML = `
+      <div class="mono-stat ${monoClass(monoVal)}">
+        <span class="mono-stat-lbl">Monotony</span>
+        <span>
+          <span class="mono-stat-val">${monoVal != null ? monoVal.toFixed(2) : '—'}</span>
+          <span class="mono-stat-badge">${monoVal != null ? (monoVal >= 2 ? 'CRIT' : monoVal >= 1.5 ? 'WARN' : 'OK') : ''}</span>
+        </span>
       </div>
-      <div class="fit-pill ${strainClass}">
-        <div class="fit-lbl">Strain</div>
-        <div class="fit-val">${isNaN(strainVal) ? '—' : Math.round(strainVal)}</div>
-        <div class="fit-sub">7d TSS × Monotony</div>
+      <div class="mono-stat ${strainClass(strainVal)}">
+        <span class="mono-stat-lbl">Strain</span>
+        <span>
+          <span class="mono-stat-val">${strainVal != null ? Math.round(strainVal) : '—'}</span>
+          <span class="mono-stat-badge">${strainBadge(strainVal)}</span>
+        </span>
       </div>`;
+  } else {
+    monoRow.innerHTML = '';
   }
 
   const alerts = document.getElementById('fit-alerts');
@@ -1105,16 +1237,176 @@ function renderFitness() {
   });
 }
 
-// ── Charts ────────────────────────────────────────────────────────────────────
+// ── Zone distribution ─────────────────────────────────────────────────────── 
+
+function renderZones() {
+  const zones = DATA.zones || {};
+  const dist  = zones.distribution || [];
+  if (!dist.length) { hide('zones-card'); return; }
+  show('zones-card');
+
+  const colors = ['#3b82f6','#22c55e','#f5a623','#f97316','#e63946'];
+  const labels = ['Z1','Z2','Z3','Z4','Z5'];
+
+  const bar = document.getElementById('zone-bar');
+  const leg = document.getElementById('zone-legend');
+  bar.innerHTML = '';
+  leg.innerHTML = '';
+
+  dist.forEach((pct, i) => {
+    const seg = document.createElement('div');
+    seg.className = 'zone-seg';
+    seg.style.width = pct + '%';
+    seg.style.background = colors[i] || '#555';
+    bar.appendChild(seg);
+
+    const item = document.createElement('div');
+    item.className = 'zone-item';
+    item.innerHTML = `<span class="zone-dot" style="background:${colors[i]||'#555'}"></span>
+      <span>${labels[i]||'Z'+(i+1)}</span>
+      <span class="zone-pct">${Math.round(pct)}%</span>`;
+    leg.appendChild(item);
+  });
+}
+
+// ── Week sessions ─────────────────────────────────────────────────────────── 
+
+function renderWeek() {
+  const cal = DATA.calendar || [];
+  const t   = today();
+
+  function getWeekStart(offset) {
+    const d   = new Date(t + 'T00:00:00');
+    const dow = d.getDay();
+    d.setDate(d.getDate() - ((dow + 6) % 7) + offset * 7);
+    return d.toISOString().slice(0, 10);
+  }
+
+  const weekStart = getWeekStart(weekOffset);
+  const weekEnd   = new Date(new Date(weekStart + 'T00:00:00').getTime() + 6 * 86400000)
+    .toISOString().slice(0, 10);
+
+  const ws = new Date(weekStart + 'T00:00:00');
+  const we = new Date(weekEnd   + 'T00:00:00');
+  const label = ws.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+    ' – ' + we.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  document.getElementById('week-label').textContent = label;
+
+  // Include training + activity + race kinds; skip duplicates (prefer activity over training on same date)
+  const weekItems = cal.filter(s =>
+    s.date >= weekStart && s.date <= weekEnd &&
+    ['training','activity','race'].includes(s.kind)
+  );
+
+  // TSS total from estimated_tss
+  const totalTss = weekItems.reduce((sum, i) => sum + (i.estimated_tss || 0), 0);
+  document.getElementById('week-tss-label').textContent =
+    totalTss > 0 ? Math.round(totalTss) + ' TSS' : '';
+
+  const list = document.getElementById('sessions-list');
+  list.innerHTML = '';
+
+  if (!weekItems.length) {
+    list.innerHTML = '<div style="font-size:.78rem;color:var(--muted);padding:8px 0 4px 6px">No sessions this week.</div>';
+    return;
+  }
+
+  // Sort by date then by kind (activity before training — shows actual before planned)
+  weekItems.sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    const kindOrder = { activity: 0, race: 1, training: 2 };
+    return (kindOrder[a.kind] ?? 9) - (kindOrder[b.kind] ?? 9);
+  });
+
+  weekItems.forEach(s => {
+    const isPast  = s.date < t;
+    const isToday = s.date === t;
+
+    const isRace  = s.kind === 'race';
+    const racePri = isRace ? ((s.payload && s.payload.priority) || s.priority || 'C') : null;
+    const priColor = racePri === 'A' ? 'var(--danger)' : racePri === 'B' ? 'var(--accent)' : 'var(--muted)';
+
+    // Derive sport from payload.sport_type (activity) or name heuristic
+    const sportType = (s.payload && s.payload.sport_type) || s.summary || s.name || '';
+    const sportKey  = (() => {
+      if (isRace) return 'race';
+      const sp = sportType.toLowerCase();
+      if (sp.includes('run') || sp.includes('trail')) return 'run';
+      if (sp.includes('ride') || sp.includes('cycl') || sp.includes('bike') || sp.includes('track')) return 'ride';
+      if (s.kind === 'rest') return 'rest';
+      return 'other';
+    })();
+
+    const row = document.createElement('div');
+    row.className = 'session-row';
+    if (isPast && !isToday) row.classList.add('past');
+    if (isToday)            row.classList.add('today');
+
+    const dayStr = new Date(s.date + 'T00:00:00')
+      .toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 3).toUpperCase();
+
+    const tss    = s.estimated_tss;
+    const tssStr = tss ? Math.round(tss) + ' TSS' : '';
+    const todayBadge = isToday ? '<span class="today-badge">TODAY</span>' : '';
+    const raceBadge  = isRace && racePri
+      ? `<span class="race-session-badge" style="color:${priColor};border-color:${priColor}">RACE ${racePri}</span>`
+      : '';
+
+    // Completed activity: green dot
+    const dotExtra = s.kind === 'activity'
+      ? ' style="background:var(--success)"'
+      : isRace
+        ? ` style="background:${priColor}"`
+        : '';
+
+    // Detail text: payload.details > summary
+    const detailText = (s.payload && s.payload.details) || s.summary || s.notes || '';
+
+    row.innerHTML = `
+      <div class="session-timeline">
+        <div class="session-dot"${dotExtra}></div>
+      </div>
+      <div class="session-body">
+        <div class="session-head">
+          <span class="session-day">${dayStr}</span>
+          ${todayBadge}${raceBadge}
+          <span class="session-type-dot sport-${sportKey}"></span>
+          <span class="session-title">${esc(s.name || '—')}</span>
+          <span class="session-tss">${tssStr}</span>
+        </div>
+        ${detailText ? `<div class="session-detail">${esc(shortDetail(detailText))}</div>` : ''}
+      </div>`;
+
+    if (isRace && s.slug) {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', () => { location.hash = '#race/' + s.slug; });
+    } else if (detailText) {
+      row.addEventListener('click', () => {
+        openSheet(
+          s.name || 'Session',
+          dayStr + ' · ' + fmtDate(s.date) + (tssStr ? ' · ' + tssStr : ''),
+          mdToHtml(detailText)
+        );
+      });
+    }
+    list.appendChild(row);
+  });
+}
+
+// Week nav
+document.getElementById('week-prev').addEventListener('click', () => { weekOffset--; renderWeek(); });
+document.getElementById('week-next').addEventListener('click', () => { weekOffset++; renderWeek(); });
+
+// ── Charts ────────────────────────────────────────────────────────────────── 
 
 function chartColors() {
   return {
-    grid:   isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)',
-    tick:   isDark ? '#7070a0' : '#606080',
-    tip_bg: isDark ? '#1b1b2e' : '#ffffff',
-    tip_tx: isDark ? '#e2e2f0' : '#1a1a2e',
-    tip_bd: isDark ? '#252540' : '#dcdcee',
-    target: isDark ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+    grid:   isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.05)',
+    tick:   isDark ? '#666666' : '#888888',
+    tip_bg: isDark ? '#1a1a1a' : '#ffffff',
+    tip_tx: isDark ? '#efefef' : '#111111',
+    tip_bd: isDark ? '#2a2a2a' : '#e0e0e0',
+    target: isDark ? 'rgba(245,166,35,.50)' : 'rgba(200,130,0,.40)',
   };
 }
 
@@ -1141,23 +1433,30 @@ function renderFitnessChart() {
   const anns = {
     tsbBand: {
       type: 'box', yMin: 15, yMax: 25,
-      backgroundColor: 'rgba(34,197,94,.06)', borderColor: 'rgba(34,197,94,.18)', borderWidth: 1,
+      backgroundColor: 'rgba(34,197,94,.05)', borderColor: 'rgba(34,197,94,.15)', borderWidth: 1,
+    },
+    tsbZero: {
+      type: 'line', yMin: 0, yMax: 0,
+      borderColor: isDark ? 'rgba(255,255,255,.12)' : 'rgba(0,0,0,.12)',
+      borderWidth: 1, borderDash: [3, 3],
     },
     overreach: {
       type: 'line', yMin: -30, yMax: -30,
-      borderColor: 'rgba(239,68,68,.3)', borderWidth: 1, borderDash: [4,4],
+      borderColor: 'rgba(230,57,70,.25)', borderWidth: 1, borderDash: [4, 4],
     },
   };
   events.forEach((ev, i) => {
     if (!labels.includes(ev.date)) return;
-    const c = ev.priority === 'A' ? '#ef4444' : ev.priority === 'B' ? '#f59e0b' : '#6366f1';
+    const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
+    const c = evPri === 'A' ? '#e63946' : evPri === 'B' ? '#f5a623' : '#666666';
     anns['ev' + i] = {
       type: 'line', xMin: ev.date, xMax: ev.date,
-      borderColor: c + '88', borderWidth: ev.priority === 'A' ? 2 : 1,
+      borderColor: c + '88', borderWidth: evPri === 'A' ? 2 : 1,
       label: {
         display: true, content: ev.name, position: 'start',
         backgroundColor: c, color: '#fff',
-        font: { size: 9 }, padding: { x: 4, y: 2 }, borderRadius: 3,
+        font: { family: "'Barlow Condensed', sans-serif", size: 9, weight: '600' },
+        padding: { x: 4, y: 2 }, borderRadius: 2,
       },
     };
   });
@@ -1168,24 +1467,26 @@ function renderFitnessChart() {
     plugins: {
       legend: {
         display: true, position: 'top', align: 'start',
-        labels: { font: { size: 10 }, color: C.tick, boxWidth: 14, padding: 8,
+        labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8,
           filter: item => !item.text.endsWith('*') },
       },
       annotation: { annotations: anns },
       tooltip: {
         backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
         borderColor: C.tip_bd, borderWidth: 1,
+        titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
+        bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
         callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(1) ?? ''}` },
       },
     },
     scales: {
       x: {
         type: 'category',
-        ticks: { color: C.tick, font: { size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
+        ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
         grid: { color: C.grid }, border: { display: false },
       },
       y: {
-        ticks: { color: C.tick, font: { size: 9 } },
+        ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
         grid: { color: C.grid }, border: { display: false },
       },
     },
@@ -1193,11 +1494,11 @@ function renderFitnessChart() {
 
   const datasets = [
     { label: 'CTL',   data: ctlA, borderColor: '#6366f1', borderWidth: 2, pointRadius: 0, tension: .3 },
-    { label: 'ATL',   data: atlA, borderColor: '#f59e0b', borderWidth: 2, pointRadius: 0, tension: .3 },
+    { label: 'ATL',   data: atlA, borderColor: '#f5a623', borderWidth: 2, pointRadius: 0, tension: .3 },
     { label: 'Form',  data: tsbA, borderColor: '#22c55e', borderWidth: 2, pointRadius: 0, tension: .3 },
-    { label: 'CTL*',  data: ctlP, borderColor: '#6366f188', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
-    { label: 'ATL*',  data: atlP, borderColor: '#f59e0b88', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
-    { label: 'Form*', data: tsbP, borderColor: '#22c55e88', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+    { label: 'CTL*',  data: ctlP, borderColor: '#6366f166', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+    { label: 'ATL*',  data: atlP, borderColor: '#f5a62366', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+    { label: 'Form*', data: tsbP, borderColor: '#22c55e66', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
   ].map(d => ({ ...d, backgroundColor: 'transparent', fill: false }));
 
   const ctx = document.getElementById('chart-fitness').getContext('2d');
@@ -1208,12 +1509,77 @@ function renderFitnessChart() {
 function renderTssChart() {
   const weekly = DATA.weekly_tss || [];
   const C      = chartColors();
+  const t      = today();
+
+  // Monday of current week
+  const todayDate = new Date(t + 'T00:00:00');
+  const dow = todayDate.getDay();
+  const todayMon = new Date(todayDate);
+  todayMon.setDate(todayDate.getDate() - ((dow + 6) % 7));
+  const todayMonStr = todayMon.toISOString().slice(0, 10);
 
   const labels = weekly.map(w => w.week.slice(5));
   const run    = weekly.map(w => w.run   || 0);
   const ride   = weekly.map(w => w.ride  || 0);
   const other  = weekly.map(w => w.other || 0);
   const target = weekly.map(w => w.target || null);
+
+  // Future weeks: week > todayMon → use lower opacity bars
+  const isFuture = weekly.map(w => w.week > todayMonStr);
+
+  // Per-bar colours (future = dimmed)
+  const runColors   = isFuture.map(f => f ? '#6366f133' : '#6366f1aa');
+  const rideColors  = isFuture.map(f => f ? '#f5a62333' : '#f5a623aa');
+  const otherColors = isFuture.map(f => f ? '#55555533' : '#55555588');
+
+  // "Today" vertical annotation + race event annotations
+  const anns = {};
+
+  // Today line
+  const todayLabelIdx = labels.indexOf(todayMonStr.slice(5));
+  if (todayLabelIdx !== -1) {
+    anns.todayLine = {
+      type: 'line',
+      xMin: labels[todayLabelIdx], xMax: labels[todayLabelIdx],
+      borderColor: isDark ? 'rgba(255,255,255,.25)' : 'rgba(0,0,0,.18)',
+      borderWidth: 1, borderDash: [3, 3],
+      label: {
+        display: true, content: 'now', position: 'end',
+        backgroundColor: 'transparent',
+        color: isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.35)',
+        font: { family: "'DM Sans', sans-serif", size: 8 },
+        padding: { x: 2, y: 0 },
+      },
+    };
+  }
+
+  // Race events on TSS chart (A + B priority only, or all if <5)
+  const raceEvs = raceEvents().filter(ev => {
+    const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
+    return evPri === 'A' || evPri === 'B';
+  });
+  raceEvs.forEach((ev, i) => {
+    // Find which week label this race falls in
+    const evDate = new Date(ev.date + 'T00:00:00');
+    const evDow  = evDate.getDay();
+    const evMon  = new Date(evDate);
+    evMon.setDate(evDate.getDate() - ((evDow + 6) % 7));
+    const evMonLabel = evMon.toISOString().slice(5, 10);
+    if (!labels.includes(evMonLabel)) return;
+    const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
+    const c = evPri === 'A' ? '#e63946' : '#f5a623';
+    anns['race' + i] = {
+      type: 'line', xMin: evMonLabel, xMax: evMonLabel,
+      borderColor: c + '66', borderWidth: evPri === 'A' ? 2 : 1.5, borderDash: [2, 2],
+      label: {
+        display: true, content: ev.name.split(/[—–(]/)[0].trim().slice(0, 16),
+        position: 'start',
+        backgroundColor: c, color: '#fff',
+        font: { family: "'Barlow Condensed', sans-serif", size: 8, weight: '600' },
+        padding: { x: 3, y: 1 }, borderRadius: 2,
+      },
+    };
+  });
 
   const ctx = document.getElementById('chart-tss').getContext('2d');
   if (chartTss) chartTss.destroy();
@@ -1222,12 +1588,12 @@ function renderTssChart() {
     data: {
       labels,
       datasets: [
-        { label: 'Run',    data: run,    backgroundColor: '#6366f1aa', stack: 'tss', borderRadius: 2 },
-        { label: 'Ride',   data: ride,   backgroundColor: '#f59e0baa', stack: 'tss', borderRadius: 2 },
-        { label: 'Other',  data: other,  backgroundColor: '#7070a088', stack: 'tss', borderRadius: 2 },
+        { label: 'Run',    data: run,    backgroundColor: runColors,   stack: 'tss', borderRadius: 2 },
+        { label: 'Ride',   data: ride,   backgroundColor: rideColors,  stack: 'tss', borderRadius: 2 },
+        { label: 'Other',  data: other,  backgroundColor: otherColors, stack: 'tss', borderRadius: 2 },
         { label: 'Target', data: target, type: 'line',
           borderColor: C.target, backgroundColor: 'transparent',
-          borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0 },
+          borderWidth: 1.5, borderDash: [4, 3], pointRadius: 0, tension: 0 },
       ],
     },
     options: {
@@ -1236,22 +1602,31 @@ function renderTssChart() {
       plugins: {
         legend: {
           display: true, position: 'top', align: 'start',
-          labels: { font: { size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
         },
+        annotation: { annotations: anns },
         tooltip: {
           backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
           borderColor: C.tip_bd, borderWidth: 1,
+          titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
+          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+          callbacks: {
+            afterTitle: items => {
+              const idx = items[0]?.dataIndex;
+              return isFuture[idx] ? ['  ⟵ predicted'] : [];
+            },
+          },
         },
       },
       scales: {
         x: {
           stacked: true,
-          ticks: { color: C.tick, font: { size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
           grid: { display: false }, border: { display: false },
         },
         y: {
           stacked: true,
-          ticks: { color: C.tick, font: { size: 9 } },
+          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
           grid: { color: C.grid }, border: { display: false },
         },
       },
@@ -1259,12 +1634,11 @@ function renderTssChart() {
   });
 }
 
-// ── Goals ─────────────────────────────────────────────────────────────────────
-
 function renderMonotonyChart() {
   const trend = DATA.monotony_trend || [];
   const C     = chartColors();
-  if (!trend.length) return;
+  if (!trend.length) { hide('mono-chart-card'); return; }
+  show('mono-chart-card');
 
   const labels   = trend.map(d => d.date.slice(5));
   const monotony = trend.map(d => d.monotony);
@@ -1273,16 +1647,16 @@ function renderMonotonyChart() {
   const anns = {
     monoWarn: {
       type: 'line', yMin: 1.5, yMax: 1.5, yScaleID: 'yMono',
-      borderColor: 'rgba(245,158,11,.4)', borderWidth: 1, borderDash: [4,3],
+      borderColor: 'rgba(245,166,35,.4)', borderWidth: 1, borderDash: [4, 3],
       label: { display: true, content: '1.5', position: 'end',
-        backgroundColor: 'transparent', color: 'rgba(245,158,11,.7)',
+        backgroundColor: 'transparent', color: 'rgba(245,166,35,.7)',
         font: { size: 8 }, padding: { x: 2, y: 0 } },
     },
     monoCrit: {
       type: 'line', yMin: 2.0, yMax: 2.0, yScaleID: 'yMono',
-      borderColor: 'rgba(239,68,68,.4)', borderWidth: 1, borderDash: [4,3],
+      borderColor: 'rgba(230,57,70,.4)', borderWidth: 1, borderDash: [4, 3],
       label: { display: true, content: '2.0', position: 'end',
-        backgroundColor: 'transparent', color: 'rgba(239,68,68,.7)',
+        backgroundColor: 'transparent', color: 'rgba(230,57,70,.7)',
         font: { size: 8 }, padding: { x: 2, y: 0 } },
     },
   };
@@ -1302,7 +1676,7 @@ function renderMonotonyChart() {
         {
           label: 'Strain', data: strain, yAxisID: 'yStrain',
           borderColor: '#fb923c', borderWidth: 1.5, pointRadius: 0, tension: .3,
-          backgroundColor: 'rgba(251,146,60,.08)', fill: true,
+          backgroundColor: 'rgba(251,146,60,.06)', fill: true,
         },
       ],
     },
@@ -1312,12 +1686,14 @@ function renderMonotonyChart() {
       plugins: {
         legend: {
           display: true, position: 'top', align: 'start',
-          labels: { font: { size: 10 }, color: C.tick, boxWidth: 14, padding: 8 },
+          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8 },
         },
         annotation: { annotations: anns },
         tooltip: {
           backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
           borderColor: C.tip_bd, borderWidth: 1,
+          titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
+          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
           callbacks: {
             label: ctx => {
               const v = ctx.parsed.y;
@@ -1332,24 +1708,95 @@ function renderMonotonyChart() {
       scales: {
         x: {
           type: 'category',
-          ticks: { color: C.tick, font: { size: 9 }, maxTicksLimit: 10, maxRotation: 0 },
+          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxTicksLimit: 10, maxRotation: 0 },
           grid: { color: C.grid }, border: { display: false },
         },
         yMono: {
           type: 'linear', position: 'left',
           min: 0, max: 3,
-          ticks: { color: '#a78bfa', font: { size: 9 }, stepSize: 0.5 },
+          ticks: { color: '#a78bfa', font: { family: "'DM Sans', sans-serif", size: 9 }, stepSize: 0.5 },
           grid: { color: C.grid }, border: { display: false },
         },
         yStrain: {
           type: 'linear', position: 'right',
-          ticks: { color: '#fb923c', font: { size: 9 } },
+          ticks: { color: '#fb923c', font: { family: "'DM Sans', sans-serif", size: 9 } },
           grid: { drawOnChartArea: false }, border: { display: false },
         },
       },
     },
   });
 }
+
+function renderRtssChart() {
+  const weekly = DATA.weekly_run_tss || [];
+  const C      = chartColors();
+  if (!weekly.length) { hide('rtss-chart-card'); return; }
+  show('rtss-chart-card');
+
+  const labels     = weekly.map(w => w.week.slice(5));
+  const rtss       = weekly.map(w => w.rtss        || 0);
+  const rtss_power = weekly.map(w => w.rtss_power != null ? w.rtss_power : null);
+
+  const ctx = document.getElementById('chart-rtss').getContext('2d');
+  if (chartRtss) chartRtss.destroy();
+  chartRtss = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'rTSS (pace)',    data: rtss,       backgroundColor: '#6366f1aa', borderRadius: 2 },
+        { label: 'rTSS_P (power)', data: rtss_power, backgroundColor: '#22c55eaa', borderRadius: 2,
+          type: 'line', borderColor: '#22c55e', borderWidth: 2, pointRadius: 3,
+          pointBackgroundColor: '#22c55e', tension: .2, fill: false },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true, position: 'top', align: 'start',
+          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+        },
+        tooltip: {
+          backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
+          borderColor: C.tip_bd, borderWidth: 1,
+          titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
+          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v == null) return '';
+              return ` ${ctx.dataset.label}: ${Math.round(v)}`;
+            },
+            afterBody: items => {
+              const pace  = items.find(i => i.dataset.label.includes('pace'));
+              const power = items.find(i => i.dataset.label.includes('power'));
+              if (pace && power && power.parsed.y != null && pace.parsed.y > 0) {
+                const delta = Math.round(power.parsed.y - pace.parsed.y);
+                const pct   = Math.round((power.parsed.y / pace.parsed.y - 1) * 100);
+                return [`  Δ ${delta > 0 ? '+' : ''}${delta} (${pct > 0 ? '+' : ''}${pct}%)`];
+              }
+              return [];
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          grid: { display: false }, border: { display: false },
+        },
+        y: {
+          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
+          grid: { color: C.grid }, border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+// ── Goals ─────────────────────────────────────────────────────────────────── 
 
 function renderGoals() {
   const goals = DATA.goals || {};
@@ -1370,140 +1817,27 @@ function renderGoals() {
     });
   });
   if (!any) hide('goals-card');
+  else show('goals-card');
 }
 
-// ── Utilities ─────────────────────────────────────────────────────────────────
-
-function el(tag, cls) {
-  const e = document.createElement(tag);
-  if (cls) e.className = cls;
-  return e;
-}
-
-function show(id) { document.getElementById(id)?.classList.remove('hidden'); }
-function hide(id) { document.getElementById(id)?.classList.add('hidden'); }
-
-function esc(s) {
-  return String(s ?? '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function splitDayLabel(label) {
-  // "Mon Apr 20" → ["MON", "Apr 20"]
-  const parts = (label || '').split(' ');
-  if (parts.length >= 3) return [parts[0].toUpperCase(), parts.slice(1).join(' ')];
-  return [(label || '').toUpperCase(), ''];
-}
-
-function shortDetail(d) {
-  if (!d) return '';
-  const s = d
-    .replace(/\|[^\n]+/g, '')   // strip table rows
-    .replace(/~~(.+?)~~/g, '$1') // drop strikethrough markers, keep text
-    .replace(/\*\*/g, '')        // strip bold markers
-    .replace(/\*/g,  '')         // strip italic markers
-    .replace(/`/g,   '')         // strip code markers
-    .replace(/\n/g,  ' ')
-    .trim();
-  return s.length > 90 ? s.slice(0, 90) + '...' : s;
-}
-
-function fmtDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso + 'T00:00:00');
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-}
-
-function renderRtssChart() {
-  const weekly = DATA.weekly_run_tss || [];
-  const C      = chartColors();
-  if (!weekly.length) { hide('rtss-chart-card'); return; }
-  show('rtss-chart-card');
-
-  const labels     = weekly.map(w => w.week.slice(5));
-  const rtss       = weekly.map(w => w.rtss   || 0);
-  const rtss_power = weekly.map(w => w.rtss_power != null ? w.rtss_power : null);
-
-  const ctx = document.getElementById('chart-rtss').getContext('2d');
-  if (chartRtss) chartRtss.destroy();
-  chartRtss = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: 'rTSS (pace)',  data: rtss,       backgroundColor: '#6366f1aa', borderRadius: 2 },
-        { label: 'rTSS_P (power)', data: rtss_power, backgroundColor: '#22c55eaa', borderRadius: 2,
-          type: 'line', borderColor: '#22c55e', borderWidth: 2, pointRadius: 3,
-          pointBackgroundColor: '#22c55e', tension: .2, fill: false },
-      ],
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          display: true, position: 'top', align: 'start',
-          labels: { font: { size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
-        },
-        tooltip: {
-          backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
-          borderColor: C.tip_bd, borderWidth: 1,
-          callbacks: {
-            label: ctx => {
-              const v = ctx.parsed.y;
-              if (v == null) return '';
-              const label = ctx.dataset.label;
-              return ` ${label}: ${Math.round(v)}`;
-            },
-            afterBody: items => {
-              const pace  = items.find(i => i.dataset.label.includes('pace'));
-              const power = items.find(i => i.dataset.label.includes('power'));
-              if (pace && power && power.parsed.y != null && pace.parsed.y > 0) {
-                const delta = Math.round(power.parsed.y - pace.parsed.y);
-                const pct   = Math.round((power.parsed.y / pace.parsed.y - 1) * 100);
-                return [`  Δ ${delta > 0 ? '+' : ''}${delta} (${pct > 0 ? '+' : ''}${pct}%)`];
-              }
-              return [];
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: { color: C.tick, font: { size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
-          grid: { display: false }, border: { display: false },
-        },
-        y: {
-          ticks: { color: C.tick, font: { size: 9 } },
-          grid: { color: C.grid }, border: { display: false },
-        },
-      },
-    },
-  });
-}
+// ── Recent runs ───────────────────────────────────────────────────────────── 
 
 function renderRecentRuns() {
   const runs = DATA.recent_runs || [];
   const container = document.getElementById('recent-runs-table');
   if (!runs.length) { hide('recent-runs-card'); return; }
-  show('recent-runs-card');
 
-  // Only show runs that have at least one of rtss or rtss_power
   const filtered = runs.filter(r => r.rtss != null || r.rtss_power != null);
   if (!filtered.length) { hide('recent-runs-card'); return; }
+  show('recent-runs-card');
 
   let html = `<table class="runs-table">
     <thead><tr>
-      <th>Date</th>
-      <th>km</th>
-      <th>+m</th>
-      <th>rTSS</th>
-      <th>rTSS<sub>P</sub></th>
-      <th>Δ%</th>
+      <th>Date</th><th>km</th><th>+m</th><th>rTSS</th><th>rTSS<sub>P</sub></th><th>Δ%</th>
     </tr></thead><tbody>`;
 
   filtered.forEach(r => {
-    const rtss  = r.rtss  != null ? r.rtss.toFixed(0)  : '—';
+    const rtss  = r.rtss       != null ? r.rtss.toFixed(0)       : '—';
     const rtssP = r.rtss_power != null ? r.rtss_power.toFixed(0) : '—';
     let delta = '';
     if (r.rtss != null && r.rtss_power != null && r.rtss > 0) {
@@ -1525,27 +1859,59 @@ function renderRecentRuns() {
   container.innerHTML = html;
 }
 
+// ── Utilities ─────────────────────────────────────────────────────────────── 
+
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+
+function show(id) { document.getElementById(id)?.classList.remove('hidden'); }
+function hide(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function splitDayLabel(label) {
+  const parts = (label || '').split(' ');
+  if (parts.length >= 3) return [parts[0].toUpperCase(), parts.slice(1).join(' ')];
+  return [(label || '').toUpperCase(), ''];
+}
+
+function shortDetail(d) {
+  if (!d) return '';
+  const s = d
+    .replace(/\|[^\n]+/g, '')
+    .replace(/~~(.+?)~~/g, '$1')
+    .replace(/\*\*/g, '')
+    .replace(/\*/g,  '')
+    .replace(/`/g,   '')
+    .replace(/\n/g,  ' ')
+    .trim();
+  return s.length > 90 ? s.slice(0, 90) + '...' : s;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
 function mdToHtml(text) {
   if (!text) return '';
-  // Escape HTML first, then apply markdown transforms
   let h = esc(text);
-  // Render GitHub-flavoured pipe tables before line-break conversion.
   h = renderMdTables(h);
-  // Strikethrough ~~text~~
   h = h.replace(/~~(.+?)~~/g, '<s>$1</s>');
-  // Bold **text**
   h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  // Italic *text* (only if not already consumed by bold)
   h = h.replace(/\*([^*\n]+?)\*/g, '<em>$1</em>');
-  // Inline code `text`
   h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // Line breaks — but not inside the rendered <table> blocks
   h = h.replace(/\n(?![^<]*<\/table>)/g, '<br>');
   return h;
 }
 
-// Render contiguous markdown pipe-table blocks into <table> HTML.
-// Expects HTML-escaped input. Header row + separator row required.
 function renderMdTables(src) {
   const lines = src.split('\n');
   const out = [];
@@ -1562,7 +1928,6 @@ function renderMdTables(src) {
         i++;
       }
       out.push(buildTable(header, rows));
-      // swallow trailing blank line after table to avoid stray <br>
       if (i < lines.length && lines[i].trim() === '') i++;
     } else {
       out.push(lines[i]);
@@ -1574,11 +1939,11 @@ function renderMdTables(src) {
 function splitRow(s) {
   let t = s.trim();
   if (t.startsWith('|')) t = t.slice(1);
-  if (t.endsWith('|')) t = t.slice(0, -1);
+  if (t.endsWith('|'))   t = t.slice(0, -1);
   return t.split('|').map(c => c.trim());
 }
 function buildTable(header, rows) {
-  const th = header.map(c => `<th>${c}</th>`).join('');
+  const th  = header.map(c => `<th>${c}</th>`).join('');
   const trs = rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
   return `<table class="md-table"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>`;
 }

@@ -130,6 +130,17 @@ def web_cmd(
         uvicorn.run(create_app(paths.data_json()), host=host, port=port)
 
 
+@app.command("migrate", help="Migrate legacy data (untracked activities, schedule overrides, athlete.yaml events) into the events table.")
+def migrate_cmd() -> None:
+    from .db import get_conn, init_db
+    from .migrate import run_all
+
+    init_db()
+    with get_conn() as conn:
+        summary = run_all(conn)
+    typer.echo(summary)
+
+
 @app.command("serve", help="Start the MCP server (stdio).")
 def serve_cmd() -> None:
     from .mcp_server import main as _main
