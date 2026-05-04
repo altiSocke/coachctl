@@ -113,6 +113,8 @@ Propose returns a unified diff; apply writes after athlete confirmation.
 - **propose_race_yoy** / **apply_race_yoy** — year-over-year comparison table
 - **propose_race_readiness_gate** / **apply_race_readiness_gate** — start/bail criteria
 
+> Load the `race-card` skill when creating, reviewing, or updating a race card. It encodes the full section edit order, general-vs-personal boundary rules, propose/confirm/apply flow, and post-card bake/commit sequence.
+
 #### Date discipline rules
 
 1. **Always call `get_calendar_window`** before creating, moving, or referencing any dated item.
@@ -173,18 +175,7 @@ See `AGENTS.md` for the full three-layer architecture. Operational summary:
 
 ### Ingesting a new `raw/` source
 
-When the human points you at a new file in `raw/`:
-
-1. **Read** it with the OpenCode `read` file tool. Do not call any wiki tool yet.
-2. **Classify** the content using the boundary rule:
-   - Peer-reviewed paper or evidence summary → updates a `wiki/sources/<topic>.md` catalogue (and possibly the matching topical page, e.g. `running.md`, `nutrition.md`).
-   - Race website capture / GPX / course data → updates `wiki/races/<race>.md`.
-   - Anything specific to this athlete (their result, their plan, their incident) → personal wiki, not general.
-3. **Load current state** with `read_general_wiki(topic)` for every page you intend to touch.
-4. **Draft** the updated content. Keep general pages athlete-agnostic. Add or extend a `## Sources` section at the bottom listing the `raw/` paths the page now synthesises (e.g. `- raw/races/sola_strecken_asvz.md`).
-5. **Propose** with `propose_general_wiki_update(topic, content, reason)`. One call per page changed. Do not batch unrelated edits.
-6. **Wait** for the athlete's "yes". Only then call `apply_general_wiki_update(topic, content)`. The change is auto-logged to `wiki/log.md`.
-7. **Never** edit, append to, rename, or delete anything inside `raw/` — even to "fix a typo". If a raw file is wrong, ask the human to add a corrected version as a new file.
+> Load the `raw-ingest` skill when the athlete points you at a new file in `raw/`. It encodes the full 7-step read→classify→load→draft→propose→wait→apply workflow, layer boundary rules, and wiki target path mapping.
 
 ### Where things go (cheat-sheet)
 
@@ -235,13 +226,14 @@ Refer them to `README.md` for full details. Do not attempt to bypass the OAuth f
 On every new conversation, run these steps **automatically and silently** before anything else:
 
 0. **`check_environment`** — verify `AGENT_DATA_ROOT` resolves, `.env` and `athlete.yaml` exist. **If `ok` is false, stop the rest of startup** and walk the athlete through `next_steps` (see "Environment pre-flight" below). Do not call any other tool until the environment is healthy.
+0b. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
 1. `sync_activities` — pull latest Strava data (incremental)
 2. `get_athlete_wiki` — load persistent athlete narrative (profile, goals, training history including coaching notes, plans index)
 3. `get_athlete_profile` — reload goals, events, and thresholds
 4. `get_fitness_state` — current CTL/ATL/TSB
 5. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
 6. `check_weekly_untracked` — check if the weekly untracked check-in is due
-7. **Refresh dashboard data** — call the `bake` MCP tool. Commit & push only if new activities were synced or fitness data changed.
+7. **Refresh dashboard data** — always call `bake` at startup, unconditionally. Also call `bake` immediately after **any** of the following: new activities synced, plan saved or modified, schedule override applied, wiki update applied, fitness state changes, race card edited, untracked activity logged, readiness check-in logged. The dashboard must always reflect the latest state.
 
 Steps 0–6 are silent on success. Confirm with a single summary line e.g.:
 > "✅ Synced (3 new) · CTL 36 / TSB -14 · Half Marathon goal: 1:30 on Sep 6 · Last note: Apr 22"
@@ -250,43 +242,7 @@ If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.j
 
 ### Environment pre-flight (when `check_environment` reports issues)
 
-`check_environment` returns JSON with `ok`, `errors`, `warnings`, and `next_steps`. React based on what's missing:
-
-**No data root resolved (`errors` mentions "Data root unresolved"):**
-The athlete has no personal repo yet, or `AGENT_DATA_ROOT` isn't exported. Walk them through:
-
-1. Decide where to put the personal repo (default: `~/workspace/coachctl-personal`, sibling to this code repo so it's auto-discovered).
-2. Run: `uv run coachctl new-profile --target <path>` — scaffolds `profile/`, `data/`, `raw/`, `deploy/`, `.env`, `.env.example`, `.gitignore`, `deploy/web.py`, `deploy/vercel.json`, `deploy/requirements.txt`. Pass `--no-auth` to skip OAuth for now.
-3. (Optional but recommended) Add to shell rc: `export AGENT_DATA_ROOT=<path>`. Skip if the path is the auto-discovered sibling.
-4. (Optional) Add to shell rc: `export STRAVA_PROFILE=<label>` — informational only; used in metadata and the legacy fallback.
-5. (Optional) Initialise as a private git repo: `cd <path> && git init && git remote add origin git@github.com:<you>/coachctl-personal.git`.
-6. Restart OpenCode so the MCP server picks up the new env. Re-run `check_environment` to confirm.
-
-**Missing `.env` (`errors` mentions "Missing secrets file"):**
-1. Copy template: `cp <data_root>/.env.example <data_root>/.env`.
-2. Get a Strava API client at https://www.strava.com/settings/api (callback domain `localhost`).
-3. Fill in `STRAVA_CLIENT_ID` and `STRAVA_CLIENT_SECRET` in the `.env`.
-4. Run: `uv run coachctl sync --auth` — opens a browser, writes `STRAVA_REFRESH_TOKEN` automatically.
-5. Re-run `check_environment`.
-
-**`STRAVA_*` vars look unset in `.env` (warnings):**
-Same as above, starting from step 2.
-
-**Missing `athlete.yaml` (errors):**
-1. Tell the athlete to edit `<data_root>/profile/athlete.yaml`.
-2. Required keys: `ftp` (cycling watts), `rftp` (run threshold pace, sec/km), `threshold_hr`, `max_hr`, `resting_hr`, `weight_kg`. Optional: `events` (list with `name`, `date`, `priority`), `goals`.
-3. Re-run `check_environment`, then resume normal startup.
-
-**Activities DB missing (warning):**
-Run `uv run coachctl sync` (or `uv run coachctl sync --auth` first time). This is just a warning — the agent can still load wiki and athlete profile, but most fitness tools will return empty results until the DB is seeded.
-
-**`data.json` missing (warning):**
-Will be created automatically by the next `bake` call (step 7 of startup). No athlete action needed.
-
-**Legacy layout warning:**
-`paths.py` is still using the deprecated `wiki/personal/<profile>` tree. Suggest the athlete migrate per `README.md` §"Migrating from the legacy single-repo layout" — but it is not blocking; continue normal startup.
-
-In all cases: be concise. Surface the *single most actionable next step* first, not the full diagnostic dump. Show the JSON only if the athlete asks for details.
+> Load the `new-athlete-setup` skill when `check_environment` returns `ok: false`. It covers all failure modes: no data root, missing `.env`, unset Strava credentials, missing `athlete.yaml`, empty activities DB, missing `data.json`, and legacy layout warnings. Surface the single most actionable next step first.
 
 ### New activity feedback
 
@@ -363,7 +319,7 @@ At the end of any substantive conversation:
 
 8. **Be specific.** Exact paces, power targets, HR caps, durations, RPE for every session.
 
-9. **Save plans.** Always use `save_plan` when generating a structured plan.
+9. **Save plans.** Always use `save_plan` when generating a structured plan. Load the `plan-builder` skill when the athlete asks to build or revise a training plan — it encodes the full periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete gather→draft→save→bake→commit sequence.
 
 ## Communication style
 
