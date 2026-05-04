@@ -132,14 +132,27 @@ Negative TSB = fatigued → good for adaptation.
 
 | TSB | State | Typical scenario |
 |---|---|---|
-| +20 to +25 | Peak form | A race day target |
+| +25 to +15 | Peak form | A race day target |
 | +5 to +20 | Fresh, performing well | B race, quality sessions |
 | −5 to +5 | Moderate fatigue | Normal training |
 | −10 to −20 | Building fatigue | Hard training block |
 | −20 to −30 | High fatigue | Heavy training, monitor |
 | < −30 | Overtraining risk | Mandatory rest |
 
-**Race day targeting:** TSB +15 to +25 for A events. Achieved through a 10–14 day taper where volume drops 40–50% but intensity is preserved.
+**Race day targeting:**
+- C race / tune-up: TSB 0 to +5
+- B race: TSB +10 to +15
+- A race: TSB +15 to +25 — requires full 10–14 day taper
+
+**The rate-of-change insight — more important than the number:**
+
+TSB does not measure how the athlete *feels*. It measures the *gap* between fitness and fatigue. An athlete can be at −15 and feel fine (fatigue built gradually over weeks). The same athlete at −8 can feel wrecked (fatigue arrived in 3 days). The absolute number is less important than *how it got there*.
+
+Key rules:
+- A slow TSB decline over 3–4 weeks (hard training block) → normal, expected, proceed
+- A TSB drop of >10 points in 3–5 days → red flag — fatigue arrived faster than adaptation. Reduce load.
+- TSB rising from −20 to −5 over a recovery week → the athlete is absorbing the block. Good.
+- TSB at +5 but falling fast → don't race yet. Form is not stable.
 
 **Practical note (Fellrnr):** in practice, CTL is used to measure both fitness AND overall fatigue load. ATL is mostly used to compute TSB for short-term taper management. Most published guidance around "target CTL levels" uses CTL as the primary load metric.
 
