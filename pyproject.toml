@@ -21,6 +21,9 @@ dev = [
     "pytest>=8.0",
 ]
 
+[tool.setuptools.package-data]
+"coachctl.dashboard" = ["app.html"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v"
