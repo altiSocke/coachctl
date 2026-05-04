@@ -16,7 +16,6 @@ generating periodized training plans.
 - Generate and save periodized training plans as Markdown
 - Three-layer knowledge base (`raw/general/` + `wiki/general/` + private personal repo)
 - Log untracked activities (hockey, gym, etc.) with TSS estimates
-- Google Calendar integration — push sessions as events with hash-based change detection
 - FastAPI training plan dashboard, deployable to Vercel from the personal repo
 
 ---
@@ -187,11 +186,11 @@ Categories:
 | Feedback & notes | `log_feedback`, `get_recent_feedback`, `save_coaching_note`, `get_coaching_notes` |
 | Readiness | `log_readiness_checkin`, `get_readiness_history` |
 | Untracked | `log_untracked_activity`, `get_untracked_activities`, `check_weekly_untracked`, `mark_weekly_checkin_done` |
-| Plans | `save_plan`, `get_previous_plans`, `patch_plan_session`, `list_schedule_overrides` |
+| Plans | `save_plan`, `get_previous_plans` |
 | Personal wiki | `get_athlete_wiki`, `propose_wiki_update`, `apply_wiki_update` |
 | General wiki | `read_general_wiki`, `propose_general_wiki_update`, `apply_general_wiki_update` |
 | Site / dashboard | `bake` |
-| Calendar | `calendar_auth`, `calendar_sync`, `calendar_clear` |
+| Events & calendar | `get_calendar_window`, `get_event_detail`, `date_is_free`, `create_event`, `create_race`, `update_event`, `cancel_event`, `delete_event` |
 
 ---
 
