@@ -1,7 +1,7 @@
 # Endurance Nutrition — Science Reference
 
 > Personal protocols and athlete-specific plans live in the personal repo's `profile/nutrition.md`.
-> Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al. 2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al. 2020 (PMID 33428210), Guest et al. 2021 (caffeine, PMID 33388079), Diaz-Lara et al. 2025 (train-low, PMID 39352665), Caravaca et al. 2023 (PMID 37449467), Bourdas et al. 2021 (PMID 34959776), Podlogar & Wallis 2022 (Sports Med, DOI 10.1007/s40279-022-01757-1), Wilson 2025/2026 (Sports Med vol 56, high-CHO revolution review), Viribay et al. 2020 (mountain marathon 120g/hr, PMID 32397570).
+> Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al. 2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al. 2020 (PMID 33428210), Guest et al. 2021 (caffeine, PMID 33388079), Diaz-Lara et al. 2025 (train-low, PMID 39352665), Caravaca et al. 2023 (PMID 37449467), Bourdas et al. 2021 (PMID 34959776), Podlogar & Wallis 2022 (Sports Med, DOI 10.1007/s40279-022-01757-1), Wilson 2025/2026 (Sports Med vol 56, high-CHO revolution review), Viribay et al. 2020 (mountain marathon 120g/hr, PMID 32397570), Cao et al. 2025 (Nutrients 17:918, environmental CHO modifiers, anxiety-glycogen).
 
 ---
 
@@ -36,15 +36,46 @@ Carbohydrates ingested **30–75 min before exercise** trigger an insulin spike.
 - **< 15 minutes before:** exercise onset blunts insulin response before glucose dip occurs
 - **Avoid:** high-GI carbs 30–75 min before hard efforts
 
+### Afternoon and evening races — breakfast matters
+
+A low-carbohydrate breakfast reduces liver glycogen storage and negatively affects endurance performance **even when the pre-race lunch is carbohydrate-adequate** (Cao et al. 2025). Liver glycogen recovery after the overnight fast requires a morning CHO intake — the pre-race meal alone does not restore it in time.
+
+**Rule:** For afternoon/evening races, eat a carbohydrate-rich breakfast regardless of the pre-race meal plan. 50–80g CHO at breakfast (porridge, toast + banana, rice) is sufficient to restore overnight liver glycogen loss.
+
 ### Daily carbohydrate for glycogen maximisation
 
 - Glycogen fully topped up at **8–12 g/kg/day** dietary CHO (Kerksick 2017)
 - For a 60–90 min game (unihockey): pre-game daily CHO load (day before + day of) is the primary lever — mid-game fuelling window is minimal
 - For long cycling/running events: daily CHO in the final 24–48h before matters more than the pre-race meal alone
+- **Supercompensation:** sustained 8 g/kg/day for **36–48h** can double muscle glycogen levels — use for A-races with extended taper windows. Expect 1–2 kg temporary body weight increase (2.7g water per 1g glycogen stored).
 
 ### Pre-exercise fasting and adaptation
 
 Fasted Z2 sessions (train-low) enhance fat oxidation and mitochondrial signalling (PDK4, GLUT4, UCP3 upregulation), but impair performance at intensities >70% VO2max. Reserve fasted training for easy/Z2 sessions only.
+
+---
+
+## Pre-Race Anxiety and Glycogen Depletion
+
+*(Cao et al. 2025)*
+
+Pre-race anxiety is not just a mental issue — it is a metabolic one. The stress response activates the sympathetic–adrenal axis (catecholamines) and the HPA axis (cortisol), both of which stimulate glycogen phosphorylase directly.
+
+**Quantified glycogen impact at rest:**
+- Epinephrine release equivalent to 3h of pre-race stress: **>30% muscle glycogen depletion**
+- Catecholamine load over 2h: **41% muscle glycogen reduction**
+- This occurs before the gun fires — correct nutrition protocols can be undone by anxiety alone
+
+**Practical protocol for a nervous athlete:**
+
+| Situation | Action |
+|---|---|
+| Anxious in the days before A-race | Extend carb-loading window to **36–48h** (not just 24h); prioritise 8–10g/kg/day |
+| No appetite on race morning | Eat anyway — liquid CHO (smoothie, sports drink) if solid food is unappealing |
+| GI distress + anxiety pre-race | Switch to higher-concentration solution (smaller volume, same CHO dose); mouth rinse before start |
+| Poor sleep from nerves | Treat as extended glycogen deficit; add a pre-race gel even if a meal was eaten |
+
+**Sleep loss compounds the deficit:** anxiety → insomnia → impaired overnight glycogen resynthesis. One night of poor sleep before a race = depleted liver glycogen going into warm-up. A gel 15 min before start is non-negotiable in this scenario.
 
 ---
 
@@ -296,6 +327,60 @@ GI problems are common in endurance racing. The primary lever is almost always *
 
 ---
 
+## Environmental Conditions and Carbohydrate Metabolism
+
+*(Cao et al. 2025)*
+
+Temperature is a primary modifier of both performance and carbohydrate metabolism. The effects are larger than most athletes expect.
+
+### Heat
+
+| WBGT | Condition | Estimated marathon impact |
+|---|---|---|
+| 7.5°C | Optimal | Baseline |
+| 7.5–18.5°C | Comfortable | Negligible |
+| 18.5–23°C | Moderately hot | ~1–2% slower |
+| 23–28°C | Hot | ~2–4% slower; heat stroke risk |
+| >28°C | Extremely hot | >4% slower; withdrawal risk |
+
+At 35°C ambient during 90-min exercise at 55% VO2max:
+- Exogenous CHO oxidation **↓ 10%** — gels deliver less usable fuel
+- Muscle glycogen oxidation **↑ 25%** — stores deplete faster
+
+**Hot-race nutrition adjustments:**
+- Maximise glycogen pre-race: 8–10g/kg/day in the final week if forecast hot
+- Increase on-course CHO target by ~10% to compensate for reduced exogenous oxidation efficiency
+- Prioritise liquid CHO over gels (easier absorption, double as hydration)
+- If available: carb solution chilled in ice water — cools core while delivering fuel; test in training first (cold solutions can trigger GI spasm)
+- Sodium becomes critical faster in heat — electrolyte drinks from km 0
+
+### Cold
+
+Every 1°C below optimal WBGT → **~0.3% marathon performance decline**. Cold is underestimated as a metabolic stressor.
+
+Cold metabolic effects:
+- Resting metabolic rate ↑ **2.5–3.5×** (shivering thermogenesis)
+- Endogenous CHO oxidation ↑ **6-fold** vs. warm conditions
+- 90 min in 18°C water: muscle glycogen and blood glucose both **↓ 20%**
+- Cold suppresses appetite → athletes under-eat at cold races
+
+**⚠️ Hypoglycaemia in cold = hypothermia warning:** blood glucose <2.5 mmol/L in cold conditions can precede core temperature drop below 35°C. Cognitive confusion + shivering stopping = emergency.
+
+**Cold-race nutrition adjustments:**
+- Fuel from the start despite absent hunger — cold kills the appetite signal
+- **Warm carbohydrate solutions** preferred: improve GI absorption, reduce gut discomfort, partial thermogenic benefit
+- Eat a carb-rich breakfast even if racing at midday — cold + overnight fast = significant glycogen deficit by start
+- Drink on a timer; thirst is even more unreliable in cold than in heat
+
+### Altitude
+
+- High altitude increases endogenous CHO oxidation and reduces exogenous CHO oxidation — net effect is faster glycogen depletion and less usable fuel from gels
+- Hypoxia accelerates both peripheral fatigue (glycogen depletion) and central fatigue (blood glucose swings)
+- Appetite suppression common above 2,500m — many athletes struggle to hit even 60g/hr
+- Practical: start fuelling immediately from km 0 at altitude; target the upper end of your trained intake range; prefer liquid CHO over gels (easier to consume without appetite)
+
+---
+
 ## Electrolytes
 
 ### Sodium
@@ -352,6 +437,8 @@ Once glycogen is depleted:
 - The body shifts to fat oxidation (maximum ~60g/hr = 540 kcal/hr), which cannot sustain high intensity
 - Blood glucose drops → cognitive impairment, loss of motor coordination
 - Legs feel suddenly "empty" or "dead" — the classic bonk
+
+Blood glucose falling below **3.9 mmol/L** impairs the brain's motor control centres and reduces muscle fibre recruitment capacity (Cao et al. 2025). This is the functional threshold — below this, performance collapses regardless of muscle glycogen status.
 
 The bonk is **not** recoverable by eating at that moment — absorption takes 15–30 minutes and cannot restore depleted muscle glycogen during the effort. Prevention requires fuelling from the start.
 
@@ -414,3 +501,4 @@ Frequent sugar and acid exposure erodes dental enamel. Enamel loss is irreversib
 | HR dropping but effort feels maximal | Cardiac output limited by substrate deficit | Carbs + reduce pace; will take 20–30min to restore |
 | Can't face more gels | Flavour fatigue / GI fatigue | Switch to salty solid food and plain water |
 | Muscle cramps | Multi-factorial: dehydration, sodium deficit, fatigue, inadequate carbs | Hydrate + sodium + carbs + reduce intensity; stretch |
+| Shivering stops in cold + confusion | Hypoglycaemia → hypothermia risk | Sugar immediately + shelter + reduce intensity; do not continue alone |
