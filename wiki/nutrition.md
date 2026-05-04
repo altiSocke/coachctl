@@ -1,7 +1,7 @@
 # Endurance Nutrition — Science Reference
 
 > Personal protocols and athlete-specific plans live in the personal repo's `profile/nutrition.md`.
-> Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al. 2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al. 2020 (PMID 33428210), Guest et al. 2021 (caffeine, PMID 33388079), Diaz-Lara et al. 2025 (train-low, PMID 39352665), Caravaca et al. 2023 (PMID 37449467), Bourdas et al. 2021 (PMID 34959776).
+> Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al. 2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al. 2020 (PMID 33428210), Guest et al. 2021 (caffeine, PMID 33388079), Diaz-Lara et al. 2025 (train-low, PMID 39352665), Caravaca et al. 2023 (PMID 37449467), Bourdas et al. 2021 (PMID 34959776), Podlogar & Wallis 2022 (Sports Med, DOI 10.1007/s40279-022-01757-1), Wilson 2025/2026 (Sports Med vol 56, high-CHO revolution review), Viribay et al. 2020 (mountain marathon 120g/hr, PMID 32397570).
 
 ---
 
@@ -185,6 +185,77 @@ Soft drinks (Coke, Red Bull, alcohol-free beer) are **palatability and caffeine 
 **Alcohol-free beer** (e.g. Erdinger Alkoholfrei): isotonic, contains polyphenols and B-vitamins, hydrating. Evidence supports it as a recovery drink. During exercise: not useful for fuelling.
 
 **Carbonation rule:** never drink carbonated drinks on a climb or at high intensity — the gas cannot escape the stomach under GI stress and will cause bloating and nausea. Either flatten the drink first or save it for recovery segments.
+
+---
+
+## High-Carbohydrate Intake: Beyond 90 g/hr
+
+*(Podlogar & Wallis 2022, Sports Med; Wilson 2025/2026, Sports Med vol 56; Viribay et al. 2020)*
+
+Professional cycling has normalised intakes of 100–120 g/hr in stage races, and some coaches report anecdotal targets up to 120–150 g/hr during long climbs. This section summarises what the current evidence actually supports.
+
+### The 1:0.8 ratio advantage
+
+Podlogar & Wallis (2022) synthesised isotope tracer studies showing that **1:0.8 maltodextrin:fructose** (formerly called "2:1.25" in some literature) consistently outperforms the traditional 2:1 ratio at intakes >60 g/hr:
+
+- Exogenous CHO oxidation: 1:0.8 delivers **~8–10% more** oxidised carbohydrate per hour than 2:1 at matched doses
+- Mechanism: more fructose per unit dose uses GLUT5 more fully, closer to its saturation point
+- GI tolerance: no worse than 2:1 in gut-trained athletes
+- **Practical implication:** at 80–90 g/hr, use 1:0.8 products (e.g. SiS Beta Fuel, Maurten 320) rather than classic 2:1 gels
+
+### Does 120 g/hr improve performance?
+
+Wilson (2025/2026) reviewed the evidence for ≥100 g/hr with a sobering conclusion:
+
+> **Controlled lab studies do NOT demonstrate a performance advantage of ≥100 g/hr over 60–90 g/hr in isolated efforts** (single-day time trials, stage races of 1–3 hours).
+
+What the evidence does and does not show:
+
+| Claim | Evidence level | Notes |
+|---|---|---|
+| 120g/hr oxidises more exogenous CHO than 90g/hr | ✅ Supported (isotope tracers) | But extra oxidised CHO doesn't further spare endogenous glycogen |
+| 120g/hr improves performance vs 90g/hr in a single day | ❌ Not shown in controlled trials | No isolated-effort RCT demonstrates this |
+| 120g/hr reduces muscle damage in multi-day events | ⚠️ Limited evidence | Viribay 2020: 120g/hr vs 60/90g/hr in elite mountain marathoners reduced CK/LDH post-race. Recovery benefit, not performance benefit. |
+| Stage racing benefits from high CHO (multi-day) | ⚠️ Indirect/observational | Plausible mechanistically; no controlled stage-race RCT |
+
+**Bottom line:** 120 g/hr may accelerate recovery between stages or days — but there is no controlled evidence it makes you faster on the day you use it.
+
+### Risks of very high CHO intake
+
+1. **GI distress** — above 90 g/hr, unabsorbed fructose remains in the colon and causes osmotic diarrhoea and bloating. Even gut-trained athletes hit a ceiling.
+2. **Suppressed fat oxidation** — high exogenous CHO reduces fat oxidation rates. In ultra-endurance (>6h), this may compromise late-race fuel availability when exogenous CHO is digested faster than absorbed.
+3. **Training dependency** — athletes who habitually fuel at 120 g/hr in training become dependent on exogenous carbs for Z3+ efforts and lose fat oxidation adaptations.
+
+### Running vs cycling: a critical difference
+
+Running carries substantially higher GI stress than cycling at equivalent CHO intake rates due to:
+- **Mechanical impact** — vertical oscillation displaces GI contents, increasing nausea and cramps
+- **Splanchnic ischaemia** — at equivalent VO2%, running reduces gut blood flow more than cycling because running engages larger muscle mass and trunk musculature
+- **Hydration complexity** — heat + running sweat rate makes maintaining 6–8% CHO concentration harder
+
+**Practical consequences for runners:**
+
+| Intake rate | Cycling evidence | Running evidence |
+|---|---|---|
+| ≤60 g/hr | Well-tolerated universally | Well-tolerated; achievable without gut training |
+| 60–90 g/hr | Standard for trained gut | Achievable with 4–6 weeks gut training; use 1:0.8 ratio |
+| 90–120 g/hr | Used by elite cyclists in stage races | Viable only in **elite, gut-trained runners** on **easy terrain** (Viribay 2020 — mountain marathon). GI risk high in age-groupers or on technical/steep terrain. |
+| >120 g/hr | Anecdotal pro cycling reports; no RCT data | Not recommended. GI failure risk very high. |
+
+**Viribay et al. (2020)** — the landmark running study at high CHO: elite mountain marathon runners randomised to 60, 90, or 120 g/hr. The 120 g/hr group showed significantly lower post-race CK and LDH (muscle damage markers). Performance during the race was not different between groups. This was a single race in elite, gut-trained athletes — extrapolation to age-groupers requires caution.
+
+### Practical targets by athlete level
+
+| Athlete level | Event | Recommended CHO | Notes |
+|---|---|---|---|
+| Amateur / age-grouper | Marathon or cycling sportive | 60–80 g/hr | 1:0.8 ratio; gut training required above 60g/hr |
+| Trained amateur | Ultra marathon / gran fondo (>5h) | 80–90 g/hr | 1:0.8 ratio; gut training mandatory; test in training |
+| Elite / highly trained | Stage race / multi-day ultra | 90–120 g/hr | Only if: gut-trained, tested in training, recovery priority across stages |
+| Elite cyclist (Grand Tour) | Single stage >4h | Up to 120 g/hr | Current pro practice; no RCT evidence for isolated-day performance benefit |
+
+### Key takeaway
+
+The "120 g/hr revolution" in pro cycling is real — but the evidence it improves performance in any single effort is absent. The plausible benefits are **recovery between efforts** in multi-day events. For an age-group athlete targeting a gran fondo or marathon, **80–90 g/hr with a 1:0.8 ratio is the evidence ceiling**. Train the gut to get there, and don't go higher without a clear reason.
 
 ---
 
