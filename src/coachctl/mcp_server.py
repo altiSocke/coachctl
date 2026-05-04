@@ -20,6 +20,15 @@ if _DATA_ROOT_ENV:
     _env = Path(_DATA_ROOT_ENV).expanduser() / ".env"
     if _env.exists():
         load_dotenv(_env)
+    else:
+        import warnings
+        warnings.warn(
+            f"\n\n⚠️  .env file not found at {_env}\n"
+            "Strava sync and other authenticated features will not work.\n"
+            f"Create {_env} using {Path(_DATA_ROOT_ENV) / '.env.example'} as a template,\n"
+            "then re-run: uv run coachctl sync --auth\n",
+            stacklevel=1,
+        )
 else:
     _ROOT_ENV = Path(__file__).parent.parent.parent / ".env"
     if _ROOT_ENV.exists():
