@@ -239,6 +239,8 @@ Refer them to `README.md` for full details. Do not attempt to bypass the OAuth f
 
 On every new conversation, run these steps **automatically and silently** before anything else:
 
+### Path A — MCP tools available (normal)
+
 0. **`check_environment`** — verify `AGENT_DATA_ROOT` resolves, `.env` and `athlete.yaml` exist. **If `ok` is false, stop the rest of startup** and walk the athlete through `next_steps` (see "Environment pre-flight" below). Do not call any other tool until the environment is healthy.
 0b. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
 1. `sync_activities` — pull latest Strava data (incremental)
@@ -247,20 +249,73 @@ On every new conversation, run these steps **automatically and silently** before
 4. `get_fitness_state` — current CTL/ATL/TSB
 5. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
 6. `check_weekly_untracked` — check if the weekly untracked check-in is due
-7. **Refresh dashboard data** — `bake` is the single mechanism for keeping the dashboard current. Call it:
-   - **Always at startup** (unconditionally, after step 6)
-   - **After any of the following mid-session events:**
-      - New activities marked reviewed (`mark_activities_reviewed`)
-      - Plan saved (`save_plan`)
-      - Schedule change applied (`update_event`)
-      - Race card section applied (`apply_race_*`)
-      - Wiki update applied (`apply_wiki_update` or `apply_general_wiki_update`)
-      - Untracked activity logged (`log_untracked_activity`)
-      - Readiness check-in logged (`log_readiness_checkin`)
-      - Coaching note saved that affects fitness or plan data
-   - **Skills do not call `bake`** — the coach agent is responsible for calling it after any skill completes work that changes dashboard-visible data. Use the list above as the trigger reference.
+7. **Refresh dashboard data** — call `bake` (see bake trigger list below)
 
-Steps 0–6 are silent on success. Confirm with a single summary line e.g.:
+### Path B — MCP tools unavailable (fallback)
+
+If calling any MCP tool produces an error or the tools are simply not present, **do not probe with ad-hoc Python imports**. Instead run these two bash commands (they are the only correct approach):
+
+```bash
+# Step 1 — git pull both repos (always run first)
+git -C /path/to/coachctl pull && git -C /path/to/coachctl-personal pull
+
+# Step 2 — single startup call (sync + fitness + new activities + events + profile)
+uv run coachctl startup
+```
+
+Resolve paths using `code_root()` and `data_root()` from `src/coachctl/paths.py`. `AGENT_DATA_ROOT` is the canonical env var for the personal repo path.
+
+The `startup` command outputs a JSON object with these keys — parse it directly, do not re-query:
+- `env.ok` — bool; if false, surface `env.warnings` and stop
+- `sync.new_activities`, `sync.total_activities`, `sync.error?`
+- `fitness` — `{date, ctl, atl, tsb}`
+- `new_activities` — list of unreviewed sessions (last 28 days, max 10), each with `{id, start_date, name, sport_type, distance_km, moving_time_min, tss, avg_hr, avg_watts, elevation_m}`
+- `upcoming_events` — next 28 days from `events` table, each with `{id, slug, kind, date, name, summary, status}`
+- `profile` — `{ftp, rftp_sec_per_km, rftp_watts, threshold_hr, max_hr, weight_kg, vo2max, goals}`
+- `last_coaching_note` — `{date, text}` (last entry in `training_history.md`)
+
+After `coachctl startup`, load the full athlete wiki from disk:
+
+```bash
+# personal wiki files
+cat <DATA_ROOT>/profile/profile.md
+cat <DATA_ROOT>/profile/goals.md
+cat <DATA_ROOT>/profile/nutrition.md
+cat <DATA_ROOT>/profile/training_history.md  # coaching notes — last ~100 lines sufficient
+```
+
+Then call `bake` via bash: `uv run coachctl bake`
+
+**Quick reference — correct names to use in bash fallback:**
+
+| Need | Import / call |
+|---|---|
+| DB connection | `from coachctl.db import get_conn` |
+| Strava sync | `from coachctl.sync import sync; sync(full=False)` |
+| Fitness state | `SELECT date, ctl, atl, tsb FROM fitness ORDER BY date DESC LIMIT 1` |
+| Activities columns | `start_date`, `sport_type`, `moving_time`, `average_heartrate`, `average_watts` |
+| Events columns | `kind` (not `event_type`), `slug`, `date`, `name`, `summary`, `status` |
+
+---
+
+### Bake trigger list (both paths)
+
+Call `bake` (MCP tool or `uv run coachctl bake`) after any of these:
+- Startup (unconditionally, after data load)
+- New activities marked reviewed (`mark_activities_reviewed`)
+- Plan saved (`save_plan`)
+- Schedule change applied (`update_event`)
+- Race card section applied (`apply_race_*`)
+- Wiki update applied (`apply_wiki_update` or `apply_general_wiki_update`)
+- Untracked activity logged (`log_untracked_activity`)
+- Readiness check-in logged (`log_readiness_checkin`)
+- Coaching note saved that affects fitness or plan data
+
+Skills do not call `bake` — the coach agent is responsible.
+
+---
+
+Steps 0–6 / Path B startup are silent on success. Confirm with a single summary line e.g.:
 > "✅ Synced (3 new) · CTL 36 / TSB -14 · Half Marathon goal: 1:30 on Sep 6 · Last note: Apr 22"
 
 If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.json` baked yet), surface them only if they block a downstream tool — otherwise stay silent.

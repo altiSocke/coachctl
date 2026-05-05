@@ -130,7 +130,10 @@ def web_cmd(
         uvicorn.run(create_app(paths.data_json()), host=host, port=port)
 
 
-@app.command("migrate", help="Migrate legacy data (untracked activities, schedule overrides, athlete.yaml events) into the events table.")
+@app.command(
+    "migrate",
+    help="Migrate legacy data (untracked activities, schedule overrides, athlete.yaml events) into the events table.",
+)
 def migrate_cmd() -> None:
     from .db import get_conn, init_db
     from .migrate import run_all
@@ -139,6 +142,171 @@ def migrate_cmd() -> None:
     with get_conn() as conn:
         summary = run_all(conn)
     typer.echo(summary)
+
+
+@app.command(
+    "startup",
+    help="Run full startup sequence and print a JSON summary (sync + fitness + new activities + events).",
+)
+def startup_cmd(
+    no_sync: bool = typer.Option(False, "--no-sync", help="Skip Strava sync (use cached data)."),
+) -> None:
+    """
+    Single-call startup for the coach agent when MCP tools are unavailable.
+
+    Outputs a JSON object with keys:
+      env, sync, fitness, new_activities, upcoming_events, profile, last_coaching_note
+    """
+    import io as _io
+    import json as _json
+    import re as _re
+    import sys as _sys
+    from contextlib import redirect_stdout as _redirect_stdout
+    from datetime import date as _date, timedelta as _td
+
+    from dotenv import load_dotenv as _load_dotenv
+
+    from . import paths as _paths
+    from .db import get_conn as _get_conn, init_db as _init_db
+
+    result: dict = {
+        "env": {"ok": False, "data_root": None, "warnings": []},
+        "sync": {"new_activities": 0, "total_activities": 0},
+        "fitness": None,
+        "new_activities": [],
+        "upcoming_events": [],
+        "profile": {},
+        "last_coaching_note": None,
+    }
+
+    # ── env ──────────────────────────────────────────────────────────────
+    try:
+        dr = _paths.data_root()
+        result["env"]["data_root"] = str(dr)
+        env_file = _paths.env_file()
+        if env_file.exists():
+            _load_dotenv(env_file)
+        else:
+            result["env"]["warnings"].append(f"Missing .env at {env_file}")
+        result["env"]["ok"] = True
+    except Exception as exc:
+        result["env"]["warnings"].append(f"data_root failed: {exc}")
+        typer.echo(_json.dumps(result, indent=2))
+        raise typer.Exit(1)
+
+    _init_db()
+
+    # ── sync ─────────────────────────────────────────────────────────────
+    if not no_sync:
+        try:
+            from .sync import sync as _sync
+
+            # redirect sync's progress prints to stderr so they don't corrupt JSON output
+            with _redirect_stdout(_io.TextIOWrapper(_io.FileIO("/dev/stderr", "w"))):
+                _sync(full=False)
+        except Exception as exc:
+            result["sync"]["error"] = str(exc)
+
+    try:
+        with _get_conn() as _conn:
+            row = _conn.execute("SELECT COUNT(*) AS c FROM activities").fetchone()
+            result["sync"]["total_activities"] = row["c"] if row else 0
+    except Exception:
+        pass
+
+    # ── fitness ───────────────────────────────────────────────────────────
+    try:
+        with _get_conn() as _conn:
+            f = _conn.execute(
+                "SELECT date, ctl, atl, tsb FROM fitness ORDER BY date DESC LIMIT 1"
+            ).fetchone()
+            if f:
+                result["fitness"] = dict(f)
+    except Exception as exc:
+        result["fitness"] = {"error": str(exc)}
+
+    # ── new (unreviewed) activities — last 28 days ────────────────────────
+    try:
+        cutoff = (_date.today() - _td(days=28)).isoformat()
+        with _get_conn() as _conn:
+            rows = _conn.execute(
+                """
+                SELECT id, start_date, name, sport_type,
+                       ROUND(distance / 1000.0, 2)   AS distance_km,
+                       ROUND(moving_time / 60.0, 1)  AS moving_time_min,
+                       tss,
+                       average_heartrate              AS avg_hr,
+                       average_watts                  AS avg_watts,
+                       total_elevation_gain           AS elevation_m
+                FROM activities
+                WHERE reviewed_at IS NULL
+                  AND start_date >= ?
+                ORDER BY start_date DESC
+                LIMIT 10
+                """,
+                (cutoff,),
+            ).fetchall()
+            result["new_activities"] = [dict(r) for r in rows]
+    except Exception as exc:
+        result["new_activities"] = [{"error": str(exc)}]
+
+    # ── upcoming events — today + 28 days ─────────────────────────────────
+    try:
+        today = _date.today().isoformat()
+        end = (_date.today() + _td(days=28)).isoformat()
+        with _get_conn() as _conn:
+            rows = _conn.execute(
+                """
+                SELECT id, slug, kind, date, name, summary, status, estimated_tss
+                FROM events
+                WHERE date BETWEEN ? AND ?
+                  AND status != 'cancelled'
+                ORDER BY date
+                """,
+                (today, end),
+            ).fetchall()
+            result["upcoming_events"] = [dict(r) for r in rows]
+    except Exception as exc:
+        result["upcoming_events"] = [{"error": str(exc)}]
+
+    # ── profile ───────────────────────────────────────────────────────────
+    try:
+        import yaml as _yaml
+
+        athlete_yaml = _paths.athlete_yaml()
+        if athlete_yaml.exists():
+            cfg = _yaml.safe_load(athlete_yaml.read_text("utf-8")) or {}
+            result["profile"] = {
+                "ftp": cfg.get("ftp"),
+                "rftp_sec_per_km": cfg.get("rftp"),
+                "rftp_watts": cfg.get("rftp_watts"),
+                "threshold_hr": cfg.get("threshold_hr"),
+                "max_hr": cfg.get("max_hr"),
+                "weight_kg": cfg.get("weight_kg"),
+                "vo2max": cfg.get("vo2max"),
+                "goals": cfg.get("goals", {}),
+            }
+    except Exception as exc:
+        result["profile"] = {"error": str(exc)}
+
+    # ── last coaching note ─────────────────────────────────────────────────
+    try:
+        history_path = _paths.data_root() / "profile" / "training_history.md"
+        if history_path.exists():
+            text = history_path.read_text("utf-8")
+            sections = _re.split(r"(?=^### \d{4}-\d{2}-\d{2})", text, flags=_re.MULTILINE)
+            if sections:
+                last = sections[-1].strip()
+                m = _re.match(r"### (\d{4}-\d{2}-\d{2})\s*(.*)", last, _re.DOTALL)
+                if m:
+                    result["last_coaching_note"] = {
+                        "date": m.group(1),
+                        "text": m.group(2).strip()[:300],
+                    }
+    except Exception:
+        pass
+
+    typer.echo(_json.dumps(result, indent=2))
 
 
 @app.command("serve", help="Start the MCP server (stdio).")
