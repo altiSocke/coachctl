@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import contextmanager
 from datetime import date, timedelta
 
 import pytest
@@ -27,94 +28,97 @@ from coachctl.events import (
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
+_SCHEMA_SQL = """
+    CREATE TABLE IF NOT EXISTS events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        slug TEXT UNIQUE NOT NULL,
+        kind TEXT NOT NULL,
+        date TEXT NOT NULL,
+        start_time TEXT,
+        duration_min INTEGER,
+        name TEXT NOT NULL,
+        summary TEXT,
+        estimated_tss REAL,
+        status TEXT DEFAULT 'planned',
+        payload_json TEXT,
+        plan_id INTEGER,
+        activity_id INTEGER,
+        notes TEXT,
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS activities (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        sport_type TEXT,
+        start_date TEXT,
+        moving_time INTEGER,
+        distance REAL,
+        total_elevation_gain REAL,
+        average_heartrate REAL,
+        average_watts REAL,
+        tss REAL,
+        suffer_score INTEGER
+    );
+"""
+
 
 @pytest.fixture
 def mem_db(monkeypatch, tmp_path):
     """
-    Create an in-memory (tmp_path) SQLite DB with the events + activities schema,
-    and patch paths.db_path() + db.get_conn() to use it.
+    File-based SQLite DB in tmp_path with events + activities schema.
+    Patches db.get_conn() as a proper contextmanager to avoid ResourceWarnings.
     """
     db_file = tmp_path / "activities.db"
 
     import coachctl.db as db_module
     import coachctl.paths as paths_module
 
-    # Patch db_path to point at our temp file
     monkeypatch.setattr(paths_module, "db_path", lambda: db_file)
 
-    # Patch get_conn to use the temp file
+    @contextmanager
     def _get_conn():
         conn = sqlite3.connect(str(db_file))
         conn.row_factory = sqlite3.Row
-        return conn
+        try:
+            yield conn
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
 
     monkeypatch.setattr(db_module, "get_conn", _get_conn)
     monkeypatch.setattr("coachctl.events.get_conn", _get_conn)
     monkeypatch.setattr("coachctl.events.paths.db_path", lambda: db_file)
 
-    # Bootstrap schema
-    conn = _get_conn()
-    conn.executescript("""
-        CREATE TABLE IF NOT EXISTS events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            slug TEXT UNIQUE NOT NULL,
-            kind TEXT NOT NULL,
-            date TEXT NOT NULL,
-            start_time TEXT,
-            duration_min INTEGER,
-            name TEXT NOT NULL,
-            summary TEXT,
-            estimated_tss REAL,
-            status TEXT DEFAULT 'planned',
-            payload_json TEXT,
-            plan_id INTEGER,
-            activity_id INTEGER,
-            notes TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS activities (
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            sport_type TEXT,
-            start_date TEXT,
-            moving_time INTEGER,
-            distance REAL,
-            total_elevation_gain REAL,
-            average_heartrate REAL,
-            average_watts REAL,
-            tss REAL,
-            suffer_score INTEGER
-        );
-    """)
-    conn.commit()
-    conn.close()
+    with _get_conn() as conn:
+        conn.executescript(_SCHEMA_SQL)
 
     return _get_conn
 
 
 def _insert_event(get_conn, slug, kind, date_str, name, status=STATUS_PLANNED,
                   payload=None, estimated_tss=None):
-    conn = get_conn()
-    conn.execute(
-        """INSERT INTO events (slug, kind, date, name, status, payload_json, estimated_tss)
-           VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        (slug, kind, date_str, name, status,
-         json.dumps(payload) if payload else None, estimated_tss),
-    )
-    conn.commit()
-    conn.close()
+    with get_conn() as conn:
+        conn.execute(
+            """INSERT INTO events (slug, kind, date, name, status, payload_json, estimated_tss)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (slug, kind, date_str, name, status,
+             json.dumps(payload) if payload else None, estimated_tss),
+        )
 
 
 def _insert_activity(get_conn, activity_id, name, sport_type, start_date,
                      moving_time=3600, tss=80.0):
-    conn = get_conn()
-    conn.execute(
-        """INSERT INTO activities (id, name, sport_type, start_date, moving_time, tss)
-           VALUES (?, ?, ?, ?, ?, ?)""",
-        (activity_id, name, sport_type, start_date, moving_time, tss),
-    )
-    conn.commit()
-    conn.close()
+    with get_conn() as conn:
+        conn.execute(
+            """INSERT INTO activities (id, name, sport_type, start_date, moving_time, tss)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (activity_id, name, sport_type, start_date, moving_time, tss),
+        )
 
 
 # ── _payload_hash ─────────────────────────────────────────────────────────────

@@ -8,6 +8,7 @@ from datetime import date
 from pathlib import Path
 
 from .. import paths
+from ..db import get_conn
 from ..wiki import build_plans_index_content, diff_section
 
 logger = logging.getLogger(__name__)
