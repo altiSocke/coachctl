@@ -273,6 +273,35 @@ main {
 .fit-pill.warn .fit-val { color: var(--warning); }
 .fit-pill.ok .fit-val { color: var(--success); }
 
+/* Thresholds card */
+.thresh-pills {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.thresh-pill {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 10px 8px;
+  text-align: center;
+}
+.thresh-val {
+  font-family: var(--font-display);
+  font-size: 1.5rem; font-weight: 700; line-height: 1;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.thresh-unit {
+  font-size: .6rem; font-weight: 500; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-top: 1px;
+}
+.thresh-lbl {
+  font-size: .6rem; font-weight: 500; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-top: 4px;
+}
+
 /* Monotony + Strain inline row */
 .mono-row {
   display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
@@ -705,6 +734,12 @@ main {
     <div id="fit-alerts"></div>
   </div>
 
+  <!-- Thresholds card -->
+  <div class="card hidden" id="thresholds-card">
+    <div class="card-title">Thresholds</div>
+    <div class="thresh-pills" id="thresh-pills"></div>
+  </div>
+
   <!-- Fitness chart + Weekly TSS — grouped: both answer "load trend?" -->
   <div class="card" id="fitness-chart-card">
     <div class="card-title">CTL · ATL · Form</div>
@@ -1014,6 +1049,7 @@ function renderAll() {
   renderPhase();
   renderEvents();
   renderFitness();
+  renderThresholds();
   renderWeek();
   renderZones();
   renderFitnessChart();
@@ -1146,6 +1182,33 @@ function renderEvents() {
     });
     strip.appendChild(card);
   });
+}
+
+// ── Thresholds ────────────────────────────────────────────────────────────── 
+
+function renderThresholds() {
+  const t = DATA.thresholds || {};
+  const el = document.getElementById('thresh-pills');
+  if (!el) return;
+
+  const items = [
+    { val: t.vo2max != null ? '~' + t.vo2max : '—', unit: 'ml/kg/min', lbl: 'VO₂max' },
+    { val: t.lthr    != null ? t.lthr        : '—', unit: 'bpm',       lbl: 'Threshold HR' },
+    { val: t.ftp     != null ? t.ftp         : '—', unit: 'W',         lbl: 'Threshold Power' },
+    { val: t.rftp    != null ? t.rftp        : '—', unit: '',          lbl: 'Threshold Pace' },
+  ];
+
+  const hasData = t.vo2max != null || t.lthr != null || t.ftp != null || t.rftp != null;
+  if (!hasData) { hide('thresholds-card'); return; }
+
+  el.innerHTML = items.map(i => `
+    <div class="thresh-pill">
+      <div class="thresh-val">${esc(String(i.val))}</div>
+      ${i.unit ? `<div class="thresh-unit">${esc(i.unit)}</div>` : ''}
+      <div class="thresh-lbl">${esc(i.lbl)}</div>
+    </div>`).join('');
+
+  show('thresholds-card');
 }
 
 // ── Fitness ───────────────────────────────────────────────────────────────── 

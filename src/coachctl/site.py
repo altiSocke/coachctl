@@ -739,8 +739,23 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         from .config import load_athlete
         cfg = load_athlete()
         goals = cfg.get("goals", {})
+        # Format rftp (sec/km) as MM:SS/km string
+        rftp_raw = cfg.get("rftp")
+        if rftp_raw:
+            rftp_min = int(rftp_raw) // 60
+            rftp_sec = int(rftp_raw) % 60
+            rftp_str = f"{rftp_min}:{rftp_sec:02d}/km"
+        else:
+            rftp_str = None
+        thresholds = {
+            "ftp":    cfg.get("ftp"),
+            "lthr":   cfg.get("threshold_hr"),
+            "rftp":   rftp_str,
+            "vo2max": cfg.get("vo2max"),
+        }
     except Exception:
         goals = {}
+        thresholds = {}
 
     return {
         "generated_at": datetime.now().isoformat(),
@@ -763,6 +778,7 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         "events": events,
         "calendar": calendar,
         "goals": goals,
+        "thresholds": thresholds,
         "recent_runs": recent_runs,
         "weekly_run_tss": weekly_run_tss,
     }
