@@ -63,10 +63,25 @@ ATL_DAYS = 7
 # ── Activity-level metrics ────────────────────────────────────────────────────
 
 
-def compute_activity_metrics(activity: dict, streams: dict | None = None) -> dict:
+def compute_activity_metrics(
+    activity: dict,
+    streams: dict | None = None,
+    athlete: dict | None = None,
+) -> dict:
     """
     Return a dict of computed metrics ready to store alongside the raw activity.
     Falls back gracefully when data is missing.
+
+    Parameters
+    ----------
+    activity : dict
+        Raw Strava activity fields.
+    streams : dict | None
+        Optional pre-fetched activity streams (unused in summary-level path).
+    athlete : dict | None
+        Athlete config dict (from ``load_athlete()``). If None, loaded from disk.
+        Pass the dict explicitly when calling in a batch (e.g. sync) to avoid
+        re-reading the YAML file for every activity.
     """
     sport = (activity.get("sport_type") or activity.get("type", "")).lower()
     moving_time = activity.get("moving_time") or 0  # seconds
@@ -82,10 +97,11 @@ def compute_activity_metrics(activity: dict, streams: dict | None = None) -> dic
         "rtss_power": None,
     }
 
-    # Load athlete config once for all metric calculations
-    from .config import load_athlete
+    # Load athlete config once — injected by caller when batch-processing.
+    if athlete is None:
+        from .config import load_athlete
 
-    athlete = load_athlete()
+        athlete = load_athlete()
 
     # ── Cycling: power-based TSS ──────────────────────────────────────────────
     # Strava API uses "weighted_average_watts"; normalise to short form
@@ -519,3 +535,490 @@ def get_current_monotony_snapshot(conn, sport_category: str = "all", window: int
         if entry["date"] <= today_str:
             return entry
     return series[-1]
+
+
+# ── ACWR — Acute:Chronic Workload Ratio ───────────────────────────────────────
+
+
+def compute_acwr(
+    daily_tss: dict[date, float],
+    short_days: int = 7,
+    long_days: int = 28,
+    reference_date: date | None = None,
+) -> dict:
+    """
+    Compute the Acute:Chronic Workload Ratio (ACWR) for a given reference date.
+
+    Two variants are returned:
+    - **rolling_average** (Gabbett 2016): simple rolling mean of the acute
+      window divided by the rolling mean of the chronic window.
+      Sweet-spot 0.8–1.3; >1.5 = high injury-risk flag.
+    - **ema** (exponential moving average): uses the existing ATL/CTL EMA
+      values (short_days and long_days as time constants) so the result is
+      consistent with the fitness model already shown on the dashboard.
+
+    Parameters
+    ----------
+    daily_tss      : dict mapping date → daily TSS
+    short_days     : acute window in days (default 7)
+    long_days      : chronic window in days (default 28)
+    reference_date : date to compute ACWR for (default: today). Pass a
+                     historical date when building the full time-series.
+
+    Returns
+    -------
+    dict with keys: acwr_rolling, acwr_ema, acute_load, chronic_load,
+                    risk_zone, interpretation
+    """
+    if not daily_tss:
+        return {
+            "acwr_rolling": None,
+            "acwr_ema": None,
+            "acute_load": 0.0,
+            "chronic_load": 0.0,
+            "risk_zone": "unknown",
+            "interpretation": "No training data available.",
+        }
+
+    ref = reference_date if reference_date is not None else date.today()
+
+    # Rolling-average ACWR
+    acute_vals = [daily_tss.get(ref - timedelta(days=i), 0.0) for i in range(short_days)]
+    chronic_vals = [daily_tss.get(ref - timedelta(days=i), 0.0) for i in range(long_days)]
+    acute_avg = sum(acute_vals) / short_days
+    chronic_avg = sum(chronic_vals) / long_days
+    acwr_rolling = round(acute_avg / chronic_avg, 3) if chronic_avg > 0 else None
+
+    # EMA-based ACWR: run EMA from earliest available date to ref
+    all_dates = sorted(daily_tss.keys())
+    start = all_dates[0]
+    k_short = 1 - math.exp(-1 / short_days)
+    k_long = 1 - math.exp(-1 / long_days)
+    ema_short = 0.0
+    ema_long = 0.0
+    current = start
+    while current <= ref:
+        tss = daily_tss.get(current, 0.0)
+        ema_short = ema_short + k_short * (tss - ema_short)
+        ema_long = ema_long + k_long * (tss - ema_long)
+        current += timedelta(days=1)
+    acwr_ema = round(ema_short / ema_long, 3) if ema_long > 0 else None
+
+    # Use rolling ACWR for risk zone (literature thresholds are based on rolling avg)
+    ratio = acwr_rolling
+    if ratio is None:
+        risk_zone = "unknown"
+        interpretation = "Insufficient chronic load to compute ratio."
+    elif ratio < 0.8:
+        risk_zone = "undertrained"
+        interpretation = (
+            f"ACWR {ratio:.2f} — below 0.8. Load is low relative to chronic base. "
+            "Detraining risk if sustained. Consider a moderate build week."
+        )
+    elif ratio <= 1.3:
+        risk_zone = "optimal"
+        interpretation = (
+            f"ACWR {ratio:.2f} — sweet spot (0.8–1.3). "
+            "Acute load is well-matched to chronic fitness. Training is sustainable."
+        )
+    elif ratio <= 1.5:
+        risk_zone = "caution"
+        interpretation = (
+            f"ACWR {ratio:.2f} — caution zone (1.3–1.5). "
+            "Acute load is elevated relative to chronic base. "
+            "Monitor for early fatigue signs; avoid adding more intensity."
+        )
+    else:
+        risk_zone = "high_risk"
+        interpretation = (
+            f"ACWR {ratio:.2f} — high injury risk (>1.5). "
+            "Acute load has spiked significantly above chronic fitness. "
+            "Mandatory load reduction this week."
+        )
+
+    return {
+        "acwr_rolling": acwr_rolling,
+        "acwr_ema": acwr_ema,
+        "acute_load": round(acute_avg, 1),
+        "chronic_load": round(chronic_avg, 1),
+        "acute_window_days": short_days,
+        "chronic_window_days": long_days,
+        "risk_zone": risk_zone,
+        "interpretation": interpretation,
+    }
+
+
+def get_acwr_from_db(conn, sport_category: str = "all") -> dict:
+    """Load daily TSS from DB and return today's ACWR snapshot."""
+    daily_tss = get_daily_tss_from_db(conn, sport_category)
+    return compute_acwr(daily_tss)
+
+
+# ── Session TSS Estimation ────────────────────────────────────────────────────
+
+# Intensity Factor lookup by session intensity label (as fraction of threshold).
+# Based on Coggan power zone midpoints / running equivalent.
+_INTENSITY_IF: dict[str, float] = {
+    "recovery": 0.65,  # Z1 — very easy, active recovery
+    "easy": 0.72,  # Z2 — aerobic base
+    "moderate": 0.80,  # Z2/Z3 boundary — comfortable endurance
+    "tempo": 0.88,  # Z3 — comfortably hard
+    "threshold": 1.00,  # Z4 — lactate threshold, ~1h pace
+    "vo2max": 1.12,  # Z5 — VO2max intervals
+    "anaerobic": 1.30,  # Z6 — short hard efforts
+}
+
+
+def estimate_session_tss(
+    duration_min: float,
+    intensity: str = "moderate",
+    sport: str = "any",
+) -> dict:
+    """
+    Estimate TSS for a planned session from duration and qualitative intensity.
+
+    Uses the standard Coggan formula:
+        TSS = (duration_s × IF²) × 100
+
+    The IF is looked up from ``intensity``:
+        recovery  → IF 0.65 (Z1)
+        easy      → IF 0.72 (Z2)
+        moderate  → IF 0.80 (Z2/Z3)
+        tempo     → IF 0.88 (Z3)
+        threshold → IF 1.00 (Z4)
+        vo2max    → IF 1.12 (Z5)
+        anaerobic → IF 1.30 (Z6)
+
+    This is athlete-agnostic: the IF ratios are the same regardless of FTP or
+    rFTP because TSS is normalised to 100 = 1hr at threshold.
+
+    Parameters
+    ----------
+    duration_min : session duration in minutes
+    intensity    : one of the labels above (case-insensitive)
+    sport        : optional label for the return dict (not used in calculation)
+
+    Returns
+    -------
+    dict with: tss_estimate, duration_min, intensity, intensity_factor, sport
+    """
+    key = intensity.lower().strip()
+    if key not in _INTENSITY_IF:
+        valid = ", ".join(sorted(_INTENSITY_IF))
+        raise ValueError(f"Unknown intensity '{intensity}'. Valid values: {valid}")
+    if_val = _INTENSITY_IF[key]
+    duration_s = duration_min * 60
+    tss = round((duration_s / 3600) * (if_val**2) * 100, 1)
+    return {
+        "tss_estimate": tss,
+        "duration_min": duration_min,
+        "intensity": key,
+        "intensity_factor": if_val,
+        "sport": sport,
+        "formula": f"({duration_min}min / 60) × IF²({if_val}) × 100 = {tss}",
+    }
+
+
+def estimate_week_tss(sessions: list[dict]) -> float:
+    """
+    Sum TSS estimates for a list of session dicts.
+    Each dict must have 'duration_min' and 'intensity'.
+    Convenience wrapper for plan validation.
+    """
+    total = 0.0
+    for s in sessions:
+        result = estimate_session_tss(
+            duration_min=s["duration_min"],
+            intensity=s.get("intensity", "moderate"),
+            sport=s.get("sport", "any"),
+        )
+        total += result["tss_estimate"]
+    return round(total, 1)
+
+
+# ── VO2max Estimation ─────────────────────────────────────────────────────────
+
+
+def estimate_vo2max_running(rftp_sec_per_km: float) -> float:
+    """
+    Estimate VO2max from running threshold pace (Daniels formula).
+
+    Daniels (2005) Running Formula:
+        vVO2max ≈ rFTP / 0.88   (rFTP is ~88% of vVO2max speed)
+        VO2max (mL/kg/min) = 0.182258 × vVO2max_km_per_min + 4.702
+
+    Where vVO2max is speed at VO2max in km/min.
+
+    Parameters
+    ----------
+    rftp_sec_per_km : threshold pace in seconds per km
+
+    Returns
+    -------
+    Estimated VO2max in mL/kg/min
+    """
+    if rftp_sec_per_km <= 0:
+        return 0.0
+    rftp_km_per_min = 60 / rftp_sec_per_km  # km/min at threshold
+    v_vo2max_km_per_min = rftp_km_per_min / 0.88  # threshold ≈ 88% of vVO2max
+    vo2max = 0.182258 * v_vo2max_km_per_min * 60 + 4.702  # Daniels formula uses km/h
+    # Correct: Daniels formula: VO2max = v × 3.5 + 3.5  (where v is in m/min)
+    # More common form: VO2 at speed v (m/min) = 0.2 × v + 3.5 (flat running)
+    # At vVO2max: VO2max = 0.2 × vVO2max_m_per_min + 3.5 (ACSM formula)
+    v_vo2max_m_per_min = v_vo2max_km_per_min * 1000
+    vo2max_acsm = 0.2 * v_vo2max_m_per_min + 3.5
+    return round(vo2max_acsm, 1)
+
+
+def estimate_vo2max_cycling(ftp_watts: float, weight_kg: float) -> float:
+    """
+    Estimate VO2max from cycling FTP and body weight (Coggan formula).
+
+        VO2max (mL/kg/min) ≈ 10.8 × (FTP / weight_kg) + 7
+
+    This is an approximation. FTP ≈ 75% of MAP (Maximum Aerobic Power),
+    so MAP = FTP / 0.75, and VO2max ≈ MAP × 10.8/weight + 7.
+
+    Parameters
+    ----------
+    ftp_watts : cycling functional threshold power in watts
+    weight_kg : athlete body weight in kg
+
+    Returns
+    -------
+    Estimated VO2max in mL/kg/min
+    """
+    if weight_kg <= 0 or ftp_watts <= 0:
+        return 0.0
+    ftp_per_kg = ftp_watts / weight_kg
+    # MAP ≈ FTP / 0.75; VO2max ≈ (MAP / weight_kg) × 10.8 + 7
+    # Simplified directly from FTP/kg:
+    vo2max = (ftp_per_kg / 0.75) * 10.8 + 7
+    return round(vo2max, 1)
+
+
+def estimate_vo2max_from_athlete(athlete: dict) -> dict:
+    """
+    Compute VO2max estimates from available athlete config.
+    Returns all available estimates with their method and confidence level.
+
+    Parameters
+    ----------
+    athlete : dict from ``load_athlete()``
+
+    Returns
+    -------
+    dict with estimates per method, plus a consensus value.
+    """
+    estimates: list[dict] = []
+
+    rftp = athlete.get("rftp")  # sec/km
+    if rftp and rftp > 0:
+        val = estimate_vo2max_running(rftp)
+        estimates.append(
+            {
+                "method": "running_threshold_pace",
+                "vo2max": val,
+                "confidence": "medium",
+                "note": f"ACSM formula from rFTP={rftp}s/km → vVO2max pace",
+            }
+        )
+
+    ftp = athlete.get("ftp")
+    weight = athlete.get("weight_kg")
+    if ftp and weight and ftp > 0 and weight > 0:
+        val = estimate_vo2max_cycling(ftp, weight)
+        estimates.append(
+            {
+                "method": "cycling_ftp",
+                "vo2max": val,
+                "confidence": "medium",
+                "note": f"Coggan formula from FTP={ftp}W, weight={weight}kg",
+            }
+        )
+
+    if not estimates:
+        return {
+            "estimates": [],
+            "consensus": None,
+            "note": "Set rftp (sec/km) and/or ftp + weight_kg in athlete.yaml to enable VO2max estimation.",
+        }
+
+    consensus = round(sum(e["vo2max"] for e in estimates) / len(estimates), 1)
+    return {
+        "estimates": estimates,
+        "consensus": consensus,
+        "interpretation": _vo2max_interpretation(consensus),
+    }
+
+
+def _vo2max_interpretation(vo2max: float) -> str:
+    """Qualitative interpretation of VO2max for endurance athletes."""
+    if vo2max >= 70:
+        return "Elite / professional level (≥70 mL/kg/min)."
+    if vo2max >= 60:
+        return "Highly trained amateur — competitive age-group level (60–70)."
+    if vo2max >= 50:
+        return "Well-trained — solid recreational endurance athlete (50–60)."
+    if vo2max >= 40:
+        return "Moderately trained — average recreational athlete (40–50)."
+    return "Beginner / untrained level (<40). Significant aerobic gains still available."
+
+
+# ── Race Time Prediction (Riegel model) ───────────────────────────────────────
+
+#: Standard Riegel exponents by mode.
+_RIEGEL_EXPONENTS: dict[str, float] = {
+    "road": 1.06,  # Riegel 1977 — validated 5k–marathon
+    "ultra": 1.15,  # Empirical adjustment for fatigue beyond 42 km
+}
+
+#: Target distances shown in predictions, with friendly labels.
+_RACE_DISTANCES: list[tuple[float, str]] = [
+    (5.0, "5k"),
+    (10.0, "10k"),
+    (21.1, "Half marathon"),
+    (42.2, "Marathon"),
+    (50.0, "50k"),
+]
+
+
+def riegel_predict(
+    t1_seconds: float,
+    d1_km: float,
+    d2_km: float,
+    exponent: float = 1.06,
+) -> float:
+    """
+    Predict finish time (seconds) for *d2_km* from a known performance *t1_seconds*
+    over *d1_km* using Riegel's (1977) power-law model:
+
+        T2 = T1 × (D2 / D1) ^ exponent
+
+    Parameters
+    ----------
+    t1_seconds:
+        Known performance time in seconds (must be > 0).
+    d1_km:
+        Reference distance in kilometres (must be > 0).
+    d2_km:
+        Target distance in kilometres (must be > 0).
+    exponent:
+        Fatigue exponent. Default 1.06 (road racing, Riegel 1977).
+        Use 1.15 for ultra distances (>42 km).
+
+    Returns
+    -------
+    float
+        Predicted finish time in seconds.
+
+    Raises
+    ------
+    ValueError
+        If t1_seconds ≤ 0 or d1_km ≤ 0 or d2_km ≤ 0.
+    """
+    if t1_seconds <= 0:
+        raise ValueError(f"t1_seconds must be positive, got {t1_seconds}")
+    if d1_km <= 0:
+        raise ValueError(f"d1_km must be positive, got {d1_km}")
+    if d2_km <= 0:
+        raise ValueError(f"d2_km must be positive, got {d2_km}")
+    return t1_seconds * (d2_km / d1_km) ** exponent
+
+
+def predict_race_times(
+    t1_seconds: float,
+    d1_km: float,
+    mode: str = "road",
+) -> list[dict]:
+    """
+    Apply Riegel's model to all standard race distances and return predictions.
+
+    Parameters
+    ----------
+    t1_seconds:
+        Known performance time in seconds.
+    d1_km:
+        Reference distance in kilometres.
+    mode:
+        ``'road'`` → exponent 1.06 (5k–marathon).
+        ``'ultra'`` → exponent 1.15 (50k+, higher fatigue penalty).
+
+    Returns
+    -------
+    list of dict, one per target distance:
+        distance_km, distance_label, predicted_seconds,
+        predicted_pace_sec_per_km, predicted_pace_formatted, exponent_used
+    """
+    if mode not in _RIEGEL_EXPONENTS:
+        raise ValueError(f"Unknown mode '{mode}'. Choose from: {list(_RIEGEL_EXPONENTS)}")
+
+    exponent = _RIEGEL_EXPONENTS[mode]
+    results = []
+    for d2_km, label in _RACE_DISTANCES:
+        predicted_s = riegel_predict(t1_seconds, d1_km, d2_km, exponent)
+        pace_sec_per_km = predicted_s / d2_km
+        results.append(
+            {
+                "distance_km": d2_km,
+                "distance_label": label,
+                "predicted_seconds": round(predicted_s),
+                "predicted_pace_sec_per_km": round(pace_sec_per_km, 1),
+                "predicted_pace_formatted": format_pace(pace_sec_per_km),
+                "exponent_used": exponent,
+            }
+        )
+    return results
+
+
+def get_best_recent_run(conn, lookback_days: int = 365) -> dict | None:
+    """
+    Return the best recent running performance from the activities table.
+
+    Selection strategy: among all runs longer than 3 km in the last
+    *lookback_days* days, pick the one with the longest distance; break
+    ties by fastest pace (lowest moving_time / distance).
+
+    Parameters
+    ----------
+    conn:
+        SQLite connection with row_factory set.
+    lookback_days:
+        How far back to look.  Default 365 days.
+
+    Returns
+    -------
+    dict with keys: activity_id, date, distance_km, time_seconds, pace_sec_per_km
+    or None if no qualifying run is found.
+    """
+    cutoff = (date.today() - timedelta(days=lookback_days)).isoformat()
+    row = conn.execute(
+        """
+        SELECT
+            id,
+            date(start_date) AS day,
+            distance,
+            moving_time
+        FROM activities
+        WHERE sport_type LIKE '%Run%'
+          AND distance > 3000
+          AND moving_time > 0
+          AND date(start_date) >= ?
+        ORDER BY distance DESC, (CAST(moving_time AS REAL) / distance) ASC
+        LIMIT 1
+        """,
+        (cutoff,),
+    ).fetchone()
+
+    if row is None:
+        return None
+
+    d_km = row["distance"] / 1000.0
+    t_s = row["moving_time"]
+    return {
+        "activity_id": row["id"],
+        "date": row["day"],
+        "distance_km": round(d_km, 2),
+        "time_seconds": t_s,
+        "pace_sec_per_km": round(t_s / d_km, 1),
+    }

@@ -203,6 +203,22 @@ def init_db():
         if "week_tss_json" not in plans_cols:
             conn.execute("ALTER TABLE plans ADD COLUMN week_tss_json TEXT")
 
+        # ── fitness table extensions ─────────────────────────────────────────
+        # New aggregate metrics added alongside CTL/ATL/TSB.
+        # Existing rows get NULL and are filled on the next _refresh_fitness_table().
+        fitness_cols = {row[1] for row in conn.execute("PRAGMA table_info(fitness)").fetchall()}
+        _fitness_additions = [
+            ("tss", "REAL"),  # daily TSS total (sum across activities)
+            ("acwr_rolling", "REAL"),  # acute:chronic workload ratio (rolling avg)
+            ("acwr_ema", "REAL"),  # ACWR via EMA (consistent with CTL/ATL model)
+            ("acwr_risk_zone", "TEXT"),  # undertrained/optimal/caution/high_risk
+            ("monotony", "REAL"),  # Foster training monotony (7-day window)
+            ("strain", "REAL"),  # Training strain = weekly TSS × monotony
+        ]
+        for col_name, col_type in _fitness_additions:
+            if col_name not in fitness_cols:
+                conn.execute(f"ALTER TABLE fitness ADD COLUMN {col_name} {col_type}")
+
     _DB_INITIALISED = True
     logger.info("Database initialised at %s", paths.db_path())
 
@@ -214,6 +230,7 @@ def migrate_and_drop_legacy() -> None:
     """
     init_db()
     from .migrate import run_all
+
     with get_conn() as conn:
         run_all(conn)
 

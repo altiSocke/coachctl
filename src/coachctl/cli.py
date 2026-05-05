@@ -316,6 +316,39 @@ def serve_cmd() -> None:
     _main()
 
 
+@app.command(
+    "recalculate",
+    help=(
+        "Recompute all per-activity metrics from stored raw_json, then rebuild "
+        "the fitness table (CTL/ATL/TSB + ACWR + Monotony). No Strava API call required."
+    ),
+)
+def recalculate_cmd(
+    verbose: bool = typer.Option(True, "--verbose/--quiet", help="Print progress."),
+) -> None:
+    """
+    Recalculate metrics without touching Strava.
+
+    Useful after:
+    - Updating athlete.yaml thresholds (FTP, rFTP, HR)
+    - A formula change in metrics.py
+    - A fresh install that skipped --full sync
+
+    Steps:
+      1. Read raw_json from every activity row.
+      2. Recompute tss / np / intensity_factor / hrss / rtss / ngp / rtss_power.
+      3. Batch-UPDATE all activities in one SQL call.
+      4. Rebuild the fitness table (CTL/ATL/TSB, ACWR, Monotony) from fresh data.
+    """
+    from .db import init_db
+    from .sync import recalculate_activity_metrics
+
+    init_db()
+    n = recalculate_activity_metrics(verbose=verbose)
+    if verbose:
+        typer.echo(f"Done — {n} activities recalculated.")
+
+
 def main() -> None:
     app()
 

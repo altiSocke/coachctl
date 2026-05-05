@@ -24,7 +24,13 @@ from dotenv import load_dotenv
 
 from . import paths
 from .db import get_conn, init_db
-from .metrics import compute_activity_metrics, compute_fitness_series, get_daily_tss_from_db
+from .metrics import (
+    compute_activity_metrics,
+    compute_acwr,
+    compute_fitness_series,
+    compute_training_monotony,
+    get_daily_tss_from_db,
+)
 
 STRAVA_AUTH_URL = "https://www.strava.com/oauth/authorize"
 STRAVA_TOKEN_URL = "https://www.strava.com/oauth/token"
@@ -285,9 +291,16 @@ def fetch_route_streams(access_token: str, route_id: int) -> dict:
 # ── Upsert activity ───────────────────────────────────────────────────────────
 
 
-def upsert_activity(conn, activity: dict, streams: dict | None = None):
-    """Insert or replace an activity with computed metrics."""
-    metrics = compute_activity_metrics(activity, streams)
+def upsert_activity(conn, activity: dict, streams: dict | None = None, athlete: dict | None = None):
+    """Insert or replace an activity with computed metrics.
+
+    Parameters
+    ----------
+    athlete : dict | None
+        Athlete config (from ``load_athlete()``). Pass once per sync batch to
+        avoid re-reading athlete.yaml for every activity.
+    """
+    metrics = compute_activity_metrics(activity, streams, athlete=athlete)
 
     conn.execute(
         """
@@ -375,8 +388,11 @@ def sync(full: bool = False, access_token: str | None = None):
                 after = int(row["value"])
 
         count = 0
+        from .config import load_athlete as _load_athlete
+
+        athlete_cfg = _load_athlete()  # load once for entire sync batch
         for activity in fetch_activities(access_token, after=after):
-            upsert_activity(conn, activity)
+            upsert_activity(conn, activity, athlete=athlete_cfg)
             count += 1
             if count % 20 == 0:
                 print(f"  synced {count} activities...")
@@ -397,7 +413,21 @@ def sync(full: bool = False, access_token: str | None = None):
 
 
 def _refresh_fitness_table():
-    """Recompute full CTL/ATL/TSB history and write to the fitness table."""
+    """
+    Rebuild the full daily athlete-metrics series and write to the ``fitness`` table.
+
+    For each sport_category ('all', 'run', 'ride') and every day in the series,
+    computes and persists:
+      - ctl, atl, tsb, tss  (fitness model)
+      - acwr_rolling, acwr_ema, acwr_risk_zone  (injury risk)
+      - monotony, strain  (training monotony / Foster 1998)
+
+    All three series are computed from ``daily_tss`` in a single pass and joined
+    by date before the batch upsert.  The table is fully rebuilt on every call
+    (ON CONFLICT … DO UPDATE), so it is always consistent with the activity data.
+
+    Called automatically at the end of ``sync()`` and ``recalculate_activity_metrics()``.
+    """
     from datetime import date as _date
 
     with get_conn() as conn:
@@ -405,17 +435,160 @@ def _refresh_fitness_table():
             daily_tss = get_daily_tss_from_db(conn, category)
             if not daily_tss:
                 continue
-            series = compute_fitness_series(daily_tss)
+
+            # ── Series 1: fitness (CTL/ATL/TSB/daily TSS) ────────────────────
+            fitness_series = compute_fitness_series(daily_tss)
+            # Index by date string for O(1) merge
+            fitness_by_date = {row["date"]: row for row in fitness_series}
+
+            # ── Series 2: ACWR (per day) ──────────────────────────────────────
+            # We need a daily ACWR value for every day in the series.
+            # compute_acwr() returns today's value; we need to compute it for
+            # every historical date by slicing the daily_tss dict up to that date.
+            # For performance: build rolling cumulative slices using a deque.
+            from collections import deque
+            from datetime import timedelta as _td
+
+            all_dates_sorted = sorted(daily_tss.keys())
+            series_start = all_dates_sorted[0]
+            series_end = _date.today()
+
+            acwr_by_date: dict[str, dict] = {}
+            current = series_start
+            while current <= series_end:
+                # Slice daily_tss up to and including current date, then compute
+                # ACWR relative to that date (not today) so historical values
+                # reflect the actual load state on each past day.
+                tss_slice = {d: v for d, v in daily_tss.items() if d <= current}
+                acwr_result = compute_acwr(tss_slice, reference_date=current)
+                acwr_by_date[current.isoformat()] = acwr_result
+                current += _td(days=1)
+
+            # ── Series 3: Monotony & Strain ───────────────────────────────────
+            monotony_series = compute_training_monotony(daily_tss, window=7)
+            monotony_by_date = {row["date"]: row for row in monotony_series}
+
+            # ── Merge and upsert ──────────────────────────────────────────────
+            rows = []
+            for fit in fitness_series:
+                d = fit["date"]
+                acwr = acwr_by_date.get(d, {})
+                mono = monotony_by_date.get(d, {})
+                rows.append(
+                    (
+                        d,
+                        category,
+                        fit["ctl"],
+                        fit["atl"],
+                        fit["tsb"],
+                        fit["tss"],
+                        acwr.get("acwr_rolling"),
+                        acwr.get("acwr_ema"),
+                        acwr.get("risk_zone"),
+                        mono.get("monotony"),
+                        mono.get("strain"),
+                    )
+                )
+
             conn.executemany(
                 """
-                INSERT INTO fitness (date, sport_category, ctl, atl, tsb)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO fitness (
+                    date, sport_category,
+                    ctl, atl, tsb, tss,
+                    acwr_rolling, acwr_ema, acwr_risk_zone,
+                    monotony, strain
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(date, sport_category) DO UPDATE SET
-                    ctl=excluded.ctl, atl=excluded.atl, tsb=excluded.tsb
+                    ctl             = excluded.ctl,
+                    atl             = excluded.atl,
+                    tsb             = excluded.tsb,
+                    tss             = excluded.tss,
+                    acwr_rolling    = excluded.acwr_rolling,
+                    acwr_ema        = excluded.acwr_ema,
+                    acwr_risk_zone  = excluded.acwr_risk_zone,
+                    monotony        = excluded.monotony,
+                    strain          = excluded.strain
                 """,
-                [(row["date"], category, row["ctl"], row["atl"], row["tsb"]) for row in series],
+                rows,
             )
-    print("Fitness table updated.")
+
+    print("Fitness table updated (CTL/ATL/TSB + ACWR + Monotony).")
+
+
+def recalculate_activity_metrics(verbose: bool = False) -> int:
+    """
+    Recompute all per-activity metrics from stored ``raw_json`` and write back
+    to the ``activities`` table.  No Strava API call required.
+
+    Uses the current ``compute_activity_metrics()`` formula, so running this
+    after a formula change (new NGP model, FTP update, etc.) brings the whole
+    history into sync.
+
+    Returns the number of activities updated.
+    """
+    from .config import load_athlete as _load_athlete
+
+    athlete = _load_athlete()
+
+    with get_conn() as conn:
+        rows = conn.execute(
+            """
+            SELECT id, raw_json
+            FROM activities
+            WHERE raw_json IS NOT NULL
+            ORDER BY start_date
+            """
+        ).fetchall()
+
+        if not rows:
+            if verbose:
+                print("No activities with raw_json found — nothing to recompute.")
+            return 0
+
+        updates: list[tuple] = []
+        for row in rows:
+            try:
+                activity = json.loads(row["raw_json"])
+            except (json.JSONDecodeError, TypeError):
+                continue  # corrupt blob — skip silently
+
+            m = compute_activity_metrics(activity, athlete=athlete)
+            updates.append(
+                (
+                    m["tss"],
+                    m["np"],
+                    m["intensity_factor"],
+                    m["hrss"],
+                    m["rtss"],
+                    m["ngp"],
+                    m["rtss_power"],
+                    row["id"],
+                )
+            )
+
+        conn.executemany(
+            """
+            UPDATE activities
+            SET tss             = ?,
+                np              = ?,
+                intensity_factor = ?,
+                hrss            = ?,
+                rtss            = ?,
+                ngp             = ?,
+                rtss_power      = ?
+            WHERE id = ?
+            """,
+            updates,
+        )
+
+    n = len(updates)
+    if verbose:
+        print(f"Recomputed metrics for {n} activities.")
+
+    # Rebuild the daily fitness/ACWR/monotony table from fresh per-activity values.
+    _refresh_fitness_table()
+    return n
 
 
 def main():
