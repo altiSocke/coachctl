@@ -206,6 +206,7 @@ def _project_fitness(plan_id: int | None, fitness: dict, weeks: int = 8) -> list
 
     # Group events by week_num so we can distribute remaining TSS
     from collections import defaultdict
+
     week_sessions: dict[str, list[dict]] = defaultdict(list)
     for er in ev_rows:
         wn = str(er["week_num"]) if er["week_num"] is not None else "0"
@@ -282,7 +283,9 @@ def _get_race_events_from_db() -> list[dict]:
                 "date": r["date"],
                 "days_out": days_out,
                 "priority": payload.get("priority", "C"),
-                "goal_time": payload.get("goal", {}).get("target_time") if isinstance(payload.get("goal"), dict) else payload.get("goal_time"),
+                "goal_time": payload.get("goal", {}).get("target_time")
+                if isinstance(payload.get("goal"), dict)
+                else payload.get("goal_time"),
             }
         )
     return result
@@ -348,13 +351,12 @@ def _get_plan_from_db() -> dict | None:
         # Also fetch activity dates for completion cross-reference
         activity_dates = {
             r[0]
-            for r in conn.execute(
-                "SELECT DISTINCT date(start_date) FROM activities"
-            ).fetchall()
+            for r in conn.execute("SELECT DISTINCT date(start_date) FROM activities").fetchall()
         }
 
     # Group events by week_number from payload
     from collections import defaultdict
+
     weeks_map: dict[int, list[dict]] = defaultdict(list)
     phases_map: dict[int, str] = {}
     today = str(date.today())
@@ -735,8 +737,56 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
     recent_runs = _get_recent_run_tss(14)
     weekly_run_tss = _get_weekly_run_tss(12)
 
+    # ── New metrics ───────────────────────────────────────────────────────────
+    compliance = None
+    try:
+        from .plan_compliance import get_plan_compliance_tool
+        import json as _json
+
+        raw = get_plan_compliance_tool()
+        if isinstance(raw, str) and raw.startswith("{"):
+            compliance = _json.loads(raw)
+    except Exception:
+        pass
+
+    acwr = None
+    try:
+        from .metrics import get_acwr_from_db
+        from .db import get_conn as _get_conn
+
+        with _get_conn() as _conn:
+            acwr = get_acwr_from_db(_conn)
+    except Exception:
+        pass
+
+    zones = None
+    try:
+        from .metrics import get_zone_distribution_from_db
+        from .db import get_conn as _get_conn
+
+        with _get_conn() as _conn:
+            zd = get_zone_distribution_from_db(_conn, weeks=8)
+        if "zone_pct" in zd:
+            # Transform to ordered array [Z1%,Z2%,...,Z5%] for the dashboard bar
+            pct = zd["zone_pct"]
+            distribution = [pct.get(f"Z{i}", 0) for i in range(1, 6)]
+            zones = {
+                "distribution": distribution,
+                "zone_pct": pct,
+                "zone_hours": zd.get("zone_hours"),
+                "total_hours": zd.get("total_hours"),
+                "polarization_index": zd.get("polarization_index"),
+                "low_intensity_pct": zd.get("low_intensity_pct"),
+                "high_intensity_pct": zd.get("high_intensity_pct"),
+                "interpretation": zd.get("interpretation"),
+                "weeks_analysed": zd.get("weeks_analysed"),
+            }
+    except Exception:
+        pass
+
     try:
         from .config import load_athlete
+
         cfg = load_athlete()
         goals = cfg.get("goals", {})
         # Format rftp (sec/km) as MM:SS/km string
@@ -748,9 +798,9 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         else:
             rftp_str = None
         thresholds = {
-            "ftp":    cfg.get("ftp"),
-            "lthr":   cfg.get("threshold_hr"),
-            "rftp":   rftp_str,
+            "ftp": cfg.get("ftp"),
+            "lthr": cfg.get("threshold_hr"),
+            "rftp": rftp_str,
             "vo2max": cfg.get("vo2max"),
         }
     except Exception:
@@ -766,7 +816,9 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
             "current_week": plan_data["current_week"],
             "total_weeks": plan_data["total_weeks"],
             "weeks": plan_data["weeks"],
-        } if plan_data else None,
+        }
+        if plan_data
+        else None,
         "phases": phases,
         "fitness": fitness,
         "monotony": monotony_snapshot,
@@ -781,6 +833,9 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         "thresholds": thresholds,
         "recent_runs": recent_runs,
         "weekly_run_tss": weekly_run_tss,
+        "compliance": compliance,
+        "acwr": acwr,
+        "zones": zones,
     }
 
 

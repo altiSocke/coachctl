@@ -25,9 +25,11 @@ def mock_athlete(monkeypatch):
 def site_db(mem_db, monkeypatch, tmp_data_root):
     """Wire site_module to use the mem_db connection."""
     import coachctl.db as db_module
+    import coachctl.plan_compliance as pc_module
 
     monkeypatch.setattr(site_module, "get_conn", mem_db)
     monkeypatch.setattr(db_module, "get_conn", mem_db)
+    monkeypatch.setattr(pc_module, "get_conn", mem_db)  # used by get_plan_compliance_tool
     return mem_db
 
 
@@ -321,3 +323,105 @@ def test_get_recent_run_tss_with_data(site_db):
 def test_get_weekly_run_tss_empty(site_db):
     result = site_module._get_weekly_run_tss()
     assert isinstance(result, list)
+
+
+# ── New dashboard keys: compliance, acwr, zones ───────────────────────────────
+
+
+def test_dashboard_data_has_compliance_key(site_db):
+    """compliance key present in output (None when no active plan)."""
+    result = site_module.get_dashboard_data()
+    assert "compliance" in result
+    # No plan in this DB → should be None
+    assert result["compliance"] is None
+
+
+def test_dashboard_data_has_acwr_key(site_db):
+    """acwr key present in output (None when no fitness data)."""
+    result = site_module.get_dashboard_data()
+    assert "acwr" in result
+
+
+def test_dashboard_data_has_zones_key(site_db):
+    """zones key present in output (None when no HR data)."""
+    result = site_module.get_dashboard_data()
+    assert "zones" in result
+
+
+def test_dashboard_data_compliance_with_plan(site_db):
+    """compliance is populated when an active plan with events exists."""
+    from datetime import date, timedelta
+
+    today = date.today().isoformat()
+    past = (date.today() - timedelta(days=7)).isoformat()
+
+    with site_db() as conn:
+        conn.execute(
+            "INSERT INTO plans (slug, title, start_date, end_date, active) VALUES (?,?,?,?,1)",
+            ("test-plan", "Test Plan", past, today),
+        )
+        plan_id = conn.execute("SELECT id FROM plans WHERE slug='test-plan'").fetchone()["id"]
+        conn.execute(
+            """INSERT INTO events (slug, kind, date, name, status, estimated_tss, plan_id)
+               VALUES ('ev-1','training',?,'Session','planned',50.0,?)""",
+            (past, plan_id),
+        )
+        conn.execute(
+            """INSERT INTO activities (name, sport_type, start_date, elapsed_time, moving_time,
+               distance, tss) VALUES ('Run','Run',?,3600,3600,10000,45.0)""",
+            (past,),
+        )
+
+    result = site_module.get_dashboard_data()
+    compliance = result["compliance"]
+    assert compliance is not None
+    assert "overall" in compliance
+    assert "weekly" in compliance
+    assert compliance["overall"]["sessions_planned"] >= 1
+
+
+def test_dashboard_data_acwr_with_fitness(site_db):
+    """acwr is non-None when fitness table has data."""
+    from datetime import date, timedelta
+
+    with site_db() as conn:
+        for i in range(14):
+            d = (date.today() - timedelta(days=i)).isoformat()
+            conn.execute(
+                "INSERT OR IGNORE INTO fitness (date, sport_category, ctl, atl, tsb) VALUES (?,?,?,?,?)",
+                (d, "all", 50.0, 60.0, -10.0),
+            )
+
+    result = site_module.get_dashboard_data()
+    acwr = result["acwr"]
+    assert acwr is not None
+    assert "acwr_ema" in acwr or "acwr_rolling" in acwr
+
+
+def test_dashboard_data_zones_with_hr_activities(site_db):
+    """zones is non-None when activities with HR data exist in last 8 weeks."""
+    from datetime import date, timedelta
+
+    with site_db() as conn:
+        for i in range(5):
+            d = (date.today() - timedelta(days=i)).isoformat()
+            conn.execute(
+                """INSERT INTO activities (name, sport_type, start_date, elapsed_time,
+                   moving_time, distance, average_heartrate)
+                   VALUES ('Run','Run',?,3600,3600,10000,145.0)""",
+                (d,),
+            )
+
+    result = site_module.get_dashboard_data()
+    zones = result["zones"]
+    assert zones is not None
+    assert "distribution" in zones
+    assert len(zones["distribution"]) == 5
+    # All percentages should sum to ~100
+    assert abs(sum(zones["distribution"]) - 100.0) < 1.0
+
+
+def test_dashboard_data_fully_serializable_with_new_keys(site_db):
+    """Full payload including new keys must be JSON-serializable."""
+    result = site_module.get_dashboard_data()
+    json.dumps(result, default=str)  # must not raise

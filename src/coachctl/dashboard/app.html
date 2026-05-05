@@ -246,7 +246,7 @@ main {
 
 /* ── Fitness pills ──────────────────────────────────────────────────────────── */
 .fit-pills {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
 }
 .fit-pill {
   background: var(--surface-2);
@@ -272,6 +272,42 @@ main {
 .fit-pill.negative .fit-val { color: var(--danger); }
 .fit-pill.warn .fit-val { color: var(--warning); }
 .fit-pill.ok .fit-val { color: var(--success); }
+
+/* ACWR pill colour overrides */
+.fit-pill.acwr-optimal .fit-val  { color: var(--success); }
+.fit-pill.acwr-caution .fit-val  { color: var(--warning); }
+.fit-pill.acwr-high_risk .fit-val { color: var(--danger); }
+.fit-pill.acwr-undertrained .fit-val { color: #6b7280; }
+
+/* Compliance card */
+.compliance-summary {
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.compliance-big {
+  font-family: var(--font-display);
+  font-size: 3rem; font-weight: 700; line-height: 1;
+  letter-spacing: -.02em;
+}
+.compliance-big.good  { color: var(--success); }
+.compliance-big.warn  { color: var(--warning); }
+.compliance-big.bad   { color: var(--danger); }
+.compliance-meta { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+.compliance-table {
+  width: 100%; border-collapse: collapse; font-size: .78rem;
+  margin-top: 4px;
+}
+.compliance-table th {
+  text-align: left; color: var(--muted); font-weight: 500;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .06em;
+  padding: 4px 6px; border-bottom: 1px solid var(--border);
+}
+.compliance-table td { padding: 4px 6px; }
+.compliance-table tr:last-child td { border: none; }
+.compliance-table tr:nth-child(even) td { background: var(--surface-2); }
+.compliance-pct.good { color: var(--success); font-weight: 600; }
+.compliance-pct.warn { color: var(--warning); font-weight: 600; }
+.compliance-pct.bad  { color: var(--danger);  font-weight: 600; }
 
 /* Thresholds card */
 .thresh-pills {
@@ -740,6 +776,13 @@ main {
     <div class="thresh-pills" id="thresh-pills"></div>
   </div>
 
+  <!-- Plan compliance card -->
+  <div class="card hidden" id="compliance-card">
+    <div class="card-title">Plan Compliance</div>
+    <div id="compliance-overall"></div>
+    <div id="compliance-weekly"></div>
+  </div>
+
   <!-- Fitness chart + Weekly TSS — grouped: both answer "load trend?" -->
   <div class="card" id="fitness-chart-card">
     <div class="card-title">CTL · ATL · Form</div>
@@ -1050,6 +1093,7 @@ function renderAll() {
   renderEvents();
   renderFitness();
   renderThresholds();
+  renderCompliance();
   renderWeek();
   renderZones();
   renderFitnessChart();
@@ -1230,6 +1274,13 @@ function renderFitness() {
   }
 
   const pillsEl = document.getElementById('fit-pills');
+
+  // ACWR pill
+  const acwr = DATA.acwr || {};
+  const acwrVal = acwr.acwr_ema != null ? +acwr.acwr_ema : null;
+  const acwrRisk = acwr.risk_zone || '';
+  const acwrClass = acwrRisk ? `acwr-${acwrRisk}` : '';
+
   pillsEl.innerHTML = `
     <div class="fit-pill">
       <div class="fit-val">${ctl != null ? Math.round(ctl) : '—'}</div>
@@ -1245,6 +1296,11 @@ function renderFitness() {
       <div class="fit-val">${tsb != null ? (tsb > 0 ? '+' : '') + Math.round(tsb) : '—'}</div>
       <div class="fit-lbl">Form</div>
       <div class="fit-sub">TSB</div>
+    </div>
+    <div class="fit-pill ${acwrClass}">
+      <div class="fit-val">${acwrVal != null ? acwrVal.toFixed(2) : '—'}</div>
+      <div class="fit-lbl">ACWR</div>
+      <div class="fit-sub">${acwrRisk ? acwrRisk.replace('_', ' ') : 'workload ratio'}</div>
     </div>`;
 
   // Monotony + Strain row
@@ -1300,6 +1356,51 @@ function renderFitness() {
   });
 }
 
+// ── Plan compliance ───────────────────────────────────────────────────────── 
+
+function renderCompliance() {
+  const c = DATA.compliance;
+  if (!c || !c.overall) { hide('compliance-card'); return; }
+  show('compliance-card');
+
+  const ov = c.overall;
+  const pct = ov.compliance_pct != null ? Math.round(ov.compliance_pct) : null;
+  const pctClass = pct == null ? '' : pct >= 90 ? 'good' : pct >= 70 ? 'warn' : 'bad';
+
+  const overallEl = document.getElementById('compliance-overall');
+  overallEl.innerHTML = `
+    <div class="compliance-summary">
+      <div class="compliance-big ${pctClass}">${pct != null ? pct + '%' : '—'}</div>
+      <div class="compliance-meta">
+        ${ov.sessions_completed} / ${ov.past_sessions_planned} sessions completed<br>
+        ${Math.round(ov.actual_tss || 0)} / ${Math.round(ov.past_planned_tss || 0)} TSS (past weeks)
+      </div>
+    </div>`;
+
+  const weekly = (c.weekly || []).slice(-8).reverse();
+  if (!weekly.length) { document.getElementById('compliance-weekly').innerHTML = ''; return; }
+
+  const rows = weekly.map(w => {
+    const wp = w.compliance_pct != null ? Math.round(w.compliance_pct) : null;
+    const wc = wp == null ? '' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
+    return `<tr>
+      <td>${w.week}</td>
+      <td>${w.sessions_completed} / ${w.sessions_planned}</td>
+      <td>${Math.round(w.actual_tss || 0)}</td>
+      <td>${Math.round(w.planned_tss || 0)}</td>
+      <td class="compliance-pct ${wc}">${wp != null ? wp + '%' : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('compliance-weekly').innerHTML = `
+    <table class="compliance-table">
+      <thead><tr>
+        <th>Week</th><th>Sessions</th><th>Actual TSS</th><th>Planned TSS</th><th>%</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
 // ── Zone distribution ─────────────────────────────────────────────────────── 
 
 function renderZones() {
@@ -1317,6 +1418,7 @@ function renderZones() {
   leg.innerHTML = '';
 
   dist.forEach((pct, i) => {
+    if (pct <= 0) return;
     const seg = document.createElement('div');
     seg.className = 'zone-seg';
     seg.style.width = pct + '%';
@@ -1325,11 +1427,21 @@ function renderZones() {
 
     const item = document.createElement('div');
     item.className = 'zone-item';
+    const hrs = zones.zone_hours ? zones.zone_hours[labels[i]] : null;
     item.innerHTML = `<span class="zone-dot" style="background:${colors[i]||'#555'}"></span>
       <span>${labels[i]||'Z'+(i+1)}</span>
-      <span class="zone-pct">${Math.round(pct)}%</span>`;
+      <span class="zone-pct">${Math.round(pct)}%${hrs != null ? ' · ' + hrs + 'h' : ''}</span>`;
     leg.appendChild(item);
   });
+
+  // Polarization note
+  if (zones.interpretation) {
+    const note = document.createElement('div');
+    note.style.cssText = 'font-size:.72rem;color:var(--muted);margin-top:8px;';
+    const pi = zones.polarization_index != null ? ` (PI ${zones.polarization_index.toFixed(2)})` : '';
+    note.textContent = zones.interpretation + pi;
+    leg.appendChild(note);
+  }
 }
 
 // ── Week sessions ─────────────────────────────────────────────────────────── 
