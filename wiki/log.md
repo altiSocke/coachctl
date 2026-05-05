@@ -12,4 +12,13 @@
 
 - **2026-05-02T20:46:40** — apply_general_wiki_update: training_principles
 
+<<<<<<< Updated upstream
+
+=======
+- **2026-05-04T22:17:24** — apply_general_wiki_update: nutrition
+
+- **2026-05-04T22:26:21** — apply_general_wiki_update: sources/nutrition_endurance_elite
+
+- **2026-05-04T22:29:50** — apply_general_wiki_update: nutrition
+>>>>>>> Stashed changes
 - **2026-05-05T16:13:42** — apply_general_wiki_update: recovery/sleep
