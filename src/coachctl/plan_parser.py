@@ -158,6 +158,52 @@ def parse_plan(markdown: str) -> Plan:
     return plan
 
 
+# Ordered from most to least specific so "vo2max" matches before "moderate" etc.
+_INTENSITY_KEYWORDS: list[tuple[str, str]] = [
+    ("anaerobic", "anaerobic"),
+    ("vo2max", "vo2max"),
+    ("vo2", "vo2max"),
+    ("threshold", "threshold"),
+    ("tempo", "tempo"),
+    ("moderate", "moderate"),
+    ("z3", "moderate"),
+    ("recovery", "recovery"),
+    ("z1", "recovery"),
+    ("easy", "easy"),
+    ("z2", "easy"),
+]
+
+
+def parse_session_duration_intensity(details: str) -> tuple[float | None, str | None]:
+    """Extract (duration_min, intensity_label) from a session details string.
+
+    Returns ``(None, None)`` for any field that cannot be determined.
+
+    Examples
+    --------
+    >>> parse_session_duration_intensity("60 min easy Z2 run")
+    (60.0, 'easy')
+    >>> parse_session_duration_intensity("45 min threshold intervals + cool-down")
+    (45.0, 'threshold')
+    >>> parse_session_duration_intensity("Rest")
+    (None, None)
+    """
+    text = details.lower()
+
+    # Duration: first integer followed by "min" or "minutes"
+    dur_match = re.search(r"(\d+(?:\.\d+)?)\s*min(?:utes?)?", text)
+    duration_min: float | None = float(dur_match.group(1)) if dur_match else None
+
+    # Intensity: first keyword match in priority order
+    intensity: str | None = None
+    for keyword, label in _INTENSITY_KEYWORDS:
+        if keyword in text:
+            intensity = label
+            break
+
+    return duration_min, intensity
+
+
 def parse_plan_file(path: Path) -> Plan:
     """Parse a plan from a file path."""
     return parse_plan(path.read_text(encoding="utf-8"))

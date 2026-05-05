@@ -169,6 +169,10 @@ Format as a compact Markdown table. One row per week. Columns:
 ```
 
 - Use short session descriptors in cells (e.g. `60min Z2 run`, `90min ride SS`, `Intervals`, `Rest`, `Race`)
+- **Every non-rest session MUST start with a duration in minutes** (e.g. `60min`, `90min`). This is required for automated TSS estimation — sessions without a parseable duration will have `estimated_tss = NULL` in the DB and will be excluded from plan compliance tracking.
+- Intensity keyword must be present: use one of `recovery`, `easy`, `Z2`, `Z3`, `tempo`, `threshold`, `vo2max`, `anaerobic`. The parser maps these automatically (`Z2` → easy, `Z3` → moderate, etc.).
+- Example valid cell: `60min easy Z2 run, HR <148bpm, RPE 4`
+- Example invalid cell: `Easy run` (no duration — TSS cannot be estimated)
 - Bold any race day
 - Italicize recovery weeks
 - Add a "Notes" column for key cues (e.g. "introduce strides", "back-to-back", "tune-up race")

@@ -8,7 +8,14 @@ import textwrap
 
 import pytest
 
-from coachctl.plan_parser import Plan, Session, Week, _parse_date, parse_plan_file
+from coachctl.plan_parser import (
+    Plan,
+    Session,
+    Week,
+    _parse_date,
+    parse_plan_file,
+    parse_session_duration_intensity,
+)
 
 
 # ── _parse_date ───────────────────────────────────────────────────────────────
@@ -130,6 +137,7 @@ def test_parse_plan_event(plan_file):
 
 def test_parse_plan_missing_file():
     from pathlib import Path
+
     with pytest.raises(FileNotFoundError):
         parse_plan_file(Path("/nonexistent/plan.md"))
 
@@ -140,3 +148,66 @@ def test_parse_plan_empty_file(tmp_path):
     plan = parse_plan_file(p)
     assert isinstance(plan, Plan)
     assert plan.weeks == []
+
+
+# ── parse_session_duration_intensity ─────────────────────────────────────────
+
+
+def test_duration_intensity_easy():
+    dur, intensity = parse_session_duration_intensity("60 min easy Z2 run")
+    assert dur == 60.0
+    assert intensity == "easy"
+
+
+def test_duration_intensity_threshold():
+    dur, intensity = parse_session_duration_intensity("45 min threshold intervals + cool-down")
+    assert dur == 45.0
+    assert intensity == "threshold"
+
+
+def test_duration_intensity_recovery():
+    dur, intensity = parse_session_duration_intensity("30 min recovery jog")
+    assert dur == 30.0
+    assert intensity == "recovery"
+
+
+def test_duration_intensity_tempo():
+    dur, intensity = parse_session_duration_intensity("50 min with 20 min tempo block")
+    assert dur == 50.0
+    assert intensity == "tempo"
+
+
+def test_duration_intensity_vo2max():
+    dur, intensity = parse_session_duration_intensity("40 min vo2max intervals")
+    assert dur == 40.0
+    assert intensity == "vo2max"
+
+
+def test_duration_intensity_z2_maps_to_easy():
+    dur, intensity = parse_session_duration_intensity("75 min Z2 long run")
+    assert dur == 75.0
+    assert intensity == "easy"
+
+
+def test_duration_intensity_z1_maps_to_recovery():
+    dur, intensity = parse_session_duration_intensity("30 min Z1 walk")
+    assert dur == 30.0
+    assert intensity == "recovery"
+
+
+def test_duration_intensity_no_duration():
+    dur, intensity = parse_session_duration_intensity("Rest")
+    assert dur is None
+    assert intensity is None
+
+
+def test_duration_intensity_duration_no_intensity():
+    dur, intensity = parse_session_duration_intensity("60 min cross-training")
+    assert dur == 60.0
+    assert intensity is None  # no keyword matches
+
+
+def test_duration_intensity_fractional():
+    dur, intensity = parse_session_duration_intensity("90 minutes easy aerobic")
+    assert dur == 90.0
+    assert intensity == "easy"

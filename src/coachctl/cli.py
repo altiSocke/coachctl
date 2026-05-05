@@ -349,6 +349,25 @@ def recalculate_cmd(
         typer.echo(f"Done — {n} activities recalculated.")
 
 
+@app.command(
+    "backfill-event-tss",
+    help="Backfill estimated_tss for training events that have NULL (re-parses duration + intensity from details).",
+)
+def backfill_event_tss_cmd(
+    verbose: bool = typer.Option(True, "--verbose/--quiet"),
+) -> None:
+    from .db import init_db
+    from .tools.plan_tools import backfill_event_tss
+
+    init_db()
+    result = backfill_event_tss()
+    if verbose:
+        typer.echo(
+            f"Backfill complete — updated: {result['updated']}, "
+            f"skipped (no parseable duration): {result['skipped_no_duration']}"
+        )
+
+
 def main() -> None:
     app()
 

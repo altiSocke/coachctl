@@ -226,6 +226,11 @@ def mem_db(tmp_data_root, monkeypatch):
     monkeypatch.setattr(db_module, "get_conn", _get_conn)
     monkeypatch.setattr(events_module, "get_conn", _get_conn)
 
+    # Also patch get_conn in any tools modules that import it directly
+    import coachctl.tools.plan_tools as plan_tools_module
+
+    monkeypatch.setattr(plan_tools_module, "get_conn", _get_conn)
+
     # Also patch _DB_INITIALISED so init_db() re-runs if called
     monkeypatch.setattr(db_module, "_DB_INITIALISED", False)
 

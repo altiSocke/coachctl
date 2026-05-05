@@ -19,7 +19,8 @@ def _insert_plan_and_events(
 ) -> int | None:
     """Parse a saved plan, insert a plans row, and upsert training events for each dated session."""
     try:
-        from ..plan_parser import parse_plan_file
+        from ..plan_parser import parse_plan_file, parse_session_duration_intensity
+        from ..metrics import estimate_session_tss
         from ..events import Event, KIND_TRAINING, STATUS_PLANNED, upsert_event
     except Exception:
         return None
@@ -75,6 +76,17 @@ def _insert_plan_and_events(
             # Skip rest days
             if "rest" in (s.name or "").lower():
                 continue
+
+            # Estimate TSS from duration + intensity in the details string
+            estimated_tss: float | None = None
+            details_text = s.details or ""
+            duration_min, intensity = parse_session_duration_intensity(details_text)
+            if duration_min is not None and intensity is not None:
+                try:
+                    estimated_tss = estimate_session_tss(duration_min, intensity)["tss_estimate"]
+                except Exception:
+                    pass
+
             ev_slug = f"plan-{plan_slug}-{s.date}"
             ev = Event(
                 slug=ev_slug,
@@ -89,12 +101,63 @@ def _insert_plan_and_events(
                     "phase": w.phase,
                 },
                 plan_id=plan_id,
+                estimated_tss=estimated_tss,
             )
             upsert_event(ev)
             inserted += 1
 
     logger.info("Plan '%s': inserted %d training events (plan_id=%d)", plan_slug, inserted, plan_id)
     return plan_id
+
+
+def backfill_event_tss() -> dict:
+    """Backfill estimated_tss for training events that currently have NULL.
+
+    Reads ``summary`` / ``payload_json`` details from the events table,
+    re-parses duration + intensity, and updates ``estimated_tss`` in place.
+
+    Returns a summary dict: {updated, skipped_no_duration, already_set}.
+    """
+    from ..plan_parser import parse_session_duration_intensity
+    from ..metrics import estimate_session_tss
+
+    updated = 0
+    skipped = 0
+    already_set = 0
+
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT id, summary, payload_json FROM events WHERE kind = 'training' AND estimated_tss IS NULL"
+        ).fetchall()
+
+        for row in rows:
+            # Prefer full details from payload_json, fall back to summary
+            details = ""
+            if row["payload_json"]:
+                try:
+                    payload = json.loads(row["payload_json"])
+                    details = payload.get("details", "") or ""
+                except Exception:
+                    pass
+            if not details and row["summary"]:
+                details = row["summary"]
+
+            duration_min, intensity = parse_session_duration_intensity(details)
+            if duration_min is None or intensity is None:
+                skipped += 1
+                continue
+
+            try:
+                tss = estimate_session_tss(duration_min, intensity)["tss_estimate"]
+                conn.execute(
+                    "UPDATE events SET estimated_tss = ? WHERE id = ?",
+                    (tss, row["id"]),
+                )
+                updated += 1
+            except Exception:
+                skipped += 1
+
+    return {"updated": updated, "skipped_no_duration": skipped, "already_set": already_set}
 
 
 def register(mcp) -> None:  # noqa: ANN001
