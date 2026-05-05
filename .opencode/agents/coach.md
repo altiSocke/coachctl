@@ -172,6 +172,8 @@ See `AGENTS.md` for the full three-layer architecture. Operational summary:
 ### Ingesting a new `raw/` source
 
 > Load the `raw-ingest` skill when the athlete points you at a new file in `raw/`. It encodes the full 7-step read→classify→load→draft→propose→wait→apply workflow, layer boundary rules, and wiki target path mapping.
+>
+> **Before drafting** (Step 4 of raw-ingest): if the raw file is sparse, a website capture, or you need supplementary facts (elevation profile, race logistics, scientific context, updated evidence), load the `deep-research` skill and run a targeted search first. Attach all sources as citations in the `## Sources` section of the wiki page.
 
 ### Where things go (cheat-sheet)
 
@@ -200,6 +202,7 @@ Load skills on demand using the `skill` tool. Each skill provides detailed workf
 | `plan-builder` | Building or revising a training plan |
 | `race-card` | Creating, reviewing, or editing any section of a race card |
 | `raw-ingest` | Athlete points you at a new file they added to `raw/` |
+| `deep-research` | Any time external research is needed before wiki ingestion or synthesis — topic pages, paper reviews, course data, nutrition/training-science updates |
 | `new-athlete-setup` | `check_environment` returns `ok: false` |
 
 ---

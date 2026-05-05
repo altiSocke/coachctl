@@ -80,24 +80,4 @@ def test_index_returns_503_when_missing(missing_data_json):
     assert resp.status_code == 503
 
 
-# ── POST /api/reload ─────────────────────────────────────────────────────────
-
-
-def test_reload_picks_up_new_data(tmp_path):
-    """Creating data.json after app start → reload makes it available."""
-    data_path = tmp_path / "data.json"
-    app = create_app(data_path)
-    client = TestClient(app)
-
-    # Initially missing
-    assert client.get("/health").json()["status"] == "no-data"
-
-    # Write the file
-    data_path.write_text(json.dumps({"generated_at": "2026-01-01T00:00:00"}), encoding="utf-8")
-
-    # Reload
-    resp = client.post("/api/reload")
-    assert resp.json()["ok"] is True
-
-    # Now data is available
-    assert client.get("/health").json()["status"] == "ok"
+# ── POST /api/reload removed — endpoint deleted (no-op on Vercel, trivial locally) ──

@@ -12,6 +12,7 @@ Subsequent syncs (incremental):
 import argparse
 import json
 import os
+import secrets
 import time
 import webbrowser
 from datetime import datetime, timezone
@@ -38,11 +39,19 @@ def _load_env():
 
 
 def _client_id() -> str:
-    return os.environ.get("STRAVA_CLIENT_ID", "")
+    val = os.environ.get("STRAVA_CLIENT_ID", "")
+    if not val:
+        raise RuntimeError("STRAVA_CLIENT_ID is not set in .env — cannot authenticate with Strava.")
+    return val
 
 
 def _client_secret() -> str:
-    return os.environ.get("STRAVA_CLIENT_SECRET", "")
+    val = os.environ.get("STRAVA_CLIENT_SECRET", "")
+    if not val:
+        raise RuntimeError(
+            "STRAVA_CLIENT_SECRET is not set in .env — cannot authenticate with Strava."
+        )
+    return val
 
 
 # ── OAuth helpers ─────────────────────────────────────────────────────────────
@@ -77,10 +86,12 @@ def get_strava_access_token() -> str:
 
 
 def _update_env_file(key: str, value: str):
-    """Update a single key in the active profile's .env file."""
+    """Update a single key in the active profile's .env file (atomic write)."""
     env = paths.env_file()
     if not env.exists():
-        env.write_text(f"{key}={value}\n")
+        tmp = env.with_suffix(".tmp")
+        tmp.write_text(f"{key}={value}\n")
+        tmp.replace(env)
         return
     lines = env.read_text().splitlines()
     updated = False
@@ -91,26 +102,36 @@ def _update_env_file(key: str, value: str):
             break
     if not updated:
         lines.append(f"{key}={value}")
-    env.write_text("\n".join(lines) + "\n")
+    tmp = env.with_suffix(".tmp")
+    tmp.write_text("\n".join(lines) + "\n")
+    tmp.replace(env)
 
 
 def do_auth_flow():
     """Interactive OAuth flow — opens browser, captures code via local server."""
     _load_env()
+    state_nonce = secrets.token_urlsafe(16)
     auth_url = (
         f"{STRAVA_AUTH_URL}?client_id={_client_id()}"
         f"&redirect_uri={REDIRECT_URI}"
         f"&response_type=code&scope={SCOPE}"
         f"&approval_prompt=force"
+        f"&state={state_nonce}"
     )
     print(f"\nOpening Strava authorisation...\n{auth_url}\n")
     webbrowser.open(auth_url)
 
-    code_holder = {}
+    code_holder: dict = {}
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             params = parse_qs(urlparse(self.path).query)
+            returned_state = params.get("state", [None])[0]
+            if returned_state != state_nonce:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"<h2>Invalid state parameter - possible CSRF. Please retry.</h2>")
+                return
             code_holder["code"] = params.get("code", [None])[0]
             self.send_response(200)
             self.end_headers()

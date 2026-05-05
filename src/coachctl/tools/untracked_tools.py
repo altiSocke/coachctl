@@ -9,6 +9,7 @@ import yaml
 
 from .. import paths
 from ..db import get_conn
+from ..tools.event_tools import _validate_date
 
 # TSS estimates per sport/intensity (minutes → TSS)
 # Based on typical MET values and HR response relative to threshold
@@ -46,6 +47,10 @@ def register(mcp) -> None:  # noqa: ANN001
         notes: optional free text
         tss_override: provide an explicit TSS if you don't want the auto-estimate
         """
+        try:
+            _validate_date(activity_date)
+        except ValueError as exc:
+            return str(exc)
         tss = (
             tss_override
             if tss_override is not None
@@ -63,7 +68,8 @@ def register(mcp) -> None:  # noqa: ANN001
             )
 
         paths.feedback_dir().mkdir(parents=True, exist_ok=True)
-        ut_file = paths.feedback_dir() / f"{activity_date}_untracked.yaml"
+        safe_date = activity_date.replace("/", "").replace("\\", "").replace("..", "")
+        ut_file = paths.feedback_dir() / f"{safe_date}_untracked.yaml"
         entries = []
         if ut_file.exists():
             with open(ut_file) as f:
@@ -92,6 +98,7 @@ def register(mcp) -> None:  # noqa: ANN001
         Return untracked activities (hockey, gym, etc.) logged in the last N weeks.
         Includes TSS estimates so they can be factored into load calculations.
         """
+        weeks = max(1, min(weeks, 260))
         cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
         with get_conn() as conn:
             rows = conn.execute(

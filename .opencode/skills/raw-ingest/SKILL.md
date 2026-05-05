@@ -59,6 +59,11 @@ Tell the athlete your classification decision and the target path before proceed
 Call `read_general_wiki(topic)` for every general page you intend to touch. For personal pages, read the current file content. Do this for **all** pages, not just the primary one — a paper may touch both `wiki/sources/training.md` and `wiki/running.md`.
 
 ### Step 4 — Draft
+Before writing, check whether the raw file alone is sufficient:
+
+- **If the raw file is a full document** (paper, detailed GPX, comprehensive race capture): draft directly from its content.
+- **If the raw file is sparse, a brief website capture, or you need supplementary facts** (elevation data, race logistics, updated evidence, scientific context): load the `deep-research` skill and run a targeted search before drafting. Use the research findings to enrich the wiki page. Attach all sources — raw file path plus any web sources — in the `## Sources` section.
+
 Write the updated content:
 - Keep general pages completely athlete-agnostic. Never include personal results, names, or targets.
 - Add or extend a `## Sources` section at the bottom of every general page you touch, listing the `raw/` path(s) it now synthesises. Example:

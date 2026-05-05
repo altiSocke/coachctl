@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import json
+import logging
 
 from ..db import get_conn
 from ..sync import fetch_athlete_routes, fetch_route, fetch_route_streams, get_strava_access_token
 from ..metrics import format_pace
+
+logger = logging.getLogger(__name__)
 
 
 def register(mcp) -> None:  # noqa: ANN001
@@ -25,7 +28,8 @@ def register(mcp) -> None:  # noqa: ANN001
                 count = conn.execute("SELECT COUNT(*) as c FROM activities").fetchone()["c"]
             return f"Sync complete. Total activities in database: {count}"
         except Exception as e:
-            return f"Sync failed: {e}"
+            logger.exception("sync_activities failed")
+            return "Sync failed — check server logs for details."
 
     @mcp.tool()
     def list_routes() -> str:
@@ -58,7 +62,8 @@ def register(mcp) -> None:  # noqa: ANN001
                 )
             return json.dumps(results, indent=2)
         except Exception as e:
-            return f"Failed to fetch routes: {e}"
+            logger.exception("list_routes failed")
+            return "Failed to fetch routes — check server logs for details."
 
     @mcp.tool()
     def get_route_detail(route_id: int) -> str:
@@ -162,4 +167,5 @@ def register(mcp) -> None:  # noqa: ANN001
 
             return json.dumps(result, indent=2)
         except Exception as e:
-            return f"Failed to fetch route detail: {e}"
+            logger.exception("get_route_detail failed for route_id=%s", route_id)
+            return "Failed to fetch route detail — check server logs for details."

@@ -57,6 +57,7 @@ def register(mcp) -> None:  # noqa: ANN001
         Returns daily values as a JSON array.
         Sport filter: 'all', 'run', or 'ride'.
         """
+        weeks = max(1, min(weeks, 260))  # cap at 5 years
         with get_conn() as conn:
             daily = get_daily_tss_from_db(conn, sport)
         if not daily:
@@ -77,6 +78,7 @@ def register(mcp) -> None:  # noqa: ANN001
         HR zone distribution over last N weeks.
         Shows % time in each zone, polarization index, and interpretation.
         """
+        weeks = max(1, min(weeks, 260))
         with get_conn() as conn:
             dist = get_zone_distribution_from_db(conn, weeks)
         return json.dumps(dist, indent=2)
@@ -86,6 +88,7 @@ def register(mcp) -> None:  # noqa: ANN001
         """
         Weekly training summary: volume, TSS, intensity breakdown per sport.
         """
+        weeks = max(1, min(weeks, 260))
         cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
         with get_conn() as conn:
             rows = conn.execute(

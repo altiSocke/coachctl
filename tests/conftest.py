@@ -178,6 +178,11 @@ def tmp_data_root(tmp_path, monkeypatch):
     (data_root / "data").mkdir()
     (data_root / "deploy" / "dist").mkdir(parents=True)
 
+    # Redirect general wiki to a temp directory so tests never touch the real wiki/
+    general_wiki = tmp_path / "wiki"
+    general_wiki.mkdir()
+    monkeypatch.setattr(paths_module, "general_wiki_dir", lambda: general_wiki)
+
     # Clear cache before AND after so other tests aren't affected
     paths_module._resolve_data_root.cache_clear()
     monkeypatch.setenv("AGENT_DATA_ROOT", str(data_root))

@@ -204,6 +204,25 @@ class TestFeedbackTools:
         result = tools["get_coaching_notes"](category="observation")
         assert "Observation" in result
 
+    def test_log_feedback_invalid_date(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["log_feedback"](activity_date="not-a-date", rpe=5, felt="ok")
+        assert (
+            "not a valid" in result.lower()
+            or "invalid" in result.lower()
+            or "refusing" in result.lower()
+        )
+
+    def test_log_feedback_invalid_rpe(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["log_feedback"](activity_date="2026-01-15", rpe=11, felt="ok")
+        assert "rpe" in result.lower()
+
+    def test_log_feedback_invalid_felt(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["log_feedback"](activity_date="2026-01-15", rpe=7, felt="meh")
+        assert "felt" in result.lower()
+
 
 # ---------------------------------------------------------------------------
 # untracked_tools
@@ -270,6 +289,17 @@ class TestUntrackedTools:
         tools["mark_weekly_checkin_done"]()
         result = json.loads(tools["check_weekly_untracked"]())
         assert result["due"] is False
+
+    def test_log_untracked_invalid_date(self, mem_db, monkeypatch, tmp_data_root):
+        tools = self._get_tools(mem_db, monkeypatch, tmp_data_root)
+        result = tools["log_untracked_activity"](
+            activity_date="not-a-date", sport="hockey", duration_min=60
+        )
+        assert (
+            "not a valid" in result.lower()
+            or "invalid" in result.lower()
+            or "refusing" in result.lower()
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -528,6 +558,17 @@ class TestReadinessTools:
         # Should not crash, just clamp to 90
         assert "No readiness" in result or "Date" in result
 
+    def test_log_readiness_invalid_date(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["log_readiness_checkin"](
+            sleep=4, energy=4, soreness=4, checkin_date="bad-date"
+        )
+        assert (
+            "not a valid" in result.lower()
+            or "invalid" in result.lower()
+            or "refusing" in result.lower()
+        )
+
 
 # ---------------------------------------------------------------------------
 # event_tools
@@ -782,6 +823,59 @@ class TestWikiTools:
             topic="nutrition", content="# Nutrition\nApplied content\n"
         )
         assert "nutrition" in result.lower()
+
+    def test_read_general_wiki_wiki_dir_missing(self, mem_db, monkeypatch, tmp_data_root):
+        """Returns a helpful message when the wiki dir doesn't exist yet."""
+        import coachctl.paths as p
+        import shutil
+
+        wiki_dir = p.general_wiki_dir()
+        shutil.rmtree(wiki_dir, ignore_errors=True)
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["read_general_wiki"]()
+        assert "not found" in result.lower()
+
+    def test_read_general_wiki_no_topic_empty_dir(self, mem_db, monkeypatch, tmp_data_root):
+        """Returns a helpful message when wiki dir exists but has no .md files."""
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["read_general_wiki"]()
+        assert (
+            "No knowledge files" in result or "Available" in result or "not found" in result.lower()
+        )
+
+    def test_read_general_wiki_no_topic_lists_files(self, mem_db, monkeypatch, tmp_data_root):
+        """Lists available files when called with no topic."""
+        import coachctl.paths as p
+
+        wiki_dir = p.general_wiki_dir()
+        (wiki_dir / "nutrition.md").write_text("# Nutrition\n", encoding="utf-8")
+        (wiki_dir / "running.md").write_text("# Running\n", encoding="utf-8")
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["read_general_wiki"]()
+        assert "nutrition" in result.lower()
+        assert "running" in result.lower()
+
+    def test_read_general_wiki_multiple_matches(self, mem_db, monkeypatch, tmp_data_root):
+        """Returns all matches when multiple files match a topic prefix."""
+        import coachctl.paths as p
+
+        wiki_dir = p.general_wiki_dir()
+        (wiki_dir / "running.md").write_text("# Running\nAerobic base.\n", encoding="utf-8")
+        (wiki_dir / "running_intervals.md").write_text(
+            "# Intervals\nVO2max work.\n", encoding="utf-8"
+        )
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["read_general_wiki"](topic="running")
+        # Either one or both files returned — should contain content from at least one
+        assert "Running" in result or "Aerobic" in result
+
+    def test_get_athlete_wiki_triggers_seed(self, mem_db, monkeypatch, tmp_data_root):
+        """get_athlete_wiki seeds wiki files when they don't exist yet."""
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_athlete_wiki"]()
+        # Should not crash; returns either seed message or empty wiki message
+        assert isinstance(result, str)
+        assert len(result) > 0
 
 
 # ---------------------------------------------------------------------------

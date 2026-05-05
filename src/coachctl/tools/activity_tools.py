@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import json
+import logging
 from datetime import date, datetime, timedelta, timezone
 
 from ..config import load_athlete
 from ..db import get_conn
 from ..metrics import format_pace, hr_zones, power_zones
 from ..sync import fetch_activity_laps, fetch_activity_streams, get_strava_access_token
+
+logger = logging.getLogger(__name__)
 
 
 def register(mcp) -> None:  # noqa: ANN001
@@ -52,7 +55,8 @@ def register(mcp) -> None:  # noqa: ANN001
                 access_token = get_strava_access_token()
                 raw_streams = fetch_activity_streams(access_token, activity_id)
             except Exception as e:
-                return f"Failed to fetch streams: {e}"
+                logger.exception("get_activity_streams failed for activity_id=%s", activity_id)
+                return "Failed to fetch streams — check server logs for details."
             if not raw_streams:
                 return f"No stream data available for activity {activity_id}."
             with get_conn() as conn:
@@ -281,7 +285,8 @@ def register(mcp) -> None:  # noqa: ANN001
             access_token = get_strava_access_token()
             laps_raw = fetch_activity_laps(access_token, activity_id)
         except Exception as e:
-            return f"Failed to fetch laps: {e}"
+            logger.exception("get_activity_laps failed for activity_id=%s", activity_id)
+            return "Failed to fetch laps — check server logs for details."
 
         if not laps_raw:
             return f"No lap data available for activity {activity_id}."
@@ -316,6 +321,7 @@ def register(mcp) -> None:  # noqa: ANN001
         List the N most recent activities with key metrics.
         Sport filter: 'all', 'run', 'ride', or any Strava sport_type substring.
         """
+        n = max(1, min(n, 200))
         sport_clause = ""
         sport_params: list = []
         if sport != "all":
@@ -356,6 +362,7 @@ def register(mcp) -> None:  # noqa: ANN001
         Find past workouts matching criteria. Useful for comparing progression.
         Filters by sport type and TSS range.
         """
+        limit = max(1, min(limit, 100))
         with get_conn() as conn:
             rows = conn.execute(
                 """

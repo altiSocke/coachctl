@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 from ..db import get_conn
+from ..tools.event_tools import _validate_date
 
 
 def register(mcp) -> None:  # noqa: ANN001
@@ -45,6 +46,11 @@ def register(mcp) -> None:  # noqa: ANN001
                 return f"Invalid {name} score {val} — must be 1–5."
 
         today = checkin_date or date.today().isoformat()
+        if checkin_date:
+            try:
+                _validate_date(checkin_date)
+            except ValueError as exc:
+                return str(exc)
 
         with get_conn() as conn:
             conn.execute(

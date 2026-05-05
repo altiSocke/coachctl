@@ -12,10 +12,13 @@ Cold-start contract:
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse
+
+logger = logging.getLogger(__name__)
 
 
 def _setup_html(error: str | None) -> str:
@@ -51,7 +54,8 @@ def create_app(data_path: Path, html_path: Path | None = None) -> FastAPI:
             state["error"] = None
         except Exception as e:  # noqa: BLE001 — soft-fail by design
             state["data"] = None
-            state["error"] = f"{type(e).__name__}: {e}"
+            logger.error("Failed to load data.json: %s", e)
+            state["error"] = "data unavailable"
 
     load()
 
@@ -65,14 +69,14 @@ def create_app(data_path: Path, html_path: Path | None = None) -> FastAPI:
     @app.get("/", response_class=HTMLResponse)
     def index():
         if state["data"] is None:
-            return HTMLResponse(_setup_html(state["error"]), status_code=503)
+            return HTMLResponse(_setup_html(None), status_code=503)
         return HTMLResponse(html)
 
     @app.get("/api/data")
     def api_data():
         if state["data"] is None:
             return JSONResponse(
-                {"error": state["error"] or "data.json not loaded"},
+                {"error": "data not available"},
                 status_code=503,
             )
         return JSONResponse(state["data"])
@@ -80,10 +84,5 @@ def create_app(data_path: Path, html_path: Path | None = None) -> FastAPI:
     @app.get("/health")
     def health():
         return JSONResponse({"status": "ok" if state["data"] is not None else "no-data"})
-
-    @app.post("/api/reload")
-    def reload_data():
-        load()
-        return {"ok": state["data"] is not None, "error": state["error"]}
 
     return app

@@ -113,7 +113,12 @@ def register(mcp) -> None:  # noqa: ANN001
             return "Error: plan_markdown is empty — refusing to write."
 
         paths.plans_dir().mkdir(parents=True, exist_ok=True)
-        slug = event_name.lower().replace(" ", "-").replace(":", "h")[:30] if event_name else "plan"
+        # Sanitise event_name before embedding in a filename: strip path separators and
+        # limit length so the result is always a safe basename under plans/.
+        import re as _re
+
+        safe_name = _re.sub(r"[^\w\s\-]", "", event_name).strip() if event_name else ""
+        slug = safe_name.lower().replace(" ", "-")[:30] if safe_name else "plan"
         filename = f"{date.today().isoformat()}_{slug}.md"
         if not filename.endswith(".md"):
             filename += ".md"

@@ -7,6 +7,9 @@ from datetime import date
 
 from .. import paths
 from ..db import get_conn
+from ..tools.event_tools import _validate_date
+
+_VALID_FELT = {"great", "good", "ok", "bad", "terrible"}
 
 
 def register(mcp) -> None:  # noqa: ANN001
@@ -27,6 +30,14 @@ def register(mcp) -> None:  # noqa: ANN001
         notes: free text
         activity_id: optional Strava activity ID to link
         """
+        try:
+            _validate_date(activity_date)
+        except ValueError as exc:
+            return str(exc)
+        if not 1 <= rpe <= 10:
+            return f"Invalid rpe {rpe} — must be 1–10."
+        if felt not in _VALID_FELT:
+            return f"Invalid felt '{felt}' — must be one of: {', '.join(sorted(_VALID_FELT))}."
         with get_conn() as conn:
             conn.execute(
                 """
@@ -41,6 +52,7 @@ def register(mcp) -> None:  # noqa: ANN001
     @mcp.tool()
     def get_recent_feedback(n: int = 10) -> str:
         """Get the N most recent feedback entries."""
+        n = max(1, min(n, 100))
         with get_conn() as conn:
             rows = conn.execute(
                 """
@@ -94,6 +106,7 @@ def register(mcp) -> None:  # noqa: ANN001
 
         # Split into note blocks by ### date headers
         import re
+
         blocks = re.split(r"\n(?=### \d{4}-\d{2}-\d{2})", text)
 
         # Filter by category if requested
