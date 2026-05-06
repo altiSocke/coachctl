@@ -107,7 +107,7 @@ class TestComputePlanCompliance:
 
         assert result["sessions_planned"] == 0
         assert result["planned_tss"] == 0.0
-        assert result["compliance_pct"] == 0.0
+        assert result["compliance_pct"] is None
 
     def test_over_performance(self):
         """Athlete did more TSS than planned — compliance can exceed 100%."""
@@ -130,8 +130,13 @@ class TestComputePlanCompliance:
 
         assert result["sessions_completed"] == 1
 
-    def test_null_estimated_tss_treated_as_zero(self):
-        """Sessions with None estimated_tss are counted but contribute 0 planned TSS."""
+    def test_null_estimated_tss_excluded_from_both_sides(self):
+        """Sessions with None estimated_tss must be excluded from BOTH numerator and denominator.
+
+        Previously, they were excluded from past_planned_tss (denominator) but their
+        date still fed actual_tss (numerator), causing compliance_pct to inflate
+        dramatically when the athlete had real activities on those dates.
+        """
         from coachctl.plan_compliance import compute_plan_compliance
 
         planned = [{"date": "2026-01-05", "estimated_tss": None}]
@@ -140,7 +145,40 @@ class TestComputePlanCompliance:
 
         assert result["sessions_planned"] == 1
         assert result["planned_tss"] == 0.0
-        assert result["actual_tss"] == 60.0
+        # The activity exists so the session is counted as completed
+        assert result["sessions_completed"] == 1
+        # TSS ratio must be symmetric: zero-estimate sessions contribute 0 to both sides
+        assert result["actual_tss"] == 0.0
+        # compliance_pct must be None (can't compute), not 0% (athlete did train)
+        assert result["compliance_pct"] is None
+
+    def test_mixed_tss_and_null_sessions(self):
+        """Real-world scenario: some sessions have TSS estimates, others don't.
+
+        Only sessions with estimates should feed the TSS ratio.
+        The 284% production bug arose from this exact pattern.
+        """
+        from coachctl.plan_compliance import compute_plan_compliance
+
+        planned = [
+            {"date": "2026-01-05", "estimated_tss": None},  # no estimate
+            {"date": "2026-01-07", "estimated_tss": 80.0},  # has estimate
+            {"date": "2026-01-09", "estimated_tss": None},  # no estimate
+        ]
+        actual = {
+            "2026-01-05": 120.0,  # big ride — must NOT inflate the ratio
+            "2026-01-07": 80.0,
+            "2026-01-09": 50.0,  # must NOT inflate the ratio
+        }
+        result = compute_plan_compliance(planned, actual)
+
+        # All 3 sessions counted, 3 completed
+        assert result["sessions_planned"] == 3
+        assert result["sessions_completed"] == 3
+        # Only the Jan 7 session's TSS feeds the ratio
+        assert result["actual_tss"] == 80.0
+        assert result["past_planned_tss"] == 80.0
+        assert result["compliance_pct"] == 100.0
 
 
 # ── Unit tests: compute_weekly_compliance() ───────────────────────────────────

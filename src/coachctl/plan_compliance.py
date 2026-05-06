@@ -63,12 +63,18 @@ def compute_plan_compliance(
     # Only sessions up to today count for completion/compliance_pct
     past = [s for s in planned if s["date"] <= today]
     past_sessions_planned = len(past)
-    past_planned_tss = sum(float(s.get("estimated_tss") or 0) for s in past)
+
+    # For the TSS ratio, only include sessions that have a usable estimate.
+    # Excluding zero-estimate sessions from *both* sides keeps the ratio symmetric:
+    # an activity on a date with no planned TSS must not inflate the numerator.
+    past_with_tss = [s for s in past if float(s.get("estimated_tss") or 0) > 0]
+    past_planned_tss = sum(float(s["estimated_tss"]) for s in past_with_tss)
 
     sessions_completed = sum(1 for s in past if s["date"] in actual)
-    actual_tss = sum(actual.get(s["date"], 0.0) for s in past)
+    actual_tss = sum(actual.get(s["date"], 0.0) for s in past_with_tss)
 
-    compliance_pct = round(actual_tss / past_planned_tss * 100, 1) if past_planned_tss > 0 else 0.0
+    # None when no sessions with TSS estimates exist yet (not the same as 0% compliance)
+    compliance_pct = round(actual_tss / past_planned_tss * 100, 1) if past_planned_tss > 0 else None
 
     return {
         "sessions_planned": sessions_planned,
@@ -107,12 +113,17 @@ def compute_weekly_compliance(
         past = [s for s in sessions if s["date"] <= today]
 
         planned_tss = sum(float(s.get("estimated_tss") or 0) for s in sessions)
-        past_planned_tss = sum(float(s.get("estimated_tss") or 0) for s in past)
-        actual_tss = sum(actual.get(s["date"], 0.0) for s in past)
+        past_planned_tss = sum(
+            float(s.get("estimated_tss") or 0)
+            for s in past
+            if float(s.get("estimated_tss") or 0) > 0
+        )
+        past_with_tss = [s for s in past if float(s.get("estimated_tss") or 0) > 0]
+        actual_tss = sum(actual.get(s["date"], 0.0) for s in past_with_tss)
         sessions_completed = sum(1 for s in past if s["date"] in actual)
 
         compliance_pct = (
-            round(actual_tss / past_planned_tss * 100, 1) if past_planned_tss > 0 else 0.0
+            round(actual_tss / past_planned_tss * 100, 1) if past_planned_tss > 0 else None
         )
 
         result.append(

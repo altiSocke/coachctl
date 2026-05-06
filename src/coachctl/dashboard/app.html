@@ -1457,12 +1457,13 @@ function renderCompliance() {
 
   const ov = c.overall;
   const pct = ov.compliance_pct != null ? Math.round(ov.compliance_pct) : null;
-  const pctClass = pct == null ? '' : pct >= 90 ? 'good' : pct >= 70 ? 'warn' : 'bad';
+  const pctClass = pct == null ? '' : pct > 120 ? 'warn' : pct >= 90 ? 'good' : pct >= 70 ? 'warn' : 'bad';
+  const pctDisplay = pct == null ? '—' : pct > 120 ? pct + '% ↑' : pct + '%';
 
   const overallEl = document.getElementById('compliance-overall');
   overallEl.innerHTML = `
     <div class="compliance-summary">
-      <div class="compliance-big ${pctClass}">${pct != null ? pct + '%' : '—'}</div>
+      <div class="compliance-big ${pctClass}">${pctDisplay}</div>
       <div class="compliance-meta">
         ${ov.sessions_completed} / ${ov.past_sessions_planned} sessions completed<br>
         ${Math.round(ov.actual_tss || 0)} / ${Math.round(ov.past_planned_tss || 0)} TSS (past weeks)
@@ -1486,7 +1487,8 @@ function renderCompliance() {
 
   const rows = weekly.map(w => {
     const wp = w.compliance_pct != null ? Math.round(w.compliance_pct) : null;
-    const wc = wp == null ? '' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
+    const wc = wp == null ? '' : wp > 120 ? 'warn' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
+    const wpDisplay = wp == null ? '—' : wp > 120 ? wp + '% ↑' : wp + '%';
     // Format "2026-W19" → readable "May 5"
     const wkLabel = (() => {
       const m = w.week.match(/^(\d{4})-W(\d{2})$/);
@@ -1501,7 +1503,7 @@ function renderCompliance() {
       <td>${w.sessions_completed} / ${w.sessions_planned}</td>
       <td>${Math.round(w.actual_tss || 0)}</td>
       <td>${Math.round(w.planned_tss || 0)}</td>
-      <td class="compliance-pct ${wc}">${wp != null ? wp + '%' : '—'}</td>
+      <td class="compliance-pct ${wc}">${wpDisplay}</td>
     </tr>`;
   }).join('');
 
