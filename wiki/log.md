@@ -31,3 +31,5 @@
 - **2026-05-05** — new page: strength (strength training for endurance + team sport athletes; evidence-based; 7 sections)
 - **2026-05-05** — new page: injury_prevention (load monitoring, running/cycling/team sport injuries, return-to-run protocol; 8 sections)
 - **2026-05-05** — new page: periodization_templates (event demand profiles, phase timelines, TSS/CTL targets, session archetypes, run+bike concurrent rules; 7 sections)
+
+- **2026-05-06T20:50:25** — apply_general_wiki_update: recovery/nasal-dilator-strips
