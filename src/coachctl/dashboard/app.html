@@ -791,6 +791,18 @@ main {
 <!-- Main content -->
 <main id="main-content" class="hidden">
 
+  <!-- Current week — TODAY'S ACTIVITY FIRST -->
+  <div class="card" id="week-card">
+    <div class="card-title">This Week</div>
+    <div class="week-nav">
+      <button class="week-btn" id="week-prev">‹</button>
+      <span class="week-label" id="week-label">—</span>
+      <span class="week-tss" id="week-tss-label"></span>
+      <button class="week-btn" id="week-next">›</button>
+    </div>
+    <div class="sessions-list" id="sessions-list"></div>
+  </div>
+
   <!-- Phase bar -->
   <div class="card" id="phase-card">
     <div class="phase-wrap">
@@ -803,18 +815,6 @@ main {
       </div>
       <div class="phase-sub" id="phase-sub"></div>
     </div>
-  </div>
-
-  <!-- Current week — TODAY'S ACTIVITY FIRST -->
-  <div class="card" id="week-card">
-    <div class="card-title">This Week</div>
-    <div class="week-nav">
-      <button class="week-btn" id="week-prev">‹</button>
-      <span class="week-label" id="week-label">—</span>
-      <span class="week-tss" id="week-tss-label"></span>
-      <button class="week-btn" id="week-next">›</button>
-    </div>
-    <div class="sessions-list" id="sessions-list"></div>
   </div>
 
   <!-- Upcoming races -->
@@ -1369,8 +1369,8 @@ function renderFitness() {
     </div>
     <div class="fit-pill ${acwrClass}">
       <div class="fit-val">${acwrVal != null ? acwrVal.toFixed(2) : '—'}</div>
-      <div class="fit-lbl">ACWR</div>
-      <div class="fit-sub">${acwrRisk ? acwrRisk.replace('_', ' ') : 'workload ratio'}</div>
+      <div class="fit-lbl">Injury Risk</div>
+      <div class="fit-sub">ACWR ${acwrRisk ? '· ' + acwrRisk.replace('_', ' ') : ''}</div>
     </div>`;
 
   // Monotony + Strain row
@@ -1419,11 +1419,30 @@ function renderFitness() {
 
   const alerts = document.getElementById('fit-alerts');
   alerts.innerHTML = '';
-  (DATA.danger_zones || []).forEach(z => {
-    const d = el('div', `alert ${z.severity}`);
+  const allZones = (DATA.danger_zones || []).slice().sort((a, b) => {
+    const sev = { high: 0, medium: 1, info: 2 };
+    return (sev[a.severity] ?? 9) - (sev[b.severity] ?? 9);
+  });
+  const sevMap = { high: 'danger', medium: 'warning', info: 'info' };
+  allZones.slice(0, 2).forEach(z => {
+    const d = el('div', `alert ${sevMap[z.severity] || z.severity}`);
     d.textContent = z.message;
     alerts.appendChild(d);
   });
+  if (allZones.length > 2) {
+    const more = el('div', 'alert info');
+    more.textContent = `+${allZones.length - 2} more alert${allZones.length - 2 > 1 ? 's' : ''}`;
+    more.style.cursor = 'pointer';
+    more.addEventListener('click', () => {
+      more.remove();
+      allZones.slice(2).forEach(z => {
+        const d = el('div', `alert ${sevMap[z.severity] || z.severity}`);
+        d.textContent = z.message;
+        alerts.appendChild(d);
+      });
+    });
+    alerts.appendChild(more);
+  }
 }
 
 // ── Plan compliance ───────────────────────────────────────────────────────── 
@@ -1465,8 +1484,17 @@ function renderCompliance() {
   const rows = weekly.map(w => {
     const wp = w.compliance_pct != null ? Math.round(w.compliance_pct) : null;
     const wc = wp == null ? '' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
+    // Format "2026-W19" → readable "May 5"
+    const wkLabel = (() => {
+      const m = w.week.match(/^(\d{4})-W(\d{2})$/);
+      if (!m) return w.week;
+      const yr = +m[1], wn = +m[2];
+      const jan4 = new Date(yr, 0, 4);
+      const mon = new Date(jan4.getTime() + (wn - 1) * 7 * 86400000 - ((jan4.getDay() + 6) % 7) * 86400000);
+      return mon.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    })();
     return `<tr>
-      <td>${w.week}</td>
+      <td>${wkLabel}</td>
       <td>${w.sessions_completed} / ${w.sessions_planned}</td>
       <td>${Math.round(w.actual_tss || 0)}</td>
       <td>${Math.round(w.planned_tss || 0)}</td>
@@ -1791,6 +1819,21 @@ function renderFitnessChart() {
       borderColor: 'rgba(230,57,70,.25)', borderWidth: 1, borderDash: [4, 4],
     },
   };
+  // "Projected" label at the split point
+  if (lastTrendDate && projFilt.length) {
+    anns.projLabel = {
+      type: 'line', xMin: lastTrendDate, xMax: lastTrendDate,
+      borderColor: isDark ? 'rgba(255,255,255,.15)' : 'rgba(0,0,0,.1)',
+      borderWidth: 1, borderDash: [3, 3],
+      label: {
+        display: true, content: 'Projected →', position: 'start',
+        backgroundColor: 'transparent',
+        color: isDark ? 'rgba(255,255,255,.45)' : 'rgba(0,0,0,.35)',
+        font: { family: "'DM Sans', sans-serif", size: 9 },
+        padding: { x: 2, y: 0 },
+      },
+    };
+  }
   events.forEach((ev, i) => {
     if (!labels.includes(ev.date)) return;
     const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
