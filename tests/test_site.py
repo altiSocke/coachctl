@@ -425,3 +425,71 @@ def test_dashboard_data_fully_serializable_with_new_keys(site_db):
     """Full payload including new keys must be JSON-serializable."""
     result = site_module.get_dashboard_data()
     json.dumps(result, default=str)  # must not raise
+
+
+# ── F4: compliance weekly plan_week field ─────────────────────────────────────
+
+
+def test_compliance_weekly_has_plan_week_field(site_db):
+    """Each weekly compliance entry should carry a plan_week int when a plan is active."""
+    from datetime import date, timedelta
+
+    today = date.today()
+    # Put week-1 sessions in the past (already elapsed so they count toward compliance)
+    w1_mon = today - timedelta(days=today.weekday() + 7)  # Monday of last week
+    w2_mon = today - timedelta(days=today.weekday())  # Monday of current week
+
+    with site_db() as conn:
+        conn.execute(
+            "INSERT INTO plans (slug, title, start_date, end_date, active, week_tss_json) "
+            "VALUES (?,?,?,?,1,?)",
+            (
+                "f4-plan",
+                "F4 Test Plan",
+                w1_mon.isoformat(),
+                (w2_mon + timedelta(days=13)).isoformat(),
+                json.dumps({"1": 200, "2": 220}),
+            ),
+        )
+        plan_id = conn.execute("SELECT id FROM plans WHERE slug='f4-plan'").fetchone()["id"]
+
+        # Week 1 session (past)
+        conn.execute(
+            """INSERT INTO events (slug, kind, date, name, status, estimated_tss,
+               plan_id, payload_json)
+               VALUES ('ev-w1','training',?,'W1 Session','planned',100.0,?,?)""",
+            (
+                w1_mon.isoformat(),
+                plan_id,
+                json.dumps({"week_number": 1, "phase": "Base"}),
+            ),
+        )
+        # Week 2 session (this week)
+        conn.execute(
+            """INSERT INTO events (slug, kind, date, name, status, estimated_tss,
+               plan_id, payload_json)
+               VALUES ('ev-w2','training',?,'W2 Session','planned',110.0,?,?)""",
+            (
+                w2_mon.isoformat(),
+                plan_id,
+                json.dumps({"week_number": 2, "phase": "Build"}),
+            ),
+        )
+        # One completed activity in week 1
+        conn.execute(
+            """INSERT INTO activities (name, sport_type, start_date, elapsed_time,
+               moving_time, distance, tss)
+               VALUES ('Run','Run',?,3600,3600,10000,95.0)""",
+            (w1_mon.isoformat(),),
+        )
+
+    result = site_module.get_dashboard_data()
+    compliance = result.get("compliance")
+    assert compliance is not None, "compliance should be populated with an active plan"
+    weekly = compliance.get("weekly", [])
+    assert weekly, "weekly compliance entries should exist"
+    # At least one entry should carry a plan_week int
+    plan_weeks = [w.get("plan_week") for w in weekly]
+    assert any(pw is not None for pw in plan_weeks), (
+        f"No plan_week found in weekly entries: {weekly}"
+    )

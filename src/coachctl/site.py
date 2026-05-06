@@ -761,14 +761,16 @@ def _extract_decision_gates_from_plan() -> list[dict]:
         if gate_date <= today_str:
             status = "past"  # UI will mark pass/fail based on actual results
 
-        gates.append({
-            "date": gate_date,
-            "test": cols[1],
-            "a_goal": cols[2],
-            "b_goal": cols[3],
-            "revise": cols[4],
-            "status": status,
-        })
+        gates.append(
+            {
+                "date": gate_date,
+                "test": cols[1],
+                "a_goal": cols[2],
+                "b_goal": cols[3],
+                "revise": cols[4],
+                "status": status,
+            }
+        )
     return gates
 
 
@@ -805,14 +807,52 @@ def _extract_key_metrics_from_plan() -> list[dict]:
         cols = [c.strip() for c in line.split("|")[1:-1]]
         if len(cols) < len(headers):
             continue
-        metrics.append({
-            "metric": cols[0],
-            "start": cols[1] if len(cols) > 1 else "",
-            "mid": cols[2] if len(cols) > 2 else "",
-            "peak": cols[3] if len(cols) > 3 else "",
-            "race_day": cols[4] if len(cols) > 4 else "",
-        })
+        metrics.append(
+            {
+                "metric": cols[0],
+                "start": cols[1] if len(cols) > 1 else "",
+                "mid": cols[2] if len(cols) > 2 else "",
+                "peak": cols[3] if len(cols) > 3 else "",
+                "race_day": cols[4] if len(cols) > 4 else "",
+            }
+        )
     return metrics
+
+
+def _build_iso_to_plan_week_map(plan_id: int) -> dict[str, int]:
+    """
+    Return a mapping of ISO-week string (e.g. '2026-W19') → plan week number
+    for all training events belonging to the given plan.
+    """
+    if not paths.db_path().exists():
+        return {}
+
+    with get_conn() as conn:
+        rows = conn.execute(
+            """
+            SELECT MIN(date) as first_date,
+                   json_extract(payload_json, '$.week_number') as week_num
+            FROM events
+            WHERE plan_id = ? AND kind = 'training'
+            GROUP BY week_num
+            """,
+            (plan_id,),
+        ).fetchall()
+
+    iso_map: dict[str, int] = {}
+    for r in rows:
+        if r["first_date"] is None or r["week_num"] is None:
+            continue
+        try:
+            d = date.fromisoformat(r["first_date"])
+            # ISO week: use isocalendar()
+            iso_year, iso_week, _ = d.isocalendar()
+            key = f"{iso_year}-W{iso_week:02d}"
+            iso_map[key] = int(r["week_num"])
+        except (ValueError, TypeError):
+            pass
+
+    return iso_map
 
 
 def get_dashboard_data(plan_path: Path | None = None) -> dict:
@@ -854,6 +894,12 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
             compliance = _json.loads(raw)
     except Exception:
         pass
+
+    # Enrich compliance weekly entries with plan_week numbers
+    if compliance and plan_id:
+        iso_to_plan_week = _build_iso_to_plan_week_map(plan_id)
+        for w in compliance.get("weekly", []):
+            w["plan_week"] = iso_to_plan_week.get(w.get("week"))
 
     acwr = None
     try:

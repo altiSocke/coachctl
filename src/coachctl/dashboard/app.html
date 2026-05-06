@@ -370,7 +370,10 @@ main {
 .mono-warn .mono-stat-badge { background: var(--warning-bg); color: var(--warning); }
 .mono-crit .mono-stat-badge { background: var(--danger-bg);  color: var(--danger);  }
 
-/* ── Fit alerts ──────────────────────────────────────────────────────────────── */
+.mono-stat-range {
+  font-size: .55rem; color: var(--dim);
+  letter-spacing: .03em; margin-top: 2px; display: block;
+}
 #fit-alerts { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
 .alert {
   padding: 7px 10px; border-radius: var(--radius);
@@ -1212,7 +1215,7 @@ function renderPhase() {
   function phaseDate(weekNum) {
     if (!planStart) return null;
     const d = new Date(planStart + 'T00:00:00');
-    d.setDate(d.getDate() + weekNum * 7);
+    d.setDate(d.getDate() + (weekNum - 1) * 7);
     return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   }
 
@@ -1368,9 +1371,9 @@ function renderFitness() {
       <div class="fit-sub">TSB</div>
     </div>
     <div class="fit-pill ${acwrClass}">
-      <div class="fit-val">${acwrVal != null ? acwrVal.toFixed(2) : '—'}</div>
+      <div class="fit-val" style="font-size:1.05rem;letter-spacing:.03em;line-height:1.1">${acwrRisk ? acwrRisk.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()) : '—'}</div>
       <div class="fit-lbl">Injury Risk</div>
-      <div class="fit-sub">ACWR ${acwrRisk ? '· ' + acwrRisk.replace('_', ' ') : ''}</div>
+      <div class="fit-sub">ACWR ${acwrVal != null ? acwrVal.toFixed(2) + ' (EMA)' : ''}</div>
     </div>`;
 
   // Monotony + Strain row
@@ -1407,7 +1410,7 @@ function renderFitness() {
         </span>
       </div>
       <div class="mono-stat ${strainClass(strainVal)}">
-        <span class="mono-stat-lbl">Strain</span>
+        <span class="mono-stat-lbl">Strain<span class="mono-stat-range">OK &lt;1200 · MOD 1200–2000 · HIGH &gt;2000</span></span>
         <span>
           <span class="mono-stat-val">${strainVal != null ? Math.round(strainVal) : '—'}</span>
           <span class="mono-stat-badge">${strainBadge(strainVal)}</span>
@@ -1494,7 +1497,7 @@ function renderCompliance() {
       return mon.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     })();
     return `<tr>
-      <td>${wkLabel}</td>
+      <td>${w.plan_week != null ? '<span style="color:var(--muted);font-weight:600">W' + String(w.plan_week).padStart(2,'0') + '</span> ' : ''}${wkLabel}</td>
       <td>${w.sessions_completed} / ${w.sessions_planned}</td>
       <td>${Math.round(w.actual_tss || 0)}</td>
       <td>${Math.round(w.planned_tss || 0)}</td>
@@ -1647,20 +1650,33 @@ function renderWeek() {
     ['training','activity','race'].includes(s.kind)
   );
 
-  // TSS total (avoid double-counting: prefer activity TSS over training TSS for same date)
-  const tssByDate = {};
+  // TSS split: actual (completed activities) vs projected (planned sessions not yet done)
+  let actualTss = 0, projectedTss = 0;
   weekItems.forEach(i => {
-    if (!i.estimated_tss) return;
-    const existing = tssByDate[i.date];
-    if (!existing || (i.kind === 'activity' && existing.kind === 'training')) {
-      tssByDate[i.date] = { tss: i.estimated_tss, kind: i.kind };
-    } else if (i.kind === 'activity') {
-      tssByDate[i.date] = { tss: (existing.tss || 0) + i.estimated_tss, kind: i.kind };
+    const tss = i.estimated_tss || 0;
+    if (!tss) return;
+    if (i.kind === 'activity') {
+      actualTss += tss;
+    } else if (i.kind === 'training') {
+      // Only count planned sessions that haven't been superseded by an activity on the same date
+      const hasActivity = weekItems.some(a => a.kind === 'activity' && a.date === i.date);
+      if (!hasActivity) projectedTss += tss;
     }
   });
-  const totalTss = Object.values(tssByDate).reduce((sum, v) => sum + (v.tss || 0), 0);
-  document.getElementById('week-tss-label').textContent =
-    totalTss > 0 ? Math.round(totalTss) + ' TSS' : '';
+  const totalTss = actualTss + projectedTss;
+  const tssLabelEl = document.getElementById('week-tss-label');
+  if (totalTss > 0) {
+    const isCurrentWeek = weekOffset === 0;
+    const allPast = weekStart < t && weekEnd < t;
+    if (isCurrentWeek && projectedTss > 0) {
+      // Mid-week: show split
+      tssLabelEl.textContent = Math.round(actualTss) + ' done · ' + Math.round(totalTss) + ' planned';
+    } else {
+      tssLabelEl.textContent = Math.round(totalTss) + ' TSS';
+    }
+  } else {
+    tssLabelEl.textContent = '';
+  }
 
   const list = document.getElementById('sessions-list');
   list.innerHTML = '';
