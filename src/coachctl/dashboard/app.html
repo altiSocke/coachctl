@@ -384,6 +384,8 @@ main {
 /* ── Chart cards ─────────────────────────────────────────────────────────────── */
 .chart-wrap { position: relative; height: 220px; }
 .chart-wrap canvas { display: block; }
+.chart-pair { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 700px) { .chart-pair { grid-template-columns: 1fr 1fr; } }
 
 /* ── Zone bar ────────────────────────────────────────────────────────────────── */
 .zone-bar {
@@ -502,6 +504,30 @@ main {
 .session-detail {
   font-size: .7rem; color: var(--muted); margin-top: 3px; line-height: 1.4;
 }
+
+/* ── Day-grouped week view ────────────────────────────────────────────────── */
+.day-row { display: flex; gap: 0; padding: 0; border-bottom: 1px solid var(--border); }
+.day-row:last-child { border-bottom: none; }
+.day-row.past { opacity: .55; }
+.day-row.today .day-label { color: var(--accent); }
+.day-label {
+  width: 42px; flex-shrink: 0; padding: 8px 0 8px 2px;
+  font-family: var(--font-display); font-size: .7rem; font-weight: 700;
+  color: var(--muted); letter-spacing: .04em;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+}
+.day-items { flex: 1; display: flex; flex-direction: column; gap: 1px; padding: 4px 0; }
+.day-item {
+  display: flex; align-items: center; gap: 6px; padding: 4px 6px;
+  border-radius: 3px; transition: background .1s;
+}
+.day-item:hover { background: var(--surface-2); }
+.day-item.planned { opacity: .5; font-style: italic; }
+.day-item.planned .session-title { font-weight: 400; }
+.day-item.rest { padding: 4px 6px; }
+.day-item .session-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
+.day-item .session-title { font-size: .78rem; font-weight: 500; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.day-item .session-tss { font-family: var(--font-display); font-size: .72rem; font-weight: 600; color: var(--muted); }
 
 /* ── Recent runs table ────────────────────────────────────────────────────────── */
 .runs-table {
@@ -709,6 +735,37 @@ main {
   border-top: 1px solid var(--border);
   font-size: .8rem; color: var(--text); line-height: 1.6;
 }
+/* ── Decision Gates Timeline ─────────────────────────────────── */
+.gates-timeline { display: flex; flex-direction: column; gap: 0; position: relative; padding-left: 18px; }
+.gates-timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--border); border-radius: 1px; }
+.gate-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; position: relative; }
+.gate-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); position: absolute; left: -18px; top: 10px; z-index: 1; flex-shrink: 0; }
+.gate-item.upcoming .gate-dot { border-color: var(--accent); background: var(--bg); }
+.gate-item.pass .gate-dot { border-color: var(--success); background: var(--success); }
+.gate-item.fail .gate-dot { border-color: var(--danger); background: var(--danger); }
+.gate-dot::after { content: ''; position: absolute; inset: 2px; border-radius: 50%; }
+.gate-item.pass .gate-dot::after { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6l2.5 2.5 4.5-5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat; }
+.gate-body { flex: 1; min-width: 0; }
+.gate-header { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.gate-test { font-family: var(--font-display); font-weight: 600; font-size: .82rem; }
+.gate-date { font-size: .7rem; color: var(--muted); }
+.gate-targets { display: flex; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
+.gate-target { font-size: .68rem; padding: 1px 6px; border-radius: 3px; background: var(--surface); border: 1px solid var(--border); }
+.gate-target.a { border-color: var(--accent); color: var(--accent); }
+.gate-target.b { border-color: var(--muted); }
+.gate-revise { font-size: .65rem; color: var(--danger); margin-top: 2px; opacity: .8; }
+
+/* ── Key Metrics Table ───────────────────────────────────────── */
+.metrics-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.metric-row { display: grid; grid-template-columns: 1fr auto auto auto auto; gap: 4px; align-items: center; padding: 5px 8px; border-radius: 4px; background: var(--surface); font-size: .72rem; }
+.metric-row.header { background: transparent; font-weight: 600; color: var(--muted); font-size: .65rem; text-transform: uppercase; letter-spacing: .04em; }
+.metric-name { font-weight: 600; font-family: var(--font-display); }
+.metric-val { text-align: center; min-width: 55px; }
+.metric-val.current { color: var(--accent); font-weight: 700; }
+@media (max-width: 420px) {
+  .metric-row { grid-template-columns: 1fr auto auto; }
+  .metric-row .metric-val.hide-mobile { display: none; }
+}
 </style>
 </head>
 <body>
@@ -783,6 +840,16 @@ main {
     <div id="compliance-weekly"></div>
   </div>
 
+  <div class="card hidden" id="gates-card">
+    <div class="card-title">Decision Gates</div>
+    <div class="gates-timeline" id="gates-timeline"></div>
+  </div>
+
+  <div class="card hidden" id="key-metrics-card">
+    <div class="card-title">Key Metrics & Targets</div>
+    <div class="metrics-grid" id="key-metrics-grid"></div>
+  </div>
+
   <!-- Fitness chart + Weekly TSS — grouped: both answer "load trend?" -->
   <div class="card" id="fitness-chart-card">
     <div class="card-title">CTL · ATL · Form</div>
@@ -790,10 +857,17 @@ main {
     <div class="mono-row" id="mono-row"></div>
   </div>
 
+  <div class="chart-pair" id="chart-pair-tss">
   <div class="card" id="tss-chart-card">
     <div class="card-title">Weekly Load (TSS)</div>
     <div class="chart-wrap"><canvas id="chart-tss"></canvas></div>
   </div>
+
+  <div class="card hidden" id="rtss-chart-card">
+    <div class="card-title">Running Load (rTSS)</div>
+    <div class="chart-wrap"><canvas id="chart-rtss"></canvas></div>
+  </div>
+  </div><!-- /chart-pair -->
 
   <!-- Monotony / Strain — load quality, after load volume -->
   <div class="card hidden" id="mono-chart-card">
@@ -806,12 +880,6 @@ main {
     <div class="card-title">Zone Distribution (8w)</div>
     <div class="zone-bar" id="zone-bar"></div>
     <div class="zone-legend" id="zone-legend"></div>
-  </div>
-
-  <!-- Running specifics — grouped -->
-  <div class="card hidden" id="rtss-chart-card">
-    <div class="card-title">Running Load (rTSS)</div>
-    <div class="chart-wrap"><canvas id="chart-rtss"></canvas></div>
   </div>
 
   <div class="card hidden" id="recent-runs-card">
@@ -1094,6 +1162,8 @@ function renderAll() {
   renderFitness();
   renderThresholds();
   renderCompliance();
+  renderGates();
+  renderKeyMetrics();
   renderWeek();
   renderZones();
   renderFitnessChart();
@@ -1143,7 +1213,7 @@ function renderPhase() {
     if (!planStart) return null;
     const d = new Date(planStart + 'T00:00:00');
     d.setDate(d.getDate() + weekNum * 7);
-    return d.toISOString().slice(0, 10);
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   }
 
   const active = phases.find(p => {
@@ -1377,7 +1447,19 @@ function renderCompliance() {
       </div>
     </div>`;
 
-  const weekly = (c.weekly || []).slice(-8).reverse();
+  // Centered window: 3 past + current + 2 next weeks
+  const allWeekly = c.weekly || [];
+  const t = today();
+  // week format is "2026-W19" — find current ISO week
+  const td = new Date(t + 'T00:00:00');
+  const jan4 = new Date(td.getFullYear(), 0, 4);
+  const isoWeek = Math.ceil(((td - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+  const curWeekStr = `${td.getFullYear()}-W${String(isoWeek).padStart(2, '0')}`;
+  let curIdx = allWeekly.findIndex(w => w.week >= curWeekStr);
+  if (curIdx < 0) curIdx = allWeekly.length - 1;
+  const startIdx = Math.max(0, curIdx - 3);
+  const endIdx = Math.min(allWeekly.length, curIdx + 3);
+  const weekly = allWeekly.slice(startIdx, endIdx).reverse();
   if (!weekly.length) { document.getElementById('compliance-weekly').innerHTML = ''; return; }
 
   const rows = weekly.map(w => {
@@ -1399,6 +1481,66 @@ function renderCompliance() {
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+// ── Decision Gates ────────────────────────────────────────────────────────── 
+
+function renderGates() {
+  const gates = DATA.decision_gates || [];
+  if (!gates.length) { hide('gates-card'); return; }
+  show('gates-card');
+
+  const tl = document.getElementById('gates-timeline');
+  const t = today();
+  tl.innerHTML = gates.map(g => {
+    const status = g.date <= t ? (g.status === 'pass' ? 'pass' : g.status === 'fail' ? 'fail' : 'past') : 'upcoming';
+    const dateObj = new Date(g.date + 'T00:00:00');
+    const dateStr = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const daysOut = Math.round((dateObj - new Date(t + 'T00:00:00')) / 86400000);
+    const countdown = daysOut > 0 ? `${daysOut}d out` : daysOut === 0 ? 'today' : `${Math.abs(daysOut)}d ago`;
+    return `
+      <div class="gate-item ${status}">
+        <div class="gate-dot"></div>
+        <div class="gate-body">
+          <div class="gate-header">
+            <span class="gate-test">${esc(g.test)}</span>
+            <span class="gate-date">${dateStr} · ${countdown}</span>
+          </div>
+          <div class="gate-targets">
+            <span class="gate-target a">A: ${esc(g.a_goal)}</span>
+            <span class="gate-target b">B: ${esc(g.b_goal)}</span>
+          </div>
+          <div class="gate-revise">${esc(g.revise)}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Key Metrics ───────────────────────────────────────────────────────────── 
+
+function renderKeyMetrics() {
+  const metrics = DATA.key_metrics || [];
+  if (!metrics.length) { hide('key-metrics-card'); return; }
+  show('key-metrics-card');
+
+  const grid = document.getElementById('key-metrics-grid');
+  const header = `<div class="metric-row header">
+    <span>Metric</span><span class="metric-val">Start</span>
+    <span class="metric-val hide-mobile">Mid</span>
+    <span class="metric-val hide-mobile">Peak</span>
+    <span class="metric-val">Race</span>
+  </div>`;
+
+  const rows = metrics.map(m => `
+    <div class="metric-row">
+      <span class="metric-name">${esc(m.metric)}</span>
+      <span class="metric-val">${esc(m.start)}</span>
+      <span class="metric-val hide-mobile">${esc(m.mid)}</span>
+      <span class="metric-val hide-mobile">${esc(m.peak)}</span>
+      <span class="metric-val current">${esc(m.race_day)}</span>
+    </div>`).join('');
+
+  grid.innerHTML = header + rows;
 }
 
 // ── Zone distribution ─────────────────────────────────────────────────────── 
@@ -1450,121 +1592,150 @@ function renderWeek() {
   const cal = DATA.calendar || [];
   const t   = today();
 
+  // Local-safe ISO date string (avoids UTC timezone shift)
+  function localISO(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
   function getWeekStart(offset) {
-    const d   = new Date(t + 'T00:00:00');
+    const d   = new Date(t + 'T12:00:00'); // noon to avoid DST edge
     const dow = d.getDay();
     d.setDate(d.getDate() - ((dow + 6) % 7) + offset * 7);
-    return d.toISOString().slice(0, 10);
+    return localISO(d);
   }
 
   const weekStart = getWeekStart(weekOffset);
-  const weekEnd   = new Date(new Date(weekStart + 'T00:00:00').getTime() + 6 * 86400000)
-    .toISOString().slice(0, 10);
+  const wsDate = new Date(weekStart + 'T12:00:00');
+  const weDate = new Date(wsDate.getTime() + 6 * 86400000);
+  const weekEnd = localISO(weDate);
 
-  const ws = new Date(weekStart + 'T00:00:00');
-  const we = new Date(weekEnd   + 'T00:00:00');
-  const label = ws.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
-    ' – ' + we.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  const label = wsDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+    ' – ' + weDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   document.getElementById('week-label').textContent = label;
 
-  // Include training + activity + race kinds; skip duplicates (prefer activity over training on same date)
+  // Collect items for this week
   const weekItems = cal.filter(s =>
     s.date >= weekStart && s.date <= weekEnd &&
     ['training','activity','race'].includes(s.kind)
   );
 
-  // TSS total from estimated_tss
-  const totalTss = weekItems.reduce((sum, i) => sum + (i.estimated_tss || 0), 0);
+  // TSS total (avoid double-counting: prefer activity TSS over training TSS for same date)
+  const tssByDate = {};
+  weekItems.forEach(i => {
+    if (!i.estimated_tss) return;
+    const existing = tssByDate[i.date];
+    if (!existing || (i.kind === 'activity' && existing.kind === 'training')) {
+      tssByDate[i.date] = { tss: i.estimated_tss, kind: i.kind };
+    } else if (i.kind === 'activity') {
+      tssByDate[i.date] = { tss: (existing.tss || 0) + i.estimated_tss, kind: i.kind };
+    }
+  });
+  const totalTss = Object.values(tssByDate).reduce((sum, v) => sum + (v.tss || 0), 0);
   document.getElementById('week-tss-label').textContent =
     totalTss > 0 ? Math.round(totalTss) + ' TSS' : '';
 
   const list = document.getElementById('sessions-list');
   list.innerHTML = '';
 
-  if (!weekItems.length) {
-    list.innerHTML = '<div style="font-size:.78rem;color:var(--muted);padding:8px 0 4px 6px">No sessions this week.</div>';
-    return;
+  // Build 7 days Mon–Sun
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(wsDate.getTime() + i * 86400000);
+    days.push(localISO(d));
   }
 
-  // Sort by date then by kind (activity before training — shows actual before planned)
-  weekItems.sort((a, b) => {
-    if (a.date !== b.date) return a.date.localeCompare(b.date);
-    const kindOrder = { activity: 0, race: 1, training: 2 };
-    return (kindOrder[a.kind] ?? 9) - (kindOrder[b.kind] ?? 9);
+  // Group items by date
+  const byDate = {};
+  weekItems.forEach(s => { (byDate[s.date] = byDate[s.date] || []).push(s); });
+
+  // Sort within each day: activity first, then race, then training
+  Object.values(byDate).forEach(arr => {
+    arr.sort((a, b) => {
+      const kindOrder = { activity: 0, race: 1, training: 2 };
+      return (kindOrder[a.kind] ?? 9) - (kindOrder[b.kind] ?? 9);
+    });
   });
 
-  weekItems.forEach(s => {
-    const isPast  = s.date < t;
-    const isToday = s.date === t;
+  const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
-    const isRace  = s.kind === 'race';
-    const racePri = isRace ? ((s.payload && s.payload.priority) || s.priority || 'C') : null;
-    const priColor = racePri === 'A' ? 'var(--danger)' : racePri === 'B' ? 'var(--accent)' : 'var(--muted)';
+  days.forEach((dateStr, dayIdx) => {
+    const items = byDate[dateStr] || [];
+    const isPast  = dateStr < t;
+    const isToday = dateStr === t;
+    const dayName = DAY_NAMES[dayIdx];
 
-    // Derive sport from payload.sport_type (activity) or name heuristic
-    const sportType = (s.payload && s.payload.sport_type) || s.summary || s.name || '';
-    const sportKey  = (() => {
-      if (isRace) return 'race';
-      const sp = sportType.toLowerCase();
-      if (sp.includes('run') || sp.includes('trail')) return 'run';
-      if (sp.includes('ride') || sp.includes('cycl') || sp.includes('bike') || sp.includes('track')) return 'ride';
-      if (s.kind === 'rest') return 'rest';
-      return 'other';
-    })();
+    const dayRow = document.createElement('div');
+    dayRow.className = 'day-row';
+    if (isPast && !isToday) dayRow.classList.add('past');
+    if (isToday) dayRow.classList.add('today');
 
-    const row = document.createElement('div');
-    row.className = 'session-row';
-    if (isPast && !isToday) row.classList.add('past');
-    if (isToday)            row.classList.add('today');
+    if (!items.length) {
+      // Rest day
+      dayRow.innerHTML = `
+        <div class="day-label">${dayName}</div>
+        <div class="day-items"><div class="day-item rest"><span class="session-title" style="color:var(--muted);font-style:italic">Rest</span></div></div>`;
+      list.appendChild(dayRow);
+      return;
+    }
 
-    const dayStr = new Date(s.date + 'T00:00:00')
-      .toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 3).toUpperCase();
+    const itemsHtml = items.map(s => {
+      const isRace  = s.kind === 'race';
+      const racePri = isRace ? ((s.payload && s.payload.priority) || s.priority || 'C') : null;
+      const priColor = racePri === 'A' ? 'var(--danger)' : racePri === 'B' ? 'var(--accent)' : 'var(--muted)';
 
-    const tss    = s.estimated_tss;
-    const tssStr = tss ? Math.round(tss) + ' TSS' : '';
-    const todayBadge = isToday ? '<span class="today-badge">TODAY</span>' : '';
-    const raceBadge  = isRace && racePri
-      ? `<span class="race-session-badge" style="color:${priColor};border-color:${priColor}">RACE ${racePri}</span>`
-      : '';
+      const sportType = (s.payload && s.payload.sport_type) || s.summary || s.name || '';
+      const sportKey = (() => {
+        if (isRace) return 'race';
+        const sp = sportType.toLowerCase();
+        if (sp.includes('run') || sp.includes('trail')) return 'run';
+        if (sp.includes('ride') || sp.includes('cycl') || sp.includes('bike') || sp.includes('track')) return 'ride';
+        return 'other';
+      })();
 
-    // Completed activity: green dot
-    const dotExtra = s.kind === 'activity'
-      ? ' style="background:var(--success)"'
-      : isRace
-        ? ` style="background:${priColor}"`
+      const tss = s.estimated_tss;
+      const tssStr = tss ? Math.round(tss) + '' : '';
+      const raceBadge = isRace && racePri
+        ? `<span class="race-session-badge" style="color:${priColor};border-color:${priColor}">RACE ${racePri}</span>`
         : '';
 
-    // Detail text: payload.details > summary
-    const detailText = (s.payload && s.payload.details) || s.summary || s.notes || '';
+      const dotStyle = s.kind === 'activity'
+        ? ' style="background:var(--success)"'
+        : isRace ? ` style="background:${priColor}"` : '';
 
-    row.innerHTML = `
-      <div class="session-timeline">
-        <div class="session-dot"${dotExtra}></div>
-      </div>
-      <div class="session-body">
-        <div class="session-head">
-          <span class="session-day">${dayStr}</span>
-          ${todayBadge}${raceBadge}
-          <span class="session-type-dot sport-${sportKey}"></span>
-          <span class="session-title">${esc(s.name || '—')}</span>
-          <span class="session-tss">${tssStr}</span>
-        </div>
-        ${detailText ? `<div class="session-detail">${esc(shortDetail(detailText))}</div>` : ''}
+      const isPlanned = s.kind === 'training';
+      const itemClass = `day-item${isPlanned ? ' planned' : ''}`;
+
+      return `<div class="${itemClass}" data-slug="${s.slug || ''}" data-kind="${s.kind}" data-name="${esc(s.name||'')}" data-detail="${esc((s.payload&&s.payload.details)||s.summary||s.notes||'')}" data-date="${s.date}" data-tss="${tssStr}">
+        <span class="session-dot"${dotStyle}></span>
+        ${raceBadge}
+        <span class="session-type-dot sport-${sportKey}"></span>
+        <span class="session-title">${esc(s.name || '—')}</span>
+        ${tssStr ? `<span class="session-tss">${tssStr}</span>` : ''}
       </div>`;
+    }).join('');
 
-    if (isRace && s.slug) {
-      row.style.cursor = 'pointer';
-      row.addEventListener('click', () => { location.hash = '#race/' + s.slug; });
-    } else if (detailText) {
-      row.addEventListener('click', () => {
-        openSheet(
-          s.name || 'Session',
-          dayStr + ' · ' + fmtDate(s.date) + (tssStr ? ' · ' + tssStr : ''),
-          mdToHtml(detailText)
-        );
-      });
-    }
-    list.appendChild(row);
+    const todayBadge = isToday ? '<span class="today-badge">TODAY</span>' : '';
+    dayRow.innerHTML = `
+      <div class="day-label"><span>${dayName}</span>${todayBadge}</div>
+      <div class="day-items">${itemsHtml}</div>`;
+
+    // Click handlers
+    dayRow.querySelectorAll('.day-item').forEach(el => {
+      const slug = el.dataset.slug;
+      const kind = el.dataset.kind;
+      const detail = el.dataset.detail;
+      if (kind === 'race' && slug) {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => { location.hash = '#race/' + slug; });
+      } else if (detail) {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+          openSheet(el.dataset.name || 'Session', fmtDate(el.dataset.date) + (el.dataset.tss ? ' · ' + el.dataset.tss + ' TSS' : ''), mdToHtml(detail));
+        });
+      }
+    });
+
+    list.appendChild(dayRow);
   });
 }
 
@@ -1766,7 +1937,7 @@ function renderTssChart() {
         { label: 'Run',    data: run,    backgroundColor: runColors,   stack: 'tss', borderRadius: 2 },
         { label: 'Ride',   data: ride,   backgroundColor: rideColors,  stack: 'tss', borderRadius: 2 },
         { label: 'Other',  data: other,  backgroundColor: otherColors, stack: 'tss', borderRadius: 2 },
-        { label: 'Target', data: target, type: 'line',
+        { label: 'Planned', data: target, type: 'line',
           borderColor: C.target, backgroundColor: 'transparent',
           borderWidth: 1.5, borderDash: [4, 3], pointRadius: 0, tension: 0 },
       ],
@@ -2008,7 +2179,7 @@ function renderRecentRuns() {
 
   let html = `<table class="runs-table">
     <thead><tr>
-      <th>Date</th><th>km</th><th>+m</th><th>rTSS</th><th>rTSS<sub>P</sub></th><th>Δ%</th>
+      <th>Date</th><th>km</th><th>+m</th><th>rTSS</th><th>rTSS<sub>P</sub></th><th title="Economy gap: power-based vs pace-based rTSS. Positive = power exceeds pace cost (inefficiency or wind/terrain). Negative = good economy.">Eco</th>
     </tr></thead><tbody>`;
 
   filtered.forEach(r => {

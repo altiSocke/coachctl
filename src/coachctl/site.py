@@ -433,6 +433,9 @@ def _get_plan_from_db() -> dict | None:
     title = plan_row["title"] or ""
     start_date = plan_row["start_date"] or ""
     end_date = plan_row["end_date"] or ""
+    # Fallback: derive end_date from last event date if missing
+    if not end_date and ev_rows:
+        end_date = ev_rows[-1]["date"] or ""
     period = f"{start_date} – {end_date}" if start_date and end_date else ""
     # Extract event name from source_md_path if title doesn't carry it
     event_name = ""
@@ -709,6 +712,109 @@ def _get_weekly_run_tss(weeks: int = 12) -> list[dict]:
     ]
 
 
+def _extract_decision_gates_from_plan() -> list[dict]:
+    """Parse decision gates table from the active plan's markdown."""
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT source_md_path FROM plans WHERE active = 1 ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+    if not row or not row["source_md_path"]:
+        return []
+
+    md_path = paths.data_root() / "profile" / "plans" / row["source_md_path"]
+    if not md_path.exists():
+        # Fallback: try direct path
+        md_path = paths.data_root() / row["source_md_path"]
+        if not md_path.exists():
+            return []
+
+    import re
+
+    text = md_path.read_text(encoding="utf-8")
+    # Find "## Decision Gates" section
+    match = re.search(r"## Decision Gates\s*\n(.*?)(?=\n## |\n---|\Z)", text, re.DOTALL)
+    if not match:
+        return []
+
+    gates: list[dict] = []
+    for line in match.group(1).strip().splitlines():
+        line = line.strip()
+        if not line.startswith("|") or line.startswith("|--") or line.startswith("| Date"):
+            continue
+        cols = [c.strip() for c in line.split("|")[1:-1]]
+        if len(cols) < 5:
+            continue
+        gate_date_str = cols[0]
+        # Parse date like "Jun 14" → YYYY-MM-DD
+        try:
+            from datetime import datetime as _dt
+
+            # Parse month+day then set year explicitly to avoid 3.15 deprecation
+            year = date.today().year
+            dt = _dt.strptime(f"{gate_date_str} {year}", "%b %d %Y")
+            gate_date = dt.strftime("%Y-%m-%d")
+        except Exception:
+            gate_date = gate_date_str
+
+        today_str = str(date.today())
+        status = "upcoming"
+        if gate_date <= today_str:
+            status = "past"  # UI will mark pass/fail based on actual results
+
+        gates.append({
+            "date": gate_date,
+            "test": cols[1],
+            "a_goal": cols[2],
+            "b_goal": cols[3],
+            "revise": cols[4],
+            "status": status,
+        })
+    return gates
+
+
+def _extract_key_metrics_from_plan() -> list[dict]:
+    """Parse key metrics table from the active plan's markdown."""
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT source_md_path FROM plans WHERE active = 1 ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+    if not row or not row["source_md_path"]:
+        return []
+
+    md_path = paths.data_root() / "profile" / "plans" / row["source_md_path"]
+    if not md_path.exists():
+        md_path = paths.data_root() / row["source_md_path"]
+        if not md_path.exists():
+            return []
+
+    import re
+
+    text = md_path.read_text(encoding="utf-8")
+    match = re.search(r"## Key Metrics & Targets\s*\n(.*?)(?=\n## |\n---|\Z)", text, re.DOTALL)
+    if not match:
+        return []
+
+    metrics: list[dict] = []
+    lines = [l.strip() for l in match.group(1).strip().splitlines() if l.strip().startswith("|")]
+    if len(lines) < 2:
+        return []
+
+    # First row is header
+    headers = [c.strip() for c in lines[0].split("|")[1:-1]]
+    for line in lines[2:]:  # skip header + separator
+        cols = [c.strip() for c in line.split("|")[1:-1]]
+        if len(cols) < len(headers):
+            continue
+        metrics.append({
+            "metric": cols[0],
+            "start": cols[1] if len(cols) > 1 else "",
+            "mid": cols[2] if len(cols) > 2 else "",
+            "peak": cols[3] if len(cols) > 3 else "",
+            "race_day": cols[4] if len(cols) > 4 else "",
+        })
+    return metrics
+
+
 def get_dashboard_data(plan_path: Path | None = None) -> dict:
     """Assemble all dashboard data as a JSON-serialisable dict."""
     # plan_path argument retained for API compatibility but ignored —
@@ -807,6 +913,15 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         goals = {}
         thresholds = {}
 
+    # Decision gates & key metrics from plan markdown
+    decision_gates: list = []
+    key_metrics: list = []
+    try:
+        decision_gates = _extract_decision_gates_from_plan()
+        key_metrics = _extract_key_metrics_from_plan()
+    except Exception:
+        pass
+
     return {
         "generated_at": datetime.now().isoformat(),
         "plan": {
@@ -836,6 +951,8 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         "compliance": compliance,
         "acwr": acwr,
         "zones": zones,
+        "decision_gates": decision_gates,
+        "key_metrics": key_metrics,
     }
 
 
