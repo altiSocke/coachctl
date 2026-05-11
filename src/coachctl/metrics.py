@@ -321,7 +321,27 @@ def get_daily_tss_from_db(conn, sport_category: str = "all") -> dict[date, float
         params,
     ).fetchall()
 
-    return {date.fromisoformat(row["day"]): float(row["daily_tss"]) for row in rows}
+    daily: dict[date, float] = {
+        date.fromisoformat(row["day"]): float(row["daily_tss"]) for row in rows
+    }
+
+    # Merge untracked activities into the 'all' category only.
+    # Untracked activities don't have a reliable sport classification so we
+    # keep sport-specific filters (run/ride) clean and unaffected.
+    if sport_category == "all":
+        untracked_rows = conn.execute(
+            """
+            SELECT date(activity_date) as day, SUM(tss_estimate) as daily_tss
+            FROM untracked_activities
+            WHERE tss_estimate IS NOT NULL
+            GROUP BY day
+            """
+        ).fetchall()
+        for row in untracked_rows:
+            d = date.fromisoformat(row["day"])
+            daily[d] = daily.get(d, 0.0) + float(row["daily_tss"])
+
+    return daily
 
 
 def get_current_fitness(conn, sport_category: str = "all") -> dict:

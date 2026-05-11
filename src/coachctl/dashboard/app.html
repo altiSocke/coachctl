@@ -1649,7 +1649,7 @@ function renderWeek() {
   // Collect items for this week
   const weekItems = cal.filter(s =>
     s.date >= weekStart && s.date <= weekEnd &&
-    ['training','activity','race'].includes(s.kind)
+    ['training','activity','race','untracked'].includes(s.kind)
   );
 
   // TSS split: actual (completed activities) vs projected (planned sessions not yet done)
@@ -1657,7 +1657,7 @@ function renderWeek() {
   weekItems.forEach(i => {
     const tss = i.estimated_tss || 0;
     if (!tss) return;
-    if (i.kind === 'activity') {
+    if (i.kind === 'activity' || i.kind === 'untracked') {
       actualTss += tss;
     } else if (i.kind === 'training') {
       // Only count planned sessions that haven't been superseded by an activity on the same date
@@ -1697,7 +1697,7 @@ function renderWeek() {
   // Sort within each day: activity first, then race, then training
   Object.values(byDate).forEach(arr => {
     arr.sort((a, b) => {
-      const kindOrder = { activity: 0, race: 1, training: 2 };
+      const kindOrder = { activity: 0, race: 1, untracked: 2, training: 3 };
       return (kindOrder[a.kind] ?? 9) - (kindOrder[b.kind] ?? 9);
     });
   });
@@ -1746,7 +1746,9 @@ function renderWeek() {
 
       const dotStyle = s.kind === 'activity'
         ? ' style="background:var(--success)"'
-        : isRace ? ` style="background:${priColor}"` : '';
+        : s.kind === 'untracked'
+          ? ' style="background:#f5a623"'
+          : isRace ? ` style="background:${priColor}"` : '';
 
       const isPlanned = s.kind === 'training';
       const itemClass = `day-item${isPlanned ? ' planned' : ''}`;

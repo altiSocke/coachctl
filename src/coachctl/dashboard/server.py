@@ -85,4 +85,12 @@ def create_app(data_path: Path, html_path: Path | None = None) -> FastAPI:
     def health():
         return JSONResponse({"status": "ok" if state["data"] is not None else "no-data"})
 
+    @app.post("/api/reload")
+    def reload():
+        """Re-read data.json from disk — useful after bake in local dev."""
+        load()
+        if state["data"] is None:
+            return JSONResponse({"status": "error", "detail": state["error"]}, status_code=503)
+        return JSONResponse({"status": "ok"})
+
     return app

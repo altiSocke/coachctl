@@ -9,6 +9,7 @@ import yaml
 
 from .. import paths
 from ..db import get_conn
+from ..sync import _refresh_fitness_table
 from ..tools.event_tools import _validate_date
 
 # TSS estimates per sport/intensity (minutes → TSS)
@@ -66,6 +67,8 @@ def register(mcp) -> None:  # noqa: ANN001
                 """,
                 (activity_date, sport.lower(), duration_min, intensity.lower(), tss, notes),
             )
+
+        _refresh_fitness_table()
 
         paths.feedback_dir().mkdir(parents=True, exist_ok=True)
         safe_date = activity_date.replace("/", "").replace("\\", "").replace("..", "")
