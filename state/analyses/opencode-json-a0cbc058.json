@@ -1,0 +1,61 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "opencode-json-a0cbc058",
+  "sourceHash": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+  "semanticHash": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+  "extractionHash": "9dcee00716b297d4ad67745c2a1ffb15afb0c47b24f12e5ec0b0edf5f417fd6d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "opencode.json",
+  "summary": "{ \"$schema\": \"https://opencode.ai/config.json\", \"mcp\": { \"coachctl\": { \"type\": \"local\", \"command\": [\"uv\", \"run\", \"coachctl\", \"serve\"], \"environment\": { \"AGENT_DATA_ROOT\": \"{env:AGENT_DATA_ROOT}\", \"STRAVA_PROFILE\": \"{env:STRAVA_PROFILE}\" }, \"enabled\": true }, \"garmin\": { \"type\": \"local\", \"command\": [\" /.venv/bin/garmin-mcp\"], \"enabled\": false }, \"coros\": { \"type\": \"local\", \"command\": [\" /.venv/bin/coros-mcp\", \"serve\"], \"enabled\": false } } }",
+  "concepts": [
+    {
+      "id": "concept:command",
+      "name": "command",
+      "description": "Frequently referenced concept in opencode.json."
+    },
+    {
+      "id": "concept:enabled",
+      "name": "enabled",
+      "description": "Frequently referenced concept in opencode.json."
+    },
+    {
+      "id": "concept:local",
+      "name": "local",
+      "description": "Frequently referenced concept in opencode.json."
+    },
+    {
+      "id": "concept:type",
+      "name": "type",
+      "description": "Frequently referenced concept in opencode.json."
+    },
+    {
+      "id": "concept:agent",
+      "name": "agent",
+      "description": "Frequently referenced concept in opencode.json."
+    },
+    {
+      "id": "concept:coachctl",
+      "name": "coachctl",
+      "description": "Frequently referenced concept in opencode.json."
+    }
+  ],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:opencode-json-a0cbc058:1",
+      "text": "{ \"$schema\": \"https://opencode.ai/config.json\", \"mcp\": { \"coachctl\": { \"type\": \"local\", \"command\": [\"uv\", \"run\", \"coachctl\", \"serve\"], \"environment\": { \"AGENT_DATA_ROOT\": \"{env:AGENT_DATA_ROOT}\", \"STRAVA_PROFILE\": \"{env:STRAVA_PROFILE}\" }, \"enabled\": true }, \"garmin\": { \"type\": \"local\", \"command\": [\" /.venv/bin/garmin-mcp\"], \"enabled\": false }, \"coros\": { \"type\": \"local\", \"command\": [\" /.venv/bin/coros-mcp\", \"serve\"], \"enabled\": false } } }",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "opencode-json-a0cbc058"
+    }
+  ],
+  "questions": [
+    "How does command relate to opencode.json?",
+    "How does enabled relate to opencode.json?",
+    "How does local relate to opencode.json?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.677Z"
+}

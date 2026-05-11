@@ -1,0 +1,31 @@
+# .skillfish
+Format: JSON
+Top-level: object
+Size: 8
+Nested depth: 1
+
+## Schema
+
+- version: number
+- name: string
+- owner: string
+- repo: string
+- path: string
+- branch: string
+- sha: string
+- source: string
+
+## Preview
+
+```json
+{
+  "version": 2,
+  "name": "python-patterns",
+  "owner": "affaan-m",
+  "repo": "everything-claude-code",
+  "path": ".kiro/skills/python-patterns",
+  "branch": "main",
+  "sha": "114c27672ffb64f63c1e755a864810567a45faa7",
+  "source": "manual"
+}
+```

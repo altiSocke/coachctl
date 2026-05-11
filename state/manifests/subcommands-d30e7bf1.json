@@ -1,0 +1,19 @@
+{
+  "sourceId": "subcommands-d30e7bf1",
+  "title": "── Subcommands ────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/cli.py",
+  "repoRelativePath": "src/coachctl/cli.py",
+  "storedPath": "raw/sources/subcommands-d30e7bf1.py",
+  "extractedTextPath": "state/extracts/subcommands-d30e7bf1.md",
+  "extractedMetadataPath": "state/extracts/subcommands-d30e7bf1.json",
+  "extractionHash": "b9a1881e6efc23cd0b02b37f1fcd0b1fcbf3a8caa718b235e1484855bc1a616a",
+  "mimeType": "application/octet-stream",
+  "contentHash": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+  "semanticHash": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+  "createdAt": "2026-05-11T08:43:15.864Z",
+  "updatedAt": "2026-05-11T08:43:15.864Z"
+}

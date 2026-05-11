@@ -1,0 +1,24 @@
+{
+  "sourceId": "skillfish-a264adc7",
+  "title": ".skillfish",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/python-patterns/.skillfish.json",
+  "repoRelativePath": ".opencode/skills/python-patterns/.skillfish.json",
+  "storedPath": "raw/sources/skillfish-a264adc7.json",
+  "extractedTextPath": "state/extracts/skillfish-a264adc7.md",
+  "extractedMetadataPath": "state/extracts/skillfish-a264adc7.json",
+  "extractionHash": "72e6c247910318c5b4ea70e213ee40ef755e0eafedbb09f0b872e14bebd2430d",
+  "mimeType": "application/json",
+  "contentHash": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+  "semanticHash": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+  "details": {
+    "format": "json",
+    "top_level_type": "object",
+    "top_level_size": "8",
+    "nested_depth": "1"
+  },
+  "createdAt": "2026-05-11T08:43:13.961Z",
+  "updatedAt": "2026-05-11T08:43:13.961Z"
+}

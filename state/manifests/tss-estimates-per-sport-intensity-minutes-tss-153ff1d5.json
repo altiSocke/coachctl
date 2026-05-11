@@ -1,0 +1,19 @@
+{
+  "sourceId": "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5",
+  "title": "TSS estimates per sport/intensity (minutes → TSS)",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/untracked_tools.py",
+  "repoRelativePath": "src/coachctl/tools/untracked_tools.py",
+  "storedPath": "raw/sources/tss-estimates-per-sport-intensity-minutes-tss-153ff1d5.py",
+  "extractedTextPath": "state/extracts/tss-estimates-per-sport-intensity-minutes-tss-153ff1d5.md",
+  "extractedMetadataPath": "state/extracts/tss-estimates-per-sport-intensity-minutes-tss-153ff1d5.json",
+  "extractionHash": "4b7dd0a13c69ae959e1fc01237598a0ad3465da97bbf48311f9e57ddde5d7a9f",
+  "mimeType": "application/octet-stream",
+  "contentHash": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+  "semanticHash": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+  "createdAt": "2026-05-11T08:43:18.580Z",
+  "updatedAt": "2026-05-11T08:43:18.580Z"
+}

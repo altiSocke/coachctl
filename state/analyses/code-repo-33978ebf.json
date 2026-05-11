@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "code-repo-33978ebf",
+  "sourceHash": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+  "semanticHash": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+  "extractionHash": "a6d6d883e83bf8e3e6694ae52c2c0a10ac5061370d69792a83cee97f0dd03985",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Code repo ────────────────────────────────────────────────────────────────",
+  "summary": "── Code repo ──────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:code-repo-33978ebf:1",
+      "text": "── Code repo ──────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "code-repo-33978ebf"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Code repo ──────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:code-repo-33978ebf",
+    "language": "python",
+    "moduleName": "coachctl.paths",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:31.496Z"
+}

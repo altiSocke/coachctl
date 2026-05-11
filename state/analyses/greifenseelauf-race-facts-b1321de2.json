@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "greifenseelauf-race-facts-b1321de2",
+  "sourceHash": "b1321de2a8ce2467c4e49b59db3d5a1a72d96f089dd00413639c7545693ac4ed",
+  "semanticHash": "a00917b489f4b2ee8bac14762e7c47f54bf864ad2f99262d3bb03c53ca768f67",
+  "extractionHash": "382547e48ed50352986addd03d4eddcc3e859432269c191c7973ac492c1e0d49",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Greifenseelauf — Race Facts",
+  "summary": "Greifenseelauf — Race Facts Full name: Greifenseelauf, Uster (also: Halbmarathon Greifensee) Organiser: Markus Ryffel's AG, Worb Website: greifenseelauf.ch | Registration: trackmaxx.ch (code GSL26) Schedule: Always third Saturday of September. ## Distances | Event | Distance | |---|---| | Half Marathon | 21.1 km | | 10 km | 10 km | | Short run | 6.3 km | | Kids races | U8–U14 (Minigreifenseelauf + FAMIGROS RUN & WIN) | ## Course - Loops the Greifensee nature reserve near Uster, Canton Zurich. - Surface: ~60% asphalt, ~40% natural roads / gravel.",
+  "concepts": [
+    {
+      "id": "concept:uster",
+      "name": "uster",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "concept:finish",
+      "name": "finish",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "concept:start",
+      "name": "start",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "concept:first",
+      "name": "first",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "concept:greifensee",
+      "name": "greifensee",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "concept:greifenseelauf",
+      "name": "greifenseelauf",
+      "description": "Frequently referenced concept in Greifenseelauf — Race Facts."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:race-facts-full",
+      "name": "Race Facts Full",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "entity:greifenseelauf-uster",
+      "name": "Greifenseelauf, Uster",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "entity:halbmarathon-greifensee-organiser-markus-ryffel-s",
+      "name": "Halbmarathon Greifensee) Organiser: Markus Ryffel's",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "entity:worb-website",
+      "name": "Worb Website:",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "entity:registration",
+      "name": "Registration:",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    },
+    {
+      "id": "entity:schedule-always",
+      "name": "Schedule: Always",
+      "description": "Named entity mentioned in Greifenseelauf — Race Facts."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:greifenseelauf-race-facts-b1321de2:1",
+      "text": "Greifenseelauf — Race Facts Full name: Greifenseelauf, Uster (also: Halbmarathon Greifensee) Organiser: Markus Ryffel's AG, Worb Website: greifenseelauf.ch | Registration: trackmaxx.ch (code GSL26) Schedule: Always third Saturday of September.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-race-facts-b1321de2"
+    },
+    {
+      "id": "claim:greifenseelauf-race-facts-b1321de2:2",
+      "text": "## Distances | Event | Distance | |---|---| | Half Marathon | 21.1 km | | 10 km | 10 km | | Short run | 6.3 km | | Kids races | U8–U14 (Minigreifenseelauf + FAMIGROS RUN & WIN) | ## Course - Loops the Greifensee nature reserve near Uster, Canton Zurich.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-race-facts-b1321de2"
+    },
+    {
+      "id": "claim:greifenseelauf-race-facts-b1321de2:3",
+      "text": "- Surface: ~60% asphalt, ~40% natural roads / gravel.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-race-facts-b1321de2"
+    },
+    {
+      "id": "claim:greifenseelauf-race-facts-b1321de2:4",
+      "text": "- Start: Seestrasse, Uster (~10 min walk from village/finish area).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-race-facts-b1321de2"
+    }
+  ],
+  "questions": [
+    "How does uster relate to Greifenseelauf — Race Facts?",
+    "How does finish relate to Greifenseelauf — Race Facts?",
+    "How does start relate to Greifenseelauf — Race Facts?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.388Z"
+}

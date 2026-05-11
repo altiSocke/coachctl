@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "training-gear-science-reference-1b98dbfa",
+  "sourceHash": "1b98dbfa3284efbe632b62e5901d015f3117218be36dad7a9798022fd054b8d8",
+  "semanticHash": "caa575c7d8c0912e37fe4673b25b0e1083ad372a2f657d3690d1d31b301b1558",
+  "extractionHash": "ad773b07d304515e1681277d55469abb004bae20208afaf6007a61128b18b642",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Training Gear — Science Reference",
+  "summary": "Training Gear — Science Reference > Personal gear inventory lives in wiki/personal/<profile>/profile.md . > Key sources: Sun et al. 2020 (PMID 32132824), Relph et al.",
+  "concepts": [
+    {
+      "id": "concept:evidence",
+      "name": "evidence",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    },
+    {
+      "id": "concept:compression",
+      "name": "compression",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    },
+    {
+      "id": "concept:plate",
+      "name": "plate",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    },
+    {
+      "id": "concept:session",
+      "name": "session",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    },
+    {
+      "id": "concept:shoes",
+      "name": "shoes",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    },
+    {
+      "id": "concept:2022",
+      "name": "2022",
+      "description": "Frequently referenced concept in Training Gear — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:gear-science-reference",
+      "name": "Gear — Science Reference",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    },
+    {
+      "id": "entity:sun",
+      "name": "Sun",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    },
+    {
+      "id": "entity:relph",
+      "name": "Relph",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    },
+    {
+      "id": "entity:cochrane",
+      "name": "Cochrane",
+      "description": "Named entity mentioned in Training Gear — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:training-gear-science-reference-1b98dbfa:1",
+      "text": "Training Gear — Science Reference > Personal gear inventory lives in wiki/personal/<profile>/profile.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "training-gear-science-reference-1b98dbfa"
+    },
+    {
+      "id": "claim:training-gear-science-reference-1b98dbfa:2",
+      "text": "> Key sources: Sun et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "training-gear-science-reference-1b98dbfa"
+    },
+    {
+      "id": "claim:training-gear-science-reference-1b98dbfa:3",
+      "text": "2020 (PMID 32132824), Relph et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "training-gear-science-reference-1b98dbfa"
+    },
+    {
+      "id": "claim:training-gear-science-reference-1b98dbfa:4",
+      "text": "2022 Cochrane (PMID 35993829), Rodrigo-Carranza et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "training-gear-science-reference-1b98dbfa"
+    }
+  ],
+  "questions": [
+    "How does evidence relate to Training Gear — Science Reference?",
+    "How does compression relate to Training Gear — Science Reference?",
+    "How does plate relate to Training Gear — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:39.080Z"
+}

@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "grade-cost-factor-f7014915",
+  "sourceHash": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+  "semanticHash": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+  "extractionHash": "8f406fbd07391e87fd41143f1640f1bb736ffb156a3bc92ccd97c145af46143c",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── _grade_cost_factor ────────────────────────────────────────────────────────",
+  "summary": "── _grade_cost_factor ──────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:grade-cost-factor-f7014915:1",
+      "text": "── _grade_cost_factor ──────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "grade-cost-factor-f7014915"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── _grade_cost_factor ──────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:grade-cost-factor-f7014915",
+    "language": "python",
+    "moduleName": "tests.test_metrics",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.396Z"
+}

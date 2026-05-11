@@ -1,0 +1,19 @@
+{
+  "sourceId": "fixtures-289681c2",
+  "title": "── Fixtures ──────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_events_extended.py",
+  "repoRelativePath": "tests/test_events_extended.py",
+  "storedPath": "raw/sources/fixtures-289681c2.py",
+  "extractedTextPath": "state/extracts/fixtures-289681c2.md",
+  "extractedMetadataPath": "state/extracts/fixtures-289681c2.json",
+  "extractionHash": "6cb9dd6e5a4ea0abf9685fa09577fdadc6882fa61dffbb889c688ec157a8b727",
+  "mimeType": "application/octet-stream",
+  "contentHash": "289681c29cdfbbaf138c2d7b4dc78e814504c0565978af5bb0d85705588eda3b",
+  "semanticHash": "289681c29cdfbbaf138c2d7b4dc78e814504c0565978af5bb0d85705588eda3b",
+  "createdAt": "2026-05-11T08:43:20.116Z",
+  "updatedAt": "2026-05-11T08:43:20.116Z"
+}

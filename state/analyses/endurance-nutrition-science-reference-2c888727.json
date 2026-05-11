@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "endurance-nutrition-science-reference-2c888727",
+  "sourceHash": "2c888727141938edbd6b3ed4c757ea14ff00f7c90fcfc96b8b6481400ff123a4",
+  "semanticHash": "1fa436f21b565577b74a4b3dc4e1084ec9abb5b15b21c5c41469a1b2ba061b9c",
+  "extractionHash": "ff3e04f2fe6e0b0d944ec634800ccc6457e1949fa39dfa8ff0c37e20670c3a2e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Endurance Nutrition — Science Reference",
+  "summary": "Endurance Nutrition — Science Reference > Personal protocols and athlete-specific plans live in the personal repo's profile/nutrition.md . > Key sources: Kerksick et al. 2017 (ISSN Position Stand, PMID 28919842), Bonilla et al.",
+  "concepts": [
+    {
+      "id": "concept:glycogen",
+      "name": "glycogen",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "concept:high",
+      "name": "high",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "concept:intensity",
+      "name": "intensity",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "concept:ratio",
+      "name": "ratio",
+      "description": "Frequently referenced concept in Endurance Nutrition — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:nutrition-science-reference",
+      "name": "Nutrition — Science Reference",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "entity:kerksick",
+      "name": "Kerksick",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "entity:position-stand",
+      "name": "Position Stand,",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    },
+    {
+      "id": "entity:bonilla",
+      "name": "Bonilla",
+      "description": "Named entity mentioned in Endurance Nutrition — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:endurance-nutrition-science-reference-2c888727:1",
+      "text": "Endurance Nutrition — Science Reference > Personal protocols and athlete-specific plans live in the personal repo's profile/nutrition.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-nutrition-science-reference-2c888727"
+    },
+    {
+      "id": "claim:endurance-nutrition-science-reference-2c888727:2",
+      "text": "> Key sources: Kerksick et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-nutrition-science-reference-2c888727"
+    },
+    {
+      "id": "claim:endurance-nutrition-science-reference-2c888727:3",
+      "text": "2017 (ISSN Position Stand, PMID 28919842), Bonilla et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-nutrition-science-reference-2c888727"
+    },
+    {
+      "id": "claim:endurance-nutrition-science-reference-2c888727:4",
+      "text": "2020 (4R framework, PMID 33375691), IAAF Consensus 2019 (PMID 30952204), Gonzalez et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-nutrition-science-reference-2c888727"
+    }
+  ],
+  "questions": [
+    "How does glycogen relate to Endurance Nutrition — Science Reference?",
+    "How does race relate to Endurance Nutrition — Science Reference?",
+    "How does training relate to Endurance Nutrition — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:32.860Z"
+}

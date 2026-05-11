@@ -1,0 +1,18 @@
+{
+  "sourceId": "insights-8a2efcf8",
+  "title": "Insights",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/wiki/insights/index.md",
+  "repoRelativePath": "wiki/insights/index.md",
+  "storedPath": "raw/sources/insights-8a2efcf8.md",
+  "extractedTextPath": "state/extracts/insights-8a2efcf8.md",
+  "extractedMetadataPath": "state/extracts/insights-8a2efcf8.json",
+  "extractionHash": "b0275d136f0ba579c274fb5da17b7f659765c0ec54cf832eee57958a71da288e",
+  "mimeType": "text/markdown",
+  "contentHash": "8a2efcf850afbe24e834fd46080a3fc20257b39f4ab0de595864b48cadaecdcc",
+  "semanticHash": "7ed98748976e1b249ce944a23513c98359945683c317056d0d40b761308abce6",
+  "createdAt": "2026-05-11T08:43:24.432Z",
+  "updatedAt": "2026-05-11T08:43:24.432Z"
+}

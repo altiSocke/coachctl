@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "endurance-training-principles-science-reference-318c6f9d",
+  "sourceHash": "318c6f9dfc1afdd19689ec15fb78461e9083981aacebd040fdbbccdf6d9cb7d7",
+  "semanticHash": "4219ee9b2ce83a8dd2732f14268397bf2173fcc0d546bae77f7f2cb0b2a62fba",
+  "extractionHash": "638fef655bb6899ac14aa176005e748e553830d12b795e1daaf7558f1041f5c5",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Endurance Training Principles — Science Reference",
+  "summary": "Endurance Training Principles — Science Reference --- ## Training Stress Score (TSS) TSS quantifies training load as a single number, combining duration and intensity. ### Power-based TSS (Coggan) — Cycling TSS = (duration_s × NP × IF) / (FTP × 3600) × 100 Where: - NP (Normalised Power) = 30s rolling average, raised to 4th power, averaged, then 4th root - IF (Intensity Factor) = NP / FTP - 100 TSS = 1 hour at exactly FTP Requires a calibrated power meter. Gold standard for cycling load quantification.",
+  "concepts": [
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "concept:days",
+      "name": "days",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "concept:fatigue",
+      "name": "fatigue",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "concept:recovery",
+      "name": "recovery",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "concept:fitness",
+      "name": "fitness",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "concept:hard",
+      "name": "hard",
+      "description": "Frequently referenced concept in Endurance Training Principles — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:training-principles-science-reference",
+      "name": "Training Principles — Science Reference",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "entity:training-stress-score",
+      "name": "Training Stress Score",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "entity:coggan-cycling",
+      "name": "(Coggan) — Cycling",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "entity:where-np-normalised-power",
+      "name": "Where: - NP (Normalised Power)",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "entity:intensity-factor",
+      "name": "(Intensity Factor)",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    },
+    {
+      "id": "entity:requires",
+      "name": "Requires",
+      "description": "Named entity mentioned in Endurance Training Principles — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:endurance-training-principles-science-reference-318c6f9d:1",
+      "text": "Endurance Training Principles — Science Reference --- ## Training Stress Score (TSS) TSS quantifies training load as a single number, combining duration and intensity.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-training-principles-science-reference-318c6f9d"
+    },
+    {
+      "id": "claim:endurance-training-principles-science-reference-318c6f9d:2",
+      "text": "### Power-based TSS (Coggan) — Cycling TSS = (duration_s × NP × IF) / (FTP × 3600) × 100 Where: - NP (Normalised Power) = 30s rolling average, raised to 4th power, averaged, then 4th root - IF (Intensity Factor) = NP / FTP - 100 TSS = 1 hour at exactly FTP Requires a calibrated power meter.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-training-principles-science-reference-318c6f9d"
+    },
+    {
+      "id": "claim:endurance-training-principles-science-reference-318c6f9d:3",
+      "text": "Gold standard for cycling load quantification.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "endurance-training-principles-science-reference-318c6f9d"
+    },
+    {
+      "id": "claim:endurance-training-principles-science-reference-318c6f9d:4",
+      "text": "### Pace-based rTSS — Running rTSS = (duration_s × NGP × RI) / (rFTP_ms × 3600) × 100 Where: - NGP (Normalised Graded Pace) = grade-adjusted pace using Minetti cost function - RI = NGP / rFTP_ms (running Intensity Factor) - rFTP = functional threshold pace (sustainable for ~60min) ### hrTSS (Banister TRIMP) — Fallback Used when no power meter or pace data is available (e.g.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "endurance-training-principles-science-reference-318c6f9d"
+    }
+  ],
+  "questions": [
+    "How does training relate to Endurance Training Principles — Science Reference?",
+    "How does days relate to Endurance Training Principles — Science Reference?",
+    "How does fatigue relate to Endurance Training Principles — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:32.274Z"
+}

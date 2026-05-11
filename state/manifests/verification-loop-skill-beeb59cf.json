@@ -1,0 +1,18 @@
+{
+  "sourceId": "verification-loop-skill-beeb59cf",
+  "title": "Verification Loop Skill",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/verification-loop/SKILL.md",
+  "repoRelativePath": ".opencode/skills/verification-loop/SKILL.md",
+  "storedPath": "raw/sources/verification-loop-skill-beeb59cf.md",
+  "extractedTextPath": "state/extracts/verification-loop-skill-beeb59cf.md",
+  "extractedMetadataPath": "state/extracts/verification-loop-skill-beeb59cf.json",
+  "extractionHash": "ba1f7407a45ab35a9418a264f4950396d08d9cba97ec53db3b2bfaffe4da4a3e",
+  "mimeType": "text/markdown",
+  "contentHash": "beeb59cfb3d9ba8aaad0d4d6d99d534f37d6d25dc42561f6cea64b102625a141",
+  "semanticHash": "44d9656e0fc563db04d79e19922bee6105e0293cfb0c9473995e81e2caf6ed6b",
+  "createdAt": "2026-05-11T08:43:14.477Z",
+  "updatedAt": "2026-05-11T08:43:14.477Z"
+}

@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "what-i-do-1fa739a7",
+  "sourceHash": "1fa739a76c2f78f201d39292b99dfb535db5f30aa94108116983bc4f42f7d81b",
+  "semanticHash": "d675c41e397f3b9242acd9f9e1b212ca3519fbdb5b1478b793eef98375c1e6bb",
+  "extractionHash": "82b80f3383d8541c07a2168a998f8130a61c667479f51ed123a8bda89708ed51",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "What I do",
+  "summary": "description: Build or revise a periodized endurance training plan. Load when the athlete asks to create a new plan, revise an existing one, or adjust the phase structure. Encodes the full generic periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete save→commit sequence.",
+  "concepts": [
+    {
+      "id": "concept:plan",
+      "name": "plan",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:peak",
+      "name": "peak",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:weeks",
+      "name": "weeks",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:ride",
+      "name": "ride",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:week",
+      "name": "week",
+      "description": "Frequently referenced concept in What I do."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:build",
+      "name": "Build",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:markdown",
+      "name": "Markdown",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:step",
+      "name": "Step",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:gather",
+      "name": "Gather",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:run",
+      "name": "Run",
+      "description": "Named entity mentioned in What I do."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:what-i-do-1fa739a7:1",
+      "text": "description: Build or revise a periodized endurance training plan.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-1fa739a7"
+    },
+    {
+      "id": "claim:what-i-do-1fa739a7:2",
+      "text": "Load when the athlete asks to create a new plan, revise an existing one, or adjust the phase structure.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-1fa739a7"
+    },
+    {
+      "id": "claim:what-i-do-1fa739a7:3",
+      "text": "Encodes the full generic periodization schema (phase lengths, TSS targets, workout type mix, session archetypes) parameterized by event type and plan duration, plus the complete save→commit sequence.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-1fa739a7"
+    },
+    {
+      "id": "claim:what-i-do-1fa739a7:4",
+      "text": "## What I do Build a fully periodized, sport-specific training plan for any endurance event, calibrated to the athlete's current fitness and target event.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-1fa739a7"
+    }
+  ],
+  "questions": [
+    "How does plan relate to What I do?",
+    "How does race relate to What I do?",
+    "How does peak relate to What I do?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:38.805Z"
+}

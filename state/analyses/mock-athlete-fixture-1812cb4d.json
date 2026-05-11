@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "mock-athlete-fixture-1812cb4d",
+  "sourceHash": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+  "semanticHash": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+  "extractionHash": "50f2db20160622e03cf66411f29f54aaad97f59b0b852469dcff4693c03d18b1",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Mock athlete fixture ──────────────────────────────────────────────────────",
+  "summary": "── Mock athlete fixture ────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:mock-athlete-fixture-1812cb4d:1",
+      "text": "── Mock athlete fixture ────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "mock-athlete-fixture-1812cb4d"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Mock athlete fixture ────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:mock-athlete-fixture-1812cb4d",
+    "language": "python",
+    "moduleName": "tests.test_metrics_extended",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.663Z"
+}

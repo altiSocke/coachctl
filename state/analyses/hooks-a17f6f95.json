@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "hooks-a17f6f95",
+  "sourceHash": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+  "semanticHash": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+  "extractionHash": "1cfa5834ef0b77b524dc71de0624271a5e9f4d952380ce5a4b9a76cac4b580a3",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "hooks",
+  "summary": "hooks Format: JSON Top-level: object Size: 1 Nested depth: 6 ## Schema - hooks: object (2 keys) ## Preview json { \"hooks\": { \"SessionStart\": [ { \"hooks\": [ { \"type\": \"command\", \"command\": \"node .codex/hooks/swarmvault-graph-first.js session-start\" } ] } ], \"PreToolUse\": [ { \"matcher\": \"Bash\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node .codex/hooks/swarmvault-graph-first.js pre-tool-use\" } ] } ] } }",
+  "concepts": [
+    {
+      "id": "concept:hooks",
+      "name": "hooks",
+      "description": "Frequently referenced concept in hooks."
+    },
+    {
+      "id": "concept:command",
+      "name": "command",
+      "description": "Frequently referenced concept in hooks."
+    },
+    {
+      "id": "concept:codex",
+      "name": "codex",
+      "description": "Frequently referenced concept in hooks."
+    },
+    {
+      "id": "concept:json",
+      "name": "json",
+      "description": "Frequently referenced concept in hooks."
+    },
+    {
+      "id": "concept:node",
+      "name": "node",
+      "description": "Frequently referenced concept in hooks."
+    },
+    {
+      "id": "concept:object",
+      "name": "object",
+      "description": "Frequently referenced concept in hooks."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in hooks."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in hooks."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in hooks."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in hooks."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in hooks."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in hooks."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:hooks-a17f6f95:1",
+      "text": "hooks Format: JSON Top-level: object Size: 1 Nested depth: 6 ## Schema - hooks: object (2 keys) ## Preview json { \"hooks\": { \"SessionStart\": [ { \"hooks\": [ { \"type\": \"command\", \"command\": \"node .codex/hooks/swarmvault-graph-first.js session-start\" } ] } ], \"PreToolUse\": [ { \"matcher\": \"Bash\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node .codex/hooks/swarmvault-graph-first.js pre-tool-use\" } ] } ] } }",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "hooks-a17f6f95"
+    }
+  ],
+  "questions": [
+    "How does hooks relate to hooks?",
+    "How does command relate to hooks?",
+    "How does codex relate to hooks?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.396Z"
+}

@@ -1,0 +1,19 @@
+{
+  "sourceId": "env-tools-85fd1cad",
+  "title": "env_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/env_tools.py",
+  "repoRelativePath": "src/coachctl/tools/env_tools.py",
+  "storedPath": "raw/sources/env-tools-85fd1cad.py",
+  "extractedTextPath": "state/extracts/env-tools-85fd1cad.md",
+  "extractedMetadataPath": "state/extracts/env-tools-85fd1cad.json",
+  "extractionHash": "cfe5bffdf51ae68b475bbbbd56519046c258e71b91d03bf9d995f054cc55f267",
+  "mimeType": "application/octet-stream",
+  "contentHash": "85fd1cad4ceba9d25eaf2deca7bf1addad094827d920650759140a664b8b7b48",
+  "semanticHash": "85fd1cad4ceba9d25eaf2deca7bf1addad094827d920650759140a664b8b7b48",
+  "createdAt": "2026-05-11T08:43:17.678Z",
+  "updatedAt": "2026-05-11T08:43:17.678Z"
+}

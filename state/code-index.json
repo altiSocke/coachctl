@@ -1,0 +1,756 @@
+{
+  "generatedAt": "2026-05-11T08:45:09.507Z",
+  "entries": [
+    {
+      "sourceId": "activity-tools-4251b5fd",
+      "moduleId": "module:activity-tools-4251b5fd",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/activity_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/activity_tools.py",
+      "moduleName": "coachctl.tools.activity_tools",
+      "aliases": [
+        "coachctl.tools.activity_tools",
+        "src/coachctl/tools/activity_tools",
+        "src/coachctl/tools/activity_tools.py"
+      ]
+    },
+    {
+      "sourceId": "allow-uv-run-from-repo-root-30cc3aa3",
+      "moduleId": "module:allow-uv-run-from-repo-root-30cc3aa3",
+      "language": "python",
+      "repoRelativePath": "scripts/migrate_races_to_events.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/scripts/migrate_races_to_events.py",
+      "moduleName": "scripts.migrate_races_to_events",
+      "aliases": [
+        "scripts.migrate_races_to_events",
+        "scripts/migrate_races_to_events",
+        "scripts/migrate_races_to_events.py"
+      ]
+    },
+    {
+      "sourceId": "app-75ed4433",
+      "moduleId": "module:app-75ed4433",
+      "language": "html",
+      "repoRelativePath": "src/coachctl/dashboard/app.html",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/app.html",
+      "moduleName": "src/coachctl/dashboard/app",
+      "aliases": [
+        "src/coachctl/dashboard/app",
+        "src/coachctl/dashboard/app.html"
+      ]
+    },
+    {
+      "sourceId": "athlete-tools-c968b16f",
+      "moduleId": "module:athlete-tools-c968b16f",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/athlete_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/athlete_tools.py",
+      "moduleName": "coachctl.tools.athlete_tools",
+      "aliases": [
+        "coachctl.tools.athlete_tools",
+        "src/coachctl/tools/athlete_tools",
+        "src/coachctl/tools/athlete_tools.py"
+      ]
+    },
+    {
+      "sourceId": "bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550",
+      "moduleId": "module:bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/mcp_server.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/mcp_server.py",
+      "moduleName": "coachctl.mcp_server",
+      "aliases": [
+        "coachctl.mcp_server",
+        "src/coachctl/mcp_server",
+        "src/coachctl/mcp_server.py"
+      ]
+    },
+    {
+      "sourceId": "code-repo-33978ebf",
+      "moduleId": "module:code-repo-33978ebf",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/paths.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/paths.py",
+      "moduleName": "coachctl.paths",
+      "aliases": [
+        "coachctl.paths",
+        "src/coachctl/paths",
+        "src/coachctl/paths.py"
+      ]
+    },
+    {
+      "sourceId": "code-root-fa300ffa",
+      "moduleId": "module:code-root-fa300ffa",
+      "language": "python",
+      "repoRelativePath": "tests/test_paths.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_paths.py",
+      "moduleName": "tests.test_paths",
+      "aliases": [
+        "tests.test_paths",
+        "tests/test_paths",
+        "tests/test_paths.py"
+      ]
+    },
+    {
+      "sourceId": "config-ed62725e",
+      "moduleId": "module:config-ed62725e",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/config.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/config.py",
+      "moduleName": "coachctl.config",
+      "aliases": [
+        "coachctl.config",
+        "src/coachctl/config",
+        "src/coachctl/config.py"
+      ]
+    },
+    {
+      "sourceId": "db-4438bbd2",
+      "moduleId": "module:db-4438bbd2",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/db.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/db.py",
+      "moduleName": "coachctl.db",
+      "aliases": [
+        "coachctl.db",
+        "src/coachctl/db",
+        "src/coachctl/db.py"
+      ]
+    },
+    {
+      "sourceId": "dev-app-9552e8c8",
+      "moduleId": "module:dev-app-9552e8c8",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/dashboard/_dev_app.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/_dev_app.py",
+      "moduleName": "coachctl.dashboard._dev_app",
+      "aliases": [
+        "coachctl.dashboard._dev_app",
+        "src/coachctl/dashboard/_dev_app",
+        "src/coachctl/dashboard/_dev_app.py"
+      ]
+    },
+    {
+      "sourceId": "env-tools-85fd1cad",
+      "moduleId": "module:env-tools-85fd1cad",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/env_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/env_tools.py",
+      "moduleName": "coachctl.tools.env_tools",
+      "aliases": [
+        "coachctl.tools.env_tools",
+        "src/coachctl/tools/env_tools",
+        "src/coachctl/tools/env_tools.py"
+      ]
+    },
+    {
+      "sourceId": "event-tools-4028185c",
+      "moduleId": "module:event-tools-4028185c",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/event_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/event_tools.py",
+      "moduleName": "coachctl.tools.event_tools",
+      "aliases": [
+        "coachctl.tools.event_tools",
+        "src/coachctl/tools/event_tools",
+        "src/coachctl/tools/event_tools.py"
+      ]
+    },
+    {
+      "sourceId": "feedback-tools-ff22ee6e",
+      "moduleId": "module:feedback-tools-ff22ee6e",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/feedback_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/feedback_tools.py",
+      "moduleName": "coachctl.tools.feedback_tools",
+      "aliases": [
+        "coachctl.tools.feedback_tools",
+        "src/coachctl/tools/feedback_tools",
+        "src/coachctl/tools/feedback_tools.py"
+      ]
+    },
+    {
+      "sourceId": "fitness-tools-4c8a250b",
+      "moduleId": "module:fitness-tools-4c8a250b",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/fitness_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/fitness_tools.py",
+      "moduleName": "coachctl.tools.fitness_tools",
+      "aliases": [
+        "coachctl.tools.fitness_tools",
+        "src/coachctl/tools/fitness_tools",
+        "src/coachctl/tools/fitness_tools.py"
+      ]
+    },
+    {
+      "sourceId": "fixtures-289681c2",
+      "moduleId": "module:fixtures-289681c2",
+      "language": "python",
+      "repoRelativePath": "tests/test_events_extended.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_events_extended.py",
+      "moduleName": "tests.test_events_extended",
+      "aliases": [
+        "tests.test_events_extended",
+        "tests/test_events_extended",
+        "tests/test_events_extended.py"
+      ]
+    },
+    {
+      "sourceId": "fixtures-57e82233",
+      "moduleId": "module:fixtures-57e82233",
+      "language": "python",
+      "repoRelativePath": "tests/test_migrate.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_migrate.py",
+      "moduleName": "tests.test_migrate",
+      "aliases": [
+        "tests.test_migrate",
+        "tests/test_migrate",
+        "tests/test_migrate.py"
+      ]
+    },
+    {
+      "sourceId": "fixtures-719a3216",
+      "moduleId": "module:fixtures-719a3216",
+      "language": "python",
+      "repoRelativePath": "tests/test_events.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_events.py",
+      "moduleName": "tests.test_events",
+      "aliases": [
+        "tests.test_events",
+        "tests/test_events",
+        "tests/test_events.py"
+      ]
+    },
+    {
+      "sourceId": "fixtures-b923c1f4",
+      "moduleId": "module:fixtures-b923c1f4",
+      "language": "python",
+      "repoRelativePath": "tests/test_recalculate.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_recalculate.py",
+      "moduleName": "tests.test_recalculate",
+      "aliases": [
+        "tests.test_recalculate",
+        "tests/test_recalculate",
+        "tests/test_recalculate.py"
+      ]
+    },
+    {
+      "sourceId": "full-db-schema-mirror-of-db-py-init-db-a3271966",
+      "moduleId": "module:full-db-schema-mirror-of-db-py-init-db-a3271966",
+      "language": "python",
+      "repoRelativePath": "tests/conftest.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/conftest.py",
+      "moduleName": "tests.conftest",
+      "aliases": [
+        "tests.conftest",
+        "tests/conftest",
+        "tests/conftest.py"
+      ]
+    },
+    {
+      "sourceId": "get-conn-4fe27bf2",
+      "moduleId": "module:get-conn-4fe27bf2",
+      "language": "python",
+      "repoRelativePath": "tests/test_db.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_db.py",
+      "moduleName": "tests.test_db",
+      "aliases": [
+        "tests.test_db",
+        "tests/test_db",
+        "tests/test_db.py"
+      ]
+    },
+    {
+      "sourceId": "get-dashboard-data-empty-db-9c5a2694",
+      "moduleId": "module:get-dashboard-data-empty-db-9c5a2694",
+      "language": "python",
+      "repoRelativePath": "tests/test_site.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_site.py",
+      "moduleName": "tests.test_site",
+      "aliases": [
+        "tests.test_site",
+        "tests/test_site",
+        "tests/test_site.py"
+      ]
+    },
+    {
+      "sourceId": "grade-cost-factor-f7014915",
+      "moduleId": "module:grade-cost-factor-f7014915",
+      "language": "python",
+      "repoRelativePath": "tests/test_metrics.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_metrics.py",
+      "moduleName": "tests.test_metrics",
+      "aliases": [
+        "tests.test_metrics",
+        "tests/test_metrics",
+        "tests/test_metrics.py"
+      ]
+    },
+    {
+      "sourceId": "helpers-5e2d94cc",
+      "moduleId": "module:helpers-5e2d94cc",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/events.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/events.py",
+      "moduleName": "coachctl.events",
+      "aliases": [
+        "coachctl.events",
+        "src/coachctl/events",
+        "src/coachctl/events.py"
+      ]
+    },
+    {
+      "sourceId": "helpers-be6e284d",
+      "moduleId": "module:helpers-be6e284d",
+      "language": "python",
+      "repoRelativePath": "tests/test_plan_compliance.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_compliance.py",
+      "moduleName": "tests.test_plan_compliance",
+      "aliases": [
+        "tests.test_plan_compliance",
+        "tests/test_plan_compliance",
+        "tests/test_plan_compliance.py"
+      ]
+    },
+    {
+      "sourceId": "init-492052c6",
+      "moduleId": "module:init-492052c6",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/__init__.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/__init__.py",
+      "moduleName": "coachctl.tools",
+      "aliases": [
+        "coachctl.tools",
+        "src/coachctl/tools/__init__",
+        "src/coachctl/tools/__init__.py"
+      ]
+    },
+    {
+      "sourceId": "init-65b76ffa",
+      "moduleId": "module:init-65b76ffa",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/dashboard/__init__.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/__init__.py",
+      "moduleName": "coachctl.dashboard",
+      "aliases": [
+        "coachctl.dashboard",
+        "src/coachctl/dashboard/__init__",
+        "src/coachctl/dashboard/__init__.py"
+      ]
+    },
+    {
+      "sourceId": "insert-plan-and-events-a82f6402",
+      "moduleId": "module:insert-plan-and-events-a82f6402",
+      "language": "python",
+      "repoRelativePath": "tests/test_plan_event_tss.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_event_tss.py",
+      "moduleName": "tests.test_plan_event_tss",
+      "aliases": [
+        "tests.test_plan_event_tss",
+        "tests/test_plan_event_tss",
+        "tests/test_plan_event_tss.py"
+      ]
+    },
+    {
+      "sourceId": "item-9d66dea1",
+      "moduleId": "module:item-9d66dea1",
+      "language": "python",
+      "repoRelativePath": "tests/test_tools_functional.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_tools_functional.py",
+      "moduleName": "tests.test_tools_functional",
+      "aliases": [
+        "tests.test_tools_functional",
+        "tests/test_tools_functional",
+        "tests/test_tools_functional.py"
+      ]
+    },
+    {
+      "sourceId": "list-files-71abed7b",
+      "moduleId": "module:list-files-71abed7b",
+      "language": "python",
+      "repoRelativePath": "tests/test_general_wiki.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_general_wiki.py",
+      "moduleName": "tests.test_general_wiki",
+      "aliases": [
+        "tests.test_general_wiki",
+        "tests/test_general_wiki",
+        "tests/test_general_wiki.py"
+      ]
+    },
+    {
+      "sourceId": "main-07eb9572",
+      "moduleId": "module:main-07eb9572",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/dashboard/__main__.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/__main__.py",
+      "moduleName": "coachctl.dashboard.__main__",
+      "aliases": [
+        "coachctl.dashboard.__main__",
+        "src/coachctl/dashboard/__main__",
+        "src/coachctl/dashboard/__main__.py"
+      ]
+    },
+    {
+      "sourceId": "migrate-f5ef3835",
+      "moduleId": "module:migrate-f5ef3835",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/migrate.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/migrate.py",
+      "moduleName": "coachctl.migrate",
+      "aliases": [
+        "coachctl.migrate",
+        "src/coachctl/migrate",
+        "src/coachctl/migrate.py"
+      ]
+    },
+    {
+      "sourceId": "mock-athlete-fixture-1812cb4d",
+      "moduleId": "module:mock-athlete-fixture-1812cb4d",
+      "language": "python",
+      "repoRelativePath": "tests/test_metrics_extended.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_metrics_extended.py",
+      "moduleName": "tests.test_metrics_extended",
+      "aliases": [
+        "tests.test_metrics_extended",
+        "tests/test_metrics_extended",
+        "tests/test_metrics_extended.py"
+      ]
+    },
+    {
+      "sourceId": "ngp-algorithm-9949f73f",
+      "moduleId": "module:ngp-algorithm-9949f73f",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/metrics.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/metrics.py",
+      "moduleName": "coachctl.metrics",
+      "aliases": [
+        "coachctl.metrics",
+        "src/coachctl/metrics",
+        "src/coachctl/metrics.py"
+      ]
+    },
+    {
+      "sourceId": "oauth-helpers-ca87b67b",
+      "moduleId": "module:oauth-helpers-ca87b67b",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/sync.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/sync.py",
+      "moduleName": "coachctl.sync",
+      "aliases": [
+        "coachctl.sync",
+        "src/coachctl/sync",
+        "src/coachctl/sync.py"
+      ]
+    },
+    {
+      "sourceId": "optional-google-calendar-push-9f31fa1a",
+      "moduleId": "module:optional-google-calendar-push-9f31fa1a",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/new_profile.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/new_profile.py",
+      "moduleName": "coachctl.new_profile",
+      "aliases": [
+        "coachctl.new_profile",
+        "src/coachctl/new_profile",
+        "src/coachctl/new_profile.py"
+      ]
+    },
+    {
+      "sourceId": "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3",
+      "moduleId": "module:ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/plan_parser.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/plan_parser.py",
+      "moduleName": "coachctl.plan_parser",
+      "aliases": [
+        "coachctl.plan_parser",
+        "src/coachctl/plan_parser",
+        "src/coachctl/plan_parser.py"
+      ]
+    },
+    {
+      "sourceId": "parse-date-3a759610",
+      "moduleId": "module:parse-date-3a759610",
+      "language": "python",
+      "repoRelativePath": "tests/test_plan_parser.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_parser.py",
+      "moduleName": "tests.test_plan_parser",
+      "aliases": [
+        "tests.test_plan_parser",
+        "tests/test_plan_parser",
+        "tests/test_plan_parser.py"
+      ]
+    },
+    {
+      "sourceId": "plan-tools-821c4c46",
+      "moduleId": "module:plan-tools-821c4c46",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/plan_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/plan_tools.py",
+      "moduleName": "coachctl.tools.plan_tools",
+      "aliases": [
+        "coachctl.tools.plan_tools",
+        "src/coachctl/tools/plan_tools",
+        "src/coachctl/tools/plan_tools.py"
+      ]
+    },
+    {
+      "sourceId": "public-api-cb65991f",
+      "moduleId": "module:public-api-cb65991f",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/plan_compliance.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/plan_compliance.py",
+      "moduleName": "coachctl.plan_compliance",
+      "aliases": [
+        "coachctl.plan_compliance",
+        "src/coachctl/plan_compliance",
+        "src/coachctl/plan_compliance.py"
+      ]
+    },
+    {
+      "sourceId": "read-489534f4",
+      "moduleId": "module:read-489534f4",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/general_wiki.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/general_wiki.py",
+      "moduleName": "coachctl.general_wiki",
+      "aliases": [
+        "coachctl.general_wiki",
+        "src/coachctl/general_wiki",
+        "src/coachctl/general_wiki.py"
+      ]
+    },
+    {
+      "sourceId": "read-wiki-868b64e4",
+      "moduleId": "module:read-wiki-868b64e4",
+      "language": "python",
+      "repoRelativePath": "tests/test_wiki.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_wiki.py",
+      "moduleName": "tests.test_wiki",
+      "aliases": [
+        "tests.test_wiki",
+        "tests/test_wiki",
+        "tests/test_wiki.py"
+      ]
+    },
+    {
+      "sourceId": "readiness-tools-087135ec",
+      "moduleId": "module:readiness-tools-087135ec",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/readiness_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/readiness_tools.py",
+      "moduleName": "coachctl.tools.readiness_tools",
+      "aliases": [
+        "coachctl.tools.readiness_tools",
+        "src/coachctl/tools/readiness_tools",
+        "src/coachctl/tools/readiness_tools.py"
+      ]
+    },
+    {
+      "sourceId": "safe-resolve-60117322",
+      "moduleId": "module:safe-resolve-60117322",
+      "language": "python",
+      "repoRelativePath": "tests/test_wiki_base.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_wiki_base.py",
+      "moduleName": "tests.test_wiki_base",
+      "aliases": [
+        "tests.test_wiki_base",
+        "tests/test_wiki_base",
+        "tests/test_wiki_base.py"
+      ]
+    },
+    {
+      "sourceId": "server-062915e6",
+      "moduleId": "module:server-062915e6",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/dashboard/server.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/server.py",
+      "moduleName": "coachctl.dashboard.server",
+      "aliases": [
+        "coachctl.dashboard.server",
+        "src/coachctl/dashboard/server",
+        "src/coachctl/dashboard/server.py"
+      ]
+    },
+    {
+      "sourceId": "site-531bcefc",
+      "moduleId": "module:site-531bcefc",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/site.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/site.py",
+      "moduleName": "coachctl.site",
+      "aliases": [
+        "coachctl.site",
+        "src/coachctl/site",
+        "src/coachctl/site.py"
+      ]
+    },
+    {
+      "sourceId": "site-tools-4beea17c",
+      "moduleId": "module:site-tools-4beea17c",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/site_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/site_tools.py",
+      "moduleName": "coachctl.tools.site_tools",
+      "aliases": [
+        "coachctl.tools.site_tools",
+        "src/coachctl/tools/site_tools",
+        "src/coachctl/tools/site_tools.py"
+      ]
+    },
+    {
+      "sourceId": "subcommands-d30e7bf1",
+      "moduleId": "module:subcommands-d30e7bf1",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/cli.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/cli.py",
+      "moduleName": "coachctl.cli",
+      "aliases": [
+        "coachctl.cli",
+        "src/coachctl/cli",
+        "src/coachctl/cli.py"
+      ]
+    },
+    {
+      "sourceId": "swarmvault-graph-first-01587800",
+      "moduleId": "module:swarmvault-graph-first-01587800",
+      "language": "javascript",
+      "repoRelativePath": ".claude/hooks/swarmvault-graph-first.js",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/.claude/hooks/swarmvault-graph-first.js",
+      "moduleName": ".claude/hooks/swarmvault-graph-first",
+      "aliases": [
+        ".claude/hooks/swarmvault-graph-first",
+        ".claude/hooks/swarmvault-graph-first.js"
+      ]
+    },
+    {
+      "sourceId": "swarmvault-graph-first-9c4f5b47",
+      "moduleId": "module:swarmvault-graph-first-9c4f5b47",
+      "language": "javascript",
+      "repoRelativePath": ".codex/hooks/swarmvault-graph-first.js",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/.codex/hooks/swarmvault-graph-first.js",
+      "moduleName": ".codex/hooks/swarmvault-graph-first",
+      "aliases": [
+        ".codex/hooks/swarmvault-graph-first",
+        ".codex/hooks/swarmvault-graph-first.js"
+      ]
+    },
+    {
+      "sourceId": "sync-tools-56fe777d",
+      "moduleId": "module:sync-tools-56fe777d",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/sync_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/sync_tools.py",
+      "moduleName": "coachctl.tools.sync_tools",
+      "aliases": [
+        "coachctl.tools.sync_tools",
+        "src/coachctl/tools/sync_tools",
+        "src/coachctl/tools/sync_tools.py"
+      ]
+    },
+    {
+      "sourceId": "test-config-c071c562",
+      "moduleId": "module:test-config-c071c562",
+      "language": "python",
+      "repoRelativePath": "tests/test_config.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_config.py",
+      "moduleName": "tests.test_config",
+      "aliases": [
+        "tests.test_config",
+        "tests/test_config",
+        "tests/test_config.py"
+      ]
+    },
+    {
+      "sourceId": "test-tools-smoke-23acf85c",
+      "moduleId": "module:test-tools-smoke-23acf85c",
+      "language": "python",
+      "repoRelativePath": "tests/test_tools_smoke.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_tools_smoke.py",
+      "moduleName": "tests.test_tools_smoke",
+      "aliases": [
+        "tests.test_tools_smoke",
+        "tests/test_tools_smoke",
+        "tests/test_tools_smoke.py"
+      ]
+    },
+    {
+      "sourceId": "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9",
+      "moduleId": "module:the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/wiki.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/wiki.py",
+      "moduleName": "coachctl.wiki",
+      "aliases": [
+        "coachctl.wiki",
+        "src/coachctl/wiki",
+        "src/coachctl/wiki.py"
+      ]
+    },
+    {
+      "sourceId": "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5",
+      "moduleId": "module:tss-estimates-per-sport-intensity-minutes-tss-153ff1d5",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/untracked_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/untracked_tools.py",
+      "moduleName": "coachctl.tools.untracked_tools",
+      "aliases": [
+        "coachctl.tools.untracked_tools",
+        "src/coachctl/tools/untracked_tools",
+        "src/coachctl/tools/untracked_tools.py"
+      ]
+    },
+    {
+      "sourceId": "update-0842ad5d",
+      "moduleId": "module:update-0842ad5d",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/update.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/update.py",
+      "moduleName": "coachctl.update",
+      "aliases": [
+        "coachctl.update",
+        "src/coachctl/update",
+        "src/coachctl/update.py"
+      ]
+    },
+    {
+      "sourceId": "wiki-base-29e27f15",
+      "moduleId": "module:wiki-base-29e27f15",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/wiki_base.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/wiki_base.py",
+      "moduleName": "coachctl.wiki_base",
+      "aliases": [
+        "coachctl.wiki_base",
+        "src/coachctl/wiki_base",
+        "src/coachctl/wiki_base.py"
+      ]
+    },
+    {
+      "sourceId": "wiki-tools-f7b7c96c",
+      "moduleId": "module:wiki-tools-f7b7c96c",
+      "language": "python",
+      "repoRelativePath": "src/coachctl/tools/wiki_tools.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/wiki_tools.py",
+      "moduleName": "coachctl.tools.wiki_tools",
+      "aliases": [
+        "coachctl.tools.wiki_tools",
+        "src/coachctl/tools/wiki_tools",
+        "src/coachctl/tools/wiki_tools.py"
+      ]
+    },
+    {
+      "sourceId": "with-valid-data-json-555ad9af",
+      "moduleId": "module:with-valid-data-json-555ad9af",
+      "language": "python",
+      "repoRelativePath": "tests/test_dashboard.py",
+      "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_dashboard.py",
+      "moduleName": "tests.test_dashboard",
+      "aliases": [
+        "tests.test_dashboard",
+        "tests/test_dashboard",
+        "tests/test_dashboard.py"
+      ]
+    }
+  ]
+}

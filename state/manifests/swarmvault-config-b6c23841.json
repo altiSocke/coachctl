@@ -1,0 +1,24 @@
+{
+  "sourceId": "swarmvault-config-b6c23841",
+  "title": "swarmvault.config",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/swarmvault.config.json",
+  "repoRelativePath": "swarmvault.config.json",
+  "storedPath": "raw/sources/swarmvault-config-b6c23841.json",
+  "extractedTextPath": "state/extracts/swarmvault-config-b6c23841.md",
+  "extractedMetadataPath": "state/extracts/swarmvault-config-b6c23841.json",
+  "extractionHash": "4f0210540be71d8c397f96dc3f0c1b06b37fd470ccba79a4aa16a2e65edf31fa",
+  "mimeType": "application/json",
+  "contentHash": "b6c2384189fa20d8f52617692a62883a68b118609c509a52cf3351feaa1f9a3e",
+  "semanticHash": "b6c2384189fa20d8f52617692a62883a68b118609c509a52cf3351feaa1f9a3e",
+  "details": {
+    "format": "json",
+    "top_level_type": "object",
+    "top_level_size": "13",
+    "nested_depth": "4"
+  },
+  "createdAt": "2026-05-11T08:43:19.269Z",
+  "updatedAt": "2026-05-11T08:43:19.269Z"
+}

@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "deep-research-2f018e7c",
+  "sourceHash": "2f018e7cf5ea057956ad499b4abbb8c6d77bd7ac2c4c8a56d2aab851c8bdd35f",
+  "semanticHash": "e5908ea7625c27391840bc64c235dac6ee019b6b5d1bdfcaac77366033b99d90",
+  "extractionHash": "bda3206105453aa91801e85e35d89aeb0afe04739861eef7cc125852250ad7a8",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Deep Research",
+  "summary": "description: Multi-source deep research using firecrawl and exa MCPs. Searches the web, synthesizes findings, and delivers cited reports with source attribution. Use when the user wants thorough research on any topic with evidence and citations.",
+  "concepts": [
+    {
+      "id": "concept:research",
+      "name": "research",
+      "description": "Frequently referenced concept in Deep Research."
+    },
+    {
+      "id": "concept:firecrawl",
+      "name": "firecrawl",
+      "description": "Frequently referenced concept in Deep Research."
+    },
+    {
+      "id": "concept:search",
+      "name": "search",
+      "description": "Frequently referenced concept in Deep Research."
+    },
+    {
+      "id": "concept:sources",
+      "name": "sources",
+      "description": "Frequently referenced concept in Deep Research."
+    },
+    {
+      "id": "concept:with",
+      "name": "with",
+      "description": "Frequently referenced concept in Deep Research."
+    },
+    {
+      "id": "concept:what",
+      "name": "what",
+      "description": "Frequently referenced concept in Deep Research."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:multi",
+      "name": "Multi-",
+      "description": "Named entity mentioned in Deep Research."
+    },
+    {
+      "id": "entity:deep-research-produce",
+      "name": "Deep Research Produce",
+      "description": "Named entity mentioned in Deep Research."
+    },
+    {
+      "id": "entity:when",
+      "name": "When",
+      "description": "Named entity mentioned in Deep Research."
+    },
+    {
+      "id": "entity:activate-user",
+      "name": "Activate - User",
+      "description": "Named entity mentioned in Deep Research."
+    },
+    {
+      "id": "entity:competitive",
+      "name": "Competitive",
+      "description": "Named entity mentioned in Deep Research."
+    },
+    {
+      "id": "entity:due",
+      "name": "Due",
+      "description": "Named entity mentioned in Deep Research."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:deep-research-2f018e7c:1",
+      "text": "description: Multi-source deep research using firecrawl and exa MCPs.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "deep-research-2f018e7c"
+    },
+    {
+      "id": "claim:deep-research-2f018e7c:2",
+      "text": "Searches the web, synthesizes findings, and delivers cited reports with source attribution.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "deep-research-2f018e7c"
+    },
+    {
+      "id": "claim:deep-research-2f018e7c:3",
+      "text": "Use when the user wants thorough research on any topic with evidence and citations.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "deep-research-2f018e7c"
+    },
+    {
+      "id": "claim:deep-research-2f018e7c:4",
+      "text": "# Deep Research Produce thorough, cited research reports from multiple web sources using firecrawl and exa MCP tools.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "deep-research-2f018e7c"
+    }
+  ],
+  "questions": [
+    "How does research relate to Deep Research?",
+    "How does firecrawl relate to Deep Research?",
+    "How does search relate to Deep Research?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:31.652Z"
+}

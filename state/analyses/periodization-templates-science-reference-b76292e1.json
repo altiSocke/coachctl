@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "periodization-templates-science-reference-b76292e1",
+  "sourceHash": "b76292e19263be450debd3aab0d336d9e71f71001ab8c8b7a8a7364c489619b3",
+  "semanticHash": "f2397043be5a7a1228b964866dff1749db25dd051b51410c3a49850745d12f6d",
+  "extractionHash": "0862db6eb52c1c8325a12a4d2c5ca76b3764f0ac0ff8cc4c9694e30fe6f17040",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Periodization Templates — Science Reference",
+  "summary": "Periodization Templates — Science Reference > This page covers general, athlete-agnostic frameworks. Event-specific personal targets (goal CTL, target TSB, race week plan) live in the personal repo's profile/goals.md . > Key sources: Coggan (TrainingPeaks — CTL/ATL/TSB framework), Friel J.",
+  "concepts": [
+    {
+      "id": "concept:week",
+      "name": "week",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "concept:build",
+      "name": "build",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "concept:phase",
+      "name": "phase",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "concept:volume",
+      "name": "volume",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "concept:peak",
+      "name": "peak",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "concept:base",
+      "name": "base",
+      "description": "Frequently referenced concept in Periodization Templates — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:templates-science-reference",
+      "name": "Templates — Science Reference",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "entity:this",
+      "name": "This",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "entity:coggan-trainingpeaks-ctl-atl-tsb",
+      "name": "Coggan (TrainingPeaks — CTL/ATL/TSB",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "entity:friel",
+      "name": "Friel",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    },
+    {
+      "id": "entity:cyclist-s",
+      "name": "Cyclist's",
+      "description": "Named entity mentioned in Periodization Templates — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:periodization-templates-science-reference-b76292e1:1",
+      "text": "Periodization Templates — Science Reference > This page covers general, athlete-agnostic frameworks.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "periodization-templates-science-reference-b76292e1"
+    },
+    {
+      "id": "claim:periodization-templates-science-reference-b76292e1:2",
+      "text": "Event-specific personal targets (goal CTL, target TSB, race week plan) live in the personal repo's profile/goals.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "periodization-templates-science-reference-b76292e1"
+    },
+    {
+      "id": "claim:periodization-templates-science-reference-b76292e1:3",
+      "text": "> Key sources: Coggan (TrainingPeaks — CTL/ATL/TSB framework), Friel J.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "periodization-templates-science-reference-b76292e1"
+    },
+    {
+      "id": "claim:periodization-templates-science-reference-b76292e1:4",
+      "text": "( The Cyclist's Training Bible 5th ed.; The Triathlete's Training Bible 5th ed.; TrainingPeaks blog — \"Applying the Numbers\" series 2015–2016), Schell D.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "periodization-templates-science-reference-b76292e1"
+    }
+  ],
+  "questions": [
+    "How does week relate to Periodization Templates — Science Reference?",
+    "How does build relate to Periodization Templates — Science Reference?",
+    "How does phase relate to Periodization Templates — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.629Z"
+}

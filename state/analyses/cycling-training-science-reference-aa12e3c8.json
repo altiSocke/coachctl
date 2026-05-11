@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "cycling-training-science-reference-aa12e3c8",
+  "sourceHash": "aa12e3c8f1438cb0d49ef7e4a4835b295adc6a514bf18de922016bf5ef1f3fc8",
+  "semanticHash": "8b2b70ab5764ad02821aeda893ed895e4da6c218fe5103527ebfd929dc315649",
+  "extractionHash": "21494d6ae6c3c45f360d64d049bfe6445a86a4948878cf517634dd006b0c9539",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Cycling Training — Science Reference",
+  "summary": "Cycling Training — Science Reference --- ## Power Meter Fundamentals ### Why power matters Heart rate lags effort by 30–90 seconds and is confounded by heat, caffeine, fatigue, and stress. Power is instantaneous and objective. For pacing climbs, intervals, and long events, power gives the clearest signal.",
+  "concepts": [
+    {
+      "id": "concept:power",
+      "name": "power",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    },
+    {
+      "id": "concept:cadence",
+      "name": "cadence",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    },
+    {
+      "id": "concept:climbs",
+      "name": "climbs",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    },
+    {
+      "id": "concept:fatigue",
+      "name": "fatigue",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    },
+    {
+      "id": "concept:long",
+      "name": "long",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    },
+    {
+      "id": "concept:more",
+      "name": "more",
+      "description": "Frequently referenced concept in Cycling Training — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:training-science-reference",
+      "name": "Training — Science Reference",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    },
+    {
+      "id": "entity:power",
+      "name": "Power",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    },
+    {
+      "id": "entity:fundamentals",
+      "name": "Fundamentals",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    },
+    {
+      "id": "entity:why-power",
+      "name": "Why power",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    },
+    {
+      "id": "entity:heart",
+      "name": "Heart",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Cycling Training — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:cycling-training-science-reference-aa12e3c8:1",
+      "text": "Cycling Training — Science Reference --- ## Power Meter Fundamentals ### Why power matters Heart rate lags effort by 30–90 seconds and is confounded by heat, caffeine, fatigue, and stress.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "cycling-training-science-reference-aa12e3c8"
+    },
+    {
+      "id": "claim:cycling-training-science-reference-aa12e3c8:2",
+      "text": "Power is instantaneous and objective.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "cycling-training-science-reference-aa12e3c8"
+    },
+    {
+      "id": "claim:cycling-training-science-reference-aa12e3c8:3",
+      "text": "For pacing climbs, intervals, and long events, power gives the clearest signal.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "cycling-training-science-reference-aa12e3c8"
+    },
+    {
+      "id": "claim:cycling-training-science-reference-aa12e3c8:4",
+      "text": "### Key metrics - Average Power: mean watts including zeros.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "cycling-training-science-reference-aa12e3c8"
+    }
+  ],
+  "questions": [
+    "How does power relate to Cycling Training — Science Reference?",
+    "How does cadence relate to Cycling Training — Science Reference?",
+    "How does climbs relate to Cycling Training — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:32.054Z"
+}

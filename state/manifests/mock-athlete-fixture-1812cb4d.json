@@ -1,0 +1,19 @@
+{
+  "sourceId": "mock-athlete-fixture-1812cb4d",
+  "title": "── Mock athlete fixture ──────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_metrics_extended.py",
+  "repoRelativePath": "tests/test_metrics_extended.py",
+  "storedPath": "raw/sources/mock-athlete-fixture-1812cb4d.py",
+  "extractedTextPath": "state/extracts/mock-athlete-fixture-1812cb4d.md",
+  "extractedMetadataPath": "state/extracts/mock-athlete-fixture-1812cb4d.json",
+  "extractionHash": "50f2db20160622e03cf66411f29f54aaad97f59b0b852469dcff4693c03d18b1",
+  "mimeType": "application/octet-stream",
+  "contentHash": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+  "semanticHash": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+  "createdAt": "2026-05-11T08:43:20.507Z",
+  "updatedAt": "2026-05-11T08:43:20.507Z"
+}

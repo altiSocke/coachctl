@@ -1,0 +1,19 @@
+{
+  "sourceId": "swarmvault-graph-first-9c4f5b47",
+  "title": "swarmvault-graph-first",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "javascript",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.codex/hooks/swarmvault-graph-first.js",
+  "repoRelativePath": ".codex/hooks/swarmvault-graph-first.js",
+  "storedPath": "raw/sources/swarmvault-graph-first-9c4f5b47.js",
+  "extractedTextPath": "state/extracts/swarmvault-graph-first-9c4f5b47.md",
+  "extractedMetadataPath": "state/extracts/swarmvault-graph-first-9c4f5b47.json",
+  "extractionHash": "5a22157b83a44cc85ac96773560e5d0fa63df6a1bc16691bac4084d900fd0f09",
+  "mimeType": "text/javascript",
+  "contentHash": "9c4f5b473ac374dfd70995cbda6d2ea03484c0dee57a85da4c48a9b7aa9348a6",
+  "semanticHash": "9c4f5b473ac374dfd70995cbda6d2ea03484c0dee57a85da4c48a9b7aa9348a6",
+  "createdAt": "2026-05-11T08:43:13.537Z",
+  "updatedAt": "2026-05-11T08:43:13.537Z"
+}

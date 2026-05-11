@@ -1,0 +1,19 @@
+{
+  "sourceId": "grade-cost-factor-f7014915",
+  "title": "── _grade_cost_factor ────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_metrics.py",
+  "repoRelativePath": "tests/test_metrics.py",
+  "storedPath": "raw/sources/grade-cost-factor-f7014915.py",
+  "extractedTextPath": "state/extracts/grade-cost-factor-f7014915.md",
+  "extractedMetadataPath": "state/extracts/grade-cost-factor-f7014915.json",
+  "extractionHash": "8f406fbd07391e87fd41143f1640f1bb736ffb156a3bc92ccd97c145af46143c",
+  "mimeType": "application/octet-stream",
+  "contentHash": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+  "semanticHash": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+  "createdAt": "2026-05-11T08:43:20.620Z",
+  "updatedAt": "2026-05-11T08:43:20.620Z"
+}

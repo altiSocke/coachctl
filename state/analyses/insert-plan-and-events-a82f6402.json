@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "insert-plan-and-events-a82f6402",
+  "sourceHash": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+  "semanticHash": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+  "extractionHash": "65abf373c6aab565232220d0c45b5a24cc8dd1175ffa9302302d47be347d4306",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── _insert_plan_and_events ───────────────────────────────────────────────────",
+  "summary": "── _insert_plan_and_events ─────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:insert-plan-and-events-a82f6402:1",
+      "text": "── _insert_plan_and_events ─────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "insert-plan-and-events-a82f6402"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── _insert_plan_and_events ─────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:insert-plan-and-events-a82f6402",
+    "language": "python",
+    "moduleName": "tests.test_plan_event_tss",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.644Z"
+}

@@ -1,0 +1,24 @@
+{
+  "sourceId": "settings-b7c2c769",
+  "title": "settings",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.claude/settings.json",
+  "repoRelativePath": ".claude/settings.json",
+  "storedPath": "raw/sources/settings-b7c2c769.json",
+  "extractedTextPath": "state/extracts/settings-b7c2c769.md",
+  "extractedMetadataPath": "state/extracts/settings-b7c2c769.json",
+  "extractionHash": "4722d42f2428bf413596585ab303b200237659f5df8bf0739ece5a1d5660e3c1",
+  "mimeType": "application/json",
+  "contentHash": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+  "semanticHash": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+  "details": {
+    "format": "json",
+    "top_level_type": "object",
+    "top_level_size": "1",
+    "nested_depth": "6"
+  },
+  "createdAt": "2026-05-11T08:43:13.479Z",
+  "updatedAt": "2026-05-11T08:43:13.479Z"
+}

@@ -1,0 +1,1415 @@
+{
+  "generatedAt": "2026-05-11T08:45:19.869Z",
+  "graphHash": "5878900044b50530526674552dc0056cc8a910e9fd55c3c18a1399755d8c32c9",
+  "overview": {
+    "nodes": 712,
+    "edges": 1282,
+    "pages": 679,
+    "communities": 71
+  },
+  "firstPartyOverview": {
+    "nodes": 712,
+    "edges": 1282,
+    "pages": 670,
+    "communities": 71
+  },
+  "sourceClassBreakdown": {
+    "first_party": {
+      "sources": 128,
+      "pages": 670,
+      "nodes": 712
+    },
+    "third_party": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    },
+    "resource": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    },
+    "generated": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    }
+  },
+  "warnings": [
+    "First-party report view is fragmented: 50 tiny communities were rolled up for readability."
+  ],
+  "benchmark": {
+    "generatedAt": "2026-05-11T08:45:16.200Z",
+    "stale": false,
+    "summary": {
+      "questionCount": 3,
+      "uniqueVisitedNodes": 24,
+      "finalContextTokens": 2546,
+      "naiveCorpusTokens": 196405,
+      "avgReduction": 0.987,
+      "reductionRatio": 0.987
+    },
+    "questionCount": 3,
+    "byClass": {
+      "first_party": {
+        "sourceCount": 128,
+        "pageCount": 670,
+        "nodeCount": 712,
+        "godNodeCount": 63,
+        "finalContextTokens": 2546,
+        "naiveCorpusTokens": 196405,
+        "reductionRatio": 0.987
+      },
+      "third_party": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      },
+      "resource": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      },
+      "generated": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      }
+    }
+  },
+  "godNodes": [
+    {
+      "nodeId": "entity:personal",
+      "label": "Personal",
+      "pageId": "entity:personal",
+      "degree": 95,
+      "bridgeScore": 10,
+      "surpriseReason": "degree 95, across 11 communities, 7.1σ above mean"
+    },
+    {
+      "nodeId": "concept:race",
+      "label": "race",
+      "pageId": "concept:race",
+      "degree": 84,
+      "bridgeScore": 8,
+      "surpriseReason": "degree 84, across 9 communities, 6.1σ above mean"
+    },
+    {
+      "nodeId": "entity:key",
+      "label": "Key",
+      "pageId": "entity:key",
+      "degree": 74,
+      "bridgeScore": 7,
+      "surpriseReason": "degree 74, across 8 communities, 5.2σ above mean"
+    },
+    {
+      "nodeId": "entity:what",
+      "label": "What",
+      "pageId": "entity:what",
+      "degree": 73,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 73, across 6 communities, 5.1σ above mean"
+    },
+    {
+      "nodeId": "concept:training",
+      "label": "training",
+      "pageId": "concept:training",
+      "degree": 65,
+      "bridgeScore": 7,
+      "surpriseReason": "degree 65, across 8 communities, 4.4σ above mean"
+    },
+    {
+      "nodeId": "concept:running",
+      "label": "running",
+      "pageId": "concept:running",
+      "degree": 54,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 54, across 6 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:format",
+      "label": "Format:",
+      "pageId": "entity:format",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:top",
+      "label": "Top-",
+      "pageId": "entity:top",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:size",
+      "label": "Size:",
+      "pageId": "entity:size",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:nested",
+      "label": "Nested",
+      "pageId": "entity:nested",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:schema",
+      "label": "Schema -",
+      "pageId": "entity:schema",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "entity:preview",
+      "label": "Preview",
+      "pageId": "entity:preview",
+      "degree": 53,
+      "bridgeScore": 3,
+      "surpriseReason": "degree 53, across 4 communities, 3.4σ above mean"
+    },
+    {
+      "nodeId": "concept:athlete",
+      "label": "athlete",
+      "pageId": "concept:athlete",
+      "degree": 51,
+      "bridgeScore": 4,
+      "surpriseReason": "degree 51, across 5 communities, 3.2σ above mean"
+    },
+    {
+      "nodeId": "concept:week",
+      "label": "week",
+      "pageId": "concept:week",
+      "degree": 51,
+      "bridgeScore": 7,
+      "surpriseReason": "degree 51, across 8 communities, 3.2σ above mean"
+    },
+    {
+      "nodeId": "entity:source-pubmed",
+      "label": "Source: PubMed",
+      "pageId": "entity:source-pubmed",
+      "degree": 51,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 51, across 6 communities, 3.2σ above mean"
+    },
+    {
+      "nodeId": "entity:paper",
+      "label": "Paper",
+      "pageId": "entity:paper",
+      "degree": 51,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 51, across 6 communities, 3.2σ above mean"
+    },
+    {
+      "nodeId": "concept:coachctl",
+      "label": "coachctl",
+      "pageId": "concept:coachctl",
+      "degree": 50,
+      "bridgeScore": 2,
+      "surpriseReason": "degree 50, across 3 communities, 3.1σ above mean"
+    },
+    {
+      "nodeId": "concept:personal",
+      "label": "personal",
+      "pageId": "concept:personal",
+      "degree": 49,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 49, across 6 communities, 3.0σ above mean"
+    },
+    {
+      "nodeId": "concept:wiki",
+      "label": "wiki",
+      "pageId": "concept:wiki",
+      "degree": 48,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 48, across 6 communities, 2.9σ above mean"
+    },
+    {
+      "nodeId": "concept:with",
+      "label": "with",
+      "pageId": "concept:with",
+      "degree": 48,
+      "bridgeScore": 5,
+      "surpriseReason": "degree 48, across 6 communities, 2.9σ above mean"
+    }
+  ],
+  "bridgeNodes": [
+    {
+      "nodeId": "entity:personal",
+      "label": "Personal",
+      "pageId": "entity:personal",
+      "degree": 95,
+      "bridgeScore": 10
+    },
+    {
+      "nodeId": "concept:race",
+      "label": "race",
+      "pageId": "concept:race",
+      "degree": 84,
+      "bridgeScore": 8
+    },
+    {
+      "nodeId": "concept:training",
+      "label": "training",
+      "pageId": "concept:training",
+      "degree": 65,
+      "bridgeScore": 7
+    },
+    {
+      "nodeId": "concept:week",
+      "label": "week",
+      "pageId": "concept:week",
+      "degree": 51,
+      "bridgeScore": 7
+    },
+    {
+      "nodeId": "entity:key",
+      "label": "Key",
+      "pageId": "entity:key",
+      "degree": 74,
+      "bridgeScore": 7
+    },
+    {
+      "nodeId": "concept:power",
+      "label": "power",
+      "pageId": "concept:power",
+      "degree": 34,
+      "bridgeScore": 6
+    },
+    {
+      "nodeId": "entity:this",
+      "label": "This",
+      "pageId": "entity:this",
+      "degree": 48,
+      "bridgeScore": 6
+    },
+    {
+      "nodeId": "source:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+      "label": "Strength Training for Endurance & Team Sport Athletes — Science Reference",
+      "pageId": "source:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+      "degree": 29,
+      "bridgeScore": 5
+    }
+  ],
+  "thinCommunities": [
+    {
+      "id": "community:init-module-40",
+      "label": "__init__ module",
+      "nodeCount": 1,
+      "pageId": "graph:community:init-module-40",
+      "path": "graph/communities/init-module-40.md",
+      "title": "Community: __init__ module"
+    },
+    {
+      "id": "community:init-module-41",
+      "label": "__init__ module",
+      "nodeCount": 1,
+      "pageId": "graph:community:init-module-41",
+      "path": "graph/communities/init-module-41.md",
+      "title": "Community: __init__ module"
+    },
+    {
+      "id": "community:main-module-45",
+      "label": "__main__ module",
+      "nodeCount": 1,
+      "pageId": "graph:community:main-module-45",
+      "path": "graph/communities/main-module-45.md",
+      "title": "Community: __main__ module"
+    },
+    {
+      "id": "community:dev-app-module-25",
+      "label": "_dev_app module",
+      "nodeCount": 1,
+      "pageId": "graph:community:dev-app-module-25",
+      "path": "graph/communities/dev-app-module-25.md",
+      "title": "Community: _dev_app module"
+    },
+    {
+      "id": "community:module-43",
+      "label": "--------------------------------------------------------------------------- module",
+      "nodeCount": 1,
+      "pageId": "graph:community:module-43",
+      "path": "graph/communities/module-43.md",
+      "title": "Community: --------------------------------------------------------------------------- module"
+    },
+    {
+      "id": "community:grade-cost-factor-module-37",
+      "label": "── _grade_cost_factor ──────────────────────────────────────────────────────── module",
+      "nodeCount": 1,
+      "pageId": "graph:community:grade-cost-factor-module-37",
+      "path": "graph/communities/grade-cost-factor-module-37.md",
+      "title": "Community: ── _grade_cost_factor ──────────────────────────────────────────────────────── module"
+    }
+  ],
+  "fragmentedCommunityRollup": {
+    "totalCommunities": 71,
+    "rolledUpCount": 50,
+    "rolledUpNodes": 50,
+    "exampleLabels": [
+      "── _insert_plan_and_events ─────────────────────────────────────────────────── module",
+      "── _parse_date ─────────────────────────────────────────────────────────────── module",
+      "── Code repo ──────────────────────────────────────────────────────────────── module",
+      "── code_root ───────────────────────────────────────────────────────────────── module"
+    ]
+  },
+  "surprisingConnections": [
+    {
+      "id": "similar:02910d5153dca2fc",
+      "sourceNodeId": "source:openai-f9bd5846",
+      "sourceLabel": "openai",
+      "targetNodeId": "source:pyproject-0d00c775",
+      "targetLabel": "pyproject",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775"
+      ],
+      "pathEdgeIds": [
+        "similar:02910d5153dca2fc"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "openai -> pyproject",
+      "why": "it crosses communities community:research-5 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 7 group patterns",
+      "explanation": "openai connects to pyproject because it crosses communities community:research-5 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 7 group patterns."
+    },
+    {
+      "id": "similar:0a4a286744d8be98",
+      "sourceNodeId": "source:endurance-nutrition-science-reference-2c888727",
+      "sourceLabel": "Endurance Nutrition — Science Reference",
+      "targetNodeId": "source:injury-prevention-science-reference-59a1b257",
+      "targetLabel": "Injury Prevention — Science Reference",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:endurance-nutrition-science-reference-2c888727",
+        "source:injury-prevention-science-reference-59a1b257"
+      ],
+      "pathEdgeIds": [
+        "similar:0a4a286744d8be98"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "Endurance Nutrition — Science Reference -> Injury Prevention — Science Reference",
+      "why": "it crosses communities community:glycogen-12 and community:shorter-ss-duration-than-paper-2-5-min-total-vs-10-min-total-both-were-be-1; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 3 group patterns",
+      "explanation": "Endurance Nutrition — Science Reference connects to Injury Prevention — Science Reference because it crosses communities community:glycogen-12 and community:shorter-ss-duration-than-paper-2-5-min-total-vs-10-min-total-both-were-be-1; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 3 group patterns."
+    },
+    {
+      "id": "similar:11630ea7e21d8042",
+      "sourceNodeId": "source:openai-df0ed566",
+      "sourceLabel": "openai",
+      "targetNodeId": "source:pyproject-0d00c775",
+      "targetLabel": "pyproject",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:openai-df0ed566",
+        "source:pyproject-0d00c775"
+      ],
+      "pathEdgeIds": [
+        "similar:11630ea7e21d8042"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "openai -> pyproject",
+      "why": "it crosses communities community:research-5 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 7 group patterns",
+      "explanation": "openai connects to pyproject because it crosses communities community:research-5 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 7 group patterns."
+    },
+    {
+      "id": "similar:11a89f61cb7d70b2",
+      "sourceNodeId": "source:coachctl-architecture-conventions-8a2f1253",
+      "sourceLabel": "coachctl — Architecture & Conventions",
+      "targetNodeId": "source:what-i-do-a929e628",
+      "targetLabel": "What I do",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:coachctl-architecture-conventions-8a2f1253",
+        "source:what-i-do-a929e628"
+      ],
+      "pathEdgeIds": [
+        "similar:11a89f61cb7d70b2"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "coachctl — Architecture & Conventions -> What I do",
+      "why": "it crosses communities community:example-3 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts.; it also appears in 2 group patterns",
+      "explanation": "coachctl — Architecture & Conventions connects to What I do because it crosses communities community:example-3 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts.; it also appears in 2 group patterns."
+    },
+    {
+      "id": "similar:12fc83c6c32e175b",
+      "sourceNodeId": "source:cycling-training-science-reference-aa12e3c8",
+      "sourceLabel": "Cycling Training — Science Reference",
+      "targetNodeId": "source:dillier-classic-race-reference-74aedee5",
+      "targetLabel": "Dillier Classic — Race Reference",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:cycling-training-science-reference-aa12e3c8",
+        "source:dillier-classic-race-reference-74aedee5"
+      ],
+      "pathEdgeIds": [
+        "similar:12fc83c6c32e175b"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "Cycling Training — Science Reference -> Dillier Classic — Race Reference",
+      "why": "it crosses communities community:power-11 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts.; it also appears in 1 group pattern",
+      "explanation": "Cycling Training — Science Reference connects to Dillier Classic — Race Reference because it crosses communities community:power-11 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts.; it also appears in 1 group pattern."
+    },
+    {
+      "id": "similar:1767c45e7df1d317",
+      "sourceNodeId": "source:dashboard-ux-audit-8bc8624b",
+      "sourceLabel": "Dashboard UX Audit",
+      "targetNodeId": "source:personality-style-a474eea3",
+      "targetLabel": "Personality & style",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:dashboard-ux-audit-8bc8624b",
+        "source:personality-style-a474eea3"
+      ],
+      "pathEdgeIds": [
+        "similar:1767c45e7df1d317"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "Dashboard UX Audit -> Personality & style",
+      "why": "it crosses communities community:what-9 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 1 group pattern",
+      "explanation": "Dashboard UX Audit connects to Personality & style because it crosses communities community:what-9 and community:example-3; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 1 group pattern."
+    },
+    {
+      "id": "similar:1e8f8fd2bd38dcec",
+      "sourceNodeId": "source:alpenbrevet-race-reference-e582446a",
+      "sourceLabel": "Alpenbrevet — Race Reference",
+      "targetNodeId": "source:endurance-nutrition-science-reference-2c888727",
+      "targetLabel": "Endurance Nutrition — Science Reference",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:alpenbrevet-race-reference-e582446a",
+        "source:endurance-nutrition-science-reference-2c888727"
+      ],
+      "pathEdgeIds": [
+        "similar:1e8f8fd2bd38dcec"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "Alpenbrevet — Race Reference -> Endurance Nutrition — Science Reference",
+      "why": "it crosses communities community:passes-8 and community:glycogen-12; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 2 group patterns",
+      "explanation": "Alpenbrevet — Race Reference connects to Endurance Nutrition — Science Reference because it crosses communities community:passes-8 and community:glycogen-12; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 2 group patterns."
+    },
+    {
+      "id": "similar:36c241fd7e01680e",
+      "sourceNodeId": "source:what-i-do-1fa739a7",
+      "sourceLabel": "What I do",
+      "targetNodeId": "source:what-i-do-a929e628",
+      "targetLabel": "What I do",
+      "relation": "semantically_similar_to",
+      "evidenceClass": "inferred",
+      "confidence": 0.96,
+      "pathNodeIds": [
+        "source:what-i-do-1fa739a7",
+        "source:what-i-do-a929e628"
+      ],
+      "pathEdgeIds": [
+        "similar:36c241fd7e01680e"
+      ],
+      "pathRelations": [
+        "semantically_similar_to"
+      ],
+      "pathEvidenceClasses": [
+        "inferred"
+      ],
+      "pathSummary": "What I do -> What I do",
+      "why": "it crosses communities community:what-9 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 2 group patterns",
+      "explanation": "What I do connects to What I do because it crosses communities community:what-9 and community:after-7; it spans different canonical pages; a bridge node is involved; This link is inferred from shared concepts, shared entities.; it also appears in 2 group patterns."
+    }
+  ],
+  "groupPatterns": [
+    {
+      "id": "hyper:6b891aa249a1033f",
+      "label": "swarmvault-graph-first module API",
+      "relation": "form",
+      "nodeIds": [
+        "module:swarmvault-graph-first-9c4f5b47",
+        "symbol:swarmvault-graph-first-9c4f5b47:agent-key.variable",
+        "symbol:swarmvault-graph-first-9c4f5b47:artifactrootdir.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:collectcandidatepaths.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:collectcommandcandidates.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:commandlookslikebroadsearch.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:emit.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:hasreport.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:hasseenreport.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:isbroadsearchinput.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:isbroadsearchtool.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:isreportpath.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:main.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:markerstate.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:markreportread.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:note.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:readhookinput.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:report-note.variable",
+        "symbol:swarmvault-graph-first-9c4f5b47:reportpath.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:resetsession.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:resolveinputcwd.function",
+        "symbol:swarmvault-graph-first-9c4f5b47:resolvetoolname.function"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.98,
+      "sourcePageIds": [
+        "module:swarmvault-graph-first-9c4f5b47"
+      ],
+      "why": "swarmvault-graph-first module and 21 defined symbols form one local module surface."
+    },
+    {
+      "id": "hyper:fc73acad98b93bb4",
+      "label": "swarmvault-graph-first module API",
+      "relation": "form",
+      "nodeIds": [
+        "module:swarmvault-graph-first-01587800",
+        "symbol:swarmvault-graph-first-01587800:agent-key.variable",
+        "symbol:swarmvault-graph-first-01587800:artifactrootdir.function",
+        "symbol:swarmvault-graph-first-01587800:collectcandidatepaths.function",
+        "symbol:swarmvault-graph-first-01587800:collectcommandcandidates.function",
+        "symbol:swarmvault-graph-first-01587800:commandlookslikebroadsearch.function",
+        "symbol:swarmvault-graph-first-01587800:emit.function",
+        "symbol:swarmvault-graph-first-01587800:hasreport.function",
+        "symbol:swarmvault-graph-first-01587800:hasseenreport.function",
+        "symbol:swarmvault-graph-first-01587800:isbroadsearchinput.function",
+        "symbol:swarmvault-graph-first-01587800:isbroadsearchtool.function",
+        "symbol:swarmvault-graph-first-01587800:isreportpath.function",
+        "symbol:swarmvault-graph-first-01587800:main.function",
+        "symbol:swarmvault-graph-first-01587800:markerstate.function",
+        "symbol:swarmvault-graph-first-01587800:markreportread.function",
+        "symbol:swarmvault-graph-first-01587800:readhookinput.function",
+        "symbol:swarmvault-graph-first-01587800:report-note.variable",
+        "symbol:swarmvault-graph-first-01587800:reportpath.function",
+        "symbol:swarmvault-graph-first-01587800:resetsession.function",
+        "symbol:swarmvault-graph-first-01587800:resolveinputcwd.function",
+        "symbol:swarmvault-graph-first-01587800:resolvetoolname.function"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.98,
+      "sourcePageIds": [
+        "module:swarmvault-graph-first-01587800"
+      ],
+      "why": "swarmvault-graph-first module and 20 defined symbols form one local module surface."
+    },
+    {
+      "id": "hyper:23631298c7de7738",
+      "label": "Format:",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:format",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:format",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Format: through extracted mention edges."
+    },
+    {
+      "id": "hyper:ffa1704755d499d8",
+      "label": "Nested",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:nested",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:nested",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Nested through extracted mention edges."
+    },
+    {
+      "id": "hyper:e6d926cec1b394cf",
+      "label": "Preview",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:preview",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:preview",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Preview through extracted mention edges."
+    },
+    {
+      "id": "hyper:5f8142ec099b05a3",
+      "label": "Schema -",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:schema",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:schema",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Schema - through extracted mention edges."
+    },
+    {
+      "id": "hyper:231a711f08fc97dc",
+      "label": "Size:",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:size",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:size",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Size: through extracted mention edges."
+    },
+    {
+      "id": "hyper:38eff6fae4b6627c",
+      "label": "Top-",
+      "relation": "participate_in",
+      "nodeIds": [
+        "entity:top",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "evidenceClass": "extracted",
+      "confidence": 0.96,
+      "sourcePageIds": [
+        "entity:top",
+        "source:hooks-a17f6f95",
+        "source:openai-17bab3f1",
+        "source:openai-786b054a",
+        "source:openai-df0ed566",
+        "source:openai-f9bd5846",
+        "source:pyproject-0d00c775",
+        "source:settings-b7c2c769",
+        "source:skillfish-1c853384",
+        "source:skillfish-3d8fffc6",
+        "source:skillfish-65c158e0",
+        "source:skillfish-a264adc7",
+        "source:skillfish-e96604ef",
+        "source:swarmvault-config-b6c23841"
+      ],
+      "why": "13 source nodes converge on Top- through extracted mention edges."
+    }
+  ],
+  "suggestedQuestions": [
+    "What sources would strengthen community activity_tools module?",
+    "What sources would strengthen community allow uv run from repo root module?",
+    "What sources would strengthen community app module?",
+    "What sources would strengthen community athlete_tools module?",
+    "What sources would strengthen community Bootstrap: load secrets from <DATA_ROOT>/.env if AGENT_DATA_ROOT is set, module?",
+    "What sources would strengthen community ── Code repo ──────────────────────────────────────────────────────────────── module?",
+    "What sources would strengthen community ── code_root ───────────────────────────────────────────────────────────────── module?",
+    "What sources would strengthen community config module?"
+  ],
+  "communityPages": [
+    {
+      "id": "graph:community:shorter-ss-duration-than-paper-2-5-min-total-vs-10-min-total-both-were-be-1",
+      "path": "graph/communities/shorter-ss-duration-than-paper-2-5-min-total-vs-10-min-total-both-were-be-1.md",
+      "title": "Community: shorter SS duration than Paper 2 (5 min total vs 10 min total) — both were be..."
+    },
+    {
+      "id": "graph:community:flat-2",
+      "path": "graph/communities/flat-2.md",
+      "title": "Community: flat"
+    },
+    {
+      "id": "graph:community:example-3",
+      "path": "graph/communities/example-3.md",
+      "title": "Community: example"
+    },
+    {
+      "id": "graph:community:fatigue-4",
+      "path": "graph/communities/fatigue-4.md",
+      "title": "Community: fatigue"
+    },
+    {
+      "id": "graph:community:research-5",
+      "path": "graph/communities/research-5.md",
+      "title": "Community: research"
+    },
+    {
+      "id": "graph:community:firecrawl-6",
+      "path": "graph/communities/firecrawl-6.md",
+      "title": "Community: firecrawl"
+    },
+    {
+      "id": "graph:community:after-7",
+      "path": "graph/communities/after-7.md",
+      "title": "Community: after"
+    },
+    {
+      "id": "graph:community:passes-8",
+      "path": "graph/communities/passes-8.md",
+      "title": "Community: passes"
+    },
+    {
+      "id": "graph:community:what-9",
+      "path": "graph/communities/what-9.md",
+      "title": "Community: what"
+    },
+    {
+      "id": "graph:community:swarmvault-10",
+      "path": "graph/communities/swarmvault-10.md",
+      "title": "Community: swarmvault"
+    },
+    {
+      "id": "graph:community:power-11",
+      "path": "graph/communities/power-11.md",
+      "title": "Community: power"
+    },
+    {
+      "id": "graph:community:glycogen-12",
+      "path": "graph/communities/glycogen-12.md",
+      "title": "Community: glycogen"
+    },
+    {
+      "id": "graph:community:swarmvault-graph-first-module-13",
+      "path": "graph/communities/swarmvault-graph-first-module-13.md",
+      "title": "Community: swarmvault-graph-first module"
+    },
+    {
+      "id": "graph:community:swarmvault-graph-first-module-14",
+      "path": "graph/communities/swarmvault-graph-first-module-14.md",
+      "title": "Community: swarmvault-graph-first module"
+    },
+    {
+      "id": "graph:community:client-15",
+      "path": "graph/communities/client-15.md",
+      "title": "Community: client"
+    },
+    {
+      "id": "graph:community:activity-tools-module-16",
+      "path": "graph/communities/activity-tools-module-16.md",
+      "title": "Community: activity_tools module"
+    },
+    {
+      "id": "graph:community:allow-uv-run-from-repo-root-module-17",
+      "path": "graph/communities/allow-uv-run-from-repo-root-module-17.md",
+      "title": "Community: allow uv run from repo root module"
+    },
+    {
+      "id": "graph:community:app-module-18",
+      "path": "graph/communities/app-module-18.md",
+      "title": "Community: app module"
+    },
+    {
+      "id": "graph:community:athlete-tools-module-19",
+      "path": "graph/communities/athlete-tools-module-19.md",
+      "title": "Community: athlete_tools module"
+    },
+    {
+      "id": "graph:community:bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-module-20",
+      "path": "graph/communities/bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-module-20.md",
+      "title": "Community: Bootstrap: load secrets from <DATA_ROOT>/.env if AGENT_DATA_ROOT is set, module"
+    },
+    {
+      "id": "graph:community:code-repo-module-21",
+      "path": "graph/communities/code-repo-module-21.md",
+      "title": "Community: ── Code repo ──────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:code-root-module-22",
+      "path": "graph/communities/code-root-module-22.md",
+      "title": "Community: ── code_root ───────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:config-module-23",
+      "path": "graph/communities/config-module-23.md",
+      "title": "Community: config module"
+    },
+    {
+      "id": "graph:community:db-module-24",
+      "path": "graph/communities/db-module-24.md",
+      "title": "Community: db module"
+    },
+    {
+      "id": "graph:community:dev-app-module-25",
+      "path": "graph/communities/dev-app-module-25.md",
+      "title": "Community: _dev_app module"
+    },
+    {
+      "id": "graph:community:env-tools-module-26",
+      "path": "graph/communities/env-tools-module-26.md",
+      "title": "Community: env_tools module"
+    },
+    {
+      "id": "graph:community:event-tools-module-27",
+      "path": "graph/communities/event-tools-module-27.md",
+      "title": "Community: event_tools module"
+    },
+    {
+      "id": "graph:community:feedback-tools-module-28",
+      "path": "graph/communities/feedback-tools-module-28.md",
+      "title": "Community: feedback_tools module"
+    },
+    {
+      "id": "graph:community:fitness-tools-module-29",
+      "path": "graph/communities/fitness-tools-module-29.md",
+      "title": "Community: fitness_tools module"
+    },
+    {
+      "id": "graph:community:fixtures-module-30",
+      "path": "graph/communities/fixtures-module-30.md",
+      "title": "Community: ── Fixtures ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:fixtures-module-31",
+      "path": "graph/communities/fixtures-module-31.md",
+      "title": "Community: ── Fixtures ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:fixtures-module-32",
+      "path": "graph/communities/fixtures-module-32.md",
+      "title": "Community: ── Fixtures ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:fixtures-module-33",
+      "path": "graph/communities/fixtures-module-33.md",
+      "title": "Community: ── Fixtures ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:full-db-schema-mirror-of-db-py-init-db-module-34",
+      "path": "graph/communities/full-db-schema-mirror-of-db-py-init-db-module-34.md",
+      "title": "Community: ── Full DB schema (mirror of db.py init_db) ────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:get-conn-module-35",
+      "path": "graph/communities/get-conn-module-35.md",
+      "title": "Community: ── get_conn ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:get-dashboard-data-empty-db-module-36",
+      "path": "graph/communities/get-dashboard-data-empty-db-module-36.md",
+      "title": "Community: ── get_dashboard_data — empty DB ───────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:grade-cost-factor-module-37",
+      "path": "graph/communities/grade-cost-factor-module-37.md",
+      "title": "Community: ── _grade_cost_factor ──────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:helpers-module-38",
+      "path": "graph/communities/helpers-module-38.md",
+      "title": "Community: ── Helpers ────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:helpers-module-39",
+      "path": "graph/communities/helpers-module-39.md",
+      "title": "Community: ── Helpers ─────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:init-module-40",
+      "path": "graph/communities/init-module-40.md",
+      "title": "Community: __init__ module"
+    },
+    {
+      "id": "graph:community:init-module-41",
+      "path": "graph/communities/init-module-41.md",
+      "title": "Community: __init__ module"
+    },
+    {
+      "id": "graph:community:insert-plan-and-events-module-42",
+      "path": "graph/communities/insert-plan-and-events-module-42.md",
+      "title": "Community: ── _insert_plan_and_events ─────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:module-43",
+      "path": "graph/communities/module-43.md",
+      "title": "Community: --------------------------------------------------------------------------- module"
+    },
+    {
+      "id": "graph:community:list-files-module-44",
+      "path": "graph/communities/list-files-module-44.md",
+      "title": "Community: ── list_files ──────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:main-module-45",
+      "path": "graph/communities/main-module-45.md",
+      "title": "Community: __main__ module"
+    },
+    {
+      "id": "graph:community:migrate-module-46",
+      "path": "graph/communities/migrate-module-46.md",
+      "title": "Community: migrate module"
+    },
+    {
+      "id": "graph:community:mock-athlete-fixture-module-47",
+      "path": "graph/communities/mock-athlete-fixture-module-47.md",
+      "title": "Community: ── Mock athlete fixture ────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:ngp-algorithm-module-48",
+      "path": "graph/communities/ngp-algorithm-module-48.md",
+      "title": "Community: NGP algorithm module"
+    },
+    {
+      "id": "graph:community:oauth-helpers-module-49",
+      "path": "graph/communities/oauth-helpers-module-49.md",
+      "title": "Community: ── OAuth helpers ───────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:optional-google-calendar-push-module-50",
+      "path": "graph/communities/optional-google-calendar-push-module-50.md",
+      "title": "Community: Optional Google Calendar push module"
+    },
+    {
+      "id": "graph:community:ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-module-51",
+      "path": "graph/communities/ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-module-51.md",
+      "title": "Community: Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc. module"
+    },
+    {
+      "id": "graph:community:parse-date-module-52",
+      "path": "graph/communities/parse-date-module-52.md",
+      "title": "Community: ── _parse_date ─────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:plan-tools-module-53",
+      "path": "graph/communities/plan-tools-module-53.md",
+      "title": "Community: plan_tools module"
+    },
+    {
+      "id": "graph:community:public-api-module-54",
+      "path": "graph/communities/public-api-module-54.md",
+      "title": "Community: Public API module"
+    },
+    {
+      "id": "graph:community:read-module-55",
+      "path": "graph/communities/read-module-55.md",
+      "title": "Community: ── Read ────────────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:read-wiki-module-56",
+      "path": "graph/communities/read-wiki-module-56.md",
+      "title": "Community: ── read_wiki ───────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:readiness-tools-module-57",
+      "path": "graph/communities/readiness-tools-module-57.md",
+      "title": "Community: readiness_tools module"
+    },
+    {
+      "id": "graph:community:safe-resolve-module-58",
+      "path": "graph/communities/safe-resolve-module-58.md",
+      "title": "Community: ── safe_resolve ────────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:server-module-59",
+      "path": "graph/communities/server-module-59.md",
+      "title": "Community: server module"
+    },
+    {
+      "id": "graph:community:site-module-60",
+      "path": "graph/communities/site-module-60.md",
+      "title": "Community: site module"
+    },
+    {
+      "id": "graph:community:site-tools-module-61",
+      "path": "graph/communities/site-tools-module-61.md",
+      "title": "Community: site_tools module"
+    },
+    {
+      "id": "graph:community:subcommands-module-62",
+      "path": "graph/communities/subcommands-module-62.md",
+      "title": "Community: ── Subcommands ──────────────────────────────────────────────────────────── module"
+    },
+    {
+      "id": "graph:community:sync-tools-module-63",
+      "path": "graph/communities/sync-tools-module-63.md",
+      "title": "Community: sync_tools module"
+    },
+    {
+      "id": "graph:community:test-config-module-64",
+      "path": "graph/communities/test-config-module-64.md",
+      "title": "Community: test_config module"
+    },
+    {
+      "id": "graph:community:test-tools-smoke-module-65",
+      "path": "graph/communities/test-tools-smoke-module-65.md",
+      "title": "Community: test_tools_smoke module"
+    },
+    {
+      "id": "graph:community:the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-module-66",
+      "path": "graph/communities/the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-module-66.md",
+      "title": "Community: The canonical set of wiki files and their purpose. Single source of truth. module"
+    },
+    {
+      "id": "graph:community:tss-estimates-per-sport-intensity-minutes-tss-module-67",
+      "path": "graph/communities/tss-estimates-per-sport-intensity-minutes-tss-module-67.md",
+      "title": "Community: TSS estimates per sport/intensity (minutes → TSS) module"
+    },
+    {
+      "id": "graph:community:update-module-68",
+      "path": "graph/communities/update-module-68.md",
+      "title": "Community: update module"
+    },
+    {
+      "id": "graph:community:wiki-base-module-69",
+      "path": "graph/communities/wiki-base-module-69.md",
+      "title": "Community: wiki_base module"
+    },
+    {
+      "id": "graph:community:wiki-tools-module-70",
+      "path": "graph/communities/wiki-tools-module-70.md",
+      "title": "Community: wiki_tools module"
+    },
+    {
+      "id": "graph:community:with-valid-data-json-module-71",
+      "path": "graph/communities/with-valid-data-json-module-71.md",
+      "title": "Community: ── With valid data.json ─────────────────────────────────────────────────────── module"
+    }
+  ],
+  "recentResearchSources": [],
+  "contradictions": [],
+  "communityCohesion": [
+    {
+      "id": "community:shorter-ss-duration-than-paper-2-5-min-total-vs-10-min-total-both-were-be-1",
+      "label": "shorter SS duration than Paper 2 (5 min total vs 10 min total) — both were be...",
+      "nodeCount": 61,
+      "cohesion": 0
+    },
+    {
+      "id": "community:flat-2",
+      "label": "flat",
+      "nodeCount": 56,
+      "cohesion": 0
+    },
+    {
+      "id": "community:example-3",
+      "label": "example",
+      "nodeCount": 49,
+      "cohesion": 0
+    },
+    {
+      "id": "community:fatigue-4",
+      "label": "fatigue",
+      "nodeCount": 44,
+      "cohesion": 0
+    },
+    {
+      "id": "community:research-5",
+      "label": "research",
+      "nodeCount": 41,
+      "cohesion": 0
+    },
+    {
+      "id": "community:firecrawl-6",
+      "label": "firecrawl",
+      "nodeCount": 39,
+      "cohesion": 0
+    },
+    {
+      "id": "community:after-7",
+      "label": "after",
+      "nodeCount": 38,
+      "cohesion": 0
+    },
+    {
+      "id": "community:passes-8",
+      "label": "passes",
+      "nodeCount": 35,
+      "cohesion": 0
+    },
+    {
+      "id": "community:what-9",
+      "label": "what",
+      "nodeCount": 34,
+      "cohesion": 0
+    },
+    {
+      "id": "community:swarmvault-10",
+      "label": "swarmvault",
+      "nodeCount": 29,
+      "cohesion": 0
+    },
+    {
+      "id": "community:power-11",
+      "label": "power",
+      "nodeCount": 27,
+      "cohesion": 0
+    },
+    {
+      "id": "community:glycogen-12",
+      "label": "glycogen",
+      "nodeCount": 26,
+      "cohesion": 0
+    },
+    {
+      "id": "community:swarmvault-graph-first-module-13",
+      "label": "swarmvault-graph-first module",
+      "nodeCount": 22,
+      "cohesion": 0.1774891774891775
+    },
+    {
+      "id": "community:swarmvault-graph-first-module-14",
+      "label": "swarmvault-graph-first module",
+      "nodeCount": 21,
+      "cohesion": 0.18571428571428572
+    },
+    {
+      "id": "community:client-15",
+      "label": "client",
+      "nodeCount": 6,
+      "cohesion": 0
+    }
+  ],
+  "knowledgeGaps": {
+    "isolatedNodes": [
+      {
+        "nodeId": "module:activity-tools-4251b5fd",
+        "label": "activity_tools module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:allow-uv-run-from-repo-root-30cc3aa3",
+        "label": "allow uv run from repo root module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:app-75ed4433",
+        "label": "app module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:athlete-tools-c968b16f",
+        "label": "athlete_tools module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550",
+        "label": "Bootstrap: load secrets from <DATA_ROOT>/.env if AGENT_DATA_ROOT is set, module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:code-repo-33978ebf",
+        "label": "── Code repo ──────────────────────────────────────────────────────────────── module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:code-root-fa300ffa",
+        "label": "── code_root ───────────────────────────────────────────────────────────────── module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:config-ed62725e",
+        "label": "config module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:db-4438bbd2",
+        "label": "db module",
+        "type": "module"
+      },
+      {
+        "nodeId": "module:dev-app-9552e8c8",
+        "label": "_dev_app module",
+        "type": "module"
+      }
+    ],
+    "thinCommunityCount": 56,
+    "ambiguousEdgeRatio": 0.0031201248049922,
+    "warnings": [
+      "56 nodes are isolated or weakly connected — they may need additional source material.",
+      "56 of 71 communities have 2 or fewer nodes — the graph may be fragmented."
+    ]
+  }
+}

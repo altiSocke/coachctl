@@ -1,0 +1,18 @@
+{
+  "sourceId": "coachctl-architecture-conventions-8a2f1253",
+  "title": "coachctl — Architecture & Conventions",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/AGENTS.md",
+  "repoRelativePath": "AGENTS.md",
+  "storedPath": "raw/sources/coachctl-architecture-conventions-8a2f1253.md",
+  "extractedTextPath": "state/extracts/coachctl-architecture-conventions-8a2f1253.md",
+  "extractedMetadataPath": "state/extracts/coachctl-architecture-conventions-8a2f1253.json",
+  "extractionHash": "bcb13e1b883553bfe7b2f89c072038e1a7aab6fb187e896e67bd96536dbf052d",
+  "mimeType": "text/markdown",
+  "contentHash": "8a2f1253f49141594869f6e383c7fc66793a5be531cf71c84bd04d41d26b98a5",
+  "semanticHash": "4640b691098a69816f4ddf9045ff7f8a0fa3148b3658f0c34fce533b4223ab1b",
+  "createdAt": "2026-05-11T08:43:14.566Z",
+  "updatedAt": "2026-05-11T08:43:14.566Z"
+}

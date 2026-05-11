@@ -1,0 +1,19 @@
+{
+  "sourceId": "item-9d66dea1",
+  "title": "---------------------------------------------------------------------------",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_tools_functional.py",
+  "repoRelativePath": "tests/test_tools_functional.py",
+  "storedPath": "raw/sources/item-9d66dea1.py",
+  "extractedTextPath": "state/extracts/item-9d66dea1.md",
+  "extractedMetadataPath": "state/extracts/item-9d66dea1.json",
+  "extractionHash": "56cfae19acf76674e5649f05078c6365810ba9b0999b689d14cd51f32b8b1272",
+  "mimeType": "application/octet-stream",
+  "contentHash": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+  "semanticHash": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+  "createdAt": "2026-05-11T08:43:22.024Z",
+  "updatedAt": "2026-05-11T08:43:22.024Z"
+}

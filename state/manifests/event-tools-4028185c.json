@@ -1,0 +1,19 @@
+{
+  "sourceId": "event-tools-4028185c",
+  "title": "event_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/event_tools.py",
+  "repoRelativePath": "src/coachctl/tools/event_tools.py",
+  "storedPath": "raw/sources/event-tools-4028185c.py",
+  "extractedTextPath": "state/extracts/event-tools-4028185c.md",
+  "extractedMetadataPath": "state/extracts/event-tools-4028185c.json",
+  "extractionHash": "90c478d9005067bfbf0a4b21428d95916e2cb06d6b9a719489209c4b7819c0e9",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4028185c7ffb4ab2545225030726fa5d2d035ebece0c127d5d7a81ad164b1759",
+  "semanticHash": "4028185c7ffb4ab2545225030726fa5d2d035ebece0c127d5d7a81ad164b1759",
+  "createdAt": "2026-05-11T08:43:17.777Z",
+  "updatedAt": "2026-05-11T08:43:17.777Z"
+}

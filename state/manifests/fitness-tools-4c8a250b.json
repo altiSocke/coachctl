@@ -1,0 +1,19 @@
+{
+  "sourceId": "fitness-tools-4c8a250b",
+  "title": "fitness_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/fitness_tools.py",
+  "repoRelativePath": "src/coachctl/tools/fitness_tools.py",
+  "storedPath": "raw/sources/fitness-tools-4c8a250b.py",
+  "extractedTextPath": "state/extracts/fitness-tools-4c8a250b.md",
+  "extractedMetadataPath": "state/extracts/fitness-tools-4c8a250b.json",
+  "extractionHash": "28b04f9805d09c5e1f91ae7402fb54e98365a6faca563dccffb41796981c91cc",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4c8a250b5a1f9776cd3fb5fe0ae159cafe5b0ab305670f4f775ff593973fa026",
+  "semanticHash": "4c8a250b5a1f9776cd3fb5fe0ae159cafe5b0ab305670f4f775ff593973fa026",
+  "createdAt": "2026-05-11T08:43:18.019Z",
+  "updatedAt": "2026-05-11T08:43:18.019Z"
+}

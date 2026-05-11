@@ -1,0 +1,19 @@
+{
+  "sourceId": "ngp-algorithm-9949f73f",
+  "title": "NGP algorithm",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/metrics.py",
+  "repoRelativePath": "src/coachctl/metrics.py",
+  "storedPath": "raw/sources/ngp-algorithm-9949f73f.py",
+  "extractedTextPath": "state/extracts/ngp-algorithm-9949f73f.md",
+  "extractedMetadataPath": "state/extracts/ngp-algorithm-9949f73f.json",
+  "extractionHash": "9bcd0bce174223e8072e978eac6e91a5acab65ce600a121476a0fa83c2f27613",
+  "mimeType": "application/octet-stream",
+  "contentHash": "9949f73f699e7c312ac53c3c7c0ceb370f06add8c90bfc300557fd09baac4a8a",
+  "semanticHash": "9949f73f699e7c312ac53c3c7c0ceb370f06add8c90bfc300557fd09baac4a8a",
+  "createdAt": "2026-05-11T08:43:16.620Z",
+  "updatedAt": "2026-05-11T08:43:16.620Z"
+}

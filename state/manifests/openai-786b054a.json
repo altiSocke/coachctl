@@ -1,0 +1,24 @@
+{
+  "sourceId": "openai-786b054a",
+  "title": "openai",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/security-review/agents/openai.yaml",
+  "repoRelativePath": ".opencode/skills/security-review/agents/openai.yaml",
+  "storedPath": "raw/sources/openai-786b054a.yaml",
+  "extractedTextPath": "state/extracts/openai-786b054a.md",
+  "extractedMetadataPath": "state/extracts/openai-786b054a.json",
+  "extractionHash": "8fc9a5b8602d4e0eb52c430b952b763801320f91f81e7cf0226da6e0f979be28",
+  "mimeType": "text/yaml",
+  "contentHash": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+  "semanticHash": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+  "details": {
+    "format": "yaml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "2"
+  },
+  "createdAt": "2026-05-11T08:43:14.140Z",
+  "updatedAt": "2026-05-11T08:43:14.140Z"
+}

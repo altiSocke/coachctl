@@ -1,0 +1,19 @@
+{
+  "sourceId": "wiki-tools-f7b7c96c",
+  "title": "wiki_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/wiki_tools.py",
+  "repoRelativePath": "src/coachctl/tools/wiki_tools.py",
+  "storedPath": "raw/sources/wiki-tools-f7b7c96c.py",
+  "extractedTextPath": "state/extracts/wiki-tools-f7b7c96c.md",
+  "extractedMetadataPath": "state/extracts/wiki-tools-f7b7c96c.json",
+  "extractionHash": "e8155565fae5e58ff993dd581390dbc4e293101aee06af751435f98193971b23",
+  "mimeType": "application/octet-stream",
+  "contentHash": "f7b7c96c860d66d8c2f51ba10840dcade276b7e3c99ac49d1ebd309b8b59f9d2",
+  "semanticHash": "f7b7c96c860d66d8c2f51ba10840dcade276b7e3c99ac49d1ebd309b8b59f9d2",
+  "createdAt": "2026-05-11T08:43:18.725Z",
+  "updatedAt": "2026-05-11T08:43:18.725Z"
+}

@@ -1,0 +1,19 @@
+{
+  "sourceId": "insert-plan-and-events-a82f6402",
+  "title": "── _insert_plan_and_events ───────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_event_tss.py",
+  "repoRelativePath": "tests/test_plan_event_tss.py",
+  "storedPath": "raw/sources/insert-plan-and-events-a82f6402.py",
+  "extractedTextPath": "state/extracts/insert-plan-and-events-a82f6402.md",
+  "extractedMetadataPath": "state/extracts/insert-plan-and-events-a82f6402.json",
+  "extractionHash": "65abf373c6aab565232220d0c45b5a24cc8dd1175ffa9302302d47be347d4306",
+  "mimeType": "application/octet-stream",
+  "contentHash": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+  "semanticHash": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+  "createdAt": "2026-05-11T08:43:21.146Z",
+  "updatedAt": "2026-05-11T08:43:21.146Z"
+}

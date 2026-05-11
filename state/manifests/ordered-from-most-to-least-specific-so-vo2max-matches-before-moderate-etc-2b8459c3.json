@@ -1,0 +1,19 @@
+{
+  "sourceId": "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3",
+  "title": "Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc.",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/plan_parser.py",
+  "repoRelativePath": "src/coachctl/plan_parser.py",
+  "storedPath": "raw/sources/ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3.py",
+  "extractedTextPath": "state/extracts/ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3.md",
+  "extractedMetadataPath": "state/extracts/ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3.json",
+  "extractionHash": "8d94fd7ea30e39933e0f04687942b6d683e7910c9f5ad0b1284c197a976a5d00",
+  "mimeType": "application/octet-stream",
+  "contentHash": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+  "semanticHash": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+  "createdAt": "2026-05-11T08:43:17.002Z",
+  "updatedAt": "2026-05-11T08:43:17.002Z"
+}

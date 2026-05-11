@@ -1,0 +1,18 @@
+{
+  "sourceId": "coachctl-strava-training-agent-7a3ae9ac",
+  "title": "coachctl — Strava Training Agent",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/README.md",
+  "repoRelativePath": "README.md",
+  "storedPath": "raw/sources/coachctl-strava-training-agent-7a3ae9ac.md",
+  "extractedTextPath": "state/extracts/coachctl-strava-training-agent-7a3ae9ac.md",
+  "extractedMetadataPath": "state/extracts/coachctl-strava-training-agent-7a3ae9ac.json",
+  "extractionHash": "fe16ed8a690ab5d43de7eebe916fcfec09a63660e6298a9dff9f395ad46bd830",
+  "mimeType": "text/markdown",
+  "contentHash": "7a3ae9ac2245b81e6b8266fe7349bbaf1bad2a1e4cb89accdef9dcd0dca67412",
+  "semanticHash": "571fd3b7d9213a3df91b8b96fc33f430a32181629f2536f9decd371c91bb8f56",
+  "createdAt": "2026-05-11T08:43:15.683Z",
+  "updatedAt": "2026-05-11T08:43:15.683Z"
+}

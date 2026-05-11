@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "skillfish-65c158e0",
+  "sourceHash": "65c158e040815056d0bf9007ba4b03062e3eb5581419deba03f239d0599af39d",
+  "semanticHash": "65c158e040815056d0bf9007ba4b03062e3eb5581419deba03f239d0599af39d",
+  "extractionHash": "a6b859901dcad161d0722d1581f6e912228699983ad6416c344d19d9828b251c",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": ".skillfish",
+  "summary": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"tdd-workflow\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".agents/skills/tdd-workflow\", \"branch\": \"main\", \"sha\": \"8f167ba6170e97b0bf05048a5f0ce595a21a8acc\", \"source\": \"manual\" }",
+  "concepts": [
+    {
+      "id": "concept:string",
+      "name": "string",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:branch",
+      "name": "branch",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:json",
+      "name": "json",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:name",
+      "name": "name",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:owner",
+      "name": "owner",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:path",
+      "name": "path",
+      "description": "Frequently referenced concept in .skillfish."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in .skillfish."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:skillfish-65c158e0:1",
+      "text": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"tdd-workflow\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".agents/skills/tdd-workflow\", \"branch\": \"main\", \"sha\": \"8f167ba6170e97b0bf05048a5f0ce595a21a8acc\", \"source\": \"manual\" }",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skillfish-65c158e0"
+    }
+  ],
+  "questions": [
+    "How does string relate to .skillfish?",
+    "How does branch relate to .skillfish?",
+    "How does json relate to .skillfish?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:37.060Z"
+}

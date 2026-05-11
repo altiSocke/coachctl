@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "sleep-endurance-athlete-guide-e128e194",
+  "sourceHash": "e128e194aa54f7f6d6f55539b209e059f4ff5b941044749e2abcb83e175ef687",
+  "semanticHash": "20d01a4a9ce094d9067142aa48f9ed9192e49e3f4fcf27c4a14cd79a8dddad8f",
+  "extractionHash": "ac97a98fa6a73f027bb401d9e7a603d5b2f12fbbbd136d0d70265f1e1acc0369",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Sleep — Endurance Athlete Guide",
+  "summary": "Sleep — Endurance Athlete Guide General sleep science for endurance athletes. Personal sleep logs and individual protocols live in the personal wiki. --- ## Why endurance athletes sleep differently on rest days Endurance athletes commonly report worse sleep quality on rest days than on training days.",
+  "concepts": [
+    {
+      "id": "concept:sleep",
+      "name": "sleep",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "concept:days",
+      "name": "days",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "concept:rest",
+      "name": "rest",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "concept:athletes",
+      "name": "athletes",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "concept:caffeine",
+      "name": "caffeine",
+      "description": "Frequently referenced concept in Sleep — Endurance Athlete Guide."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:endurance-athlete-guide-general",
+      "name": "Endurance Athlete Guide General",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "entity:why",
+      "name": "Why",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "entity:endurance",
+      "name": "Endurance",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "entity:adenosine",
+      "name": "Adenosine",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "entity:halson",
+      "name": "Halson",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    },
+    {
+      "id": "entity:medicine",
+      "name": "Medicine,",
+      "description": "Named entity mentioned in Sleep — Endurance Athlete Guide."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:sleep-endurance-athlete-guide-e128e194:1",
+      "text": "Sleep — Endurance Athlete Guide General sleep science for endurance athletes.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "sleep-endurance-athlete-guide-e128e194"
+    },
+    {
+      "id": "claim:sleep-endurance-athlete-guide-e128e194:2",
+      "text": "Personal sleep logs and individual protocols live in the personal wiki.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "sleep-endurance-athlete-guide-e128e194"
+    },
+    {
+      "id": "claim:sleep-endurance-athlete-guide-e128e194:3",
+      "text": "--- ## Why endurance athletes sleep differently on rest days Endurance athletes commonly report worse sleep quality on rest days than on training days.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "sleep-endurance-athlete-guide-e128e194"
+    },
+    {
+      "id": "claim:sleep-endurance-athlete-guide-e128e194:4",
+      "text": "The mechanism is well understood: - Adenosine buildup — physical activity accelerates adenosine accumulation in the brain.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "sleep-endurance-athlete-guide-e128e194"
+    }
+  ],
+  "questions": [
+    "How does sleep relate to Sleep — Endurance Athlete Guide?",
+    "How does days relate to Sleep — Endurance Athlete Guide?",
+    "How does rest relate to Sleep — Endurance Athlete Guide?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:37.296Z"
+}

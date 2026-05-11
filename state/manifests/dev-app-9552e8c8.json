@@ -1,0 +1,19 @@
+{
+  "sourceId": "dev-app-9552e8c8",
+  "title": "_dev_app",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/_dev_app.py",
+  "repoRelativePath": "src/coachctl/dashboard/_dev_app.py",
+  "storedPath": "raw/sources/dev-app-9552e8c8.py",
+  "extractedTextPath": "state/extracts/dev-app-9552e8c8.md",
+  "extractedMetadataPath": "state/extracts/dev-app-9552e8c8.json",
+  "extractionHash": "25941f9b3a1e4fa7b72a0df9cc71d95fc9ff88d75ec12942811fe48b273f4eaa",
+  "mimeType": "application/octet-stream",
+  "contentHash": "9552e8c824bebfba0a5d9f73579cb81293fc34f08613a2634901d0f14960307e",
+  "semanticHash": "9552e8c824bebfba0a5d9f73579cb81293fc34f08613a2634901d0f14960307e",
+  "createdAt": "2026-05-11T08:43:16.136Z",
+  "updatedAt": "2026-05-11T08:43:16.136Z"
+}

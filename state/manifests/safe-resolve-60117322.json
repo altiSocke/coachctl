@@ -1,0 +1,19 @@
+{
+  "sourceId": "safe-resolve-60117322",
+  "title": "── safe_resolve ──────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_wiki_base.py",
+  "repoRelativePath": "tests/test_wiki_base.py",
+  "storedPath": "raw/sources/safe-resolve-60117322.py",
+  "extractedTextPath": "state/extracts/safe-resolve-60117322.md",
+  "extractedMetadataPath": "state/extracts/safe-resolve-60117322.json",
+  "extractionHash": "c03c7bcf9eab1cffd61a4e72e3d2b9989009b5826eaaf257acc27a63dae95ad4",
+  "mimeType": "application/octet-stream",
+  "contentHash": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+  "semanticHash": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+  "createdAt": "2026-05-11T08:43:22.432Z",
+  "updatedAt": "2026-05-11T08:43:22.432Z"
+}

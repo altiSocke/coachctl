@@ -1,0 +1,19 @@
+{
+  "sourceId": "with-valid-data-json-555ad9af",
+  "title": "── With valid data.json ───────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_dashboard.py",
+  "repoRelativePath": "tests/test_dashboard.py",
+  "storedPath": "raw/sources/with-valid-data-json-555ad9af.py",
+  "extractedTextPath": "state/extracts/with-valid-data-json-555ad9af.md",
+  "extractedMetadataPath": "state/extracts/with-valid-data-json-555ad9af.json",
+  "extractionHash": "121aa3d0b78886a3d294f246394fe1c49a4c43c304cfcc5e70bf3ee15ece24be",
+  "mimeType": "application/octet-stream",
+  "contentHash": "555ad9afe558e9db7aadd31ba94e568c178a1f4a18cafe08e49c51ece61a24a2",
+  "semanticHash": "555ad9afe558e9db7aadd31ba94e568c178a1f4a18cafe08e49c51ece61a24a2",
+  "createdAt": "2026-05-11T08:43:19.872Z",
+  "updatedAt": "2026-05-11T08:43:19.872Z"
+}

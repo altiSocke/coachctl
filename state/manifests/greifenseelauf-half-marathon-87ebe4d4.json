@@ -1,0 +1,18 @@
+{
+  "sourceId": "greifenseelauf-half-marathon-87ebe4d4",
+  "title": "Greifenseelauf — Half Marathon",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/raw/races/greifensee_halbmarathon_2026.md",
+  "repoRelativePath": "raw/races/greifensee_halbmarathon_2026.md",
+  "storedPath": "raw/sources/greifenseelauf-half-marathon-87ebe4d4.md",
+  "extractedTextPath": "state/extracts/greifenseelauf-half-marathon-87ebe4d4.md",
+  "extractedMetadataPath": "state/extracts/greifenseelauf-half-marathon-87ebe4d4.json",
+  "extractionHash": "64aa73aefef7d0adf23e588ee80174c44cb274f130ad26cab7e89496d227e3ae",
+  "mimeType": "text/markdown",
+  "contentHash": "87ebe4d45500fe3940fee6a25523a806dc6dd3c62d8b3c2df20aaa6288e64cfd",
+  "semanticHash": "e07f0ea7adb6a2f9252c72087356a51662fc9fef91bd9362ea5ef31b41c519d1",
+  "createdAt": "2026-05-11T08:43:15.499Z",
+  "updatedAt": "2026-05-11T08:43:15.499Z"
+}

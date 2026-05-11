@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "oauth-helpers-ca87b67b",
+  "sourceHash": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+  "semanticHash": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+  "extractionHash": "faefd481ecf12b46377f8e3917a209c956ad4674092e7c9445b5a09e09aac7cd",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── OAuth helpers ─────────────────────────────────────────────────────────────",
+  "summary": "── OAuth helpers ───────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:oauth-helpers-ca87b67b:1",
+      "text": "── OAuth helpers ───────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "oauth-helpers-ca87b67b"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── OAuth helpers ───────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:oauth-helpers-ca87b67b",
+    "language": "python",
+    "moduleName": "coachctl.sync",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:34.960Z"
+}

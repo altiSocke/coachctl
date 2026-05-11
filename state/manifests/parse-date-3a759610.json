@@ -1,0 +1,19 @@
+{
+  "sourceId": "parse-date-3a759610",
+  "title": "── _parse_date ───────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_parser.py",
+  "repoRelativePath": "tests/test_plan_parser.py",
+  "storedPath": "raw/sources/parse-date-3a759610.py",
+  "extractedTextPath": "state/extracts/parse-date-3a759610.md",
+  "extractedMetadataPath": "state/extracts/parse-date-3a759610.json",
+  "extractionHash": "a2af117a2f362393ff19808420f9b3fde6751024b0c4384a2b42f61586ea5a0e",
+  "mimeType": "application/octet-stream",
+  "contentHash": "3a7596107abf6bc9c82c41bd1b105205c3e42630f9f83c70610f749266aa20aa",
+  "semanticHash": "3a7596107abf6bc9c82c41bd1b105205c3e42630f9f83c70610f749266aa20aa",
+  "createdAt": "2026-05-11T08:43:21.283Z",
+  "updatedAt": "2026-05-11T08:43:21.283Z"
+}

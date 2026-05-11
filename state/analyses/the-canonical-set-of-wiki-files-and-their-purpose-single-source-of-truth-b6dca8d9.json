@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9",
+  "sourceHash": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+  "semanticHash": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+  "extractionHash": "a42f1b22965ac8756388c3aa5798da9a0c6dfb3d19bb645d40d862964b535b56",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "The canonical set of wiki files and their purpose. Single source of truth.",
+  "summary": "The canonical set of wiki files and their purpose. Single source of truth. is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9:1",
+      "text": "The canonical set of wiki files and their purpose. Single source of truth. has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does The canonical set of wiki files and their purpose. Single source of truth. serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9",
+    "language": "python",
+    "moduleName": "coachctl.wiki",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:38.385Z"
+}

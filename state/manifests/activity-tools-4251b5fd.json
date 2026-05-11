@@ -1,0 +1,19 @@
+{
+  "sourceId": "activity-tools-4251b5fd",
+  "title": "activity_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/activity_tools.py",
+  "repoRelativePath": "src/coachctl/tools/activity_tools.py",
+  "storedPath": "raw/sources/activity-tools-4251b5fd.py",
+  "extractedTextPath": "state/extracts/activity-tools-4251b5fd.md",
+  "extractedMetadataPath": "state/extracts/activity-tools-4251b5fd.json",
+  "extractionHash": "d976de7f464b3c20dd641ed275d442c80ac4496ac7de3465e172ce2af1a20f75",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4251b5fd2a29f1a46db8a4efb6879fc04e8b8958bc5fdd5e7ef95ef1c68ca4b0",
+  "semanticHash": "4251b5fd2a29f1a46db8a4efb6879fc04e8b8958bc5fdd5e7ef95ef1c68ca4b0",
+  "createdAt": "2026-05-11T08:43:17.467Z",
+  "updatedAt": "2026-05-11T08:43:17.467Z"
+}

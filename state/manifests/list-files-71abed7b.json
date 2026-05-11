@@ -1,0 +1,19 @@
+{
+  "sourceId": "list-files-71abed7b",
+  "title": "── list_files ────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_general_wiki.py",
+  "repoRelativePath": "tests/test_general_wiki.py",
+  "storedPath": "raw/sources/list-files-71abed7b.py",
+  "extractedTextPath": "state/extracts/list-files-71abed7b.md",
+  "extractedMetadataPath": "state/extracts/list-files-71abed7b.json",
+  "extractionHash": "546e688d66477423a032dfd2b0585011305b9927161b7d9fd3cbe2f8bb4b01d9",
+  "mimeType": "application/octet-stream",
+  "contentHash": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+  "semanticHash": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+  "createdAt": "2026-05-11T08:43:20.352Z",
+  "updatedAt": "2026-05-11T08:43:20.352Z"
+}

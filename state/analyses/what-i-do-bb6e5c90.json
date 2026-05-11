@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "what-i-do-bb6e5c90",
+  "sourceHash": "bb6e5c90586fcab34c7ac69d9c5c7ef280d9b73a1da2c42bbe10ad0223c95c4a",
+  "semanticHash": "448ac228927358a97482f8b7572a79e8d7b3880eb8173006db6dfa5005673e9c",
+  "extractionHash": "1f13016b6336ef984e2d1218892e4c99acf48603e8eeae66c824df2ad3437b66",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "What I do",
+  "summary": "description: Deliver structured feedback on new activities from get_new_activities. Covers the full debrief format (what was good, what to improve, plan fit, next session) plus stream analysis rules for HR decoupling, power curve, zone distribution, cadence flags, and nutrition signals. Load for every new-activity review at startup or mid-session.",
+  "concepts": [
+    {
+      "id": "concept:session",
+      "name": "session",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:activity",
+      "name": "activity",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:power",
+      "name": "power",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:flag",
+      "name": "flag",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:pace",
+      "name": "pace",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:cadence",
+      "name": "cadence",
+      "description": "Frequently referenced concept in What I do."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:deliver",
+      "name": "Deliver",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:step",
+      "name": "Step",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:for",
+      "name": "For",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:always",
+      "name": "Always",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:skip",
+      "name": "Skip",
+      "description": "Named entity mentioned in What I do."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:what-i-do-bb6e5c90:1",
+      "text": "description: Deliver structured feedback on new activities from get_new_activities.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-bb6e5c90"
+    },
+    {
+      "id": "claim:what-i-do-bb6e5c90:2",
+      "text": "Covers the full debrief format (what was good, what to improve, plan fit, next session) plus stream analysis rules for HR decoupling, power curve, zone distribution, cadence flags, and nutrition signals.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-bb6e5c90"
+    },
+    {
+      "id": "claim:what-i-do-bb6e5c90:3",
+      "text": "Load for every new-activity review at startup or mid-session.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-bb6e5c90"
+    },
+    {
+      "id": "claim:what-i-do-bb6e5c90:4",
+      "text": "## What I do Deliver structured, data-driven feedback on each unreviewed activity.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-bb6e5c90"
+    }
+  ],
+  "questions": [
+    "How does session relate to What I do?",
+    "How does activity relate to What I do?",
+    "How does power relate to What I do?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:45:09.133Z"
+}

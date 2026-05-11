@@ -1,0 +1,18 @@
+{
+  "sourceId": "what-i-do-a929e628",
+  "title": "What I do",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/race-card/SKILL.md",
+  "repoRelativePath": ".opencode/skills/race-card/SKILL.md",
+  "storedPath": "raw/sources/what-i-do-a929e628.md",
+  "extractedTextPath": "state/extracts/what-i-do-a929e628.md",
+  "extractedMetadataPath": "state/extracts/what-i-do-a929e628.json",
+  "extractionHash": "ba37151aba232e0cf8c37b155da4444b578917dca376e525af2bd8af87d6d0d6",
+  "mimeType": "text/markdown",
+  "contentHash": "a929e62826769be5ad430b6c2d6a0e0ca27ab0872066c1c5175099052367fcb3",
+  "semanticHash": "ae7c4c220c832d699e5805d0fb61d507ebf1faabf675f1287863195942e86654",
+  "createdAt": "2026-05-11T08:43:14.035Z",
+  "updatedAt": "2026-05-11T08:43:14.035Z"
+}

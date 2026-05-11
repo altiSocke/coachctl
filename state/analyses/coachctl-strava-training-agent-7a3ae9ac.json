@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "coachctl-strava-training-agent-7a3ae9ac",
+  "sourceHash": "7a3ae9ac2245b81e6b8266fe7349bbaf1bad2a1e4cb89accdef9dcd0dca67412",
+  "semanticHash": "571fd3b7d9213a3df91b8b96fc33f430a32181629f2536f9decd371c91bb8f56",
+  "extractionHash": "fe16ed8a690ab5d43de7eebe916fcfec09a63660e6298a9dff9f395ad46bd830",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "coachctl — Strava Training Agent",
+  "summary": "coachctl — Strava Training Agent MCP server + OpenCode agent + dashboard for analysing Strava training data and generating periodized training plans. > Architecture & conventions live in AGENTS.md . > Operational coach workflows live in .opencode/agents/coach.md .",
+  "concepts": [
+    {
+      "id": "concept:coachctl",
+      "name": "coachctl",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "concept:personal",
+      "name": "personal",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "concept:repo",
+      "name": "repo",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "concept:data",
+      "name": "data",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "concept:sync",
+      "name": "sync",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "concept:activities",
+      "name": "activities",
+      "description": "Frequently referenced concept in coachctl — Strava Training Agent."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:strava-training-agent",
+      "name": "Strava Training Agent",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "entity:opencode",
+      "name": "OpenCode",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "entity:strava",
+      "name": "Strava",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "entity:architecture-conventions",
+      "name": "Architecture & conventions",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "entity:operational",
+      "name": "Operational",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    },
+    {
+      "id": "entity:this",
+      "name": "This",
+      "description": "Named entity mentioned in coachctl — Strava Training Agent."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:coachctl-strava-training-agent-7a3ae9ac:1",
+      "text": "coachctl — Strava Training Agent MCP server + OpenCode agent + dashboard for analysing Strava training data and generating periodized training plans.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "coachctl-strava-training-agent-7a3ae9ac"
+    },
+    {
+      "id": "claim:coachctl-strava-training-agent-7a3ae9ac:2",
+      "text": "> Architecture & conventions live in AGENTS.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "coachctl-strava-training-agent-7a3ae9ac"
+    },
+    {
+      "id": "claim:coachctl-strava-training-agent-7a3ae9ac:3",
+      "text": "> Operational coach workflows live in .opencode/agents/coach.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "coachctl-strava-training-agent-7a3ae9ac"
+    },
+    {
+      "id": "claim:coachctl-strava-training-agent-7a3ae9ac:4",
+      "text": "> This README owns setup, install, and deployment only.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "coachctl-strava-training-agent-7a3ae9ac"
+    }
+  ],
+  "questions": [
+    "How does coachctl relate to coachctl — Strava Training Agent?",
+    "How does personal relate to coachctl — Strava Training Agent?",
+    "How does repo relate to coachctl — Strava Training Agent?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:31.126Z"
+}

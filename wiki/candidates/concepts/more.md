@@ -1,0 +1,47 @@
+---
+page_id: 'concept:more'
+kind: concept
+cssclasses:
+  - swarmvault
+  - sv-concept
+title: more
+source_class: first_party
+tags:
+  - concept
+  - candidate
+source_ids:
+  - cycling-training-science-reference-aa12e3c8
+project_ids: []
+node_ids:
+  - 'concept:more'
+freshness: fresh
+status: candidate
+confidence: 0.65
+created_at: '2026-05-11T08:45:09.727Z'
+updated_at: '2026-05-11T08:45:09.727Z'
+compiled_from:
+  - cycling-training-science-reference-aa12e3c8
+managed_by: system
+backlinks:
+  - 'source:cycling-training-science-reference-aa12e3c8'
+schema_hash: 874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720
+source_hashes:
+  cycling-training-science-reference-aa12e3c8: aa12e3c8f1438cb0d49ef7e4a4835b295adc6a514bf18de922016bf5ef1f3fc8
+source_semantic_hashes:
+  cycling-training-science-reference-aa12e3c8: 8b2b70ab5764ad02821aeda893ed895e4da6c218fe5103527ebfd929dc315649
+decay_score: 1
+last_confirmed_at: '2026-05-11T08:45:13.849Z'
+---
+# more
+
+## Summary
+
+Frequently referenced concept in Cycling Training — Science Reference.
+
+## Seen In
+
+- [[sources/cycling-training-science-reference-aa12e3c8|Cycling Training — Science Reference]]
+
+## Source Claims
+
+

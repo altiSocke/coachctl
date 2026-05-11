@@ -1,0 +1,19 @@
+{
+  "sourceId": "wiki-base-29e27f15",
+  "title": "wiki_base",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/wiki_base.py",
+  "repoRelativePath": "src/coachctl/wiki_base.py",
+  "storedPath": "raw/sources/wiki-base-29e27f15.py",
+  "extractedTextPath": "state/extracts/wiki-base-29e27f15.md",
+  "extractedMetadataPath": "state/extracts/wiki-base-29e27f15.json",
+  "extractionHash": "0871b39c3275e1064788e72e2538098d8783940c95f77526dcc7267c73b2120d",
+  "mimeType": "application/octet-stream",
+  "contentHash": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+  "semanticHash": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+  "createdAt": "2026-05-11T08:43:19.012Z",
+  "updatedAt": "2026-05-11T08:43:19.012Z"
+}

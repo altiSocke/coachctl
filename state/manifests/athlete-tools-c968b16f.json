@@ -1,0 +1,19 @@
+{
+  "sourceId": "athlete-tools-c968b16f",
+  "title": "athlete_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/athlete_tools.py",
+  "repoRelativePath": "src/coachctl/tools/athlete_tools.py",
+  "storedPath": "raw/sources/athlete-tools-c968b16f.py",
+  "extractedTextPath": "state/extracts/athlete-tools-c968b16f.md",
+  "extractedMetadataPath": "state/extracts/athlete-tools-c968b16f.json",
+  "extractionHash": "666439d7e1884def01de4a030a7c3ea3c267adbcc9e95e329c72ae824704b96d",
+  "mimeType": "application/octet-stream",
+  "contentHash": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+  "semanticHash": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+  "createdAt": "2026-05-11T08:43:17.598Z",
+  "updatedAt": "2026-05-11T08:43:17.598Z"
+}

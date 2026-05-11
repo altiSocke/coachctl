@@ -1,0 +1,19 @@
+{
+  "sourceId": "optional-google-calendar-push-9f31fa1a",
+  "title": "Optional Google Calendar push",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/new_profile.py",
+  "repoRelativePath": "src/coachctl/new_profile.py",
+  "storedPath": "raw/sources/optional-google-calendar-push-9f31fa1a.py",
+  "extractedTextPath": "state/extracts/optional-google-calendar-push-9f31fa1a.md",
+  "extractedMetadataPath": "state/extracts/optional-google-calendar-push-9f31fa1a.json",
+  "extractionHash": "2710d55ea1a80b88d5fc7abeda23a382c729e278c1d13c5a709e34ca9319606e",
+  "mimeType": "application/octet-stream",
+  "contentHash": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+  "semanticHash": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+  "createdAt": "2026-05-11T08:43:16.748Z",
+  "updatedAt": "2026-05-11T08:43:16.748Z"
+}

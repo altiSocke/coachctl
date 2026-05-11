@@ -1,0 +1,18 @@
+{
+  "sourceId": "personality-style-a474eea3",
+  "title": "Personality & style",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/agents/coach.md",
+  "repoRelativePath": ".opencode/agents/coach.md",
+  "storedPath": "raw/sources/personality-style-a474eea3.md",
+  "extractedTextPath": "state/extracts/personality-style-a474eea3.md",
+  "extractedMetadataPath": "state/extracts/personality-style-a474eea3.json",
+  "extractionHash": "bb14fbfdd5e3c604d2a3cd038a05b03492cf61c1bec7c117236c54b199512222",
+  "mimeType": "text/markdown",
+  "contentHash": "a474eea3d63fd2f89bf7901594917c5cb8130afdf196e88c2af1e8457a339090",
+  "semanticHash": "e72aeebb5f45a8f0ea3520fb1c3cd536b985a712ab1fb984a474c306fdcac141",
+  "createdAt": "2026-05-11T08:43:13.687Z",
+  "updatedAt": "2026-05-11T08:43:13.687Z"
+}

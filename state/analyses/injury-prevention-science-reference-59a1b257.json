@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "injury-prevention-science-reference-59a1b257",
+  "sourceHash": "59a1b2575504b052a09b3e05f721ee5588b0981561bd14bfa5e0e671ac75acbb",
+  "semanticHash": "831d1231a5f3c6f43b4cb4720ece51a578ca695f84d0423d95df2d6b4401580d",
+  "extractionHash": "6b2a0e09adf048da3bd48576a772c4bb91a0e0a3057b79acbab8cdd084c3252c",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Injury Prevention — Science Reference",
+  "summary": "Injury Prevention — Science Reference > Personal injury history, current rehabilitation protocols, and individual risk factors live in the personal repo's profile/ . > Key sources: Gabbett 2016 (Br J Sports Med — ACWR), Hulin et al. 2016 (Br J Sports Med), Drew & Finch 2016 (Sports Med — 10% rule limitations), Tenforde et al.",
+  "concepts": [
+    {
+      "id": "concept:injury",
+      "name": "injury",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "concept:risk",
+      "name": "risk",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "concept:sports",
+      "name": "sports",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "concept:week",
+      "name": "week",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "concept:with",
+      "name": "with",
+      "description": "Frequently referenced concept in Injury Prevention — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:prevention-science-reference",
+      "name": "Prevention — Science Reference",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "entity:hulin",
+      "name": "Hulin",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "entity:br-j-sports-med-drew-finch",
+      "name": "(Br J Sports Med), Drew & Finch",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    },
+    {
+      "id": "entity:sports-med",
+      "name": "(Sports Med —",
+      "description": "Named entity mentioned in Injury Prevention — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:injury-prevention-science-reference-59a1b257:1",
+      "text": "Injury Prevention — Science Reference > Personal injury history, current rehabilitation protocols, and individual risk factors live in the personal repo's profile/ .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "injury-prevention-science-reference-59a1b257"
+    },
+    {
+      "id": "claim:injury-prevention-science-reference-59a1b257:2",
+      "text": "> Key sources: Gabbett 2016 (Br J Sports Med — ACWR), Hulin et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "injury-prevention-science-reference-59a1b257"
+    },
+    {
+      "id": "claim:injury-prevention-science-reference-59a1b257:3",
+      "text": "2016 (Br J Sports Med), Drew & Finch 2016 (Sports Med — 10% rule limitations), Tenforde et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "injury-prevention-science-reference-59a1b257"
+    },
+    {
+      "id": "claim:injury-prevention-science-reference-59a1b257:4",
+      "text": "2016 (bone stress), Napier & Willy 2018 (running injury review), Meeuwisse 1994 (injury model), Van der Horst et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "injury-prevention-science-reference-59a1b257"
+    }
+  ],
+  "questions": [
+    "How does injury relate to Injury Prevention — Science Reference?",
+    "How does risk relate to Injury Prevention — Science Reference?",
+    "How does sports relate to Injury Prevention — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.632Z"
+}

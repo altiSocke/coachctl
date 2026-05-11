@@ -1,0 +1,18 @@
+{
+  "sourceId": "init-e3b0c442",
+  "title": "__init__",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/__init__.py",
+  "repoRelativePath": "src/coachctl/__init__.py",
+  "storedPath": "raw/sources/init-e3b0c442.py",
+  "extractedMetadataPath": "state/extracts/init-e3b0c442.json",
+  "extractionHash": "87550ebf3cd64f0f5b517b5b55fb99d62503ce01f5d54235aa6f7ec9e12b21b5",
+  "mimeType": "application/octet-stream",
+  "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "semanticHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "createdAt": "2026-05-11T08:43:15.808Z",
+  "updatedAt": "2026-05-11T08:43:15.808Z"
+}

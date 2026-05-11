@@ -1,0 +1,19 @@
+{
+  "sourceId": "fixtures-b923c1f4",
+  "title": "── Fixtures ──────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_recalculate.py",
+  "repoRelativePath": "tests/test_recalculate.py",
+  "storedPath": "raw/sources/fixtures-b923c1f4.py",
+  "extractedTextPath": "state/extracts/fixtures-b923c1f4.md",
+  "extractedMetadataPath": "state/extracts/fixtures-b923c1f4.json",
+  "extractionHash": "63372db8d5b51047cbfec2d752c42cb0059a9c94c8786c963724e126d0122682",
+  "mimeType": "application/octet-stream",
+  "contentHash": "b923c1f4ea470ccadc1cfba452a18034a3aa106942d408a4c1d236969f273e15",
+  "semanticHash": "b923c1f4ea470ccadc1cfba452a18034a3aa106942d408a4c1d236969f273e15",
+  "createdAt": "2026-05-11T08:43:21.526Z",
+  "updatedAt": "2026-05-11T08:43:21.526Z"
+}

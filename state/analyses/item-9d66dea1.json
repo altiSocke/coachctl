@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "item-9d66dea1",
+  "sourceHash": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+  "semanticHash": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+  "extractionHash": "56cfae19acf76674e5649f05078c6365810ba9b0999b689d14cd51f32b8b1272",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "---------------------------------------------------------------------------",
+  "summary": "--------------------------------------------------------------------------- is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:item-9d66dea1:1",
+      "text": "--------------------------------------------------------------------------- has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "item-9d66dea1"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does --------------------------------------------------------------------------- serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:item-9d66dea1",
+    "language": "python",
+    "moduleName": "tests.test_tools_functional",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.650Z"
+}

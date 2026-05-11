@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "what-i-do-a929e628",
+  "sourceHash": "a929e62826769be5ad430b6c2d6a0e0ca27ab0872066c1c5175099052367fcb3",
+  "semanticHash": "ae7c4c220c832d699e5805d0fb61d507ebf1faabf675f1287863195942e86654",
+  "extractionHash": "ba37151aba232e0cf8c37b155da4444b578917dca376e525af2bd8af87d6d0d6",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "What I do",
+  "summary": "description: Create, review, or update a structured race card. Load when the athlete asks to set up a race, fill in race strategy, review a race plan, or edit any section of a race card (pacing, nutrition, climbs, logistics, kit, warmup, protocols, YoY, readiness gate). Encodes the full section-by-section propose/confirm/apply flow and general-vs-personal boundary rules.",
+  "concepts": [
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:apply",
+      "name": "apply",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:section",
+      "name": "section",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:athlete",
+      "name": "athlete",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:propose",
+      "name": "propose",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:personal",
+      "name": "personal",
+      "description": "Frequently referenced concept in What I do."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:create",
+      "name": "Create,",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:yoy",
+      "name": "YoY,",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:build",
+      "name": "Build",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:before",
+      "name": "Before",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:always",
+      "name": "Always",
+      "description": "Named entity mentioned in What I do."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:what-i-do-a929e628:1",
+      "text": "description: Create, review, or update a structured race card.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-a929e628"
+    },
+    {
+      "id": "claim:what-i-do-a929e628:2",
+      "text": "Load when the athlete asks to set up a race, fill in race strategy, review a race plan, or edit any section of a race card (pacing, nutrition, climbs, logistics, kit, warmup, protocols, YoY, readiness gate).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-a929e628"
+    },
+    {
+      "id": "claim:what-i-do-a929e628:3",
+      "text": "Encodes the full section-by-section propose/confirm/apply flow and general-vs-personal boundary rules.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-a929e628"
+    },
+    {
+      "id": "claim:what-i-do-a929e628:4",
+      "text": "## What I do Build and maintain structured race cards — per-event strategy documents stored in the events table payload_json .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-a929e628"
+    }
+  ],
+  "questions": [
+    "How does race relate to What I do?",
+    "How does apply relate to What I do?",
+    "How does section relate to What I do?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:45:09.347Z"
+}

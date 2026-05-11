@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "dillier-classic-race-reference-74aedee5",
+  "sourceHash": "74aedee509d681908fbd33b250e1a6fef52af99b92c56e59c38322f64d4d0b04",
+  "semanticHash": "ebb5ea4e64f40e0c5bc9b40979e96a1c19aee7f3af66bb6d1a50cad64a43e9f2",
+  "extractionHash": "51059c8f0585d999aa026625cd5616b00f8e211a868634a7674a9bb449c332ef",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Dillier Classic — Race Reference",
+  "summary": "Dillier Classic — Race Reference > Personal results, race strategy, power card, and cramp prevention notes live in the events table ( propose_race_* / apply_race_* ). --- ## Race Overview The Dillier Classic is an annual road cycling sportive in central Switzerland, named after Silvan Dillier. - Distance: ~127 km - Elevation: ~2,600m - Format: 8 timed climb segments.",
+  "concepts": [
+    {
+      "id": "concept:climbs",
+      "name": "climbs",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "concept:group",
+      "name": "group",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "concept:climb",
+      "name": "climb",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "concept:power",
+      "name": "power",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "concept:after",
+      "name": "after",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "concept:flat",
+      "name": "flat",
+      "description": "Frequently referenced concept in Dillier Classic — Race Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:classic-race-reference",
+      "name": "Classic — Race Reference",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "entity:race-overview",
+      "name": "Race Overview",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "entity:dillier-classic",
+      "name": "Dillier Classic",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "entity:switzerland",
+      "name": "Switzerland,",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    },
+    {
+      "id": "entity:silvan-dillier",
+      "name": "Silvan Dillier.",
+      "description": "Named entity mentioned in Dillier Classic — Race Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:dillier-classic-race-reference-74aedee5:1",
+      "text": "Dillier Classic — Race Reference > Personal results, race strategy, power card, and cramp prevention notes live in the events table ( propose_race_* / apply_race_* ).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "dillier-classic-race-reference-74aedee5"
+    },
+    {
+      "id": "claim:dillier-classic-race-reference-74aedee5:2",
+      "text": "--- ## Race Overview The Dillier Classic is an annual road cycling sportive in central Switzerland, named after Silvan Dillier.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "dillier-classic-race-reference-74aedee5"
+    },
+    {
+      "id": "claim:dillier-classic-race-reference-74aedee5:3",
+      "text": "- Distance: ~127 km - Elevation: ~2,600m - Format: 8 timed climb segments.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "dillier-classic-race-reference-74aedee5"
+    },
+    {
+      "id": "claim:dillier-classic-race-reference-74aedee5:4",
+      "text": "The athlete's final result is the aggregate time across all 8 timed climbs only.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "dillier-classic-race-reference-74aedee5"
+    }
+  ],
+  "questions": [
+    "How does climbs relate to Dillier Classic — Race Reference?",
+    "How does group relate to Dillier Classic — Race Reference?",
+    "How does climb relate to Dillier Classic — Race Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:31.884Z"
+}

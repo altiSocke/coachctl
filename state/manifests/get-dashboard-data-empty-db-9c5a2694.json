@@ -1,0 +1,19 @@
+{
+  "sourceId": "get-dashboard-data-empty-db-9c5a2694",
+  "title": "── get_dashboard_data — empty DB ─────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_site.py",
+  "repoRelativePath": "tests/test_site.py",
+  "storedPath": "raw/sources/get-dashboard-data-empty-db-9c5a2694.py",
+  "extractedTextPath": "state/extracts/get-dashboard-data-empty-db-9c5a2694.md",
+  "extractedMetadataPath": "state/extracts/get-dashboard-data-empty-db-9c5a2694.json",
+  "extractionHash": "42d0bc63c1cf21456e58d3cd097d3b8797df1a2bb0de962a4b22061ae0567998",
+  "mimeType": "application/octet-stream",
+  "contentHash": "9c5a26945359af8ee07a7d915c45e36285ff9351a870843e90f4414ae928ff56",
+  "semanticHash": "9c5a26945359af8ee07a7d915c45e36285ff9351a870843e90f4414ae928ff56",
+  "createdAt": "2026-05-11T08:43:21.757Z",
+  "updatedAt": "2026-05-11T08:43:21.757Z"
+}

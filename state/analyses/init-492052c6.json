@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "init-492052c6",
+  "sourceHash": "492052c675012b5040662cba8e712fb1be2194fffeed414debbacf6bf1c0e88c",
+  "semanticHash": "492052c675012b5040662cba8e712fb1be2194fffeed414debbacf6bf1c0e88c",
+  "extractionHash": "fa288f67077ceced06a17527d3133b0d9cab6d3029c03ba7a0fd10d17084ee01",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "__init__",
+  "summary": "__init__ is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:init-492052c6:1",
+      "text": "__init__ has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "init-492052c6"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does __init__ serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:init-492052c6",
+    "language": "python",
+    "moduleName": "coachctl.tools",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:36.013Z"
+}

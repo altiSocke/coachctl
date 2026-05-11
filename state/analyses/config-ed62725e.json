@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "config-ed62725e",
+  "sourceHash": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+  "semanticHash": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+  "extractionHash": "0b559451562840c8f6de746a78cdae1dd477dccf40eed7715190f67a765bc6ca",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "config",
+  "summary": "config is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:config-ed62725e:1",
+      "text": "config has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "config-ed62725e"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does config serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:config-ed62725e",
+    "language": "python",
+    "moduleName": "coachctl.config",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:31.497Z"
+}

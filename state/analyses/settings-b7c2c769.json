@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "settings-b7c2c769",
+  "sourceHash": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+  "semanticHash": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+  "extractionHash": "4722d42f2428bf413596585ab303b200237659f5df8bf0739ece5a1d5660e3c1",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "settings",
+  "summary": "settings Format: JSON Top-level: object Size: 1 Nested depth: 6 ## Schema - hooks: object (2 keys) ## Preview json { \"hooks\": { \"SessionStart\": [ { \"matcher\": \"startup\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"resume\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"clear\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"compact\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] } ], …",
+  "concepts": [
+    {
+      "id": "concept:hooks",
+      "name": "hooks",
+      "description": "Frequently referenced concept in settings."
+    },
+    {
+      "id": "concept:claude",
+      "name": "claude",
+      "description": "Frequently referenced concept in settings."
+    },
+    {
+      "id": "concept:command",
+      "name": "command",
+      "description": "Frequently referenced concept in settings."
+    },
+    {
+      "id": "concept:matcher",
+      "name": "matcher",
+      "description": "Frequently referenced concept in settings."
+    },
+    {
+      "id": "concept:node",
+      "name": "node",
+      "description": "Frequently referenced concept in settings."
+    },
+    {
+      "id": "concept:project",
+      "name": "project",
+      "description": "Frequently referenced concept in settings."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in settings."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in settings."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in settings."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in settings."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in settings."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in settings."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:settings-b7c2c769:1",
+      "text": "settings Format: JSON Top-level: object Size: 1 Nested depth: 6 ## Schema - hooks: object (2 keys) ## Preview json { \"hooks\": { \"SessionStart\": [ { \"matcher\": \"startup\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"resume\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"clear\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] }, { \"matcher\": \"compact\", \"hooks\": [ { \"type\": \"command\", \"command\": \"node \\\"$CLAUDE_PROJECT_DIR/.claude/hooks/swarmvault-graph-first.js\\\" session-start\" } ] } ], …",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "settings-b7c2c769"
+    }
+  ],
+  "questions": [
+    "How does hooks relate to settings?",
+    "How does claude relate to settings?",
+    "How does command relate to settings?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.788Z"
+}

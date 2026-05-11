@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "skillfish-a264adc7",
+  "sourceHash": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+  "semanticHash": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+  "extractionHash": "72e6c247910318c5b4ea70e213ee40ef755e0eafedbb09f0b872e14bebd2430d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": ".skillfish",
+  "summary": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"python-patterns\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".kiro/skills/python-patterns\", \"branch\": \"main\", \"sha\": \"114c27672ffb64f63c1e755a864810567a45faa7\", \"source\": \"manual\" }",
+  "concepts": [
+    {
+      "id": "concept:string",
+      "name": "string",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:branch",
+      "name": "branch",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:json",
+      "name": "json",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:name",
+      "name": "name",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:owner",
+      "name": "owner",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:path",
+      "name": "path",
+      "description": "Frequently referenced concept in .skillfish."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in .skillfish."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:skillfish-a264adc7:1",
+      "text": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"python-patterns\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".kiro/skills/python-patterns\", \"branch\": \"main\", \"sha\": \"114c27672ffb64f63c1e755a864810567a45faa7\", \"source\": \"manual\" }",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skillfish-a264adc7"
+    }
+  ],
+  "questions": [
+    "How does string relate to .skillfish?",
+    "How does branch relate to .skillfish?",
+    "How does json relate to .skillfish?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:38.058Z"
+}

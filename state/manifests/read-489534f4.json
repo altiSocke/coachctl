@@ -1,0 +1,19 @@
+{
+  "sourceId": "read-489534f4",
+  "title": "── Read ──────────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/general_wiki.py",
+  "repoRelativePath": "src/coachctl/general_wiki.py",
+  "storedPath": "raw/sources/read-489534f4.py",
+  "extractedTextPath": "state/extracts/read-489534f4.md",
+  "extractedMetadataPath": "state/extracts/read-489534f4.json",
+  "extractionHash": "0a430da5d18c9191b03f52e937b28a87603d9b5302c71e7f642a27e5f1dbb69e",
+  "mimeType": "application/octet-stream",
+  "contentHash": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+  "semanticHash": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+  "createdAt": "2026-05-11T08:43:16.472Z",
+  "updatedAt": "2026-05-11T08:43:16.472Z"
+}

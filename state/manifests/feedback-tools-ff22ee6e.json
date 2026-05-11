@@ -1,0 +1,19 @@
+{
+  "sourceId": "feedback-tools-ff22ee6e",
+  "title": "feedback_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/feedback_tools.py",
+  "repoRelativePath": "src/coachctl/tools/feedback_tools.py",
+  "storedPath": "raw/sources/feedback-tools-ff22ee6e.py",
+  "extractedTextPath": "state/extracts/feedback-tools-ff22ee6e.md",
+  "extractedMetadataPath": "state/extracts/feedback-tools-ff22ee6e.json",
+  "extractionHash": "7e6afa0d57116f398f9ec765fe2fc91650db19050e5df53620bca9c05aa4dab5",
+  "mimeType": "application/octet-stream",
+  "contentHash": "ff22ee6efd5a44aee702d4804544bf3498d1260c8aaef8cb819677735337230d",
+  "semanticHash": "ff22ee6efd5a44aee702d4804544bf3498d1260c8aaef8cb819677735337230d",
+  "createdAt": "2026-05-11T08:43:17.887Z",
+  "updatedAt": "2026-05-11T08:43:17.887Z"
+}

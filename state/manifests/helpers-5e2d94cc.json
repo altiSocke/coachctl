@@ -1,0 +1,19 @@
+{
+  "sourceId": "helpers-5e2d94cc",
+  "title": "── Helpers ──────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/events.py",
+  "repoRelativePath": "src/coachctl/events.py",
+  "storedPath": "raw/sources/helpers-5e2d94cc.py",
+  "extractedTextPath": "state/extracts/helpers-5e2d94cc.md",
+  "extractedMetadataPath": "state/extracts/helpers-5e2d94cc.json",
+  "extractionHash": "b58e452ee7d695855064860b4f5df3a8d3a0b122d7bea9bf3826d90df86f3a3f",
+  "mimeType": "application/octet-stream",
+  "contentHash": "5e2d94cc696b35ddda9ab5623d76f96d02392c8cb52d7b18b4f337e8ccfb12bc",
+  "semanticHash": "5e2d94cc696b35ddda9ab5623d76f96d02392c8cb52d7b18b4f337e8ccfb12bc",
+  "createdAt": "2026-05-11T08:43:16.412Z",
+  "updatedAt": "2026-05-11T08:43:16.412Z"
+}

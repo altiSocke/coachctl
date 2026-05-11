@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "optional-google-calendar-push-9f31fa1a",
+  "sourceHash": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+  "semanticHash": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+  "extractionHash": "2710d55ea1a80b88d5fc7abeda23a382c729e278c1d13c5a709e34ca9319606e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Optional Google Calendar push",
+  "summary": "Optional Google Calendar push is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:optional-google-calendar-push-9f31fa1a:1",
+      "text": "Optional Google Calendar push has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "optional-google-calendar-push-9f31fa1a"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does Optional Google Calendar push serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:optional-google-calendar-push-9f31fa1a",
+    "language": "python",
+    "moduleName": "coachctl.new_profile",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:35.776Z"
+}

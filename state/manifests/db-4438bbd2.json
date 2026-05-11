@@ -1,0 +1,19 @@
+{
+  "sourceId": "db-4438bbd2",
+  "title": "db",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/db.py",
+  "repoRelativePath": "src/coachctl/db.py",
+  "storedPath": "raw/sources/db-4438bbd2.py",
+  "extractedTextPath": "state/extracts/db-4438bbd2.md",
+  "extractedMetadataPath": "state/extracts/db-4438bbd2.json",
+  "extractionHash": "28e031a1548cf5b6b0e97fc10a6a675d38a75d52c978593d185dffc7afb1a7de",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4438bbd21afdb81c02cabd1eccf8b8bee5a26b28691802f4af69b5195cd30a26",
+  "semanticHash": "4438bbd21afdb81c02cabd1eccf8b8bee5a26b28691802f4af69b5195cd30a26",
+  "createdAt": "2026-05-11T08:43:16.344Z",
+  "updatedAt": "2026-05-11T08:43:16.344Z"
+}

@@ -1,0 +1,4 @@
+I scanned coachctl with SwarmVault: 128 sources -> 679 wiki pages, 712 graph nodes, 1282 edges.
+Top hubs: Personal, race, and Key.
+Most surprising link: openai semantically_similar_to pyproject.
+Everything stays local. Try: npm install -g @swarmvaultai/cli && swarmvault quickstart ./your-repo

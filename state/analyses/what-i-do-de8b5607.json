@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "what-i-do-de8b5607",
+  "sourceHash": "de8b56074ab8032b293b3798f7b5ae245f4a4bdb6641db301b809932bfba99dd",
+  "semanticHash": "1bba34c57295c49b24ff5ba2e78626fe324bfe077a8296969f4ad009a08e8731",
+  "extractionHash": "18c51c3aec22a340d42e2340e35d5ca26cda781faba84bd23273ab1257f9da67",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "What I do",
+  "summary": "description: Generate a structured weekly training scorecard. Load when the athlete asks for a weekly review, weekly summary, training check-in, or \"how's my training going\". Pulls weekly TSS, zone distribution, CTL/ATL/TSB trend, untracked activities, and RPE feedback, then produces a compact scorecard with flag analysis and next-week adjustments.",
+  "concepts": [
+    {
+      "id": "concept:week",
+      "name": "week",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:plan",
+      "name": "plan",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:sessions",
+      "name": "sessions",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:flag",
+      "name": "flag",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:next",
+      "name": "next",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:note",
+      "name": "note",
+      "description": "Frequently referenced concept in What I do."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:generate",
+      "name": "Generate",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:ctl-atl-tsb",
+      "name": "CTL/ATL/TSB",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:pull",
+      "name": "Pull",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:step",
+      "name": "Step",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:data",
+      "name": "Data",
+      "description": "Named entity mentioned in What I do."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:what-i-do-de8b5607:1",
+      "text": "description: Generate a structured weekly training scorecard.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-de8b5607"
+    },
+    {
+      "id": "claim:what-i-do-de8b5607:2",
+      "text": "Load when the athlete asks for a weekly review, weekly summary, training check-in, or \"how's my training going\".",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-de8b5607"
+    },
+    {
+      "id": "claim:what-i-do-de8b5607:3",
+      "text": "Pulls weekly TSS, zone distribution, CTL/ATL/TSB trend, untracked activities, and RPE feedback, then produces a compact scorecard with flag analysis and next-week adjustments.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-de8b5607"
+    },
+    {
+      "id": "claim:what-i-do-de8b5607:4",
+      "text": "Always saves a coaching note.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-de8b5607"
+    }
+  ],
+  "questions": [
+    "How does week relate to What I do?",
+    "How does plan relate to What I do?",
+    "How does sessions relate to What I do?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:39.332Z"
+}

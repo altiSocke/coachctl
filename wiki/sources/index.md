@@ -1,0 +1,289 @@
+---
+page_id: 'sources:index'
+kind: index
+cssclasses:
+  - swarmvault
+  - sv-index
+title: Sources
+tags:
+  - index
+  - sources
+source_ids: []
+project_ids: []
+node_ids: []
+freshness: fresh
+status: active
+confidence: 1
+created_at: '2026-05-11T08:45:11.135Z'
+updated_at: '2026-05-11T08:45:11.135Z'
+compiled_from:
+  - activity-tools-4251b5fd
+  - allow-uv-run-from-repo-root-30cc3aa3
+  - alpenbrevet-race-reference-e582446a
+  - app-75ed4433
+  - athlete-profile-eed5f509
+  - athlete-tools-c968b16f
+  - bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550
+  - candidates-5bcf0e57
+  - >-
+    carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce
+  - coachctl-architecture-conventions-8a2f1253
+  - coachctl-strava-training-agent-7a3ae9ac
+  - code-repo-33978ebf
+  - code-root-fa300ffa
+  - config-ed62725e
+  - cycling-training-science-reference-aa12e3c8
+  - dashboard-ux-audit-8bc8624b
+  - db-4438bbd2
+  - deep-research-2f018e7c
+  - >-
+    description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6
+  - dev-app-9552e8c8
+  - dillier-classic-race-reference-74aedee5
+  - endurance-nutrition-science-reference-2c888727
+  - endurance-training-principles-science-reference-318c6f9d
+  - env-tools-85fd1cad
+  - event-tools-4028185c
+  - exercise-nutrition-timing-paper-catalogue-1aca1a30
+  - external-nasal-dilator-strips-in-endurance-sport-b2567952
+  - feedback-tools-ff22ee6e
+  - fitness-tools-4c8a250b
+  - fixtures-289681c2
+  - fixtures-57e82233
+  - fixtures-719a3216
+  - fixtures-b923c1f4
+  - foot-health-paper-catalogue-fb00356d
+  - foot-health-science-reference-03307eb2
+  - full-db-schema-mirror-of-db-py-init-db-a3271966
+  - general-wiki-log-220f0221
+  - get-conn-4fe27bf2
+  - get-dashboard-data-empty-db-9c5a2694
+  - grade-cost-factor-f7014915
+  - greifenseelauf-half-marathon-87ebe4d4
+  - greifenseelauf-race-facts-b1321de2
+  - helpers-5e2d94cc
+  - helpers-be6e284d
+  - hooks-a17f6f95
+  - init-492052c6
+  - init-65b76ffa
+  - init-e3b0c442
+  - injury-prevention-science-reference-59a1b257
+  - insert-plan-and-events-a82f6402
+  - insights-8a2efcf8
+  - item-9d66dea1
+  - kreuzegg-classic-berg-halbmarathon-e9d08de5
+  - list-files-71abed7b
+  - main-07eb9572
+  - migrate-f5ef3835
+  - mock-athlete-fixture-1812cb4d
+  - ngp-algorithm-9949f73f
+  - nutrients-17-00918-3a984432
+  - oauth-helpers-ca87b67b
+  - openai-17bab3f1
+  - openai-786b054a
+  - openai-df0ed566
+  - openai-f9bd5846
+  - opencode-json-a0cbc058
+  - >-
+    opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141
+  - optional-google-calendar-push-9f31fa1a
+  - >-
+    ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3
+  - parse-date-3a759610
+  - percussion-massage-massage-guns-evidence-summary-d2329e68
+  - periodization-templates-science-reference-b76292e1
+  - personality-style-a474eea3
+  - plan-tools-821c4c46
+  - projects-ae86e2f4
+  - public-api-cb65991f
+  - pyproject-0d00c775
+  - python-patterns-edad9e6a
+  - raw-general-immutable-public-source-documents-1d455c7d
+  - read-489534f4
+  - read-wiki-868b64e4
+  - readiness-tools-087135ec
+  - recovery-tools-paper-catalogue-e8cbe051
+  - running-shoes-paper-catalogue-8c70bd7a
+  - running-training-science-reference-72f13fcc
+  - safe-resolve-60117322
+  - security-review-skill-58079098
+  - server-062915e6
+  - settings-b7c2c769
+  - site-531bcefc
+  - site-tools-4beea17c
+  - skill-show-dashboard-cf665da6
+  - skillfish-1c853384
+  - skillfish-3d8fffc6
+  - skillfish-65c158e0
+  - skillfish-a264adc7
+  - skillfish-e96604ef
+  - sleep-endurance-athlete-guide-e128e194
+  - sola-stafette-4b5d5264
+  - sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8
+  - strava-credentials-keep-secret-never-commit-d742f824
+  - >-
+    strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9
+  - stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd
+  - stretching-science-reference-1c8a0e4f
+  - subcommands-d30e7bf1
+  - swarmvault-config-b6c23841
+  - swarmvault-graph-first-01587800
+  - swarmvault-graph-first-9c4f5b47
+  - swarmvault-rules-7d1dab2a
+  - swarmvault-schema-b10ad2d9
+  - sync-tools-56fe777d
+  - test-config-c071c562
+  - test-driven-development-workflow-2f5af84b
+  - test-tools-smoke-23acf85c
+  - >-
+    the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9
+  - tour-de-l-uetliberg-tdu-77461fbe
+  - training-gear-science-reference-1b98dbfa
+  - tss-estimates-per-sport-intensity-minutes-tss-153ff1d5
+  - update-0842ad5d
+  - uv-4d480313
+  - verification-loop-skill-beeb59cf
+  - what-i-do-1fa739a7
+  - what-i-do-3becbaf3
+  - what-i-do-a929e628
+  - what-i-do-bb6e5c90
+  - what-i-do-de8b5607
+  - wiki-base-29e27f15
+  - wiki-tools-f7b7c96c
+  - with-valid-data-json-555ad9af
+managed_by: system
+backlinks: []
+schema_hash: 874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720
+source_hashes: {}
+source_semantic_hashes: {}
+---
+# Sources
+
+- [[sources/activity-tools-4251b5fd|activity_tools]]
+- [[sources/allow-uv-run-from-repo-root-30cc3aa3|allow uv run from repo root]]
+- [[sources/alpenbrevet-race-reference-e582446a|Alpenbrevet — Race Reference]]
+- [[sources/app-75ed4433|app]]
+- [[sources/athlete-profile-eed5f509|── Athlete Profile ────────────────────────────────────]]
+- [[sources/athlete-tools-c968b16f|athlete_tools]]
+- [[sources/bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550|Bootstrap: load secrets from <DATA_ROOT>/.env if AGENT_DATA_ROOT is set,]]
+- [[sources/candidates-5bcf0e57|Candidates]]
+- [[sources/carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce|Carbohydrate Supplementation for Elite Long-Distance Endurance — Paper Catalogue]]
+- [[sources/coachctl-architecture-conventions-8a2f1253|coachctl — Architecture & Conventions]]
+- [[sources/coachctl-strava-training-agent-7a3ae9ac|coachctl — Strava Training Agent]]
+- [[sources/code-repo-33978ebf|── Code repo ────────────────────────────────────────────────────────────────]]
+- [[sources/code-root-fa300ffa|── code_root ─────────────────────────────────────────────────────────────────]]
+- [[sources/config-ed62725e|config]]
+- [[sources/cycling-training-science-reference-aa12e3c8|Cycling Training — Science Reference]]
+- [[sources/dashboard-ux-audit-8bc8624b|Dashboard UX Audit]]
+- [[sources/db-4438bbd2|db]]
+- [[sources/deep-research-2f018e7c|Deep Research]]
+- [[sources/description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6|description: SwarmVault graph-first repository instructions. alwaysApply: true]]
+- [[sources/dev-app-9552e8c8|_dev_app]]
+- [[sources/dillier-classic-race-reference-74aedee5|Dillier Classic — Race Reference]]
+- [[sources/endurance-nutrition-science-reference-2c888727|Endurance Nutrition — Science Reference]]
+- [[sources/endurance-training-principles-science-reference-318c6f9d|Endurance Training Principles — Science Reference]]
+- [[sources/env-tools-85fd1cad|env_tools]]
+- [[sources/event-tools-4028185c|event_tools]]
+- [[sources/exercise-nutrition-timing-paper-catalogue-1aca1a30|Exercise Nutrition Timing — Paper Catalogue]]
+- [[sources/external-nasal-dilator-strips-in-endurance-sport-b2567952|External Nasal Dilator Strips in Endurance Sport]]
+- [[sources/feedback-tools-ff22ee6e|feedback_tools]]
+- [[sources/fitness-tools-4c8a250b|fitness_tools]]
+- [[sources/fixtures-289681c2|── Fixtures ──────────────────────────────────────────────────────────────────]]
+- [[sources/fixtures-57e82233|── Fixtures ──────────────────────────────────────────────────────────────────]]
+- [[sources/fixtures-719a3216|── Fixtures ──────────────────────────────────────────────────────────────────]]
+- [[sources/fixtures-b923c1f4|── Fixtures ──────────────────────────────────────────────────────────────────]]
+- [[sources/foot-health-paper-catalogue-fb00356d|Foot Health — Paper Catalogue]]
+- [[sources/foot-health-science-reference-03307eb2|Foot Health — Science Reference]]
+- [[sources/full-db-schema-mirror-of-db-py-init-db-a3271966|── Full DB schema (mirror of db.py init_db) ──────────────────────────────────]]
+- [[sources/general-wiki-log-220f0221|General Wiki Log]]
+- [[sources/get-conn-4fe27bf2|── get_conn ──────────────────────────────────────────────────────────────────]]
+- [[sources/get-dashboard-data-empty-db-9c5a2694|── get_dashboard_data — empty DB ─────────────────────────────────────────────]]
+- [[sources/grade-cost-factor-f7014915|── _grade_cost_factor ────────────────────────────────────────────────────────]]
+- [[sources/greifenseelauf-half-marathon-87ebe4d4|Greifenseelauf — Half Marathon]]
+- [[sources/greifenseelauf-race-facts-b1321de2|Greifenseelauf — Race Facts]]
+- [[sources/helpers-5e2d94cc|── Helpers ──────────────────────────────────────────────────────────────────]]
+- [[sources/helpers-be6e284d|── Helpers ───────────────────────────────────────────────────────────────────]]
+- [[sources/hooks-a17f6f95|hooks]]
+- [[sources/init-492052c6|__init__]]
+- [[sources/init-65b76ffa|__init__]]
+- [[sources/init-e3b0c442|__init__]]
+- [[sources/injury-prevention-science-reference-59a1b257|Injury Prevention — Science Reference]]
+- [[sources/insert-plan-and-events-a82f6402|── _insert_plan_and_events ───────────────────────────────────────────────────]]
+- [[sources/insights-8a2efcf8|Insights]]
+- [[sources/item-9d66dea1|---------------------------------------------------------------------------]]
+- [[sources/kreuzegg-classic-berg-halbmarathon-e9d08de5|Kreuzegg Classic — Berg-Halbmarathon]]
+- [[sources/list-files-71abed7b|── list_files ────────────────────────────────────────────────────────────────]]
+- [[sources/main-07eb9572|__main__]]
+- [[sources/migrate-f5ef3835|migrate]]
+- [[sources/mock-athlete-fixture-1812cb4d|── Mock athlete fixture ──────────────────────────────────────────────────────]]
+- [[sources/ngp-algorithm-9949f73f|NGP algorithm]]
+- [[sources/nutrients-17-00918-3a984432|nutrients-17-00918]]
+- [[sources/oauth-helpers-ca87b67b|── OAuth helpers ─────────────────────────────────────────────────────────────]]
+- [[sources/openai-17bab3f1|openai]]
+- [[sources/openai-786b054a|openai]]
+- [[sources/openai-df0ed566|openai]]
+- [[sources/openai-f9bd5846|openai]]
+- [[sources/opencode-json-a0cbc058|opencode.json]]
+- [[sources/opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141|opencode local config — contains live API tokens; use opencode.json.example as template]]
+- [[sources/optional-google-calendar-push-9f31fa1a|Optional Google Calendar push]]
+- [[sources/ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3|Ordered from most to least specific so "vo2max" matches before "moderate" etc.]]
+- [[sources/parse-date-3a759610|── _parse_date ───────────────────────────────────────────────────────────────]]
+- [[sources/percussion-massage-massage-guns-evidence-summary-d2329e68|Percussion Massage (Massage Guns) — Evidence Summary]]
+- [[sources/periodization-templates-science-reference-b76292e1|Periodization Templates — Science Reference]]
+- [[sources/personality-style-a474eea3|Personality & style]]
+- [[sources/plan-tools-821c4c46|plan_tools]]
+- [[sources/projects-ae86e2f4|Projects]]
+- [[sources/public-api-cb65991f|Public API]]
+- [[sources/pyproject-0d00c775|pyproject]]
+- [[sources/python-patterns-edad9e6a|Python Patterns]]
+- [[sources/raw-general-immutable-public-source-documents-1d455c7d|raw/general/ — Immutable public source documents]]
+- [[sources/read-489534f4|── Read ──────────────────────────────────────────────────────────────────────]]
+- [[sources/read-wiki-868b64e4|── read_wiki ─────────────────────────────────────────────────────────────────]]
+- [[sources/readiness-tools-087135ec|readiness_tools]]
+- [[sources/recovery-tools-paper-catalogue-e8cbe051|Recovery Tools — Paper Catalogue]]
+- [[sources/running-shoes-paper-catalogue-8c70bd7a|Running Shoes — Paper Catalogue]]
+- [[sources/running-training-science-reference-72f13fcc|Running Training — Science Reference]]
+- [[sources/safe-resolve-60117322|── safe_resolve ──────────────────────────────────────────────────────────────]]
+- [[sources/security-review-skill-58079098|Security Review Skill]]
+- [[sources/server-062915e6|server]]
+- [[sources/settings-b7c2c769|settings]]
+- [[sources/site-531bcefc|site]]
+- [[sources/site-tools-4beea17c|site_tools]]
+- [[sources/skill-show-dashboard-cf665da6|Skill: show-dashboard]]
+- [[sources/skillfish-1c853384|.skillfish]]
+- [[sources/skillfish-3d8fffc6|.skillfish]]
+- [[sources/skillfish-65c158e0|.skillfish]]
+- [[sources/skillfish-a264adc7|.skillfish]]
+- [[sources/skillfish-e96604ef|.skillfish]]
+- [[sources/sleep-endurance-athlete-guide-e128e194|Sleep — Endurance Athlete Guide]]
+- [[sources/sola-stafette-4b5d5264|SOLA-Stafette]]
+- [[sources/sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8|SOLA-Stafette — Strecken (source: asvz.ch/event/643-strecken)]]
+- [[sources/strava-credentials-keep-secret-never-commit-d742f824|Strava credentials (keep secret, never commit)]]
+- [[sources/strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9|Strength Training for Endurance & Team Sport Athletes — Science Reference]]
+- [[sources/stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd|Stretching in Endurance & Team Sports — Paper Catalogue]]
+- [[sources/stretching-science-reference-1c8a0e4f|Stretching — Science Reference]]
+- [[sources/subcommands-d30e7bf1|── Subcommands ────────────────────────────────────────────────────────────]]
+- [[sources/swarmvault-config-b6c23841|swarmvault.config]]
+- [[sources/swarmvault-graph-first-01587800|swarmvault-graph-first]]
+- [[sources/swarmvault-graph-first-9c4f5b47|swarmvault-graph-first]]
+- [[sources/swarmvault-rules-7d1dab2a|SwarmVault Rules]]
+- [[sources/swarmvault-schema-b10ad2d9|SwarmVault Schema]]
+- [[sources/sync-tools-56fe777d|sync_tools]]
+- [[sources/test-config-c071c562|test_config]]
+- [[sources/test-driven-development-workflow-2f5af84b|Test-Driven Development Workflow]]
+- [[sources/test-tools-smoke-23acf85c|test_tools_smoke]]
+- [[sources/the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9|The canonical set of wiki files and their purpose. Single source of truth.]]
+- [[sources/tour-de-l-uetliberg-tdu-77461fbe|Tour de l'Uetliberg (TdU)]]
+- [[sources/training-gear-science-reference-1b98dbfa|Training Gear — Science Reference]]
+- [[sources/tss-estimates-per-sport-intensity-minutes-tss-153ff1d5|TSS estimates per sport/intensity (minutes → TSS)]]
+- [[sources/update-0842ad5d|update]]
+- [[sources/uv-4d480313|uv]]
+- [[sources/verification-loop-skill-beeb59cf|Verification Loop Skill]]
+- [[sources/what-i-do-1fa739a7|What I do]]
+- [[sources/what-i-do-3becbaf3|What I do]]
+- [[sources/what-i-do-a929e628|What I do]]
+- [[sources/what-i-do-bb6e5c90|What I do]]
+- [[sources/what-i-do-de8b5607|What I do]]
+- [[sources/wiki-base-29e27f15|wiki_base]]
+- [[sources/wiki-tools-f7b7c96c|wiki_tools]]
+- [[sources/with-valid-data-json-555ad9af|── With valid data.json ───────────────────────────────────────────────────────]]

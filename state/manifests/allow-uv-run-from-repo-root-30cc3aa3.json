@@ -1,0 +1,19 @@
+{
+  "sourceId": "allow-uv-run-from-repo-root-30cc3aa3",
+  "title": "allow uv run from repo root",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/scripts/migrate_races_to_events.py",
+  "repoRelativePath": "scripts/migrate_races_to_events.py",
+  "storedPath": "raw/sources/allow-uv-run-from-repo-root-30cc3aa3.py",
+  "extractedTextPath": "state/extracts/allow-uv-run-from-repo-root-30cc3aa3.md",
+  "extractedMetadataPath": "state/extracts/allow-uv-run-from-repo-root-30cc3aa3.json",
+  "extractionHash": "6884f08dc24a1ca2e2b48257619db30d106e155d6a45ad302c67b5638abfec78",
+  "mimeType": "application/octet-stream",
+  "contentHash": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+  "semanticHash": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+  "createdAt": "2026-05-11T08:43:15.755Z",
+  "updatedAt": "2026-05-11T08:43:15.755Z"
+}

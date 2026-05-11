@@ -1,0 +1,77 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141",
+  "sourceHash": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+  "semanticHash": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+  "extractionHash": "e2e9d4a4d7ad2b564a152bbebd28f29a9c77c3c1f7d598504f8860b8fdeebdea",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "opencode local config — contains live API tokens; use opencode.json.example as template",
+  "summary": ".env pycache / *.pyc .ruff_cache/ .venv/ dist/ *.egg-info/ # opencode local config — contains live API tokens; use opencode.json.example as template opencode.json # Editor / IDE state .obsidian/ .idea/ *.code-workspace # Defensive — these directories belong in the personal repo, never here wiki/personal/ data/ config/profiles/ profile/",
+  "concepts": [
+    {
+      "id": "concept:opencode",
+      "name": "opencode",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "concept:config",
+      "name": "config",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "concept:json",
+      "name": "json",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "concept:personal",
+      "name": "personal",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "concept:belong",
+      "name": "belong",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "concept:cache",
+      "name": "cache",
+      "description": "Frequently referenced concept in opencode local config — contains live API tokens; use opencode.json.example as template."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:editor",
+      "name": "Editor",
+      "description": "Named entity mentioned in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "entity:defensive",
+      "name": "Defensive —",
+      "description": "Named entity mentioned in opencode local config — contains live API tokens; use opencode.json.example as template."
+    },
+    {
+      "id": "entity:dist",
+      "name": "dist/",
+      "description": "Named entity mentioned in opencode local config — contains live API tokens; use opencode.json.example as template."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141:1",
+      "text": ".env pycache / *.pyc .ruff_cache/ .venv/ dist/ *.egg-info/ # opencode local config — contains live API tokens; use opencode.json.example as template opencode.json # Editor / IDE state .obsidian/ .idea/ *.code-workspace # Defensive — these directories belong in the personal repo, never here wiki/personal/ data/ config/profiles/ profile/",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+    }
+  ],
+  "questions": [
+    "How does opencode relate to opencode local config — contains live API tokens; use opencode.json.example as template?",
+    "How does config relate to opencode local config — contains live API tokens; use opencode.json.example as template?",
+    "How does json relate to opencode local config — contains live API tokens; use opencode.json.example as template?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:34.959Z"
+}

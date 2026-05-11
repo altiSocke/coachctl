@@ -1,0 +1,19 @@
+{
+  "sourceId": "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9",
+  "title": "The canonical set of wiki files and their purpose. Single source of truth.",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/wiki.py",
+  "repoRelativePath": "src/coachctl/wiki.py",
+  "storedPath": "raw/sources/the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9.py",
+  "extractedTextPath": "state/extracts/the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9.md",
+  "extractedMetadataPath": "state/extracts/the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9.json",
+  "extractionHash": "a42f1b22965ac8756388c3aa5798da9a0c6dfb3d19bb645d40d862964b535b56",
+  "mimeType": "application/octet-stream",
+  "contentHash": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+  "semanticHash": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+  "createdAt": "2026-05-11T08:43:19.145Z",
+  "updatedAt": "2026-05-11T08:43:19.145Z"
+}

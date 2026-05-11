@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "full-db-schema-mirror-of-db-py-init-db-a3271966",
+  "sourceHash": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+  "semanticHash": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+  "extractionHash": "30d05f41a73f80a421cce717928e36d64fa706e94a09a40f18b6e2e78b01c158",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Full DB schema (mirror of db.py init_db) ──────────────────────────────────",
+  "summary": "── Full DB schema (mirror of db.py init_db) ────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:full-db-schema-mirror-of-db-py-init-db-a3271966:1",
+      "text": "── Full DB schema (mirror of db.py init_db) ────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "full-db-schema-mirror-of-db-py-init-db-a3271966"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Full DB schema (mirror of db.py init_db) ────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:full-db-schema-mirror-of-db-py-init-db-a3271966",
+    "language": "python",
+    "moduleName": "tests.conftest",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.028Z"
+}

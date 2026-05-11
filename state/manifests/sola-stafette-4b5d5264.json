@@ -1,0 +1,18 @@
+{
+  "sourceId": "sola-stafette-4b5d5264",
+  "title": "SOLA-Stafette",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/wiki/races/sola.md",
+  "repoRelativePath": "wiki/races/sola.md",
+  "storedPath": "raw/sources/sola-stafette-4b5d5264.md",
+  "extractedTextPath": "state/extracts/sola-stafette-4b5d5264.md",
+  "extractedMetadataPath": "state/extracts/sola-stafette-4b5d5264.json",
+  "extractionHash": "a042ad349884fc0bd2d7ad47b0bd45a0067c3f8ace2f6d891a8825ac8a2a8e6c",
+  "mimeType": "text/markdown",
+  "contentHash": "4b5d52645d69088f0d54dd245899d7ec18ca93d259a02ec36e5fe929ef751299",
+  "semanticHash": "ddebad969caed2cd326799021829d202754ed117b8f98ecd7d875ac63ef7afa2",
+  "createdAt": "2026-05-11T08:43:26.731Z",
+  "updatedAt": "2026-05-11T08:43:26.731Z"
+}

@@ -1,0 +1,19 @@
+{
+  "sourceId": "sync-tools-56fe777d",
+  "title": "sync_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/sync_tools.py",
+  "repoRelativePath": "src/coachctl/tools/sync_tools.py",
+  "storedPath": "raw/sources/sync-tools-56fe777d.py",
+  "extractedTextPath": "state/extracts/sync-tools-56fe777d.md",
+  "extractedMetadataPath": "state/extracts/sync-tools-56fe777d.json",
+  "extractionHash": "7e992ff66a7fb197ecb236764232455f41aecb06de6c5899a3a3a9c4f8ca5c58",
+  "mimeType": "application/octet-stream",
+  "contentHash": "56fe777dd9cacaf1bcbc5bdb415649338dfb797fa0d23203925fccd1a6aeb8e3",
+  "semanticHash": "56fe777dd9cacaf1bcbc5bdb415649338dfb797fa0d23203925fccd1a6aeb8e3",
+  "createdAt": "2026-05-11T08:43:18.458Z",
+  "updatedAt": "2026-05-11T08:43:18.458Z"
+}

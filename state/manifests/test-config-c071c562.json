@@ -1,0 +1,19 @@
+{
+  "sourceId": "test-config-c071c562",
+  "title": "test_config",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_config.py",
+  "repoRelativePath": "tests/test_config.py",
+  "storedPath": "raw/sources/test-config-c071c562.py",
+  "extractedTextPath": "state/extracts/test-config-c071c562.md",
+  "extractedMetadataPath": "state/extracts/test-config-c071c562.json",
+  "extractionHash": "5936ab8041bdd417c10ece0c06a0d9d4dbb0d53eb08671d15337dcfac7567b3a",
+  "mimeType": "application/octet-stream",
+  "contentHash": "c071c56213554f9042c598ca8c8e2bcf27e4124fc8b3715214afa78651e8e7ca",
+  "semanticHash": "c071c56213554f9042c598ca8c8e2bcf27e4124fc8b3715214afa78651e8e7ca",
+  "createdAt": "2026-05-11T08:43:19.752Z",
+  "updatedAt": "2026-05-11T08:43:19.752Z"
+}

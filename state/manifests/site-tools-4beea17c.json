@@ -1,0 +1,19 @@
+{
+  "sourceId": "site-tools-4beea17c",
+  "title": "site_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/site_tools.py",
+  "repoRelativePath": "src/coachctl/tools/site_tools.py",
+  "storedPath": "raw/sources/site-tools-4beea17c.py",
+  "extractedTextPath": "state/extracts/site-tools-4beea17c.md",
+  "extractedMetadataPath": "state/extracts/site-tools-4beea17c.json",
+  "extractionHash": "2bf386fd96d4505bc511b5c582286044ddc45908853611e9dbff94d04bfc6afd",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4beea17cb2fc2ca1dd1c20d30747f6eda4a5b1ab9559e16410b9e2fdb172c659",
+  "semanticHash": "4beea17cb2fc2ca1dd1c20d30747f6eda4a5b1ab9559e16410b9e2fdb172c659",
+  "createdAt": "2026-05-11T08:43:18.336Z",
+  "updatedAt": "2026-05-11T08:43:18.336Z"
+}

@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "skillfish-3d8fffc6",
+  "sourceHash": "3d8fffc64a29fa91ddd090999087cd643cffcd6debdb0629d7d1157a9a5084de",
+  "semanticHash": "3d8fffc64a29fa91ddd090999087cd643cffcd6debdb0629d7d1157a9a5084de",
+  "extractionHash": "d23c69e69b569ca2762e7b8d777430305f94d5b6391db8d37a37df8f34054a2c",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": ".skillfish",
+  "summary": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"deep-research\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".agents/skills/deep-research\", \"branch\": \"main\", \"sha\": \"0c505db60e5d0eeb10ba045f8dd113ff04bb1a60\", \"source\": \"manual\" }",
+  "concepts": [
+    {
+      "id": "concept:string",
+      "name": "string",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:branch",
+      "name": "branch",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:json",
+      "name": "json",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:name",
+      "name": "name",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:owner",
+      "name": "owner",
+      "description": "Frequently referenced concept in .skillfish."
+    },
+    {
+      "id": "concept:path",
+      "name": "path",
+      "description": "Frequently referenced concept in .skillfish."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in .skillfish."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in .skillfish."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:skillfish-3d8fffc6:1",
+      "text": ".skillfish Format: JSON Top-level: object Size: 8 Nested depth: 1 ## Schema - version: number - name: string - owner: string - repo: string - path: string - branch: string - sha: string - source: string ## Preview json { \"version\": 2, \"name\": \"deep-research\", \"owner\": \"affaan-m\", \"repo\": \"everything-claude-code\", \"path\": \".agents/skills/deep-research\", \"branch\": \"main\", \"sha\": \"0c505db60e5d0eeb10ba045f8dd113ff04bb1a60\", \"source\": \"manual\" }",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skillfish-3d8fffc6"
+    }
+  ],
+  "questions": [
+    "How does string relate to .skillfish?",
+    "How does branch relate to .skillfish?",
+    "How does json relate to .skillfish?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.856Z"
+}

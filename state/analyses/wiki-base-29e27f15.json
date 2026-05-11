@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "wiki-base-29e27f15",
+  "sourceHash": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+  "semanticHash": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+  "extractionHash": "0871b39c3275e1064788e72e2538098d8783940c95f77526dcc7267c73b2120d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "wiki_base",
+  "summary": "wiki_base is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:wiki-base-29e27f15:1",
+      "text": "wiki_base has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "wiki-base-29e27f15"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does wiki_base serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:wiki-base-29e27f15",
+    "language": "python",
+    "moduleName": "coachctl.wiki_base",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:45:09.357Z"
+}

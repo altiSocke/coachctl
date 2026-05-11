@@ -1,0 +1,24 @@
+{
+  "sourceId": "pyproject-0d00c775",
+  "title": "pyproject",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/pyproject.toml",
+  "repoRelativePath": "pyproject.toml",
+  "storedPath": "raw/sources/pyproject-0d00c775.toml",
+  "extractedTextPath": "state/extracts/pyproject-0d00c775.md",
+  "extractedMetadataPath": "state/extracts/pyproject-0d00c775.json",
+  "extractionHash": "6318fdaca6067f4ec54c6c10d53f3346ac072050e8f53dc916d6aec0b6f8f20e",
+  "mimeType": "application/toml",
+  "contentHash": "0d00c7757bc8936d6b844bf5842c6d0ed1e809cb07d8001fc8295595deac950e",
+  "semanticHash": "0d00c7757bc8936d6b844bf5842c6d0ed1e809cb07d8001fc8295595deac950e",
+  "details": {
+    "format": "toml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "5"
+  },
+  "createdAt": "2026-05-11T08:43:14.775Z",
+  "updatedAt": "2026-05-11T08:43:14.775Z"
+}

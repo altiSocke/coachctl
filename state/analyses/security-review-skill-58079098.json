@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "security-review-skill-58079098",
+  "sourceHash": "58079098ea5f95604452aef459cd58fb45370fa672926db914bda20f9890ff57",
+  "semanticHash": "eac6e0263375c8932584f11a2c4ef86725af9c19ac757e04f83dbebb39d68e2b",
+  "extractionHash": "8104d2b59566d9210a6eee3dbd4b1b10701138e8159884a5e990ebacd2128b44",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Security Review Skill",
+  "summary": "description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns. # Security Review Skill This skill ensures all code follows security best practices and identifies potential vulnerabilities.",
+  "concepts": [
+    {
+      "id": "concept:error",
+      "name": "error",
+      "description": "Frequently referenced concept in Security Review Skill."
+    },
+    {
+      "id": "concept:const",
+      "name": "const",
+      "description": "Frequently referenced concept in Security Review Skill."
+    },
+    {
+      "id": "concept:security",
+      "name": "security",
+      "description": "Frequently referenced concept in Security Review Skill."
+    },
+    {
+      "id": "concept:typescript",
+      "name": "typescript",
+      "description": "Frequently referenced concept in Security Review Skill."
+    },
+    {
+      "id": "concept:users",
+      "name": "users",
+      "description": "Frequently referenced concept in Security Review Skill."
+    },
+    {
+      "id": "concept:user",
+      "name": "user",
+      "description": "Frequently referenced concept in Security Review Skill."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:use",
+      "name": "Use",
+      "description": "Named entity mentioned in Security Review Skill."
+    },
+    {
+      "id": "entity:security-review-skill-this",
+      "name": "Security Review Skill This",
+      "description": "Named entity mentioned in Security Review Skill."
+    },
+    {
+      "id": "entity:when",
+      "name": "When",
+      "description": "Named entity mentioned in Security Review Skill."
+    },
+    {
+      "id": "entity:activate-implementing",
+      "name": "Activate - Implementing",
+      "description": "Named entity mentioned in Security Review Skill."
+    },
+    {
+      "id": "entity:handling",
+      "name": "Handling",
+      "description": "Named entity mentioned in Security Review Skill."
+    },
+    {
+      "id": "entity:creating",
+      "name": "Creating",
+      "description": "Named entity mentioned in Security Review Skill."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:security-review-skill-58079098:1",
+      "text": "description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "security-review-skill-58079098"
+    },
+    {
+      "id": "claim:security-review-skill-58079098:2",
+      "text": "Provides comprehensive security checklist and patterns.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "security-review-skill-58079098"
+    },
+    {
+      "id": "claim:security-review-skill-58079098:3",
+      "text": "# Security Review Skill This skill ensures all code follows security best practices and identifies potential vulnerabilities.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "security-review-skill-58079098"
+    },
+    {
+      "id": "claim:security-review-skill-58079098:4",
+      "text": "## When to Activate - Implementing authentication or authorization - Handling user input or file uploads - Creating new API endpoints - Working with secrets or credentials - Implementing payment features - Storing or transmitting sensitive data - Integrating third-party APIs ## Security Checklist ### 1.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "security-review-skill-58079098"
+    }
+  ],
+  "questions": [
+    "How does error relate to Security Review Skill?",
+    "How does const relate to Security Review Skill?",
+    "How does security relate to Security Review Skill?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:37.033Z"
+}

@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "foot-health-paper-catalogue-fb00356d",
+  "sourceHash": "fb00356de06de0449d58af49dc3d0f66804705f30eb18899359e485e2336a5e0",
+  "semanticHash": "830fbda651bae2f671af170e928511617d32edfa983445477e73d44421cb9911",
+  "extractionHash": "712213f80f98d218d6a23219c436612d061463dae7057bfbb8db24af17331f4e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Foot Health — Paper Catalogue",
+  "summary": "Foot Health — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: foot orthoses insoles running injury systematic review; arch support overpronation biomechanics; foot strengthening intrinsic muscles running; plantar fasciitis treatment running athletes. Synthesised into: wiki/general/foot_health.md , wiki/general/gear.md --- ## SECTION A — FOOT ORTHOSES / INSOLES --- ## Paper 1 — Pires Neves et al. 2022 ⭐ META-ANALYSIS — ORTHOSES REDUCE INJURY RISK Title: Effects of Foot Orthoses on Pain and the Prevention of Lower Limb Injuries in Runners: Systematic Review and Meta-Analysis Authors: Pires Neves M et al.",
+  "concepts": [
+    {
+      "id": "concept:foot",
+      "name": "foot",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "concept:running",
+      "name": "running",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "concept:orthoses",
+      "name": "orthoses",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "concept:review",
+      "name": "review",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "concept:systematic",
+      "name": "systematic",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "concept:journal",
+      "name": "journal",
+      "description": "Frequently referenced concept in Foot Health — Paper Catalogue."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:source-pubmed",
+      "name": "Source: PubMed",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "entity:paper",
+      "name": "Paper",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "entity:pires-neves",
+      "name": "Pires Neves",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "entity:title-effects",
+      "name": "Title: Effects",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "entity:foot-orthoses",
+      "name": "Foot Orthoses",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    },
+    {
+      "id": "entity:pain",
+      "name": "Pain",
+      "description": "Named entity mentioned in Foot Health — Paper Catalogue."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:foot-health-paper-catalogue-fb00356d:1",
+      "text": "Foot Health — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: foot orthoses insoles running injury systematic review; arch support overpronation biomechanics; foot strengthening intrinsic muscles running; plantar fasciitis treatment running athletes.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-paper-catalogue-fb00356d"
+    },
+    {
+      "id": "claim:foot-health-paper-catalogue-fb00356d:2",
+      "text": "Synthesised into: wiki/general/foot_health.md , wiki/general/gear.md --- ## SECTION A — FOOT ORTHOSES / INSOLES --- ## Paper 1 — Pires Neves et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-paper-catalogue-fb00356d"
+    },
+    {
+      "id": "claim:foot-health-paper-catalogue-fb00356d:3",
+      "text": "2022 ⭐ META-ANALYSIS — ORTHOSES REDUCE INJURY RISK Title: Effects of Foot Orthoses on Pain and the Prevention of Lower Limb Injuries in Runners: Systematic Review and Meta-Analysis Authors: Pires Neves M et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-paper-catalogue-fb00356d"
+    },
+    {
+      "id": "claim:foot-health-paper-catalogue-fb00356d:4",
+      "text": "Journal: Journal of Sport Rehabilitation Year: 2022 (Nov 1); Epub Jul 2022 PMID: 35894921 DOI: 10.1123/jsr.2021-0302 Type: Systematic Review + Meta-Analysis (12 RCTs, n=5,321 runners ) Key findings: - Control group injury rate: 37% ; foot orthoses group: 24% - Risk ratio = 0.60 (95% CI 0.5–0.7, p<0.00001) — moderate-quality evidence - 40% reduction in lower limb injury risk with foot orthoses vs.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-paper-catalogue-fb00356d"
+    }
+  ],
+  "questions": [
+    "How does foot relate to Foot Health — Paper Catalogue?",
+    "How does running relate to Foot Health — Paper Catalogue?",
+    "How does orthoses relate to Foot Health — Paper Catalogue?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.162Z"
+}

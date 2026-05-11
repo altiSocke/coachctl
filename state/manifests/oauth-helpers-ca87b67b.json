@@ -1,0 +1,19 @@
+{
+  "sourceId": "oauth-helpers-ca87b67b",
+  "title": "── OAuth helpers ─────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/sync.py",
+  "repoRelativePath": "src/coachctl/sync.py",
+  "storedPath": "raw/sources/oauth-helpers-ca87b67b.py",
+  "extractedTextPath": "state/extracts/oauth-helpers-ca87b67b.md",
+  "extractedMetadataPath": "state/extracts/oauth-helpers-ca87b67b.json",
+  "extractionHash": "faefd481ecf12b46377f8e3917a209c956ad4674092e7c9445b5a09e09aac7cd",
+  "mimeType": "application/octet-stream",
+  "contentHash": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+  "semanticHash": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+  "createdAt": "2026-05-11T08:43:17.202Z",
+  "updatedAt": "2026-05-11T08:43:17.202Z"
+}

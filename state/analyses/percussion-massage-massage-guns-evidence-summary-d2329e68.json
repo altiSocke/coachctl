@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "percussion-massage-massage-guns-evidence-summary-d2329e68",
+  "sourceHash": "d2329e6864cf7baf498b37e985349aecfd44c7018a422696c8fe4a493bed331e",
+  "semanticHash": "d02b6b1acccdbb0e4c5db89ceca536a11d79ba705973c6c08786e9f72a2a5426",
+  "extractionHash": "3f9233501704cf77f0f4a43ced140fbc0bd82df11f23b69bdc2b7cf0ca262813",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Percussion Massage (Massage Guns) — Evidence Summary",
+  "summary": "Percussion Massage (Massage Guns) — Evidence Summary Last updated: 2026-04-28 | Sources: peer-reviewed literature 2019–2024, NSCA/ACSM consensus --- ## What is it? Percussive therapy devices (commonly \"massage guns\" — Theragun, Hypervolt, Ekrin, etc.) deliver rapid, repetitive axial pressure strokes to soft tissue at: - Frequency: 20–53 Hz (1200–3180 RPM typical) - Amplitude: 10–16 mm stroke depth (varies by device/head) - Duration per site: typically 30–120 s in practice; studies use 30–300 s The mechanism combines vibration therapy and myofascial compression , activating mechanoreceptors (Golgi tendon organs, Ruffini endings) and suppressing nociception via gate control. --- ## What the evidence shows ### ✅ Well-supported effects | Effect | Evidence level | Notes | |---|---|---| | Acute ROM increase (5–15°) | Strong (multiple RCTs) | Comparable to static stretching without flexibility loss | | Delayed-onset muscle soreness (DOMS) reduction | Moderate | Best when applied immediately post-exercise and at 24 h | | Perceived recovery / RPE improvement | Moderate | Likely neurological / placebo-assisted; measurable nonetheless | | Short-term pain reduction | Moderate | Gate-control mechanism; analgesic effect lasts 30–60 min | | Pre-activation warm-up effect | Moderate | 30–60 s per muscle group pre-exercise → improved force production | ### ❌ Not well-supported | Claim | Reality | |---|---| | Accelerates metabolic waste clearance (lactate) | No RCT evidence; lactate clears via aerobic metabolism regardless | | Replaces warm-up | ROM gains are acute; still need CV warm-up for hard sessions | | Structural tissue remodeling | No evidence for chronic tissue change from percussive therapy alone | | Superior to foam rolling for recovery | Comparable outcomes; no consistent superiority | --- ## Mechanisms 1.",
+  "concepts": [
+    {
+      "id": "concept:acute",
+      "name": "acute",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "concept:muscle",
+      "name": "muscle",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "concept:doms",
+      "name": "doms",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "concept:massage",
+      "name": "massage",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "concept:recovery",
+      "name": "recovery",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "concept:after",
+      "name": "after",
+      "description": "Frequently referenced concept in Percussion Massage (Massage Guns) — Evidence Summary."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:massage-massage-guns-evidence-summary-last",
+      "name": "Massage (Massage Guns) — Evidence Summary Last",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "entity:sources",
+      "name": "Sources:",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "entity:theragun-hypervolt-ekrin",
+      "name": "Theragun, Hypervolt, Ekrin,",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "entity:frequency",
+      "name": "Frequency:",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    },
+    {
+      "id": "entity:hz",
+      "name": "Hz",
+      "description": "Named entity mentioned in Percussion Massage (Massage Guns) — Evidence Summary."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:percussion-massage-massage-guns-evidence-summary-d2329e68:1",
+      "text": "Percussion Massage (Massage Guns) — Evidence Summary Last updated: 2026-04-28 | Sources: peer-reviewed literature 2019–2024, NSCA/ACSM consensus --- ## What is it?",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "percussion-massage-massage-guns-evidence-summary-d2329e68"
+    },
+    {
+      "id": "claim:percussion-massage-massage-guns-evidence-summary-d2329e68:2",
+      "text": "Percussive therapy devices (commonly \"massage guns\" — Theragun, Hypervolt, Ekrin, etc.) deliver rapid, repetitive axial pressure strokes to soft tissue at: - Frequency: 20–53 Hz (1200–3180 RPM typical) - Amplitude: 10–16 mm stroke depth (varies by device/head) - Duration per site: typically 30–120 s in practice; studies use 30–300 s The mechanism combines vibration therapy and myofascial compression , activating mechanoreceptors (Golgi tendon organs, Ruffini endings) and suppressing nociception via gate control.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "percussion-massage-massage-guns-evidence-summary-d2329e68"
+    },
+    {
+      "id": "claim:percussion-massage-massage-guns-evidence-summary-d2329e68:3",
+      "text": "--- ## What the evidence shows ### ✅ Well-supported effects | Effect | Evidence level | Notes | |---|---|---| | Acute ROM increase (5–15°) | Strong (multiple RCTs) | Comparable to static stretching without flexibility loss | | Delayed-onset muscle soreness (DOMS) reduction | Moderate | Best when applied immediately post-exercise and at 24 h | | Perceived recovery / RPE improvement | Moderate | Likely neurological / placebo-assisted; measurable nonetheless | | Short-term pain reduction | Moderate | Gate-control mechanism; analgesic effect lasts 30–60 min | | Pre-activation warm-up effect | Moderate | 30–60 s per muscle group pre-exercise → improved force production | ### ❌ Not well-supported | Claim | Reality | |---|---| | Accelerates metabolic waste clearance (lactate) | No RCT evidence; lactate clears via aerobic metabolism regardless | | Replaces warm-up | ROM gains are acute; still need CV warm-up for hard sessions | | Structural tissue remodeling | No evidence for chronic tissue change from percussive therapy alone | | Superior to foam rolling for recovery | Comparable outcomes; no consistent superiority | --- ## Mechanisms 1.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "percussion-massage-massage-guns-evidence-summary-d2329e68"
+    },
+    {
+      "id": "claim:percussion-massage-massage-guns-evidence-summary-d2329e68:4",
+      "text": "Vibration-induced inhibition: High-frequency vibration activates Ia afferents → reciprocal inhibition of agonist → reduced tone/spasm 2.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "percussion-massage-massage-guns-evidence-summary-d2329e68"
+    }
+  ],
+  "questions": [
+    "How does acute relate to Percussion Massage (Massage Guns) — Evidence Summary?",
+    "How does muscle relate to Percussion Massage (Massage Guns) — Evidence Summary?",
+    "How does doms relate to Percussion Massage (Massage Guns) — Evidence Summary?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.767Z"
+}

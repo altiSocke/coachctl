@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "app-75ed4433",
+  "sourceHash": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+  "semanticHash": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+  "extractionHash": "7beb472ea2876c5451fc84534acdeaead5a503a7a0ea128a617ff1795f0db115",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "app",
+  "summary": "app is a html module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:app-75ed4433:1",
+      "text": "app has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "app-75ed4433"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does app serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:app-75ed4433",
+    "language": "html",
+    "moduleName": "src/coachctl/dashboard/app",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for html could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:31.498Z"
+}

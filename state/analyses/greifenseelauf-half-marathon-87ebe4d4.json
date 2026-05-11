@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "greifenseelauf-half-marathon-87ebe4d4",
+  "sourceHash": "87ebe4d45500fe3940fee6a25523a806dc6dd3c62d8b3c2df20aaa6288e64cfd",
+  "semanticHash": "e07f0ea7adb6a2f9252c72087356a51662fc9fef91bd9362ea5ef31b41c519d1",
+  "extractionHash": "64aa73aefef7d0adf23e588ee80174c44cb274f130ad26cab7e89496d227e3ae",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Greifenseelauf — Half Marathon",
+  "summary": "Greifenseelauf — Half Marathon Source: greifenseelauf.ch — captured 2026-04-24 ## Event facts - Full name: Greifenseelauf, Uster (also called Halbmarathon Greifensee) - 2026 edition: 47. Greifenseelauf - Date: Saturday, 19 September 2026 - Location: Uster, Canton Zurich, Switzerland - Organiser: Markus Ryffel's AG, Worb ## Distances - Half Marathon: 21.1 km (main event) - 10 km - 6.3 km - Kids races (Minigreifenseelauf U8–U14, FAMIGROS RUN & WIN) ## Course - Runs through the Greifensee nature reserve - Surface: ~60% asphalt, ~40% natural roads / gravel - Start: Seestrasse, Uster (~10 min walk from Village/finish area) - Finish: Stadtpark Uster (net chip timing — clock starts when you cross start line) - Exception: Top 10 Overall finishers timed by gun time ## Aid stations — Half Marathon | Km | Location | |---|---| | 2.9 | Greifensee | | 7.4 | Fällanden | | 11.5 | Maur (+ bananas) | | 14.6 | Badi Egg | | 17.8 | Seefeldstrasse, Riedikon | | 19.5 | Talacker | | 21.1 | Finish — Stadtpark Uster | Drink order at each station: isotonic first tables, water on subsequent tables. ## Pacemakers Available for HM finish times: 1:30, 1:45, 2:00, 2:15 (and intermediate times).",
+  "concepts": [
+    {
+      "id": "concept:uster",
+      "name": "uster",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "concept:2026",
+      "name": "2026",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "concept:greifenseelauf",
+      "name": "greifenseelauf",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "concept:time",
+      "name": "time",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "concept:finish",
+      "name": "finish",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in Greifenseelauf — Half Marathon."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:event",
+      "name": "Event",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "entity:full",
+      "name": "Full",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "entity:greifenseelauf-uster",
+      "name": "Greifenseelauf, Uster",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "entity:halbmarathon-greifensee",
+      "name": "Halbmarathon Greifensee) -",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "entity:uster-canton-zurich-switzerland-organiser-markus-ryffel-s",
+      "name": "Uster, Canton Zurich, Switzerland - Organiser: Markus Ryffel's",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    },
+    {
+      "id": "entity:minigreifenseelauf",
+      "name": "(Minigreifenseelauf",
+      "description": "Named entity mentioned in Greifenseelauf — Half Marathon."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:greifenseelauf-half-marathon-87ebe4d4:1",
+      "text": "Greifenseelauf — Half Marathon Source: greifenseelauf.ch — captured 2026-04-24 ## Event facts - Full name: Greifenseelauf, Uster (also called Halbmarathon Greifensee) - 2026 edition: 47.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-half-marathon-87ebe4d4"
+    },
+    {
+      "id": "claim:greifenseelauf-half-marathon-87ebe4d4:2",
+      "text": "Greifenseelauf - Date: Saturday, 19 September 2026 - Location: Uster, Canton Zurich, Switzerland - Organiser: Markus Ryffel's AG, Worb ## Distances - Half Marathon: 21.1 km (main event) - 10 km - 6.3 km - Kids races (Minigreifenseelauf U8–U14, FAMIGROS RUN & WIN) ## Course - Runs through the Greifensee nature reserve - Surface: ~60% asphalt, ~40% natural roads / gravel - Start: Seestrasse, Uster (~10 min walk from Village/finish area) - Finish: Stadtpark Uster (net chip timing — clock starts when you cross start line) - Exception: Top 10 Overall finishers timed by gun time ## Aid stations — Half Marathon | Km | Location | |---|---| | 2.9 | Greifensee | | 7.4 | Fällanden | | 11.5 | Maur (+ bananas) | | 14.6 | Badi Egg | | 17.8 | Seefeldstrasse, Riedikon | | 19.5 | Talacker | | 21.1 | Finish — Stadtpark Uster | Drink order at each station: isotonic first tables, water on subsequent tables.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-half-marathon-87ebe4d4"
+    },
+    {
+      "id": "claim:greifenseelauf-half-marathon-87ebe4d4:3",
+      "text": "## Pacemakers Available for HM finish times: 1:30, 1:45, 2:00, 2:15 (and intermediate times).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-half-marathon-87ebe4d4"
+    },
+    {
+      "id": "claim:greifenseelauf-half-marathon-87ebe4d4:4",
+      "text": "Pacemakers carry a flag rucksack with target time printed.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "greifenseelauf-half-marathon-87ebe4d4"
+    }
+  ],
+  "questions": [
+    "How does uster relate to Greifenseelauf — Half Marathon?",
+    "How does 2026 relate to Greifenseelauf — Half Marathon?",
+    "How does greifenseelauf relate to Greifenseelauf — Half Marathon?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.358Z"
+}

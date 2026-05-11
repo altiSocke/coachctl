@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "foot-health-science-reference-03307eb2",
+  "sourceHash": "03307eb2e040e8e2d2a2418c50942176917ecce5e1bd4f91a98c42acf3e9df91",
+  "semanticHash": "8712b12db09e0d45db13db37eacf93b0d9c8ce3d14acd9934ecd688957fd8e34",
+  "extractionHash": "920719960d8cd792a758d089209ea8f634e3a76abdce703d60759b9956e19a7a",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Foot Health — Science Reference",
+  "summary": "Foot Health — Science Reference > Personal foot history and gear live in wiki/personal/<profile>/profile.md . > Key sources: Pires Neves 2022 (PMID 35894921), Jor 2024 (PMID 38367456), Tourillon 2019 (PMID 33344969), Ridge 2019 (PMID 30113521), Taddei 2020 (PMID 31962191), Xu 2023 (PMID 35878616), Arnold & Moody 2018 (PMID 29671490), Menéndez 2020 (PMID 33066291), Alexander 2022 (PMID 36150753). --- ## The Foot as an Active Structure The foot is not a passive platform — it is an active, spring-like system that directly affects running efficiency and injury risk.",
+  "concepts": [
+    {
+      "id": "concept:foot",
+      "name": "foot",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    },
+    {
+      "id": "concept:arch",
+      "name": "arch",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    },
+    {
+      "id": "concept:running",
+      "name": "running",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    },
+    {
+      "id": "concept:pain",
+      "name": "pain",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    },
+    {
+      "id": "concept:plantar",
+      "name": "plantar",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    },
+    {
+      "id": "concept:injury",
+      "name": "injury",
+      "description": "Frequently referenced concept in Foot Health — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:health-science-reference",
+      "name": "Health — Science Reference",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    },
+    {
+      "id": "entity:xu",
+      "name": "Xu",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    },
+    {
+      "id": "entity:arnold",
+      "name": "Arnold &",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    },
+    {
+      "id": "entity:alexander",
+      "name": "Alexander",
+      "description": "Named entity mentioned in Foot Health — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:foot-health-science-reference-03307eb2:1",
+      "text": "Foot Health — Science Reference > Personal foot history and gear live in wiki/personal/<profile>/profile.md .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-science-reference-03307eb2"
+    },
+    {
+      "id": "claim:foot-health-science-reference-03307eb2:2",
+      "text": "> Key sources: Pires Neves 2022 (PMID 35894921), Jor 2024 (PMID 38367456), Tourillon 2019 (PMID 33344969), Ridge 2019 (PMID 30113521), Taddei 2020 (PMID 31962191), Xu 2023 (PMID 35878616), Arnold & Moody 2018 (PMID 29671490), Menéndez 2020 (PMID 33066291), Alexander 2022 (PMID 36150753).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-science-reference-03307eb2"
+    },
+    {
+      "id": "claim:foot-health-science-reference-03307eb2:3",
+      "text": "--- ## The Foot as an Active Structure The foot is not a passive platform — it is an active, spring-like system that directly affects running efficiency and injury risk.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "foot-health-science-reference-03307eb2"
+    },
+    {
+      "id": "claim:foot-health-science-reference-03307eb2:4",
+      "text": "Key structures: - Medial longitudinal arch (MLA): acts as a spring — stores and returns elastic energy during stance - Plantar fascia: the passive tensile element; stiffens the arch via the windlass mechanism (toe extension → tension → arch locks) - Intrinsic foot muscles (IFM): the active element — eccentrically control arch drop in early stance, concentrically stiffen the foot at push-off - Extrinsic muscles (tibialis posterior, peroneals, FHL, FDL): control ankle and rearfoot, transmit force from calf complex Consequence for runners: weak IFM → excessive arch deformation under load → energy leak at push-off → ↑ plantar fascia stress → ↑ navicular/metatarsal load → injury chain.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "foot-health-science-reference-03307eb2"
+    }
+  ],
+  "questions": [
+    "How does foot relate to Foot Health — Science Reference?",
+    "How does arch relate to Foot Health — Science Reference?",
+    "How does running relate to Foot Health — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.023Z"
+}

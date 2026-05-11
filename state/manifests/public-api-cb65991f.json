@@ -1,0 +1,19 @@
+{
+  "sourceId": "public-api-cb65991f",
+  "title": "Public API",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/plan_compliance.py",
+  "repoRelativePath": "src/coachctl/plan_compliance.py",
+  "storedPath": "raw/sources/public-api-cb65991f.py",
+  "extractedTextPath": "state/extracts/public-api-cb65991f.md",
+  "extractedMetadataPath": "state/extracts/public-api-cb65991f.json",
+  "extractionHash": "203340b84ac2e5786ff8ee1e57a88f0bb82dd7de4e3a81c5b6b6f73a943ec80a",
+  "mimeType": "application/octet-stream",
+  "contentHash": "cb65991fc45fca3e22146ccea2b40eab282708640e506ef84764d03f503fa138",
+  "semanticHash": "cb65991fc45fca3e22146ccea2b40eab282708640e506ef84764d03f503fa138",
+  "createdAt": "2026-05-11T08:43:16.892Z",
+  "updatedAt": "2026-05-11T08:43:16.892Z"
+}

@@ -1,0 +1,18 @@
+{
+  "sourceId": "uv-4d480313",
+  "title": "uv",
+  "originType": "file",
+  "sourceKind": "text",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/uv.lock",
+  "repoRelativePath": "uv.lock",
+  "storedPath": "raw/sources/uv-4d480313.lock",
+  "extractedTextPath": "state/extracts/uv-4d480313.md",
+  "extractedMetadataPath": "state/extracts/uv-4d480313.json",
+  "extractionHash": "ac8ff551bede2b263f876ac5033b23037aad7256d97bfb0948b55b4beeb90a37",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4d480313063686d347cca8e8612dda9a73cc1510d268786fb7c191b73b174360",
+  "semanticHash": "4d480313063686d347cca8e8612dda9a73cc1510d268786fb7c191b73b174360",
+  "createdAt": "2026-05-11T08:43:22.977Z",
+  "updatedAt": "2026-05-11T08:43:22.977Z"
+}

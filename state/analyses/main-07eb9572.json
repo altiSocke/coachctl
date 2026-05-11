@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "main-07eb9572",
+  "sourceHash": "07eb95724b13e2c6877956d6688281f65bed79b93df051a3bbe3ac33e65ea2a3",
+  "semanticHash": "07eb95724b13e2c6877956d6688281f65bed79b93df051a3bbe3ac33e65ea2a3",
+  "extractionHash": "b04292c3af5a70af3d549eb41bf6eee9c096cb744b69080e1e006a7a46cab157",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "__main__",
+  "summary": "__main__ is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:main-07eb9572:1",
+      "text": "__main__ has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "main-07eb9572"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does __main__ serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:main-07eb9572",
+    "language": "python",
+    "moduleName": "coachctl.dashboard.__main__",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.650Z"
+}

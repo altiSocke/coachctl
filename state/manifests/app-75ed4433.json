@@ -1,0 +1,19 @@
+{
+  "sourceId": "app-75ed4433",
+  "title": "app",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "html",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/app.html",
+  "repoRelativePath": "src/coachctl/dashboard/app.html",
+  "storedPath": "raw/sources/app-75ed4433.html",
+  "extractedTextPath": "state/extracts/app-75ed4433.md",
+  "extractedMetadataPath": "state/extracts/app-75ed4433.json",
+  "extractionHash": "7beb472ea2876c5451fc84534acdeaead5a503a7a0ea128a617ff1795f0db115",
+  "mimeType": "text/html",
+  "contentHash": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+  "semanticHash": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+  "createdAt": "2026-05-11T08:43:16.220Z",
+  "updatedAt": "2026-05-11T08:43:16.220Z"
+}

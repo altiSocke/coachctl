@@ -1,0 +1,24 @@
+{
+  "sourceId": "openai-f9bd5846",
+  "title": "openai",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/tdd-workflow/agents/openai.yaml",
+  "repoRelativePath": ".opencode/skills/tdd-workflow/agents/openai.yaml",
+  "storedPath": "raw/sources/openai-f9bd5846.yaml",
+  "extractedTextPath": "state/extracts/openai-f9bd5846.md",
+  "extractedMetadataPath": "state/extracts/openai-f9bd5846.json",
+  "extractionHash": "b0f392acb9fd7a995d14649764af48038af76fdda22870d1604383686787af16",
+  "mimeType": "text/yaml",
+  "contentHash": "f9bd58463a728823a9a2427ff3b185f2a9dae368b2ef1f28f43aef52c93617e6",
+  "semanticHash": "f9bd58463a728823a9a2427ff3b185f2a9dae368b2ef1f28f43aef52c93617e6",
+  "details": {
+    "format": "yaml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "2"
+  },
+  "createdAt": "2026-05-11T08:43:14.299Z",
+  "updatedAt": "2026-05-11T08:43:14.299Z"
+}

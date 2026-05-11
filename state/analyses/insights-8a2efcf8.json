@@ -1,0 +1,83 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "insights-8a2efcf8",
+  "sourceHash": "8a2efcf850afbe24e834fd46080a3fc20257b39f4ab0de595864b48cadaecdcc",
+  "semanticHash": "7ed98748976e1b249ce944a23513c98359945683c317056d0d40b761308abce6",
+  "extractionHash": "b0275d136f0ba579c274fb5da17b7f659765c0ec54cf832eee57958a71da288e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Insights",
+  "summary": "title: Insights tags: index, insights # Insights Human-authored notes live here. - SwarmVault can read these pages during compile and query. - SwarmVault can stage insight-page updates through guided sessions, but it never applies them without review.",
+  "concepts": [
+    {
+      "id": "concept:insights",
+      "name": "insights",
+      "description": "Frequently referenced concept in Insights."
+    },
+    {
+      "id": "concept:swarmvault",
+      "name": "swarmvault",
+      "description": "Frequently referenced concept in Insights."
+    },
+    {
+      "id": "concept:applies",
+      "name": "applies",
+      "description": "Frequently referenced concept in Insights."
+    },
+    {
+      "id": "concept:authored",
+      "name": "authored",
+      "description": "Frequently referenced concept in Insights."
+    },
+    {
+      "id": "concept:compile",
+      "name": "compile",
+      "description": "Frequently referenced concept in Insights."
+    },
+    {
+      "id": "concept:during",
+      "name": "during",
+      "description": "Frequently referenced concept in Insights."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:insights",
+      "name": "Insights",
+      "description": "Named entity mentioned in Insights."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:insights-8a2efcf8:1",
+      "text": "title: Insights tags: index, insights # Insights Human-authored notes live here.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "insights-8a2efcf8"
+    },
+    {
+      "id": "claim:insights-8a2efcf8:2",
+      "text": "- SwarmVault can read these pages during compile and query.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "insights-8a2efcf8"
+    },
+    {
+      "id": "claim:insights-8a2efcf8:3",
+      "text": "- SwarmVault can stage insight-page updates through guided sessions, but it never applies them without review.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "insights-8a2efcf8"
+    }
+  ],
+  "questions": [
+    "How does insights relate to Insights?",
+    "How does swarmvault relate to Insights?",
+    "How does applies relate to Insights?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.649Z"
+}

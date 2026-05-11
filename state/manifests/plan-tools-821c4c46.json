@@ -1,0 +1,19 @@
+{
+  "sourceId": "plan-tools-821c4c46",
+  "title": "plan_tools",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/tools/plan_tools.py",
+  "repoRelativePath": "src/coachctl/tools/plan_tools.py",
+  "storedPath": "raw/sources/plan-tools-821c4c46.py",
+  "extractedTextPath": "state/extracts/plan-tools-821c4c46.md",
+  "extractedMetadataPath": "state/extracts/plan-tools-821c4c46.json",
+  "extractionHash": "4cf6948bf1634502bb3a6c65a6e40dcee43efce21110bd56923e3bd22d01c978",
+  "mimeType": "application/octet-stream",
+  "contentHash": "821c4c467998e8d4794da0283d5b62d9af4d29791fe5ffb16b10fc5d933b2e25",
+  "semanticHash": "821c4c467998e8d4794da0283d5b62d9af4d29791fe5ffb16b10fc5d933b2e25",
+  "createdAt": "2026-05-11T08:43:18.136Z",
+  "updatedAt": "2026-05-11T08:43:18.136Z"
+}

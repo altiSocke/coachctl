@@ -1,0 +1,18 @@
+{
+  "sourceId": "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8",
+  "title": "SOLA-Stafette — Strecken (source: asvz.ch/event/643-strecken)",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/raw/races/sola_strecken_asvz.md",
+  "repoRelativePath": "raw/races/sola_strecken_asvz.md",
+  "storedPath": "raw/sources/sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8.md",
+  "extractedTextPath": "state/extracts/sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8.md",
+  "extractedMetadataPath": "state/extracts/sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8.json",
+  "extractionHash": "9f7636e6df43ed10409cdc364ea713be65ab72e18204eb1c9e5c8d26747ea966",
+  "mimeType": "text/markdown",
+  "contentHash": "c4bb66a8793e9cc4e3ef8078ee54dd1c9e4c49c3bd0d72ea3c93bd53a017527d",
+  "semanticHash": "23d2aefcaccb309699463abd3b8b8966aaded42756377ffda3d9e455935526b9",
+  "createdAt": "2026-05-11T08:43:15.561Z",
+  "updatedAt": "2026-05-11T08:43:15.561Z"
+}

@@ -1,0 +1,19 @@
+{
+  "sourceId": "update-0842ad5d",
+  "title": "update",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/update.py",
+  "repoRelativePath": "src/coachctl/update.py",
+  "storedPath": "raw/sources/update-0842ad5d.py",
+  "extractedTextPath": "state/extracts/update-0842ad5d.md",
+  "extractedMetadataPath": "state/extracts/update-0842ad5d.json",
+  "extractionHash": "d6bf5dddae6ca7168f106d0a6c71cc3efabf30a52349f53b3bb006f06638080b",
+  "mimeType": "application/octet-stream",
+  "contentHash": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+  "semanticHash": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+  "createdAt": "2026-05-11T08:43:18.882Z",
+  "updatedAt": "2026-05-11T08:43:18.882Z"
+}

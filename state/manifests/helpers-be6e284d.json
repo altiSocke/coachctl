@@ -1,0 +1,19 @@
+{
+  "sourceId": "helpers-be6e284d",
+  "title": "── Helpers ───────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_plan_compliance.py",
+  "repoRelativePath": "tests/test_plan_compliance.py",
+  "storedPath": "raw/sources/helpers-be6e284d.py",
+  "extractedTextPath": "state/extracts/helpers-be6e284d.md",
+  "extractedMetadataPath": "state/extracts/helpers-be6e284d.json",
+  "extractionHash": "1198a1f441df098554f7263d8fbfda3ab4cd42d761c117e4ec272a23b7828c61",
+  "mimeType": "application/octet-stream",
+  "contentHash": "be6e284d59d2fc01709604c7fe7b6ae561a1dda0ddbe15e425f2306e4ad0dfbc",
+  "semanticHash": "be6e284d59d2fc01709604c7fe7b6ae561a1dda0ddbe15e425f2306e4ad0dfbc",
+  "createdAt": "2026-05-11T08:43:21.036Z",
+  "updatedAt": "2026-05-11T08:43:21.036Z"
+}

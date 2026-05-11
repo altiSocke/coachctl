@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "athlete-tools-c968b16f",
+  "sourceHash": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+  "semanticHash": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+  "extractionHash": "666439d7e1884def01de4a030a7c3ea3c267adbcc9e95e329c72ae824704b96d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "athlete_tools",
+  "summary": "athlete_tools is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:athlete-tools-c968b16f:1",
+      "text": "athlete_tools has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "athlete-tools-c968b16f"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does athlete_tools serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:athlete-tools-c968b16f",
+    "language": "python",
+    "moduleName": "coachctl.tools.athlete_tools",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:30.954Z"
+}

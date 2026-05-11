@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "fixtures-719a3216",
+  "sourceHash": "719a3216f93749e0ec1cd8d19b98cf6771b209e708e8a04323670aa8622f4463",
+  "semanticHash": "719a3216f93749e0ec1cd8d19b98cf6771b209e708e8a04323670aa8622f4463",
+  "extractionHash": "e8fdcc18ebbdf16fffd0be0eca96a9dffa450e72bd7443869901e69a9029b54e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Fixtures ──────────────────────────────────────────────────────────────────",
+  "summary": "── Fixtures ────────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:fixtures-719a3216:1",
+      "text": "── Fixtures ────────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "fixtures-719a3216"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Fixtures ────────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:fixtures-719a3216",
+    "language": "python",
+    "moduleName": "tests.test_events",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:32.513Z"
+}

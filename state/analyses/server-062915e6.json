@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "server-062915e6",
+  "sourceHash": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+  "semanticHash": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+  "extractionHash": "f67624101e4e4817860b13f3c76895e59b0032569f7bac651d178ba261a2637b",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "server",
+  "summary": "server is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:server-062915e6:1",
+      "text": "server has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "server-062915e6"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does server serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:server-062915e6",
+    "language": "python",
+    "moduleName": "coachctl.dashboard.server",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:36.772Z"
+}

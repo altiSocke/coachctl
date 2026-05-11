@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "skill-show-dashboard-cf665da6",
+  "sourceHash": "cf665da67ae425649a4bcf1b9c0ac35004e5cce082c0dd85f0a1ecd7bb12ebaf",
+  "semanticHash": "a1fdb8695f52bd117640c594a166de3262dab79560ed3e4a302db30d1d3fa726",
+  "extractionHash": "e4d8907788a7c2e1488598564a2baaeb8ff8fdbbf420a53fda1a36d31561782b",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Skill: show-dashboard",
+  "summary": "description: Open the coachctl dashboard locally in the browser. Bakes fresh data, checks if the dev server is already running, starts it if not, then navigates the browser to the dashboard. Use when the athlete asks to see, open, or show the dashboard.",
+  "concepts": [
+    {
+      "id": "concept:dashboard",
+      "name": "dashboard",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    },
+    {
+      "id": "concept:port",
+      "name": "port",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    },
+    {
+      "id": "concept:8080",
+      "name": "8080",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    },
+    {
+      "id": "concept:browser",
+      "name": "browser",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    },
+    {
+      "id": "concept:coachctl",
+      "name": "coachctl",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    },
+    {
+      "id": "concept:open",
+      "name": "open",
+      "description": "Frequently referenced concept in Skill: show-dashboard."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:skill",
+      "name": "Skill:",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    },
+    {
+      "id": "entity:bake",
+      "name": "Bake",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    },
+    {
+      "id": "entity:steps",
+      "name": "Steps",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    },
+    {
+      "id": "entity:bake-call",
+      "name": "Bake Call",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    },
+    {
+      "id": "entity:check",
+      "name": "Check",
+      "description": "Named entity mentioned in Skill: show-dashboard."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:skill-show-dashboard-cf665da6:1",
+      "text": "description: Open the coachctl dashboard locally in the browser.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skill-show-dashboard-cf665da6"
+    },
+    {
+      "id": "claim:skill-show-dashboard-cf665da6:2",
+      "text": "Bakes fresh data, checks if the dev server is already running, starts it if not, then navigates the browser to the dashboard.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "skill-show-dashboard-cf665da6"
+    },
+    {
+      "id": "claim:skill-show-dashboard-cf665da6:3",
+      "text": "Use when the athlete asks to see, open, or show the dashboard.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skill-show-dashboard-cf665da6"
+    },
+    {
+      "id": "claim:skill-show-dashboard-cf665da6:4",
+      "text": "# Skill: show-dashboard ## What I do Bake fresh dashboard data and open the coachctl dashboard in the browser.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "skill-show-dashboard-cf665da6"
+    }
+  ],
+  "questions": [
+    "How does dashboard relate to Skill: show-dashboard?",
+    "How does port relate to Skill: show-dashboard?",
+    "How does 8080 relate to Skill: show-dashboard?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.835Z"
+}

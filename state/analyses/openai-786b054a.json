@@ -1,0 +1,92 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "openai-786b054a",
+  "sourceHash": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+  "semanticHash": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+  "extractionHash": "8fc9a5b8602d4e0eb52c430b952b763801320f91f81e7cf0226da6e0f979be28",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "openai",
+  "summary": "openai Format: YAML Top-level: object Size: 2 Nested depth: 2 ## Schema - interface: object (4 keys) - policy: object (1 keys) ## Preview yaml interface: display_name: \"Security Review\" short_description: \"Security checklist and vulnerability review\" brand_color: \"#EF4444\" default_prompt: \"Use $security-review to review sensitive code with the security checklist.\" policy: allow_implicit_invocation: true",
+  "concepts": [
+    {
+      "id": "concept:object",
+      "name": "object",
+      "description": "Frequently referenced concept in openai."
+    },
+    {
+      "id": "concept:review",
+      "name": "review",
+      "description": "Frequently referenced concept in openai."
+    },
+    {
+      "id": "concept:security",
+      "name": "security",
+      "description": "Frequently referenced concept in openai."
+    },
+    {
+      "id": "concept:checklist",
+      "name": "checklist",
+      "description": "Frequently referenced concept in openai."
+    },
+    {
+      "id": "concept:interface",
+      "name": "interface",
+      "description": "Frequently referenced concept in openai."
+    },
+    {
+      "id": "concept:keys",
+      "name": "keys",
+      "description": "Frequently referenced concept in openai."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:format",
+      "name": "Format:",
+      "description": "Named entity mentioned in openai."
+    },
+    {
+      "id": "entity:top",
+      "name": "Top-",
+      "description": "Named entity mentioned in openai."
+    },
+    {
+      "id": "entity:size",
+      "name": "Size:",
+      "description": "Named entity mentioned in openai."
+    },
+    {
+      "id": "entity:nested",
+      "name": "Nested",
+      "description": "Named entity mentioned in openai."
+    },
+    {
+      "id": "entity:schema",
+      "name": "Schema -",
+      "description": "Named entity mentioned in openai."
+    },
+    {
+      "id": "entity:preview",
+      "name": "Preview",
+      "description": "Named entity mentioned in openai."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:openai-786b054a:1",
+      "text": "openai Format: YAML Top-level: object Size: 2 Nested depth: 2 ## Schema - interface: object (4 keys) - policy: object (1 keys) ## Preview yaml interface: display_name: \"Security Review\" short_description: \"Security checklist and vulnerability review\" brand_color: \"#EF4444\" default_prompt: \"Use $security-review to review sensitive code with the security checklist.\" policy: allow_implicit_invocation: true",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "openai-786b054a"
+    }
+  ],
+  "questions": [
+    "How does object relate to openai?",
+    "How does review relate to openai?",
+    "How does security relate to openai?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.012Z"
+}

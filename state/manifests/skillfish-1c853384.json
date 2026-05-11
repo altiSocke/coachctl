@@ -1,0 +1,24 @@
+{
+  "sourceId": "skillfish-1c853384",
+  "title": ".skillfish",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/verification-loop/.skillfish.json",
+  "repoRelativePath": ".opencode/skills/verification-loop/.skillfish.json",
+  "storedPath": "raw/sources/skillfish-1c853384.json",
+  "extractedTextPath": "state/extracts/skillfish-1c853384.md",
+  "extractedMetadataPath": "state/extracts/skillfish-1c853384.json",
+  "extractionHash": "b8dbd27b8f8028475a45c08c0c2e11fa2c56abfbc91ac355cf28348113156b92",
+  "mimeType": "application/json",
+  "contentHash": "1c8533844a98b504ac5aee73ce49204dc98e4ff5fdb7e72dce62565b64e7772b",
+  "semanticHash": "1c8533844a98b504ac5aee73ce49204dc98e4ff5fdb7e72dce62565b64e7772b",
+  "details": {
+    "format": "json",
+    "top_level_type": "object",
+    "top_level_size": "8",
+    "nested_depth": "1"
+  },
+  "createdAt": "2026-05-11T08:43:14.394Z",
+  "updatedAt": "2026-05-11T08:43:14.394Z"
+}

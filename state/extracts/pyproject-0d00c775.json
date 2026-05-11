@@ -1,0 +1,12 @@
+{
+  "extractor": "structured_data",
+  "sourceKind": "data",
+  "mimeType": "application/toml",
+  "producedAt": "2026-05-11T08:43:14.741Z",
+  "metadata": {
+    "format": "toml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "5"
+  }
+}

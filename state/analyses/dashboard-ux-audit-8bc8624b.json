@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "dashboard-ux-audit-8bc8624b",
+  "sourceHash": "8bc8624bb9f84a4df5c240f788e4e94f1b7a79f6aaf5f970e7f1398611f863ce",
+  "semanticHash": "e456d0303ae5fb91a5c5d400de36a2c481fc93472f5770235b923442b83239ba",
+  "extractionHash": "3a659a44b02b4cd629de0a60fde5b2eb908d879d4b0542219f1cf72a7a89f683",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Dashboard UX Audit",
+  "summary": "description: Audit the coachctl dashboard as a senior endurance coach and UX designer. Load when asked to review, critique, or improve the dashboard UI. Produces structured findings with severity, rationale, and a proposed fix per issue.",
+  "concepts": [
+    {
+      "id": "concept:data",
+      "name": "data",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    },
+    {
+      "id": "concept:what",
+      "name": "what",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    },
+    {
+      "id": "concept:findings",
+      "name": "findings",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    },
+    {
+      "id": "concept:finding",
+      "name": "finding",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    },
+    {
+      "id": "concept:that",
+      "name": "that",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    },
+    {
+      "id": "concept:coach",
+      "name": "coach",
+      "description": "Frequently referenced concept in Dashboard UX Audit."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:audit",
+      "name": "Audit",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    },
+    {
+      "id": "entity:dashboard",
+      "name": "Dashboard",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    },
+    {
+      "id": "entity:you",
+      "name": "You",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    },
+    {
+      "id": "entity:these",
+      "name": "These",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    },
+    {
+      "id": "entity:step",
+      "name": "Step",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    },
+    {
+      "id": "entity:read",
+      "name": "Read",
+      "description": "Named entity mentioned in Dashboard UX Audit."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:dashboard-ux-audit-8bc8624b:1",
+      "text": "description: Audit the coachctl dashboard as a senior endurance coach and UX designer.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "dashboard-ux-audit-8bc8624b"
+    },
+    {
+      "id": "claim:dashboard-ux-audit-8bc8624b:2",
+      "text": "Load when asked to review, critique, or improve the dashboard UI.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "dashboard-ux-audit-8bc8624b"
+    },
+    {
+      "id": "claim:dashboard-ux-audit-8bc8624b:3",
+      "text": "Produces structured findings with severity, rationale, and a proposed fix per issue.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "dashboard-ux-audit-8bc8624b"
+    },
+    {
+      "id": "claim:dashboard-ux-audit-8bc8624b:4",
+      "text": "Does not implement changes — findings only.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "dashboard-ux-audit-8bc8624b"
+    }
+  ],
+  "questions": [
+    "How does data relate to Dashboard UX Audit?",
+    "How does what relate to Dashboard UX Audit?",
+    "How does findings relate to Dashboard UX Audit?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:31.799Z"
+}

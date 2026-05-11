@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "alpenbrevet-race-reference-e582446a",
+  "sourceHash": "e582446a257cdf8c40dbff169b50974256f1e26d904471518c35b85c1bbe33b4",
+  "semanticHash": "c9e5ab770f60f06e503ab1920d46d1aacc683ca8df0d719a392d223fc9835bef",
+  "extractionHash": "d1553b865ce7e76cfa46505441a8e3177a134b7c82a2579eb671cc2f1cc8636e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Alpenbrevet — Race Reference",
+  "summary": "Alpenbrevet — Race Reference > Personal results, targets, and race strategy live in the events table ( propose_race_* / apply_race_* ). --- ## Race Overview The Alpenbrevet is an annual alpine gran fondo based in Andermatt, Switzerland. Athletes ride one of several route options crossing multiple high alpine passes in a single day.",
+  "concepts": [
+    {
+      "id": "concept:passes",
+      "name": "passes",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "concept:direction",
+      "name": "direction",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "concept:furka",
+      "name": "furka",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "concept:hardest",
+      "name": "hardest",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "concept:nufenen",
+      "name": "nufenen",
+      "description": "Frequently referenced concept in Alpenbrevet — Race Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:race-reference",
+      "name": "Race Reference",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "entity:race-overview",
+      "name": "Race Overview",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "entity:alpenbrevet",
+      "name": "Alpenbrevet",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "entity:andermatt-switzerland",
+      "name": "Andermatt, Switzerland.",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    },
+    {
+      "id": "entity:distance",
+      "name": "Distance:",
+      "description": "Named entity mentioned in Alpenbrevet — Race Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:alpenbrevet-race-reference-e582446a:1",
+      "text": "Alpenbrevet — Race Reference > Personal results, targets, and race strategy live in the events table ( propose_race_* / apply_race_* ).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "alpenbrevet-race-reference-e582446a"
+    },
+    {
+      "id": "claim:alpenbrevet-race-reference-e582446a:2",
+      "text": "--- ## Race Overview The Alpenbrevet is an annual alpine gran fondo based in Andermatt, Switzerland.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "alpenbrevet-race-reference-e582446a"
+    },
+    {
+      "id": "claim:alpenbrevet-race-reference-e582446a:3",
+      "text": "Athletes ride one of several route options crossing multiple high alpine passes in a single day.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "alpenbrevet-race-reference-e582446a"
+    },
+    {
+      "id": "claim:alpenbrevet-race-reference-e582446a:4",
+      "text": "Platinum route (the hardest, used by this athlete): - Distance: ~210–215 km (varies slightly by GPS and exact edition) - Elevation: 4,700–5,100m depending on direction and GPS accuracy - Category: ultra-endurance (10–15 hours depending on level) - Start: Andermatt (~1,440m altitude), early morning (~5:00–6:00 am local time) - Organised event with feed stations but largely self-supported pacing --- ## The Four Passes | Pass | Altitude | Key characteristic | |---|---|---| | Furka | 2,429m | Steep west face, gentler east (Realp) side | | Nufenen (Passo della Novena) | 2,478m | Highest paved pass in Switzerland.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "alpenbrevet-race-reference-e582446a"
+    }
+  ],
+  "questions": [
+    "How does passes relate to Alpenbrevet — Race Reference?",
+    "How does race relate to Alpenbrevet — Race Reference?",
+    "How does direction relate to Alpenbrevet — Race Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:30.950Z"
+}

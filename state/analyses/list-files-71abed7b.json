@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "list-files-71abed7b",
+  "sourceHash": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+  "semanticHash": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+  "extractionHash": "546e688d66477423a032dfd2b0585011305b9927161b7d9fd3cbe2f8bb4b01d9",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── list_files ────────────────────────────────────────────────────────────────",
+  "summary": "── list_files ──────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:list-files-71abed7b:1",
+      "text": "── list_files ──────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "list-files-71abed7b"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── list_files ──────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:list-files-71abed7b",
+    "language": "python",
+    "moduleName": "tests.test_general_wiki",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.650Z"
+}

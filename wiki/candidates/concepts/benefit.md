@@ -1,0 +1,49 @@
+---
+page_id: 'concept:benefit'
+kind: concept
+cssclasses:
+  - swarmvault
+  - sv-concept
+title: benefit
+source_class: first_party
+tags:
+  - concept
+  - candidate
+source_ids:
+  - external-nasal-dilator-strips-in-endurance-sport-b2567952
+project_ids: []
+node_ids:
+  - 'concept:benefit'
+freshness: fresh
+status: candidate
+confidence: 0.65
+created_at: '2026-05-11T08:45:09.744Z'
+updated_at: '2026-05-11T08:45:09.744Z'
+compiled_from:
+  - external-nasal-dilator-strips-in-endurance-sport-b2567952
+managed_by: system
+backlinks:
+  - 'source:external-nasal-dilator-strips-in-endurance-sport-b2567952'
+schema_hash: 874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720
+source_hashes:
+  external-nasal-dilator-strips-in-endurance-sport-b2567952: b2567952e9ceefe8f08271bb99b088f456f3a6087827c37d5ddbe030ef66b724
+source_semantic_hashes:
+  external-nasal-dilator-strips-in-endurance-sport-b2567952: 74bd90b9cc825b705cebf69e6294d474f6da7991ada930f537e172790c76dec2
+decay_score: 1
+last_confirmed_at: '2026-05-11T08:45:13.849Z'
+---
+# benefit
+
+## Summary
+
+Frequently referenced concept in External Nasal Dilator Strips in Endurance Sport.
+
+## Seen In
+
+- [[sources/external-nasal-dilator-strips-in-endurance-sport-b2567952|External Nasal Dilator Strips in Endurance Sport]]
+
+## Source Claims
+
+- Across 30 years of controlled trials, the consistent finding is that strips provide no meaningful benefit for VO₂max, power, running economy, or lactate threshold in healthy athletes with normal nasal anatomy. [source:external-nasal-dilator-strips-in-endurance-sport-b2567952]
+- The only population with credible benefit is athletes with structural or inflammatory nasal obstruction (deviated septum, nasal valve collapse, allergic rhinitis). [source:external-nasal-dilator-strips-in-endurance-sport-b2567952]
+

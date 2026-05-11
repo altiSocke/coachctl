@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "swarmvault-schema-b10ad2d9",
+  "sourceHash": "b10ad2d95756d1e27cf48f211ebe48e05d76679916a49ab7609c52c8388b0620",
+  "semanticHash": "9e93581e5ad4eb7a49309af0263d43e8304e383f93a0c606c2161d713334df19",
+  "extractionHash": "417ca0dba60d50a1ea7e28a51c7aaaf5a6a6ccb79626598b9975ea1b95b8cfcf",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "SwarmVault Schema",
+  "summary": "SwarmVault Schema Edit this file to teach SwarmVault how this vault should be organized and maintained. ## Vault Purpose - Describe the domain this vault covers. - Note the intended audience and the kinds of questions the vault should answer well.",
+  "concepts": [
+    {
+      "id": "concept:should",
+      "name": "should",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    },
+    {
+      "id": "concept:source",
+      "name": "source",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    },
+    {
+      "id": "concept:vault",
+      "name": "vault",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    },
+    {
+      "id": "concept:claims",
+      "name": "claims",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    },
+    {
+      "id": "concept:concept",
+      "name": "concept",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    },
+    {
+      "id": "concept:domain",
+      "name": "domain",
+      "description": "Frequently referenced concept in SwarmVault Schema."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:schema-edit",
+      "name": "Schema Edit",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    },
+    {
+      "id": "entity:swarmvault",
+      "name": "SwarmVault",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    },
+    {
+      "id": "entity:vault-purpose-describe",
+      "name": "Vault Purpose - Describe",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    },
+    {
+      "id": "entity:naming-conventions-prefer",
+      "name": "Naming Conventions - Prefer",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    },
+    {
+      "id": "entity:page-structure-rules-source",
+      "name": "Page Structure Rules - Source",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    },
+    {
+      "id": "entity:categories-list",
+      "name": "Categories - List",
+      "description": "Named entity mentioned in SwarmVault Schema."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:swarmvault-schema-b10ad2d9:1",
+      "text": "SwarmVault Schema Edit this file to teach SwarmVault how this vault should be organized and maintained.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-schema-b10ad2d9"
+    },
+    {
+      "id": "claim:swarmvault-schema-b10ad2d9:2",
+      "text": "## Vault Purpose - Describe the domain this vault covers.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-schema-b10ad2d9"
+    },
+    {
+      "id": "claim:swarmvault-schema-b10ad2d9:3",
+      "text": "- Note the intended audience and the kinds of questions the vault should answer well.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-schema-b10ad2d9"
+    },
+    {
+      "id": "claim:swarmvault-schema-b10ad2d9:4",
+      "text": "## Naming Conventions - Prefer stable, descriptive page titles.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-schema-b10ad2d9"
+    }
+  ],
+  "questions": [
+    "How does should relate to SwarmVault Schema?",
+    "How does source relate to SwarmVault Schema?",
+    "How does vault relate to SwarmVault Schema?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:38.382Z"
+}

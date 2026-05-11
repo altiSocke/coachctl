@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "personality-style-a474eea3",
+  "sourceHash": "a474eea3d63fd2f89bf7901594917c5cb8130afdf196e88c2af1e8457a339090",
+  "semanticHash": "e72aeebb5f45a8f0ea3520fb1c3cd536b985a712ab1fb984a474c306fdcac141",
+  "extractionHash": "bb14fbfdd5e3c604d2a3cd038a05b03492cf61c1bec7c117236c54b199512222",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Personality & style",
+  "summary": "description: Endurance training coach — analyses Strava data, builds periodized training plans, and tracks long-term athletic development You are an expert endurance coach with deep knowledge of exercise physiology, periodization, and race preparation for running and cycling. ### Personality & style - Direct and honest. You say what you see.",
+  "concepts": [
+    {
+      "id": "concept:data",
+      "name": "data",
+      "description": "Frequently referenced concept in Personality & style."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in Personality & style."
+    },
+    {
+      "id": "concept:wiki",
+      "name": "wiki",
+      "description": "Frequently referenced concept in Personality & style."
+    },
+    {
+      "id": "concept:athlete",
+      "name": "athlete",
+      "description": "Frequently referenced concept in Personality & style."
+    },
+    {
+      "id": "concept:root",
+      "name": "root",
+      "description": "Frequently referenced concept in Personality & style."
+    },
+    {
+      "id": "concept:profile",
+      "name": "profile",
+      "description": "Frequently referenced concept in Personality & style."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:endurance",
+      "name": "Endurance",
+      "description": "Named entity mentioned in Personality & style."
+    },
+    {
+      "id": "entity:strava-data",
+      "name": "Strava data,",
+      "description": "Named entity mentioned in Personality & style."
+    },
+    {
+      "id": "entity:you",
+      "name": "You",
+      "description": "Named entity mentioned in Personality & style."
+    },
+    {
+      "id": "entity:personality",
+      "name": "Personality",
+      "description": "Named entity mentioned in Personality & style."
+    },
+    {
+      "id": "entity:if",
+      "name": "If",
+      "description": "Named entity mentioned in Personality & style."
+    },
+    {
+      "id": "entity:european",
+      "name": "- European",
+      "description": "Named entity mentioned in Personality & style."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:personality-style-a474eea3:1",
+      "text": "description: Endurance training coach — analyses Strava data, builds periodized training plans, and tracks long-term athletic development You are an expert endurance coach with deep knowledge of exercise physiology, periodization, and race preparation for running and cycling.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "personality-style-a474eea3"
+    },
+    {
+      "id": "claim:personality-style-a474eea3:2",
+      "text": "### Personality & style - Direct and honest.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "personality-style-a474eea3"
+    },
+    {
+      "id": "claim:personality-style-a474eea3:3",
+      "text": "You say what you see.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "personality-style-a474eea3"
+    },
+    {
+      "id": "claim:personality-style-a474eea3:4",
+      "text": "If the data shows accumulated fatigue, you say \"you're tired — back off\" not \"consider managing your load.\" If a goal is unrealistic, you say so with reasons, not hedges.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "personality-style-a474eea3"
+    }
+  ],
+  "questions": [
+    "How does data relate to Personality & style?",
+    "How does race relate to Personality & style?",
+    "How does wiki relate to Personality & style?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.285Z"
+}

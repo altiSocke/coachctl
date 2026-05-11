@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "python-patterns-edad9e6a",
+  "sourceHash": "edad9e6adce2dee21d3bc80ab0ef89d4bb75b3be2c83cbc1303ff39d87f0423e",
+  "semanticHash": "d24b89ff53feee069907c650e2ff681e9dd166c771e00dee560a280bf80b56dd",
+  "extractionHash": "23125f8c8d41aca5c761e4647be64699a8e7969e7fe15143dc02b32d4dba9b10",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Python Patterns",
+  "summary": "description: Python-specific design patterns and best practices including protocols, dataclasses, context managers, decorators, async/await, type hints, and package organization. Use when working with Python code to apply Pythonic patterns. # Python Patterns > This skill provides comprehensive Python patterns extending common design principles with Python-specific idioms.",
+  "concepts": [
+    {
+      "id": "concept:self",
+      "name": "self",
+      "description": "Frequently referenced concept in Python Patterns."
+    },
+    {
+      "id": "concept:python",
+      "name": "python",
+      "description": "Frequently referenced concept in Python Patterns."
+    },
+    {
+      "id": "concept:user",
+      "name": "user",
+      "description": "Frequently referenced concept in Python Patterns."
+    },
+    {
+      "id": "concept:return",
+      "name": "return",
+      "description": "Frequently referenced concept in Python Patterns."
+    },
+    {
+      "id": "concept:class",
+      "name": "class",
+      "description": "Frequently referenced concept in Python Patterns."
+    },
+    {
+      "id": "concept:none",
+      "name": "none",
+      "description": "Frequently referenced concept in Python Patterns."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:python",
+      "name": "Python",
+      "description": "Named entity mentioned in Python Patterns."
+    },
+    {
+      "id": "entity:pythonic",
+      "name": "Pythonic",
+      "description": "Named entity mentioned in Python Patterns."
+    },
+    {
+      "id": "entity:python-patterns",
+      "name": "Python Patterns",
+      "description": "Named entity mentioned in Python Patterns."
+    },
+    {
+      "id": "entity:this",
+      "name": "This",
+      "description": "Named entity mentioned in Python Patterns."
+    },
+    {
+      "id": "entity:protocol-duck-typing-use-protocol",
+      "name": "Protocol (Duck Typing) Use Protocol",
+      "description": "Named entity mentioned in Python Patterns."
+    },
+    {
+      "id": "entity:protocol",
+      "name": "Protocol",
+      "description": "Named entity mentioned in Python Patterns."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:python-patterns-edad9e6a:1",
+      "text": "description: Python-specific design patterns and best practices including protocols, dataclasses, context managers, decorators, async/await, type hints, and package organization.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "python-patterns-edad9e6a"
+    },
+    {
+      "id": "claim:python-patterns-edad9e6a:2",
+      "text": "Use when working with Python code to apply Pythonic patterns.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "python-patterns-edad9e6a"
+    },
+    {
+      "id": "claim:python-patterns-edad9e6a:3",
+      "text": "# Python Patterns > This skill provides comprehensive Python patterns extending common design principles with Python-specific idioms.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "python-patterns-edad9e6a"
+    },
+    {
+      "id": "claim:python-patterns-edad9e6a:4",
+      "text": "## Protocol (Duck Typing) Use Protocol for structural subtyping (duck typing with type hints): python from typing import Protocol class Repository(Protocol): def find_by_id(self, id: str) -> dict | None: ...",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "python-patterns-edad9e6a"
+    }
+  ],
+  "questions": [
+    "How does self relate to Python Patterns?",
+    "How does python relate to Python Patterns?",
+    "How does user relate to Python Patterns?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.981Z"
+}

@@ -1,0 +1,24 @@
+{
+  "sourceId": "openai-17bab3f1",
+  "title": "openai",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/deep-research/agents/openai.yaml",
+  "repoRelativePath": ".opencode/skills/deep-research/agents/openai.yaml",
+  "storedPath": "raw/sources/openai-17bab3f1.yaml",
+  "extractedTextPath": "state/extracts/openai-17bab3f1.md",
+  "extractedMetadataPath": "state/extracts/openai-17bab3f1.json",
+  "extractionHash": "5613d3452dcd281ef5535ac4b0b00e85b0bc7a52ddaa2ce2f2225545d94801dd",
+  "mimeType": "text/yaml",
+  "contentHash": "17bab3f1fef6ad02d8f2fa513767d9bc010750c26add61e04dc4e246be17f2e7",
+  "semanticHash": "17bab3f1fef6ad02d8f2fa513767d9bc010750c26add61e04dc4e246be17f2e7",
+  "details": {
+    "format": "yaml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "2"
+  },
+  "createdAt": "2026-05-11T08:43:13.859Z",
+  "updatedAt": "2026-05-11T08:43:13.859Z"
+}

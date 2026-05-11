@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "safe-resolve-60117322",
+  "sourceHash": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+  "semanticHash": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+  "extractionHash": "c03c7bcf9eab1cffd61a4e72e3d2b9989009b5826eaaf257acc27a63dae95ad4",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── safe_resolve ──────────────────────────────────────────────────────────────",
+  "summary": "── safe_resolve ────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:safe-resolve-60117322:1",
+      "text": "── safe_resolve ────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "safe-resolve-60117322"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── safe_resolve ────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:safe-resolve-60117322",
+    "language": "python",
+    "moduleName": "tests.test_wiki_base",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:36.772Z"
+}

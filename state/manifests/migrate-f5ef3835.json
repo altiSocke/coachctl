@@ -1,0 +1,19 @@
+{
+  "sourceId": "migrate-f5ef3835",
+  "title": "migrate",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/migrate.py",
+  "repoRelativePath": "src/coachctl/migrate.py",
+  "storedPath": "raw/sources/migrate-f5ef3835.py",
+  "extractedTextPath": "state/extracts/migrate-f5ef3835.md",
+  "extractedMetadataPath": "state/extracts/migrate-f5ef3835.json",
+  "extractionHash": "5c3383e72a3c3ba77af0436cfb20a89a043335e83793396137d9cf5aa25c2821",
+  "mimeType": "application/octet-stream",
+  "contentHash": "f5ef3835595185ebe62e485b1e7c40a9e79a9a08964296acd576d41aedbcaa84",
+  "semanticHash": "f5ef3835595185ebe62e485b1e7c40a9e79a9a08964296acd576d41aedbcaa84",
+  "createdAt": "2026-05-11T08:43:16.683Z",
+  "updatedAt": "2026-05-11T08:43:16.683Z"
+}

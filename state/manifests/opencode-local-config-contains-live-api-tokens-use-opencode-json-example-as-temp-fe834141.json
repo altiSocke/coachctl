@@ -1,0 +1,18 @@
+{
+  "sourceId": "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141",
+  "title": "opencode local config — contains live API tokens; use opencode.json.example as template",
+  "originType": "file",
+  "sourceKind": "text",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.gitignore",
+  "repoRelativePath": ".gitignore",
+  "storedPath": "raw/sources/opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141.bin",
+  "extractedTextPath": "state/extracts/opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141.md",
+  "extractedMetadataPath": "state/extracts/opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141.json",
+  "extractionHash": "e2e9d4a4d7ad2b564a152bbebd28f29a9c77c3c1f7d598504f8860b8fdeebdea",
+  "mimeType": "application/octet-stream",
+  "contentHash": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+  "semanticHash": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+  "createdAt": "2026-05-11T08:43:13.625Z",
+  "updatedAt": "2026-05-11T08:43:13.625Z"
+}

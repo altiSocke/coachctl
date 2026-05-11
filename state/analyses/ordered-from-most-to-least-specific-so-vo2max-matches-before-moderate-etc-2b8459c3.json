@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3",
+  "sourceHash": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+  "semanticHash": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+  "extractionHash": "8d94fd7ea30e39933e0f04687942b6d683e7910c9f5ad0b1284c197a976a5d00",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc.",
+  "summary": "Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc. is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3:1",
+      "text": "Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc. has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does Ordered from most to least specific so \"vo2max\" matches before \"moderate\" etc. serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3",
+    "language": "python",
+    "moduleName": "coachctl.plan_parser",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:34.960Z"
+}

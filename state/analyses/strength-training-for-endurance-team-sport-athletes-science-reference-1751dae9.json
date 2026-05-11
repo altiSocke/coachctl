@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+  "sourceHash": "1751dae9426d0b99ec5da7e4c8ac6f31eca6588df1d12f5d4ba01d1f5f3a94b5",
+  "semanticHash": "e4b31566693af2d98c486cb828c2738ce0701adae233504b39a162c34290e5ea",
+  "extractionHash": "6e20f097c541c6bdc0c794acfdf91c776bb15da945be4bbe90b44fa1e0d0ee71",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Strength Training for Endurance & Team Sport Athletes — Science Reference",
+  "summary": "Strength Training for Endurance & Team Sport Athletes — Science Reference > Personal gym programmes, current 1RM values, and injury-specific modifications live in the personal repo's profile/ . > Key sources: Storen et al. 2008 (Med Sci Sports Exerc), Rønnestad et al.",
+  "concepts": [
+    {
+      "id": "concept:strength",
+      "name": "strength",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "concept:sports",
+      "name": "sports",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "concept:week",
+      "name": "week",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "concept:endurance",
+      "name": "endurance",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "concept:hamstring",
+      "name": "hamstring",
+      "description": "Frequently referenced concept in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:training",
+      "name": "Training",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "entity:endurance-team-sport-athletes-science-reference",
+      "name": "Endurance & Team Sport Athletes — Science Reference",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "entity:key",
+      "name": "Key",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "entity:storen",
+      "name": "Storen",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    },
+    {
+      "id": "entity:med-sci-sports-exerc-r-nnestad",
+      "name": "(Med Sci Sports Exerc), Rønnestad",
+      "description": "Named entity mentioned in Strength Training for Endurance & Team Sport Athletes — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9:1",
+      "text": "Strength Training for Endurance & Team Sport Athletes — Science Reference > Personal gym programmes, current 1RM values, and injury-specific modifications live in the personal repo's profile/ .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+    },
+    {
+      "id": "claim:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9:2",
+      "text": "> Key sources: Storen et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+    },
+    {
+      "id": "claim:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9:3",
+      "text": "2008 (Med Sci Sports Exerc), Rønnestad et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+    },
+    {
+      "id": "claim:strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9:4",
+      "text": "2010 (Eur J Appl Physiol), Rønnestad & Mujika 2014 (Scand J Med Sci Sports), Beattie et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+    }
+  ],
+  "questions": [
+    "How does strength relate to Strength Training for Endurance & Team Sport Athletes — Science Reference?",
+    "How does sports relate to Strength Training for Endurance & Team Sport Athletes — Science Reference?",
+    "How does week relate to Strength Training for Endurance & Team Sport Athletes — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:38.037Z"
+}

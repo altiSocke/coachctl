@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "verification-loop-skill-beeb59cf",
+  "sourceHash": "beeb59cfb3d9ba8aaad0d4d6d99d534f37d6d25dc42561f6cea64b102625a141",
+  "semanticHash": "44d9656e0fc563db04d79e19922bee6105e0293cfb0c9473995e81e2caf6ed6b",
+  "extractionHash": "ba1f7407a45ab35a9418a264f4950396d08d9cba97ec53db3b2bfaffe4da4a3e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Verification Loop Skill",
+  "summary": "description: A comprehensive verification system for Claude Code sessions. # Verification Loop Skill A comprehensive verification system for Claude Code sessions. ## When to Use Invoke this skill: - After completing a feature or significant code change - Before creating a PR - When you want to ensure quality gates pass - After refactoring ## Verification Phases ### Phase 1: Build Verification bash # Check if project builds npm run build 2>&1 | tail -20 # OR pnpm build 2>&1 | tail -20 If build fails, STOP and fix before continuing.",
+  "concepts": [
+    {
+      "id": "concept:verification",
+      "name": "verification",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    },
+    {
+      "id": "concept:head",
+      "name": "head",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    },
+    {
+      "id": "concept:check",
+      "name": "check",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    },
+    {
+      "id": "concept:after",
+      "name": "after",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    },
+    {
+      "id": "concept:bash",
+      "name": "bash",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    },
+    {
+      "id": "concept:include",
+      "name": "include",
+      "description": "Frequently referenced concept in Verification Loop Skill."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:claude-code",
+      "name": "Claude Code",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    },
+    {
+      "id": "entity:verification-loop-skill",
+      "name": "Verification Loop Skill",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    },
+    {
+      "id": "entity:when",
+      "name": "When",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    },
+    {
+      "id": "entity:use-invoke",
+      "name": "Use Invoke",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    },
+    {
+      "id": "entity:after",
+      "name": "After",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    },
+    {
+      "id": "entity:before",
+      "name": "Before",
+      "description": "Named entity mentioned in Verification Loop Skill."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:verification-loop-skill-beeb59cf:1",
+      "text": "description: A comprehensive verification system for Claude Code sessions.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "verification-loop-skill-beeb59cf"
+    },
+    {
+      "id": "claim:verification-loop-skill-beeb59cf:2",
+      "text": "# Verification Loop Skill A comprehensive verification system for Claude Code sessions.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "verification-loop-skill-beeb59cf"
+    },
+    {
+      "id": "claim:verification-loop-skill-beeb59cf:3",
+      "text": "## When to Use Invoke this skill: - After completing a feature or significant code change - Before creating a PR - When you want to ensure quality gates pass - After refactoring ## Verification Phases ### Phase 1: Build Verification bash # Check if project builds npm run build 2>&1 | tail -20 # OR pnpm build 2>&1 | tail -20 If build fails, STOP and fix before continuing.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "verification-loop-skill-beeb59cf"
+    },
+    {
+      "id": "claim:verification-loop-skill-beeb59cf:4",
+      "text": "### Phase 2: Type Check bash # TypeScript projects npx tsc --noEmit 2>&1 | head -30 # Python projects pyright .",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "verification-loop-skill-beeb59cf"
+    }
+  ],
+  "questions": [
+    "How does verification relate to Verification Loop Skill?",
+    "How does head relate to Verification Loop Skill?",
+    "How does check relate to Verification Loop Skill?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:39.372Z"
+}

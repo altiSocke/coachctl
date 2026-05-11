@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "raw-general-immutable-public-source-documents-1d455c7d",
+  "sourceHash": "1d455c7d3ad7b07b2bf4c29250b9c0a07edc764174f0ae05865d04f0df5b0e2f",
+  "semanticHash": "535638b9511f8e5fa85ed534572d1d9646928415b6c6a54bf3e652101070bed4",
+  "extractionHash": "b2e00f858a578ad316f2224e9536c4b3455e4add16f1ece4cd3f5dda6674924d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "raw/general/ — Immutable public source documents",
+  "summary": "raw/general/ — Immutable public source documents This directory holds source material that informs the general wiki layer: peer-reviewed papers, race-website captures, public data exports, course maps. > Personal source documents (your GPX files, race photos, scans, training-camp > notes) live in your private personal repo at <DATA_ROOT>/raw/ — never here. ## Rules - Human-write-only.",
+  "concepts": [
+    {
+      "id": "concept:general",
+      "name": "general",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "concept:source",
+      "name": "source",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "concept:added",
+      "name": "added",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "concept:file",
+      "name": "file",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "concept:wiki",
+      "name": "wiki",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "concept:only",
+      "name": "only",
+      "description": "Frequently referenced concept in raw/general/ — Immutable public source documents."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:immutable",
+      "name": "Immutable",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "entity:this",
+      "name": "This",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "entity:rules-human",
+      "name": "Rules - Human-",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "entity:llm",
+      "name": "LLM",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    },
+    {
+      "id": "entity:see",
+      "name": "See",
+      "description": "Named entity mentioned in raw/general/ — Immutable public source documents."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:raw-general-immutable-public-source-documents-1d455c7d:1",
+      "text": "raw/general/ — Immutable public source documents This directory holds source material that informs the general wiki layer: peer-reviewed papers, race-website captures, public data exports, course maps.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "raw-general-immutable-public-source-documents-1d455c7d"
+    },
+    {
+      "id": "claim:raw-general-immutable-public-source-documents-1d455c7d:2",
+      "text": "> Personal source documents (your GPX files, race photos, scans, training-camp > notes) live in your private personal repo at <DATA_ROOT>/raw/ — never here.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "raw-general-immutable-public-source-documents-1d455c7d"
+    },
+    {
+      "id": "claim:raw-general-immutable-public-source-documents-1d455c7d:3",
+      "text": "## Rules - Human-write-only.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "raw-general-immutable-public-source-documents-1d455c7d"
+    },
+    {
+      "id": "claim:raw-general-immutable-public-source-documents-1d455c7d:4",
+      "text": "Files are added only by humans (or an ingest pipeline).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "raw-general-immutable-public-source-documents-1d455c7d"
+    }
+  ],
+  "questions": [
+    "How does general relate to raw/general/ — Immutable public source documents?",
+    "How does source relate to raw/general/ — Immutable public source documents?",
+    "How does added relate to raw/general/ — Immutable public source documents?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.803Z"
+}

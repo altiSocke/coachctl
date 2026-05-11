@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "nutrients-17-00918-3a984432",
+  "sourceHash": "3a984432ab989b97a35cf7cd2a7eaa3dd1d4af374f017c81edb849b949502acb",
+  "semanticHash": "3a984432ab989b97a35cf7cd2a7eaa3dd1d4af374f017c81edb849b949502acb",
+  "extractionHash": "878165fd8a7fbc2f5cd77ef16e2f6cdb0967e6c24c380512af046bf4a9559120",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "nutrients-17-00918",
+  "summary": "Academic Editor: Tarak Driss Received: 12 February 2025 Revised: 22 February 2025 Accepted: 4 March 2025 Published: 6 March 2025 Citation: Cao, W.; He, Y.; Fu, R.; Chen, Y.; Yu, J.; He, Z. A Review of Carbohydrate Supplementation Approaches and Strategies for Optimizing Performance in Elite Long-Distance Endurance. Nutrients 2025 , 17 , 918.",
+  "concepts": [
+    {
+      "id": "concept:carbohydrate",
+      "name": "carbohydrate",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    },
+    {
+      "id": "concept:glycogen",
+      "name": "glycogen",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    },
+    {
+      "id": "concept:athletes",
+      "name": "athletes",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    },
+    {
+      "id": "concept:during",
+      "name": "during",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    },
+    {
+      "id": "concept:supplementation",
+      "name": "supplementation",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    },
+    {
+      "id": "concept:endurance",
+      "name": "endurance",
+      "description": "Frequently referenced concept in nutrients-17-00918."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:editor",
+      "name": "Editor:",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    },
+    {
+      "id": "entity:cao",
+      "name": "Cao,",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    },
+    {
+      "id": "entity:he",
+      "name": "He,",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    },
+    {
+      "id": "entity:fu",
+      "name": "Fu,",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    },
+    {
+      "id": "entity:chen",
+      "name": "Chen,",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    },
+    {
+      "id": "entity:yu",
+      "name": "Yu,",
+      "description": "Named entity mentioned in nutrients-17-00918."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:nutrients-17-00918-3a984432:1",
+      "text": "Academic Editor: Tarak Driss Received: 12 February 2025 Revised: 22 February 2025 Accepted: 4 March 2025 Published: 6 March 2025 Citation: Cao, W.; He, Y.; Fu, R.; Chen, Y.; Yu, J.; He, Z.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "nutrients-17-00918-3a984432"
+    },
+    {
+      "id": "claim:nutrients-17-00918-3a984432:2",
+      "text": "A Review of Carbohydrate Supplementation Approaches and Strategies for Optimizing Performance in Elite Long-Distance Endurance.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "nutrients-17-00918-3a984432"
+    },
+    {
+      "id": "claim:nutrients-17-00918-3a984432:3",
+      "text": "Nutrients 2025 , 17 , 918.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "nutrients-17-00918-3a984432"
+    },
+    {
+      "id": "claim:nutrients-17-00918-3a984432:4",
+      "text": "https://doi.org/ 10.3390/nu17050918 Copyright: © 2025 by the authors.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "nutrients-17-00918-3a984432"
+    }
+  ],
+  "questions": [
+    "How does carbohydrate relate to nutrients-17-00918?",
+    "How does glycogen relate to nutrients-17-00918?",
+    "How does athletes relate to nutrients-17-00918?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:34.946Z"
+}

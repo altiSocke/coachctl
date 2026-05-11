@@ -1,0 +1,14 @@
+{
+  "runId": "ingest-2026-05-11T08-43-13-423Z-mvbbf5",
+  "inputDir": "C:\\Users\\tieschy\\workspace\\coachctl",
+  "repoRoot": "C:\\Users\\tieschy\\workspace\\coachctl",
+  "createdAt": "2026-05-11T08:43:30.568Z",
+  "failed": [
+    {
+      "absolutePath": "C:\\Users\\tieschy\\workspace\\coachctl\\.opencode\\skills\\new-athlete-setup\\SKILL.md",
+      "path": ".opencode/skills/new-athlete-setup/SKILL.md",
+      "error": "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 3, column 212:\n     ...  setup. Covers all failure modes: missing personal repo, missing ... \n                                         ^",
+      "stage": "prepare"
+    }
+  ]
+}

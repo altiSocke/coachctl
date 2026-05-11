@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "what-i-do-3becbaf3",
+  "sourceHash": "3becbaf3e9bee5955df0a2ca432f39e538e321256db56d7399a628aa3193ac86",
+  "semanticHash": "bee949709918f5b49d6aafdb9307d0c4e98402c0beb63b62cf415bc32f0d3d92",
+  "extractionHash": "2329bea6afe8d8f8b4f631b4fef2be163597d6760aef8383c3ca9bc5c5017be0",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "What I do",
+  "summary": "description: Ingest a new file from raw/ into the wiki knowledge layers. Use when the athlete points you at a new file they have added to raw/ (papers, race captures, GPX, scans). Encodes the full 7-step read→classify→load→draft→propose→wait→apply workflow including layer boundary rules and wiki target path mapping.",
+  "concepts": [
+    {
+      "id": "concept:wiki",
+      "name": "wiki",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:personal",
+      "name": "personal",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:general",
+      "name": "general",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:athlete",
+      "name": "athlete",
+      "description": "Frequently referenced concept in What I do."
+    },
+    {
+      "id": "concept:file",
+      "name": "file",
+      "description": "Frequently referenced concept in What I do."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:ingest",
+      "name": "Ingest",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:what",
+      "name": "What",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:guide",
+      "name": "Guide",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:layer",
+      "name": "Layer",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:if",
+      "name": "If",
+      "description": "Named entity mentioned in What I do."
+    },
+    {
+      "id": "entity:content",
+      "name": "Content",
+      "description": "Named entity mentioned in What I do."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:what-i-do-3becbaf3:1",
+      "text": "description: Ingest a new file from raw/ into the wiki knowledge layers.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-3becbaf3"
+    },
+    {
+      "id": "claim:what-i-do-3becbaf3:2",
+      "text": "Use when the athlete points you at a new file they have added to raw/ (papers, race captures, GPX, scans).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-3becbaf3"
+    },
+    {
+      "id": "claim:what-i-do-3becbaf3:3",
+      "text": "Encodes the full 7-step read→classify→load→draft→propose→wait→apply workflow including layer boundary rules and wiki target path mapping.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-3becbaf3"
+    },
+    {
+      "id": "claim:what-i-do-3becbaf3:4",
+      "text": "## What I do Guide the full ingestion of a new raw/ source document into the appropriate wiki layer, with correct boundary classification, propose/confirm flow, and audit logging.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "what-i-do-3becbaf3"
+    }
+  ],
+  "questions": [
+    "How does wiki relate to What I do?",
+    "How does personal relate to What I do?",
+    "How does general relate to What I do?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:39.205Z"
+}

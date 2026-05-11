@@ -1,0 +1,19 @@
+{
+  "sourceId": "test-tools-smoke-23acf85c",
+  "title": "test_tools_smoke",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_tools_smoke.py",
+  "repoRelativePath": "tests/test_tools_smoke.py",
+  "storedPath": "raw/sources/test-tools-smoke-23acf85c.py",
+  "extractedTextPath": "state/extracts/test-tools-smoke-23acf85c.md",
+  "extractedMetadataPath": "state/extracts/test-tools-smoke-23acf85c.json",
+  "extractionHash": "12fb394515c571f50af9891b1d1df2fb0881bf5effbaa7aaa4f6cbbc8348c267",
+  "mimeType": "application/octet-stream",
+  "contentHash": "23acf85cd7753702ffecd6f81d83e6c9a56279aa0dd0ce53c6e366acbde83172",
+  "semanticHash": "23acf85cd7753702ffecd6f81d83e6c9a56279aa0dd0ce53c6e366acbde83172",
+  "createdAt": "2026-05-11T08:43:22.228Z",
+  "updatedAt": "2026-05-11T08:43:22.228Z"
+}

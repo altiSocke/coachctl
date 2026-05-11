@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "kreuzegg-classic-berg-halbmarathon-e9d08de5",
+  "sourceHash": "e9d08de5a8c0ccee91c9d1e87a3950b733b3a871e2dc39d1e65f05c4333d2da1",
+  "semanticHash": "7f4a1707807e92d0aef0aa6af19cd97985c2ce01d09ac14d13d8c19336385933",
+  "extractionHash": "af5185db904a214dce1d600e2775006c225ed73601599a6e6b1900504c7661ec",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Kreuzegg Classic — Berg-Halbmarathon",
+  "summary": "Kreuzegg Classic — Berg-Halbmarathon Source: https://www.kreuzegg.ch/berghalbmarathon Last updated: 2026-04-30 --- ## Race facts | | | |---|---| | Full name | Kreuzegg Classic Berg-Halbmarathon | | Location | Bütschwil → Unterälpli (Kreuzegg region, Ostschweiz / Toggenburg, SG) | | Date 2026 | Saturday, 23 May 2026 | | Start time | ~10:30 (exact per Ausschreibung) | | Distance | 21.9 km | | Total elevation gain | ~1,000 m (net positive, point-to-point uphill) | | Start altitude | ~620 m (Bütschwil) | | Finish altitude | ~1,100 m (Unterälpli / Kreuzegg) | | Peak altitude | ~1,230 m (Älplispitz, km 20–21) | | Course type | Point-to-point, predominantly uphill, trail/road mix | | Surface | Mix of asphalt (Hartbelag) and trail | | Website | https://www.kreuzegg.ch/berghalbmarathon | | Registration deadline | Friday, 22 May 2026 (late entry on race day +CHF 10) | | Bib pickup | From 09:30 at Schulhaus Dorf, Mittendorfstrasse 15, Bütschwil | --- ## Elevation profile (from official Höhenprofil image) Altitude (m) 1300 | ╭──╮ 1200 | ╭──╯ ╰─╮ ← Älplispitz ~1230m (km 20) 1100 | ╰── ZIEL Unterälpli ~1100m 1000 | 900 | ╭──╮ ← 16km ZIEL ~850m (Krinau) 800 | ╭────╯ 700 | ╭────╯ 600 |────────────────────────╮╭╯ ← 10km ZIEL/DUO Wechsel ~600m (Dietfurt) START Bütschwil Dietfurt Kengelbach Krinau Älplispitz ZIEL 0 ~5km ~10km ~13km ~16km ~20km 21.9km ### Key segments | Segment | Distance | Altitude | Character | |---|---|---|---| | Start → Bütschwil | 0–5 km | ~620 m flat | Flat/rolling, mostly asphalt | | Bütschwil → Dietfurt | 5–10 km | 620→600 m | Slight descent, flat — 10km finish / DUO relay handoff | | Dietfurt → Kengelbach | 10–13 km | 600→700 m | Gradual climb begins | | Kengelbach → Krinau | 13–16 km | 700→850 m | Sustained climb, ~50 m/km | | Krinau → Älplispitz | 16–21 km | 850→1230 m | Crux: steep mountain climb, ~76 m/km avg | | Älplispitz → Ziel | 21–21.9 km | 1230→1100 m | Short descent to finish | Key insight: The first 10 km are essentially flat (net neutral). All the climbing is concentrated in the second half, with the hardest 5 km being km 16–21 (+380 m). This is a classic \"save your legs\" race — go out easy, attack the climb.",
+  "concepts": [
+    {
+      "id": "concept:dietfurt",
+      "name": "dietfurt",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "concept:krinau",
+      "name": "krinau",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "concept:finish",
+      "name": "finish",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "concept:flat",
+      "name": "flat",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "concept:tschwil",
+      "name": "tschwil",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "concept:https",
+      "name": "https",
+      "description": "Frequently referenced concept in Kreuzegg Classic — Berg-Halbmarathon."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:last",
+      "name": "Last",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "entity:race",
+      "name": "Race",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "entity:full",
+      "name": "Full",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "entity:kreuzegg-classic-berg-halbmarathon",
+      "name": "Kreuzegg Classic Berg-Halbmarathon",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "entity:location",
+      "name": "Location",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    },
+    {
+      "id": "entity:b-tschwil",
+      "name": "Bütschwil",
+      "description": "Named entity mentioned in Kreuzegg Classic — Berg-Halbmarathon."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:kreuzegg-classic-berg-halbmarathon-e9d08de5:1",
+      "text": "Kreuzegg Classic — Berg-Halbmarathon Source: https://www.kreuzegg.ch/berghalbmarathon Last updated: 2026-04-30 --- ## Race facts | | | |---|---| | Full name | Kreuzegg Classic Berg-Halbmarathon | | Location | Bütschwil → Unterälpli (Kreuzegg region, Ostschweiz / Toggenburg, SG) | | Date 2026 | Saturday, 23 May 2026 | | Start time | ~10:30 (exact per Ausschreibung) | | Distance | 21.9 km | | Total elevation gain | ~1,000 m (net positive, point-to-point uphill) | | Start altitude | ~620 m (Bütschwil) | | Finish altitude | ~1,100 m (Unterälpli / Kreuzegg) | | Peak altitude | ~1,230 m (Älplispitz, km 20–21) | | Course type | Point-to-point, predominantly uphill, trail/road mix | | Surface | Mix of asphalt (Hartbelag) and trail | | Website | https://www.kreuzegg.ch/berghalbmarathon | | Registration deadline | Friday, 22 May 2026 (late entry on race day +CHF 10) | | Bib pickup | From 09:30 at Schulhaus Dorf, Mittendorfstrasse 15, Bütschwil | --- ## Elevation profile (from official Höhenprofil image) Altitude (m) 1300 | ╭──╮ 1200 | ╭──╯ ╰─╮ ← Älplispitz ~1230m (km 20) 1100 | ╰── ZIEL Unterälpli ~1100m 1000 | 900 | ╭──╮ ← 16km ZIEL ~850m (Krinau) 800 | ╭────╯ 700 | ╭────╯ 600 |────────────────────────╮╭╯ ← 10km ZIEL/DUO Wechsel ~600m (Dietfurt) START Bütschwil Dietfurt Kengelbach Krinau Älplispitz ZIEL 0 ~5km ~10km ~13km ~16km ~20km 21.9km ### Key segments | Segment | Distance | Altitude | Character | |---|---|---|---| | Start → Bütschwil | 0–5 km | ~620 m flat | Flat/rolling, mostly asphalt | | Bütschwil → Dietfurt | 5–10 km | 620→600 m | Slight descent, flat — 10km finish / DUO relay handoff | | Dietfurt → Kengelbach | 10–13 km | 600→700 m | Gradual climb begins | | Kengelbach → Krinau | 13–16 km | 700→850 m | Sustained climb, ~50 m/km | | Krinau → Älplispitz | 16–21 km | 850→1230 m | Crux: steep mountain climb, ~76 m/km avg | | Älplispitz → Ziel | 21–21.9 km | 1230→1100 m | Short descent to finish | Key insight: The first 10 km are essentially flat (net neutral).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+    },
+    {
+      "id": "claim:kreuzegg-classic-berg-halbmarathon-e9d08de5:2",
+      "text": "All the climbing is concentrated in the second half, with the hardest 5 km being km 16–21 (+380 m).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+    },
+    {
+      "id": "claim:kreuzegg-classic-berg-halbmarathon-e9d08de5:3",
+      "text": "This is a classic \"save your legs\" race — go out easy, attack the climb.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+    },
+    {
+      "id": "claim:kreuzegg-classic-berg-halbmarathon-e9d08de5:4",
+      "text": "--- ## Aid stations (Verpflegung) | km | Location | Food/Drink | |---|---|---| | 6 | — | Water, Sponser Iso | | 10 | Dietfurt | Water, Iso, apples, glucose | | 13 | Kengelbach | Water, Iso, gel, bar, glucose | | 16 | Krinau | Water, Iso, Coca-Cola, gel, bar, bananas | | 18 | — | Water, Iso, Coca-Cola, gel, bar, glucose | | 20 | Älpli Sattel | Water, Iso, gel, bar, glucose | | 21 (Finish) | Unterälpli | Water, Iso, bouillon, apples, bananas | Well-stocked from km 10 onward.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+    }
+  ],
+  "questions": [
+    "How does dietfurt relate to Kreuzegg Classic — Berg-Halbmarathon?",
+    "How does krinau relate to Kreuzegg Classic — Berg-Halbmarathon?",
+    "How does finish relate to Kreuzegg Classic — Berg-Halbmarathon?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:33.759Z"
+}

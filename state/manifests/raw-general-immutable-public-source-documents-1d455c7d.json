@@ -1,0 +1,18 @@
+{
+  "sourceId": "raw-general-immutable-public-source-documents-1d455c7d",
+  "title": "raw/general/ — Immutable public source documents",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/raw/README.md",
+  "repoRelativePath": "raw/README.md",
+  "storedPath": "raw/sources/raw-general-immutable-public-source-documents-1d455c7d.md",
+  "extractedTextPath": "state/extracts/raw-general-immutable-public-source-documents-1d455c7d.md",
+  "extractedMetadataPath": "state/extracts/raw-general-immutable-public-source-documents-1d455c7d.json",
+  "extractionHash": "b2e00f858a578ad316f2224e9536c4b3455e4add16f1ece4cd3f5dda6674924d",
+  "mimeType": "text/markdown",
+  "contentHash": "1d455c7d3ad7b07b2bf4c29250b9c0a07edc764174f0ae05865d04f0df5b0e2f",
+  "semanticHash": "535638b9511f8e5fa85ed534572d1d9646928415b6c6a54bf3e652101070bed4",
+  "createdAt": "2026-05-11T08:43:15.618Z",
+  "updatedAt": "2026-05-11T08:43:15.618Z"
+}

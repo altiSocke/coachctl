@@ -1,0 +1,18 @@
+{
+  "sourceId": "athlete-profile-eed5f509",
+  "title": "── Athlete Profile ────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "text",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/config/athlete.yaml.template",
+  "repoRelativePath": "config/athlete.yaml.template",
+  "storedPath": "raw/sources/athlete-profile-eed5f509.template",
+  "extractedTextPath": "state/extracts/athlete-profile-eed5f509.md",
+  "extractedMetadataPath": "state/extracts/athlete-profile-eed5f509.json",
+  "extractionHash": "1ea7cd5258a79974748dbc8ff38ab1da9bd7810cfda3bc750c52c1c931d042c6",
+  "mimeType": "application/octet-stream",
+  "contentHash": "eed5f509845efbde460789c01d0e31f58c436420d254059ff62db613ba08949b",
+  "semanticHash": "eed5f509845efbde460789c01d0e31f58c436420d254059ff62db613ba08949b",
+  "createdAt": "2026-05-11T08:43:14.658Z",
+  "updatedAt": "2026-05-11T08:43:14.658Z"
+}

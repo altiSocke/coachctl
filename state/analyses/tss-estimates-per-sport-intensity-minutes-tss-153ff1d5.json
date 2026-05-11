@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5",
+  "sourceHash": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+  "semanticHash": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+  "extractionHash": "4b7dd0a13c69ae959e1fc01237598a0ad3465da97bbf48311f9e57ddde5d7a9f",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "TSS estimates per sport/intensity (minutes → TSS)",
+  "summary": "TSS estimates per sport/intensity (minutes → TSS) is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:tss-estimates-per-sport-intensity-minutes-tss-153ff1d5:1",
+      "text": "TSS estimates per sport/intensity (minutes → TSS) has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does TSS estimates per sport/intensity (minutes → TSS) serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:tss-estimates-per-sport-intensity-minutes-tss-153ff1d5",
+    "language": "python",
+    "moduleName": "coachctl.tools.untracked_tools",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:38.607Z"
+}

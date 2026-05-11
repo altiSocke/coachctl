@@ -1,0 +1,19 @@
+{
+  "sourceId": "config-ed62725e",
+  "title": "config",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/config.py",
+  "repoRelativePath": "src/coachctl/config.py",
+  "storedPath": "raw/sources/config-ed62725e.py",
+  "extractedTextPath": "state/extracts/config-ed62725e.md",
+  "extractedMetadataPath": "state/extracts/config-ed62725e.json",
+  "extractionHash": "0b559451562840c8f6de746a78cdae1dd477dccf40eed7715190f67a765bc6ca",
+  "mimeType": "application/octet-stream",
+  "contentHash": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+  "semanticHash": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+  "createdAt": "2026-05-11T08:43:15.918Z",
+  "updatedAt": "2026-05-11T08:43:15.918Z"
+}

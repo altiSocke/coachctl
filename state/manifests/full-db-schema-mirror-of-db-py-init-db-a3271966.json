@@ -1,0 +1,19 @@
+{
+  "sourceId": "full-db-schema-mirror-of-db-py-init-db-a3271966",
+  "title": "── Full DB schema (mirror of db.py init_db) ──────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/conftest.py",
+  "repoRelativePath": "tests/conftest.py",
+  "storedPath": "raw/sources/full-db-schema-mirror-of-db-py-init-db-a3271966.py",
+  "extractedTextPath": "state/extracts/full-db-schema-mirror-of-db-py-init-db-a3271966.md",
+  "extractedMetadataPath": "state/extracts/full-db-schema-mirror-of-db-py-init-db-a3271966.json",
+  "extractionHash": "30d05f41a73f80a421cce717928e36d64fa706e94a09a40f18b6e2e78b01c158",
+  "mimeType": "application/octet-stream",
+  "contentHash": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+  "semanticHash": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+  "createdAt": "2026-05-11T08:43:19.627Z",
+  "updatedAt": "2026-05-11T08:43:19.627Z"
+}

@@ -1,0 +1,19 @@
+{
+  "sourceId": "code-root-fa300ffa",
+  "title": "── code_root ─────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_paths.py",
+  "repoRelativePath": "tests/test_paths.py",
+  "storedPath": "raw/sources/code-root-fa300ffa.py",
+  "extractedTextPath": "state/extracts/code-root-fa300ffa.md",
+  "extractedMetadataPath": "state/extracts/code-root-fa300ffa.json",
+  "extractionHash": "278b560f2112d3b54a911aef31845af88fdd19290688a1076623543476ab28a8",
+  "mimeType": "application/octet-stream",
+  "contentHash": "fa300ffa208f4e0e0bcfe8577fa533039c48e52b87a96d0e14d9b64d93554350",
+  "semanticHash": "fa300ffa208f4e0e0bcfe8577fa533039c48e52b87a96d0e14d9b64d93554350",
+  "createdAt": "2026-05-11T08:43:20.874Z",
+  "updatedAt": "2026-05-11T08:43:20.874Z"
+}

@@ -1,0 +1,18 @@
+{
+  "sourceId": "swarmvault-rules-7d1dab2a",
+  "title": "SwarmVault Rules",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/CLAUDE.md",
+  "repoRelativePath": "CLAUDE.md",
+  "storedPath": "raw/sources/swarmvault-rules-7d1dab2a.md",
+  "extractedTextPath": "state/extracts/swarmvault-rules-7d1dab2a.md",
+  "extractedMetadataPath": "state/extracts/swarmvault-rules-7d1dab2a.json",
+  "extractionHash": "ea6655d05b919d5c95256852916e7e39b6ed089992613bd9352388084383a6ee",
+  "mimeType": "text/markdown",
+  "contentHash": "7d1dab2ae6ab8a6aa7cd5897211c8f240d4860d04cc6fb58fcdfbd5740040103",
+  "semanticHash": "6003d063e47e89c5ec8ae9e060cbb4ce971526d5368e0a1912d774eae5142030",
+  "createdAt": "2026-05-11T08:43:14.609Z",
+  "updatedAt": "2026-05-11T08:43:14.609Z"
+}

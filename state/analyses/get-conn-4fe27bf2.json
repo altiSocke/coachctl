@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "get-conn-4fe27bf2",
+  "sourceHash": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+  "semanticHash": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+  "extractionHash": "600d585a94bb48f8bf34e1f229ccfb2bb6be7827a76e16f191078cd1e8d448b4",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── get_conn ──────────────────────────────────────────────────────────────────",
+  "summary": "── get_conn ────────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:get-conn-4fe27bf2:1",
+      "text": "── get_conn ────────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "get-conn-4fe27bf2"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── get_conn ────────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:get-conn-4fe27bf2",
+    "language": "python",
+    "moduleName": "tests.test_db",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:33.389Z"
+}

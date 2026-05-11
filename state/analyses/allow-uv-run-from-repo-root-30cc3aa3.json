@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "allow-uv-run-from-repo-root-30cc3aa3",
+  "sourceHash": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+  "semanticHash": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+  "extractionHash": "6884f08dc24a1ca2e2b48257619db30d106e155d6a45ad302c67b5638abfec78",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "allow uv run from repo root",
+  "summary": "allow uv run from repo root is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:allow-uv-run-from-repo-root-30cc3aa3:1",
+      "text": "allow uv run from repo root has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "allow-uv-run-from-repo-root-30cc3aa3"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does allow uv run from repo root serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:allow-uv-run-from-repo-root-30cc3aa3",
+    "language": "python",
+    "moduleName": "scripts.migrate_races_to_events",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:30.954Z"
+}

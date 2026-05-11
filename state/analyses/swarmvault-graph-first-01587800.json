@@ -1,0 +1,313 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "swarmvault-graph-first-01587800",
+  "sourceHash": "01587800fd2d6a8c0efc962c2de5c3d82656e57e70163377e473316da2c5c650",
+  "semanticHash": "01587800fd2d6a8c0efc962c2de5c3d82656e57e70163377e473316da2c5c650",
+  "extractionHash": "4487823fc3a985b2c1469696fe69b8bdab49e044bf425e787fffad35f50d0e69",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "swarmvault-graph-first",
+  "summary": "swarmvault-graph-first is a javascript module, defining 20 top-level symbol(s), exporting 0 symbol(s), depending on 4 external package import(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:swarmvault-graph-first-01587800:1",
+      "text": "swarmvault-graph-first defines markerState, isReportPath, collectCandidatePaths, resolveInputCwd, resolveToolName, and more.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-graph-first-01587800"
+    },
+    {
+      "id": "claim:swarmvault-graph-first-01587800:2",
+      "text": "swarmvault-graph-first imports crypto, fs/promises, os, path.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "swarmvault-graph-first-01587800"
+    }
+  ],
+  "questions": [
+    "Why does swarmvault-graph-first depend on crypto?",
+    "What broader responsibility does swarmvault-graph-first serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:swarmvault-graph-first-01587800",
+    "language": "javascript",
+    "moduleName": ".claude/hooks/swarmvault-graph-first",
+    "imports": [
+      {
+        "specifier": "crypto",
+        "importedSymbols": [],
+        "defaultImport": "crypto",
+        "isTypeOnly": false,
+        "isExternal": true,
+        "reExport": false
+      },
+      {
+        "specifier": "fs/promises",
+        "importedSymbols": [],
+        "defaultImport": "fs",
+        "isTypeOnly": false,
+        "isExternal": true,
+        "reExport": false
+      },
+      {
+        "specifier": "os",
+        "importedSymbols": [],
+        "defaultImport": "os",
+        "isTypeOnly": false,
+        "isExternal": true,
+        "reExport": false
+      },
+      {
+        "specifier": "path",
+        "importedSymbols": [],
+        "defaultImport": "path",
+        "isTypeOnly": false,
+        "isExternal": true,
+        "reExport": false
+      }
+    ],
+    "dependencies": [
+      "crypto",
+      "fs/promises",
+      "os",
+      "path"
+    ],
+    "symbols": [
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:markerstate.function",
+        "name": "markerState",
+        "kind": "function",
+        "signature": "function markerState(cwd, agentKey)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:isreportpath.function",
+        "name": "isReportPath",
+        "kind": "function",
+        "signature": "function isReportPath(value, cwd)",
+        "exported": false,
+        "calls": [
+          "reportPath"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:collectcandidatepaths.function",
+        "name": "collectCandidatePaths",
+        "kind": "function",
+        "signature": "function collectCandidatePaths(node, acc = [])",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:resolveinputcwd.function",
+        "name": "resolveInputCwd",
+        "kind": "function",
+        "signature": "function resolveInputCwd(input)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:resolvetoolname.function",
+        "name": "resolveToolName",
+        "kind": "function",
+        "signature": "function resolveToolName(input)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:hasreport.function",
+        "name": "hasReport",
+        "kind": "function",
+        "signature": "async function hasReport(cwd)",
+        "exported": false,
+        "calls": [
+          "reportPath"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:artifactrootdir.function",
+        "name": "artifactRootDir",
+        "kind": "function",
+        "signature": "function artifactRootDir(cwd)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:reportpath.function",
+        "name": "reportPath",
+        "kind": "function",
+        "signature": "function reportPath(cwd)",
+        "exported": false,
+        "calls": [
+          "artifactRootDir"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:markreportread.function",
+        "name": "markReportRead",
+        "kind": "function",
+        "signature": "async function markReportRead(cwd, agentKey)",
+        "exported": false,
+        "calls": [
+          "markerState"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:hasseenreport.function",
+        "name": "hasSeenReport",
+        "kind": "function",
+        "signature": "async function hasSeenReport(cwd, agentKey)",
+        "exported": false,
+        "calls": [
+          "markerState"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:resetsession.function",
+        "name": "resetSession",
+        "kind": "function",
+        "signature": "async function resetSession(cwd, agentKey)",
+        "exported": false,
+        "calls": [
+          "markerState"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:isbroadsearchtool.function",
+        "name": "isBroadSearchTool",
+        "kind": "function",
+        "signature": "function isBroadSearchTool(toolName)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:collectcommandcandidates.function",
+        "name": "collectCommandCandidates",
+        "kind": "function",
+        "signature": "function collectCommandCandidates(node, acc = [])",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:commandlookslikebroadsearch.function",
+        "name": "commandLooksLikeBroadSearch",
+        "kind": "function",
+        "signature": "function commandLooksLikeBroadSearch(command)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:isbroadsearchinput.function",
+        "name": "isBroadSearchInput",
+        "kind": "function",
+        "signature": "function isBroadSearchInput(input)",
+        "exported": false,
+        "calls": [
+          "resolveToolName",
+          "isBroadSearchTool",
+          "collectCommandCandidates"
+        ],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:readhookinput.function",
+        "name": "readHookInput",
+        "kind": "function",
+        "signature": "async function readHookInput()",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:report-note.variable",
+        "name": "REPORT_NOTE",
+        "kind": "variable",
+        "signature": "var REPORT_NOTE = \"SwarmVault graph report exists at wiki/graph/report.md, or at $SWARMVAULT_OUT/wiki/graph/report.md when SWARMVAULT_OUT is set. Read it before broad grep/glob ...",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:agent-key.variable",
+        "name": "AGENT_KEY",
+        "kind": "variable",
+        "signature": "var AGENT_KEY = \"claude\";",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:emit.function",
+        "name": "emit",
+        "kind": "function",
+        "signature": "function emit(value)",
+        "exported": false,
+        "calls": [],
+        "extends": [],
+        "implements": []
+      },
+      {
+        "id": "symbol:swarmvault-graph-first-01587800:main.function",
+        "name": "main",
+        "kind": "function",
+        "signature": "async function main()",
+        "exported": false,
+        "calls": [
+          "readHookInput",
+          "resolveInputCwd",
+          "hasReport",
+          "emit",
+          "resetSession",
+          "collectCandidatePaths",
+          "isReportPath",
+          "markReportRead",
+          "isBroadSearchInput",
+          "hasSeenReport"
+        ],
+        "extends": [],
+        "implements": []
+      }
+    ],
+    "exports": [],
+    "diagnostics": []
+  },
+  "producedAt": "2026-05-11T08:43:38.100Z"
+}

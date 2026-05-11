@@ -1,0 +1,18 @@
+{
+  "sourceId": "security-review-skill-58079098",
+  "title": "Security Review Skill",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/security-review/SKILL.md",
+  "repoRelativePath": ".opencode/skills/security-review/SKILL.md",
+  "storedPath": "raw/sources/security-review-skill-58079098.md",
+  "extractedTextPath": "state/extracts/security-review-skill-58079098.md",
+  "extractedMetadataPath": "state/extracts/security-review-skill-58079098.json",
+  "extractionHash": "8104d2b59566d9210a6eee3dbd4b1b10701138e8159884a5e990ebacd2128b44",
+  "mimeType": "text/markdown",
+  "contentHash": "58079098ea5f95604452aef459cd58fb45370fa672926db914bda20f9890ff57",
+  "semanticHash": "eac6e0263375c8932584f11a2c4ef86725af9c19ac757e04f83dbebb39d68e2b",
+  "createdAt": "2026-05-11T08:43:14.192Z",
+  "updatedAt": "2026-05-11T08:43:14.192Z"
+}

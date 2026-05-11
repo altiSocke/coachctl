@@ -1,0 +1,24 @@
+{
+  "sourceId": "hooks-a17f6f95",
+  "title": "hooks",
+  "originType": "file",
+  "sourceKind": "data",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.codex/hooks.json",
+  "repoRelativePath": ".codex/hooks.json",
+  "storedPath": "raw/sources/hooks-a17f6f95.json",
+  "extractedTextPath": "state/extracts/hooks-a17f6f95.md",
+  "extractedMetadataPath": "state/extracts/hooks-a17f6f95.json",
+  "extractionHash": "1cfa5834ef0b77b524dc71de0624271a5e9f4d952380ce5a4b9a76cac4b580a3",
+  "mimeType": "application/json",
+  "contentHash": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+  "semanticHash": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+  "details": {
+    "format": "json",
+    "top_level_type": "object",
+    "top_level_size": "1",
+    "nested_depth": "6"
+  },
+  "createdAt": "2026-05-11T08:43:13.503Z",
+  "updatedAt": "2026-05-11T08:43:13.503Z"
+}

@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "stretching-science-reference-1c8a0e4f",
+  "sourceHash": "1c8a0e4f05bfc3a7055913a1d4135f804e01a509e1c5ca84a451aa590838a05c",
+  "semanticHash": "bbabe881512f7371dfaa18b64e1aec46cf915f7cd4d8bd8d39ea688a4abe6f39",
+  "extractionHash": "14820408528e13a6fb4de76571da1a68d334b7b6feeb4d472beada70cd4c95fe",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Stretching — Science Reference",
+  "summary": "Stretching — Science Reference Synthesised from: raw/science/stretching_endurance_team_sports.md (2026-04-25) Primary sources: Warneke et al. 2025 (meta-analysis, PMID 40442558), Panascì et al. 2024 (RCT, PMID 39608347), Faelli et al.",
+  "concepts": [
+    {
+      "id": "concept:stretching",
+      "name": "stretching",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    },
+    {
+      "id": "concept:side",
+      "name": "side",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    },
+    {
+      "id": "concept:injury",
+      "name": "injury",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    },
+    {
+      "id": "concept:muscle",
+      "name": "muscle",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    },
+    {
+      "id": "concept:post",
+      "name": "post",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    },
+    {
+      "id": "concept:static",
+      "name": "static",
+      "description": "Frequently referenced concept in Stretching — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:science-reference-synthesised",
+      "name": "Science Reference Synthesised",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    },
+    {
+      "id": "entity:primary",
+      "name": "Primary",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    },
+    {
+      "id": "entity:warneke",
+      "name": "Warneke",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    },
+    {
+      "id": "entity:panasc",
+      "name": "Panascì",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    },
+    {
+      "id": "entity:faelli",
+      "name": "Faelli",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    },
+    {
+      "id": "entity:ullman",
+      "name": "Ullman",
+      "description": "Named entity mentioned in Stretching — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:stretching-science-reference-1c8a0e4f:1",
+      "text": "Stretching — Science Reference Synthesised from: raw/science/stretching_endurance_team_sports.md (2026-04-25) Primary sources: Warneke et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "stretching-science-reference-1c8a0e4f"
+    },
+    {
+      "id": "claim:stretching-science-reference-1c8a0e4f:2",
+      "text": "2025 (meta-analysis, PMID 40442558), Panascì et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "stretching-science-reference-1c8a0e4f"
+    },
+    {
+      "id": "claim:stretching-science-reference-1c8a0e4f:3",
+      "text": "2024 (RCT, PMID 39608347), Faelli et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "stretching-science-reference-1c8a0e4f"
+    },
+    {
+      "id": "claim:stretching-science-reference-1c8a0e4f:4",
+      "text": "2021, Ullman et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "stretching-science-reference-1c8a0e4f"
+    }
+  ],
+  "questions": [
+    "How does stretching relate to Stretching — Science Reference?",
+    "How does side relate to Stretching — Science Reference?",
+    "How does injury relate to Stretching — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:37.700Z"
+}

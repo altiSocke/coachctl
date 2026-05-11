@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "running-shoes-paper-catalogue-8c70bd7a",
+  "sourceHash": "8c70bd7a659d6d76d1a1726bd603099a9e661eaf187590aac755f880a1af0518",
+  "semanticHash": "33a3b94070081e0c8bb7436ab238a03b0764e24269d2e1909a9a80b06e6658da",
+  "extractionHash": "9cff62e5070546ebe1721e3a1f5866e35d7291155c6f8fb4e48f574731b1e207",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Running Shoes — Paper Catalogue",
+  "summary": "Running Shoes — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: running shoe cushioning injury performance; carbon plate running shoe economy; minimalist shoe heel drop biomechanics. Synthesised into: wiki/general/gear.md --- ## Paper 1 — Sun et al. 2020 ⭐ PRIMARY BIOMECHANICS REVIEW Title: Systematic Review of the Role of Footwear Constructions in Running Biomechanics: Implications for Running-Related Injury and Performance Authors: Sun X, Lam WK, Zhang X, Wang J, Fu W Journal: Journal of Sports Science and Medicine Year: 2020 (Feb 24); eCollection 2020 Mar PMID: 32132824 PMCID: PMC7039038 Access: Free PMC full text Type: Systematic Review (63 studies, databases through Sep 2018) Key findings — shoe constructions: - Stiffness: Increasing midsole bending stiffness at an optimal range improves performance-related variables (energy return); too little = poor energy return, too much = restricted foot motion - Cushioning (midsole softness): Softer midsoles reduce impact forces and loading rates; thicker midsoles provide better shock attenuation but may decrease plantar sensory feedback - Minimalist shoes: Improve running economy and increase Achilles tendon cross-sectional area and stiffness; but increase metatarsophalangeal and ankle joint loading compared to conventional shoes - Heel-toe drop: Evidence insufficient to draw clear conclusions on injury risk; further research needed - Heel cup, upper, shoe lace, heel flare, MBT (rocker sole): Insufficient evidence for guidelines Practical summary: - No single shoe construction eliminates injury risk across all runners - Stiffer midsole (e.g., carbon plate) → better RE, longer contact time, greater stride length - Softer midsole → lower impact forces, but increased energy cost --- ## Paper 2 — Relph et al.",
+  "concepts": [
+    {
+      "id": "concept:plate",
+      "name": "plate",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "concept:carbon",
+      "name": "carbon",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "concept:running",
+      "name": "running",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "concept:shoes",
+      "name": "shoes",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "concept:shoe",
+      "name": "shoe",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "concept:injury",
+      "name": "injury",
+      "description": "Frequently referenced concept in Running Shoes — Paper Catalogue."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:source-pubmed",
+      "name": "Source: PubMed",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "entity:paper",
+      "name": "Paper",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "entity:sun",
+      "name": "Sun",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "entity:title-systematic-review",
+      "name": "Title: Systematic Review",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "entity:role",
+      "name": "Role",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    },
+    {
+      "id": "entity:footwear-constructions",
+      "name": "Footwear Constructions",
+      "description": "Named entity mentioned in Running Shoes — Paper Catalogue."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:running-shoes-paper-catalogue-8c70bd7a:1",
+      "text": "Running Shoes — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: running shoe cushioning injury performance; carbon plate running shoe economy; minimalist shoe heel drop biomechanics.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-shoes-paper-catalogue-8c70bd7a"
+    },
+    {
+      "id": "claim:running-shoes-paper-catalogue-8c70bd7a:2",
+      "text": "Synthesised into: wiki/general/gear.md --- ## Paper 1 — Sun et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-shoes-paper-catalogue-8c70bd7a"
+    },
+    {
+      "id": "claim:running-shoes-paper-catalogue-8c70bd7a:3",
+      "text": "2020 ⭐ PRIMARY BIOMECHANICS REVIEW Title: Systematic Review of the Role of Footwear Constructions in Running Biomechanics: Implications for Running-Related Injury and Performance Authors: Sun X, Lam WK, Zhang X, Wang J, Fu W Journal: Journal of Sports Science and Medicine Year: 2020 (Feb 24); eCollection 2020 Mar PMID: 32132824 PMCID: PMC7039038 Access: Free PMC full text Type: Systematic Review (63 studies, databases through Sep 2018) Key findings — shoe constructions: - Stiffness: Increasing midsole bending stiffness at an optimal range improves performance-related variables (energy return); too little = poor energy return, too much = restricted foot motion - Cushioning (midsole softness): Softer midsoles reduce impact forces and loading rates; thicker midsoles provide better shock attenuation but may decrease plantar sensory feedback - Minimalist shoes: Improve running economy and increase Achilles tendon cross-sectional area and stiffness; but increase metatarsophalangeal and ankle joint loading compared to conventional shoes - Heel-toe drop: Evidence insufficient to draw clear conclusions on injury risk; further research needed - Heel cup, upper, shoe lace, heel flare, MBT (rocker sole): Insufficient evidence for guidelines Practical summary: - No single shoe construction eliminates injury risk across all runners - Stiffer midsole (e.g., carbon plate) → better RE, longer contact time, greater stride length - Softer midsole → lower impact forces, but increased energy cost --- ## Paper 2 — Relph et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "running-shoes-paper-catalogue-8c70bd7a"
+    },
+    {
+      "id": "claim:running-shoes-paper-catalogue-8c70bd7a:4",
+      "text": "2022 ⭐ COCHRANE SYSTEMATIC REVIEW Title: Running shoes for preventing lower limb running injuries in adults Authors: Relph N, Greaves H, Armstrong R, Prior TD, Spencer S, Griffiths IB, Dey P, Langley B Journal: Cochrane Database of Systematic Reviews Year: 2022 (Aug 22) PMID: 35993829 PMCID: PMC9394464 DOI: 10.1002/14651858.CD013368.pub2 Access: Free PMC full text Type: Cochrane Systematic Review (12 RCTs, n=11,240) Key findings: - Neutral/cushioned vs.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-shoes-paper-catalogue-8c70bd7a"
+    }
+  ],
+  "questions": [
+    "How does plate relate to Running Shoes — Paper Catalogue?",
+    "How does carbon relate to Running Shoes — Paper Catalogue?",
+    "How does running relate to Running Shoes — Paper Catalogue?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.199Z"
+}

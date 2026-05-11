@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "tour-de-l-uetliberg-tdu-77461fbe",
+  "sourceHash": "77461fbe52c98b6b61530196a5b4e68bb2d1578429a20c0758b2ade680d2b888",
+  "semanticHash": "bcca5645b1bcc5dc9a35b30672d64afea6e954186d7e15582e37b3d5ae669666",
+  "extractionHash": "e06b14cb3184e1e3e5196c12fc16f080250f366bd58373c0bf7cb6ae46584cd5",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Tour de l'Uetliberg (TdU)",
+  "summary": "Tour de l'Uetliberg (TdU) > Personal race strategy and results live in the events table ( propose_race_* / apply_race_* ). --- ## Race Overview The Tour de l'Uetliberg (TdU) is an annual Strava-segment timed trail race series based on the Uetliberg hill, Zurich. Not a mass-start race — athletes run each segment independently within a defined time window; Strava auto-records the time.",
+  "concepts": [
+    {
+      "id": "concept:trail",
+      "name": "trail",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "concept:finish",
+      "name": "finish",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "concept:path",
+      "name": "path",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "concept:race",
+      "name": "race",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "concept:stage",
+      "name": "stage",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "concept:descent",
+      "name": "descent",
+      "description": "Frequently referenced concept in Tour de l'Uetliberg (TdU)."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:tdu",
+      "name": "(TdU)",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "entity:personal",
+      "name": "Personal",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "entity:race-overview",
+      "name": "Race Overview",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "entity:tour",
+      "name": "Tour",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "entity:strava",
+      "name": "Strava-",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    },
+    {
+      "id": "entity:uetliberg",
+      "name": "Uetliberg",
+      "description": "Named entity mentioned in Tour de l'Uetliberg (TdU)."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:tour-de-l-uetliberg-tdu-77461fbe:1",
+      "text": "Tour de l'Uetliberg (TdU) > Personal race strategy and results live in the events table ( propose_race_* / apply_race_* ).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "tour-de-l-uetliberg-tdu-77461fbe"
+    },
+    {
+      "id": "claim:tour-de-l-uetliberg-tdu-77461fbe:2",
+      "text": "--- ## Race Overview The Tour de l'Uetliberg (TdU) is an annual Strava-segment timed trail race series based on the Uetliberg hill, Zurich.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "tour-de-l-uetliberg-tdu-77461fbe"
+    },
+    {
+      "id": "claim:tour-de-l-uetliberg-tdu-77461fbe:3",
+      "text": "Not a mass-start race — athletes run each segment independently within a defined time window; Strava auto-records the time.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "tour-de-l-uetliberg-tdu-77461fbe"
+    },
+    {
+      "id": "claim:tour-de-l-uetliberg-tdu-77461fbe:4",
+      "text": "Results aggregate into an overall TdU ranking.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "tour-de-l-uetliberg-tdu-77461fbe"
+    }
+  ],
+  "questions": [
+    "How does trail relate to Tour de l'Uetliberg (TdU)?",
+    "How does finish relate to Tour de l'Uetliberg (TdU)?",
+    "How does path relate to Tour de l'Uetliberg (TdU)?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:38.602Z"
+}

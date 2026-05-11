@@ -1,0 +1,96 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+  "sourceHash": "8fbb18f69b4c54f078a118042ffe04d94b0344a313c817691a504975fc03f8cf",
+  "semanticHash": "8fbb18f69b4c54f078a118042ffe04d94b0344a313c817691a504975fc03f8cf",
+  "extractionHash": "595dc7ef191fb82d94a83e9370a81886bacd58520396bbd3d535f1f75c885ae9",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "description: SwarmVault graph-first repository instructions. alwaysApply: true",
+  "summary": "--- description: SwarmVault graph-first repository instructions. alwaysApply: true --- # SwarmVault Rules - Read swarmvault.schema.md before compile or query style work. It is the canonical schema path.",
+  "concepts": [
+    {
+      "id": "concept:swarmvault",
+      "name": "swarmvault",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "concept:graph",
+      "name": "graph",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "concept:wiki",
+      "name": "wiki",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "concept:before",
+      "name": "before",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "concept:query",
+      "name": "query",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "concept:source",
+      "name": "source",
+      "description": "Frequently referenced concept in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:swarmvault",
+      "name": "SwarmVault",
+      "description": "Named entity mentioned in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    },
+    {
+      "id": "entity:swarmvault-rules-read",
+      "name": "SwarmVault Rules - Read",
+      "description": "Named entity mentioned in description: SwarmVault graph-first repository instructions. alwaysApply: true."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6:1",
+      "text": "--- description: SwarmVault graph-first repository instructions.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6"
+    },
+    {
+      "id": "claim:description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6:2",
+      "text": "alwaysApply: true --- # SwarmVault Rules - Read swarmvault.schema.md before compile or query style work.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6"
+    },
+    {
+      "id": "claim:description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6:3",
+      "text": "It is the canonical schema path.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6"
+    },
+    {
+      "id": "claim:description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6:4",
+      "text": "- Treat raw/ as immutable source input.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6"
+    }
+  ],
+  "questions": [
+    "How does swarmvault relate to description: SwarmVault graph-first repository instructions. alwaysApply: true?",
+    "How does graph relate to description: SwarmVault graph-first repository instructions. alwaysApply: true?",
+    "How does wiki relate to description: SwarmVault graph-first repository instructions. alwaysApply: true?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:32.291Z"
+}

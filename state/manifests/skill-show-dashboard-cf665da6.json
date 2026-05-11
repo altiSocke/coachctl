@@ -1,0 +1,18 @@
+{
+  "sourceId": "skill-show-dashboard-cf665da6",
+  "title": "Skill: show-dashboard",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/.opencode/skills/show-dashboard/SKILL.md",
+  "repoRelativePath": ".opencode/skills/show-dashboard/SKILL.md",
+  "storedPath": "raw/sources/skill-show-dashboard-cf665da6.md",
+  "extractedTextPath": "state/extracts/skill-show-dashboard-cf665da6.md",
+  "extractedMetadataPath": "state/extracts/skill-show-dashboard-cf665da6.json",
+  "extractionHash": "e4d8907788a7c2e1488598564a2baaeb8ff8fdbbf420a53fda1a36d31561782b",
+  "mimeType": "text/markdown",
+  "contentHash": "cf665da67ae425649a4bcf1b9c0ac35004e5cce082c0dd85f0a1ecd7bb12ebaf",
+  "semanticHash": "a1fdb8695f52bd117640c594a166de3262dab79560ed3e4a302db30d1d3fa726",
+  "createdAt": "2026-05-11T08:43:14.225Z",
+  "updatedAt": "2026-05-11T08:43:14.225Z"
+}

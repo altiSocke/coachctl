@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "running-training-science-reference-72f13fcc",
+  "sourceHash": "72f13fccdb2b83cdb888e050fadd1031cd48b29a3c761a9e144e96558d821bbf",
+  "semanticHash": "bb875c1d2ddeb5e11aa2cf9d15c6349734cea6b0c6a208db2ecd4fadf64f91b9",
+  "extractionHash": "6232dc1e25cb65b7a04c6d42b13d3224bfa2f0034e2251f007badc7788b4af64",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Running Training — Science Reference",
+  "summary": "Running Training — Science Reference --- ## Pace and Threshold ### rFTP (Running Functional Threshold Pace) The pace sustainable for approximately 60 minutes — equivalent to lactate threshold. Expressed in seconds per kilometre. Typical test: 30-minute time trial.",
+  "concepts": [
+    {
+      "id": "concept:running",
+      "name": "running",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    },
+    {
+      "id": "concept:pace",
+      "name": "pace",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    },
+    {
+      "id": "concept:cadence",
+      "name": "cadence",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    },
+    {
+      "id": "concept:downhill",
+      "name": "downhill",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    },
+    {
+      "id": "concept:training",
+      "name": "training",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    },
+    {
+      "id": "concept:flat",
+      "name": "flat",
+      "description": "Frequently referenced concept in Running Training — Science Reference."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:training-science-reference",
+      "name": "Training — Science Reference",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    },
+    {
+      "id": "entity:pace",
+      "name": "Pace",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    },
+    {
+      "id": "entity:threshold",
+      "name": "Threshold",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    },
+    {
+      "id": "entity:running-functional-threshold-pace",
+      "name": "(Running Functional Threshold Pace)",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    },
+    {
+      "id": "entity:half",
+      "name": "Half",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    },
+    {
+      "id": "entity:lactate",
+      "name": "Lactate",
+      "description": "Named entity mentioned in Running Training — Science Reference."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:running-training-science-reference-72f13fcc:1",
+      "text": "Running Training — Science Reference --- ## Pace and Threshold ### rFTP (Running Functional Threshold Pace) The pace sustainable for approximately 60 minutes — equivalent to lactate threshold.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-training-science-reference-72f13fcc"
+    },
+    {
+      "id": "claim:running-training-science-reference-72f13fcc:2",
+      "text": "Expressed in seconds per kilometre.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-training-science-reference-72f13fcc"
+    },
+    {
+      "id": "claim:running-training-science-reference-72f13fcc:3",
+      "text": "Typical test: 30-minute time trial.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "running-training-science-reference-72f13fcc"
+    },
+    {
+      "id": "claim:running-training-science-reference-72f13fcc:4",
+      "text": "rFTP = average pace for the full 30min (not 95% correction, unlike cycling — running uses the full effort).",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "running-training-science-reference-72f13fcc"
+    }
+  ],
+  "questions": [
+    "How does running relate to Running Training — Science Reference?",
+    "How does pace relate to Running Training — Science Reference?",
+    "How does cadence relate to Running Training — Science Reference?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.761Z"
+}

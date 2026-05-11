@@ -1,0 +1,67 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "projects-ae86e2f4",
+  "sourceHash": "ae86e2f4312bd521e3b137601cb376a4f42b91fed3ccabbb73f7ef410084a7eb",
+  "semanticHash": "c17f3824f10f7496c534034df6643e9aab08bdb9431f5d9bfa9f2ac000bf6187",
+  "extractionHash": "820c0a8465a91a12deb140dbe306d9146d230ea0af4c8102d7c712e422d6b2d3",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Projects",
+  "summary": "title: Projects tags: index, projects # Projects - Run swarmvault compile to build project rollups.",
+  "concepts": [
+    {
+      "id": "concept:projects",
+      "name": "projects",
+      "description": "Frequently referenced concept in Projects."
+    },
+    {
+      "id": "concept:build",
+      "name": "build",
+      "description": "Frequently referenced concept in Projects."
+    },
+    {
+      "id": "concept:compile",
+      "name": "compile",
+      "description": "Frequently referenced concept in Projects."
+    },
+    {
+      "id": "concept:index",
+      "name": "index",
+      "description": "Frequently referenced concept in Projects."
+    },
+    {
+      "id": "concept:project",
+      "name": "project",
+      "description": "Frequently referenced concept in Projects."
+    },
+    {
+      "id": "concept:rollups",
+      "name": "rollups",
+      "description": "Frequently referenced concept in Projects."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:projects-run",
+      "name": "Projects - Run",
+      "description": "Named entity mentioned in Projects."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:projects-ae86e2f4:1",
+      "text": "title: Projects tags: index, projects # Projects - Run swarmvault compile to build project rollups.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "projects-ae86e2f4"
+    }
+  ],
+  "questions": [
+    "How does projects relate to Projects?",
+    "How does build relate to Projects?",
+    "How does compile relate to Projects?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:35.776Z"
+}

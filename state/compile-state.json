@@ -1,0 +1,3742 @@
+{
+  "generatedAt": "2026-05-11T08:45:10.106Z",
+  "rootSchemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "projectSchemaHashes": {},
+  "effectiveSchemaHashes": {
+    "global": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+    "projects": {}
+  },
+  "projectConfigHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "analyses": {
+    "activity-tools-4251b5fd": "a08c616e136764f0c7fe703dcfacf41497b98ba4e8c3c858806cade57c54fd22",
+    "allow-uv-run-from-repo-root-30cc3aa3": "931ee5af5311386c353f4a65aebb4983c999f9795c053108339f3d6227dc6d1d",
+    "alpenbrevet-race-reference-e582446a": "3e425576bffac9a550f8ae66a37d3bc7662bdf42f93a979535b206318fe20887",
+    "app-75ed4433": "228b47710f24d2385080a2d3300356d38efebe9ca15922f981daf129d9b41b24",
+    "athlete-profile-eed5f509": "024ecd706c76bfdd3cf4cd351163844361b364370d87fc858099872521e5155e",
+    "athlete-tools-c968b16f": "a3c08a85f45a0220d0b0d9e7c29e1b1747cdabaab9e028aad910362a93af5f12",
+    "bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550": "1f6e3a7def3ed12d5211638e7a3fb48fddf7a79c51b0540e6254653ec98b9be6",
+    "candidates-5bcf0e57": "e1c49ecd56895a7e9e26b5c126754868a2edf54ce16017d4589a5a7c5507f6a6",
+    "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce": "aa5372a55de76d0b5fc4b3722b71c94ef9da20b4d19a7d3dcfb8294f0b667a9d",
+    "coachctl-architecture-conventions-8a2f1253": "887a27a70140888ee23ea6fb2631c002e37518346208f4ad3dde25ff0f39eccb",
+    "coachctl-strava-training-agent-7a3ae9ac": "fe51a9e9bb457dddd647ce2fa069a7a01bb542805d5c497848db8ea0c7a687cf",
+    "code-repo-33978ebf": "65eae52112d76cd1439d9cc621afc0133166373078db9c5f49403d93e794a237",
+    "code-root-fa300ffa": "e9d15e1c264132296c23c7c8146352d121d15be3a0710fdcedf45c467a66a00b",
+    "config-ed62725e": "1f50d310adaca84435ebfea5cae443eece2f8b6f0c68ca7b6383a800900e91ad",
+    "cycling-training-science-reference-aa12e3c8": "29c5aaf58c418fcf565bbfae2614983805a684b12346120ea76f2a4af480e79f",
+    "dashboard-ux-audit-8bc8624b": "497fd5747ecf74d02054bd2998387db8c704718659a872a3522b72d90d605752",
+    "db-4438bbd2": "398ca2624bfa1e5b0829124ca7dc0f96555f80638895f5f8b271cb529ecf6c71",
+    "deep-research-2f018e7c": "049cc8533b5733d218005af3b5668c65f18aafa87a0878538382cf96a9334209",
+    "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6": "d259c48dc884abf1f569cdc2d8bb462771350cd3791a89bdfce6a171508d13e0",
+    "dev-app-9552e8c8": "f00908c05d3fea054c2788fdbaa2e357ebd55011b9344e2c1c36b72ae53f1b1d",
+    "dillier-classic-race-reference-74aedee5": "7b696db2b8add2022d1d8d5e72db313ca70315fbc23ce35ef424979469dbf976",
+    "endurance-nutrition-science-reference-2c888727": "b22395299359e210287128fd27283e4e1abd7421f60e9e65b25b3e0afa7bd5c4",
+    "endurance-training-principles-science-reference-318c6f9d": "7499e635195cabe7a78780dcbf3536fc90e0cba60f191802b51d74ba118bf876",
+    "env-tools-85fd1cad": "710a8c46ba0eaa781e92702e3c528a461b91707f9a834cfd7d267a436a4735e9",
+    "event-tools-4028185c": "6ddc62937861de2b4a4af3043c8234957ad85db09d3171d93b1a8c8f03f0b5c9",
+    "exercise-nutrition-timing-paper-catalogue-1aca1a30": "33745aa0bc773d18a4bfb12dcd26e4468f97b6d5392d0e7326cb0a916eac93c9",
+    "external-nasal-dilator-strips-in-endurance-sport-b2567952": "559c5a0ecca7b6e718c5c44550ed907ee3fa1960555d10da516d5b66f09494a7",
+    "feedback-tools-ff22ee6e": "b43bd279fcd82a75bc488e90bceb85b39550f92dbfc8c5ad5bc85bc6eb7ada52",
+    "fitness-tools-4c8a250b": "da40947f444a814821a7dc3f8c96b6c8d53accf4caa920d4282364825816ee78",
+    "fixtures-289681c2": "b71448bab084c7c2d481276080fcbdd6de7f19547edf642ada915560f06dd1a2",
+    "fixtures-57e82233": "6389be445fb38fcff9c0dbb05e7bed515480037f03b3c5b6927bf9def442981f",
+    "fixtures-719a3216": "5fb6934331d30565060ac150ce34d1039219f1d0e80ecc17ce3f7fdc83a098b5",
+    "fixtures-b923c1f4": "2fdde7ba33bdfb908e12052a842ec0512ec95fbaaa8121cbee80e55690e62a07",
+    "foot-health-paper-catalogue-fb00356d": "8e1f95906e3adc9859c114b3cbbd4a70438561cb0f576eee7952cb17ff9ecb07",
+    "foot-health-science-reference-03307eb2": "8dc1ce49cc4d6372d6ae0fbfe4186fe5c3f6c3e8c655feaa9c88350676fa74e8",
+    "full-db-schema-mirror-of-db-py-init-db-a3271966": "a2b2c4d7d09134198d5ab28258f6e3ff29e0fb1284535796e1b2a2425f99c678",
+    "general-wiki-log-220f0221": "385ddfd16dcc59629cf578df3c16cb1e59a5e6fbf46a3fc48187d3b258665e92",
+    "get-conn-4fe27bf2": "71122f90bef378a3a8a5f7516ab69beb74b75a9e26ae9d00885ab105e6af0a21",
+    "get-dashboard-data-empty-db-9c5a2694": "33648bd13b490f8bddc4673895937bcb411c0833bb6873be283edf37045c62c6",
+    "grade-cost-factor-f7014915": "992fd8ddb64532764563d4d90b77b421fcd40efa22213902353352429c587cc8",
+    "greifenseelauf-half-marathon-87ebe4d4": "826c5a2aa8b384d534471ca44244d8dbc78bf3364aab1a8caf23c54324150afd",
+    "greifenseelauf-race-facts-b1321de2": "dff62196e7a1e9e2dfecbcf132abecd0b2b153ce8d919903d4da2c473c0c7d7e",
+    "helpers-5e2d94cc": "ed3f263a0f102dcc18308f51b11ec8ebd10af3ebbeca87ebb7eb0674015cf600",
+    "helpers-be6e284d": "6fc6180db6526f13d9262dd96be56f2c7acc9a8f3a88c21c3dbf755eaee3b97e",
+    "hooks-a17f6f95": "bc1aef2a183051bcc3770eaa4b616d3caf2bbec2dcc8484257109821b4d5446a",
+    "init-492052c6": "9c893a7eb3f6e71b982d5c703085b1d729ae950e28bc4036e84eb92b1b9d1a6c",
+    "init-65b76ffa": "98cbe82d868bcd5b4b26e65c077dd0e02dafe7ffbd638834ee207bda5c67f51c",
+    "init-e3b0c442": "db88f5cff78f439ee8ae5fc85b6895b8eaf1ba720fc7bec058a2cfc7da769c56",
+    "injury-prevention-science-reference-59a1b257": "0a0e19dad7e37af4b7539689aaa510bd65554adf7e5c06008f3937ed442788b6",
+    "insert-plan-and-events-a82f6402": "9d4c8db35d647e2b05eca6f9d944af465cf4586c408887613a2bd592c4e70748",
+    "insights-8a2efcf8": "2492deebc28765b18f32c05df1ae77e9bf1ed5a1a4a06e03066ef6eaf9ea4449",
+    "item-9d66dea1": "e0185263dfc1136ca307b5a86f39cef9dfffe7a3f9e124168422339056a07e02",
+    "kreuzegg-classic-berg-halbmarathon-e9d08de5": "1efd8a327bad2a8ffa1aaf6780c1146bfa803b5337e955b921d46a543bbc7234",
+    "list-files-71abed7b": "219a927220fafa7d0c3a8c87c8e383dd4ca98d39b8f4f7c3aa817319371cdf23",
+    "main-07eb9572": "1e2ddec6ca625cf9be773822f5ff1a165daa1e2b065eb2433d92a7f14edca7bf",
+    "migrate-f5ef3835": "1c73d38611bd0e28b9bb073b7503087ee93308288ed0406632f11fcab2ccac8f",
+    "mock-athlete-fixture-1812cb4d": "4c78fa4e9da3000d430e1f5eaf7be004a4888d88ac3fca22d973cdadc0674d99",
+    "ngp-algorithm-9949f73f": "dacd561efef0718f508b5597b7ad5d8103831afb98865ddfa6e12da0c8d611bb",
+    "nutrients-17-00918-3a984432": "4cee4251a60f50d74f55985ba81bf388d5494ddb23dd6163657ab3325a212d8c",
+    "oauth-helpers-ca87b67b": "613bfcb6a9dad1c159b1c7fd15451efb15d6cee393cac59104929c1395fcc8e0",
+    "openai-17bab3f1": "d3cfaa0419204b4bc39c3f2094c621fc25fd0fe8caabaf0b9e7c5d74d934e51d",
+    "openai-786b054a": "620881e0f54f09e9ed41f46dba36c5297f48cb6c205a002c35788568ffcd43b9",
+    "openai-df0ed566": "c7d1d54eaa2fe09e872731733beb0c1d99bb4244605e890009928ef97bdc3103",
+    "openai-f9bd5846": "1eb5650de9284561da8e1fec73978d3bf24080ff19e6e0ef163039767b73b294",
+    "opencode-json-a0cbc058": "3cf77df94b3d80239599f4c9ec3e73ac83cf0f7a8f767a64496522e619286ac2",
+    "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141": "fa37ae1e6e4889b5043a58c0a86ad42c429344dcb41e7d75470543fe3e462467",
+    "optional-google-calendar-push-9f31fa1a": "ab5ea6c564e4b3d165a357bdeb93e972132d20732172d9e49ad3f7ac5ae3dd63",
+    "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3": "24248a13493b49bc923e94041c7cbd196268f0821f602d95d993303eb659560c",
+    "parse-date-3a759610": "1a07848d55dc3255df1095262046a8ddafb9652433e2b0cf51ab03d7195dbb97",
+    "percussion-massage-massage-guns-evidence-summary-d2329e68": "2b6f2dff9bfc363443a92d49f6d8e0f9e60e11ae66fc6e6ee4db820e6bd16e54",
+    "periodization-templates-science-reference-b76292e1": "35afc6c2b7fa10c26946162f35a89ec4c468874022f8a5763d42af89cf389a40",
+    "personality-style-a474eea3": "06a5972ba1fce611dd02f2e7350252e7d4b6988755cb4ac433f08e5cca0955c5",
+    "plan-tools-821c4c46": "c27e4e75d923a03fcc3a47738b41fca61999abbb7a12ef893e134761272fa5f3",
+    "projects-ae86e2f4": "bc3c11ed6997d50d4980b0585c03e95f0f8df3ff6c4126336e7e8faaab839ea9",
+    "public-api-cb65991f": "db017e42d18d9b8f732c6b21af6d831e01b52a4076ef000d09b8d1896328b86c",
+    "pyproject-0d00c775": "05e8065ae3fb68f94094796bab4fd5f3310575aef83e36be766e9f3c98c6ce4f",
+    "python-patterns-edad9e6a": "eb9bfd20f68c18b2e8fee01f8236f3986c015731af395a5b4ca3797df355a423",
+    "raw-general-immutable-public-source-documents-1d455c7d": "f462697a391d364fd28721d9b890f4ca494f37ffd21d9e314ce55fbe930b38b0",
+    "read-489534f4": "5e9441ab74bee2384ee985714bd3d2d39e672254bb103638754c719818c5f32d",
+    "read-wiki-868b64e4": "0f5c911d60ff44f0adf38ab5805f2b36f846e260ab7805cb26b2559fc055c280",
+    "readiness-tools-087135ec": "1a3ca36b187e828af6cd1af806588dca85af10e5b8ed6da863f0c32760e1f160",
+    "recovery-tools-paper-catalogue-e8cbe051": "7ab62d479e4415271133d7a23ea11c25cbf5237d2bef42c431c6a777f44f8e50",
+    "running-shoes-paper-catalogue-8c70bd7a": "bd8d36d4810c8fc70166532222be6791e0340cc184cff434d7d569e19aaf20e7",
+    "running-training-science-reference-72f13fcc": "448171f7cc44296e02ce5c174cdac54045c0ad3df956d6a54d523c4dada3afe6",
+    "safe-resolve-60117322": "e6c0f080b240d5d7ea7c36f132f1b1aa587501696826164fa55c825f3f09fc24",
+    "security-review-skill-58079098": "e9dc45506c0b3ef3463d4dcf484fc5204f0f51e89feb3309903f0e291fd85ca7",
+    "server-062915e6": "1fd8512c2d4edb9d324ae30834dd88ac6f73098abc59de47b874af6277301c38",
+    "settings-b7c2c769": "8e0ffe5a4d86d80cc3e0d024c7342d5fff69066831f88c5f62b528121b8ca0a5",
+    "site-531bcefc": "f9d7dae60c881408f69ba91666c285af4f46635bf7cde887a0db27bbe9fb0cfa",
+    "site-tools-4beea17c": "d6c3631433a1bc7b0f96a0f695c9621270643c05a98b414bafc83ce5e8b9b16d",
+    "skill-show-dashboard-cf665da6": "0932f64bbb8766a6972eb7d2263617afa262e388fcde7dac3abedf90328d87a3",
+    "skillfish-1c853384": "4d4d7a270a4222c83d1992f9b5662d42f4fb3fcd247a5204fe3a743a98b79e7d",
+    "skillfish-3d8fffc6": "03f55c9838ccce4a35d48e4db10ee597aee18010e1fb2e3bf089e903fa051e12",
+    "skillfish-65c158e0": "46a3041e2041b55ffcae70fd27f46f9e4ddd99a9a89723c2a9cfa9fb37dafdff",
+    "skillfish-a264adc7": "653f91017d174c98e003a0a8df5ac2f136626ae5f4966f07b73e6bb1d48f8cce",
+    "skillfish-e96604ef": "37f2c171fbf3710620594d1dfb3a37fb46429a8701978ce0366bc37d2c79d269",
+    "sleep-endurance-athlete-guide-e128e194": "3405c44226acd8635c9d4aae335ef1058fe0f5b62bd70bf96d6c6973554ea5bf",
+    "sola-stafette-4b5d5264": "385097acf97b39269b7594b680c6aa65b7d0f15cf215d707807d7b53da9bd041",
+    "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8": "7f7fd6c4e0d47ceb306f9aeded989d9a688d9b0fefab91688b6a569e13147dc7",
+    "strava-credentials-keep-secret-never-commit-d742f824": "3717c2ff31baabdb49289facf7fc4617ac45ef68a40bf591708fcb13ccd52430",
+    "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9": "8f8e239772aa9d8eb1c0d9d6c5c74622a0769c2df6206f0ef4a18c039fe65421",
+    "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd": "df9bb2075fd97770fdec3b64e8b747ff7cf9f9fd52746c276526751c73524c8a",
+    "stretching-science-reference-1c8a0e4f": "0cc87082b3d79faabc5260b9f6c49531caf4781892c4d7e0e6500be27afd4e4f",
+    "subcommands-d30e7bf1": "bba37b1af930a7ab96c8d0a41655c9def9de12525db84109c890c4af8075e792",
+    "swarmvault-config-b6c23841": "db057c4b297b5b6b913c8638fe377daa6b723676cbd89cf9e95d1a04664caf5b",
+    "swarmvault-graph-first-01587800": "1e48e6e9bb8f8d067308ee448a758854dfba95c588abe96deec9e8a76451260d",
+    "swarmvault-graph-first-9c4f5b47": "79f17527c13ec100c2d4a41f4101c5ace3bda49400a40ad307ad40ffc2c30a7a",
+    "swarmvault-rules-7d1dab2a": "31886e2655d53b7a2c6bf64f87b59148af3bfad844a713fddde889a7a5bbfb3c",
+    "swarmvault-schema-b10ad2d9": "b39fd99cbc82ea89c8d5587bd331555436cce206dabf0d30a76eb4329628c5fa",
+    "sync-tools-56fe777d": "22c165b6522ac344da56ce8265c81d018adac913fecf43eeecde98cea4636d30",
+    "test-config-c071c562": "06e3b061abf8b6d437af23457e1f5d6285118a9cbc13b69cfbd1a51149c85b32",
+    "test-driven-development-workflow-2f5af84b": "b2499afdd77250bb03efd57e942cb3eb0b8e5e8e4c30b68152052bfe2208d511",
+    "test-tools-smoke-23acf85c": "755601e0e3e530bb8b70617a45858c82eaa97b8d69ec760fe61988db3c4104c1",
+    "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9": "27d6aaa988727c9af77630beaaf4d49824ee70b888573c3c8b744ab1985a5956",
+    "tour-de-l-uetliberg-tdu-77461fbe": "758cc30262ffa21ce6ebc7f87c4cf83b52654ebc38a3ae54be414c6c054baabf",
+    "training-gear-science-reference-1b98dbfa": "03b16a361e3e9a7fbaaab38ddded875d9a81532599f42eebe804db224f7e3d28",
+    "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5": "baf28d096c213751d0468c25673257b004f788aaf974bcc968f08a8346aa44ef",
+    "update-0842ad5d": "91566f39b30a0d665b0931f5153fa1bd123d943e5003e979dd9ceb72565dad6e",
+    "uv-4d480313": "fde61f91d1bb312fcd2cd81484cadfd30afd7adb6bd573d40eae30b87a0d4818",
+    "verification-loop-skill-beeb59cf": "b2838466d326acb004f71e5c79c2f0405ffa10fe205d08ee0d331cb6fb1ee6e7",
+    "what-i-do-1fa739a7": "ffee6b1521cd3466ee05c0e5535482a175a6455d061da81d3d24935445fbfc09",
+    "what-i-do-3becbaf3": "9a2c3438469a3c230ed69b725cf294d00b7cba0807cf636a40e1ebf182388872",
+    "what-i-do-a929e628": "9d9f756e800510022c5f9ca20471c21c4f70923d67e149e506a691036cbdc18a",
+    "what-i-do-bb6e5c90": "22cfd68e446df8175206fcd1a1e20e766817231e0e5bf39260a2502021f1ee57",
+    "what-i-do-de8b5607": "d07cbc61ef397e9ed39eb9a93ce0e811ace507d942dfb10caa053b6922ceb509",
+    "wiki-base-29e27f15": "5929b3bca3121bb00c0b6bf6c3dce01507ead967713b12606dc3371a4885a09a",
+    "wiki-tools-f7b7c96c": "eaac09d3965e4049cc133dd1d1c9c13a6ec8375e3e23e9274b7c73e5e268691d",
+    "with-valid-data-json-555ad9af": "dc232ce540bfb39068ac64ba66170e3d64adceb50a17c6225cb0df57c1b8c7ce"
+  },
+  "sourceHashes": {
+    "activity-tools-4251b5fd": "4251b5fd2a29f1a46db8a4efb6879fc04e8b8958bc5fdd5e7ef95ef1c68ca4b0",
+    "allow-uv-run-from-repo-root-30cc3aa3": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+    "alpenbrevet-race-reference-e582446a": "e582446a257cdf8c40dbff169b50974256f1e26d904471518c35b85c1bbe33b4",
+    "app-75ed4433": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+    "athlete-profile-eed5f509": "eed5f509845efbde460789c01d0e31f58c436420d254059ff62db613ba08949b",
+    "athlete-tools-c968b16f": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+    "bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550": "8be79550eb1bc92802872ec0ccee33f822bd0150b284c62ec5f40d1d05b66995",
+    "candidates-5bcf0e57": "5bcf0e576788642b6fbc2074cbd2cb6905742f660ce357df901c8c7387046754",
+    "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce": "b895ddcef2b842f7e4bf42bcc1036274caa072aa35b1d9fdf00e4d50f97d9157",
+    "coachctl-architecture-conventions-8a2f1253": "8a2f1253f49141594869f6e383c7fc66793a5be531cf71c84bd04d41d26b98a5",
+    "coachctl-strava-training-agent-7a3ae9ac": "7a3ae9ac2245b81e6b8266fe7349bbaf1bad2a1e4cb89accdef9dcd0dca67412",
+    "code-repo-33978ebf": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+    "code-root-fa300ffa": "fa300ffa208f4e0e0bcfe8577fa533039c48e52b87a96d0e14d9b64d93554350",
+    "config-ed62725e": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+    "cycling-training-science-reference-aa12e3c8": "aa12e3c8f1438cb0d49ef7e4a4835b295adc6a514bf18de922016bf5ef1f3fc8",
+    "dashboard-ux-audit-8bc8624b": "8bc8624bb9f84a4df5c240f788e4e94f1b7a79f6aaf5f970e7f1398611f863ce",
+    "db-4438bbd2": "4438bbd21afdb81c02cabd1eccf8b8bee5a26b28691802f4af69b5195cd30a26",
+    "deep-research-2f018e7c": "2f018e7cf5ea057956ad499b4abbb8c6d77bd7ac2c4c8a56d2aab851c8bdd35f",
+    "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6": "8fbb18f69b4c54f078a118042ffe04d94b0344a313c817691a504975fc03f8cf",
+    "dev-app-9552e8c8": "9552e8c824bebfba0a5d9f73579cb81293fc34f08613a2634901d0f14960307e",
+    "dillier-classic-race-reference-74aedee5": "74aedee509d681908fbd33b250e1a6fef52af99b92c56e59c38322f64d4d0b04",
+    "endurance-nutrition-science-reference-2c888727": "2c888727141938edbd6b3ed4c757ea14ff00f7c90fcfc96b8b6481400ff123a4",
+    "endurance-training-principles-science-reference-318c6f9d": "318c6f9dfc1afdd19689ec15fb78461e9083981aacebd040fdbbccdf6d9cb7d7",
+    "env-tools-85fd1cad": "85fd1cad4ceba9d25eaf2deca7bf1addad094827d920650759140a664b8b7b48",
+    "event-tools-4028185c": "4028185c7ffb4ab2545225030726fa5d2d035ebece0c127d5d7a81ad164b1759",
+    "exercise-nutrition-timing-paper-catalogue-1aca1a30": "1aca1a300f108ef2d78e32f0581d84cd4794e3a78c1612575daa21c45cceb892",
+    "external-nasal-dilator-strips-in-endurance-sport-b2567952": "b2567952e9ceefe8f08271bb99b088f456f3a6087827c37d5ddbe030ef66b724",
+    "feedback-tools-ff22ee6e": "ff22ee6efd5a44aee702d4804544bf3498d1260c8aaef8cb819677735337230d",
+    "fitness-tools-4c8a250b": "4c8a250b5a1f9776cd3fb5fe0ae159cafe5b0ab305670f4f775ff593973fa026",
+    "fixtures-289681c2": "289681c29cdfbbaf138c2d7b4dc78e814504c0565978af5bb0d85705588eda3b",
+    "fixtures-57e82233": "57e8223330a0684da9e020cefd4c6fcd288aed1879901dc607d8c39fad8234d7",
+    "fixtures-719a3216": "719a3216f93749e0ec1cd8d19b98cf6771b209e708e8a04323670aa8622f4463",
+    "fixtures-b923c1f4": "b923c1f4ea470ccadc1cfba452a18034a3aa106942d408a4c1d236969f273e15",
+    "foot-health-paper-catalogue-fb00356d": "fb00356de06de0449d58af49dc3d0f66804705f30eb18899359e485e2336a5e0",
+    "foot-health-science-reference-03307eb2": "03307eb2e040e8e2d2a2418c50942176917ecce5e1bd4f91a98c42acf3e9df91",
+    "full-db-schema-mirror-of-db-py-init-db-a3271966": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+    "general-wiki-log-220f0221": "220f0221595be73842ed8d9fc4da9c57e1e28826e3440d3bda0c3eb6a1511758",
+    "get-conn-4fe27bf2": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+    "get-dashboard-data-empty-db-9c5a2694": "9c5a26945359af8ee07a7d915c45e36285ff9351a870843e90f4414ae928ff56",
+    "grade-cost-factor-f7014915": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+    "greifenseelauf-half-marathon-87ebe4d4": "87ebe4d45500fe3940fee6a25523a806dc6dd3c62d8b3c2df20aaa6288e64cfd",
+    "greifenseelauf-race-facts-b1321de2": "b1321de2a8ce2467c4e49b59db3d5a1a72d96f089dd00413639c7545693ac4ed",
+    "helpers-5e2d94cc": "5e2d94cc696b35ddda9ab5623d76f96d02392c8cb52d7b18b4f337e8ccfb12bc",
+    "helpers-be6e284d": "be6e284d59d2fc01709604c7fe7b6ae561a1dda0ddbe15e425f2306e4ad0dfbc",
+    "hooks-a17f6f95": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+    "init-492052c6": "492052c675012b5040662cba8e712fb1be2194fffeed414debbacf6bf1c0e88c",
+    "init-65b76ffa": "65b76ffa8131fb692e8ec6fab9eebaaef68c3acab9c4a952687f217b76701ec5",
+    "init-e3b0c442": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "injury-prevention-science-reference-59a1b257": "59a1b2575504b052a09b3e05f721ee5588b0981561bd14bfa5e0e671ac75acbb",
+    "insert-plan-and-events-a82f6402": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+    "insights-8a2efcf8": "8a2efcf850afbe24e834fd46080a3fc20257b39f4ab0de595864b48cadaecdcc",
+    "item-9d66dea1": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+    "kreuzegg-classic-berg-halbmarathon-e9d08de5": "e9d08de5a8c0ccee91c9d1e87a3950b733b3a871e2dc39d1e65f05c4333d2da1",
+    "list-files-71abed7b": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+    "main-07eb9572": "07eb95724b13e2c6877956d6688281f65bed79b93df051a3bbe3ac33e65ea2a3",
+    "migrate-f5ef3835": "f5ef3835595185ebe62e485b1e7c40a9e79a9a08964296acd576d41aedbcaa84",
+    "mock-athlete-fixture-1812cb4d": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+    "ngp-algorithm-9949f73f": "9949f73f699e7c312ac53c3c7c0ceb370f06add8c90bfc300557fd09baac4a8a",
+    "nutrients-17-00918-3a984432": "3a984432ab989b97a35cf7cd2a7eaa3dd1d4af374f017c81edb849b949502acb",
+    "oauth-helpers-ca87b67b": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+    "openai-17bab3f1": "17bab3f1fef6ad02d8f2fa513767d9bc010750c26add61e04dc4e246be17f2e7",
+    "openai-786b054a": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+    "openai-df0ed566": "df0ed5667105918b3d5ba38b4e5a85f6ae9d9901e020ca1aadd49ab8d1ceb680",
+    "openai-f9bd5846": "f9bd58463a728823a9a2427ff3b185f2a9dae368b2ef1f28f43aef52c93617e6",
+    "opencode-json-a0cbc058": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+    "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+    "optional-google-calendar-push-9f31fa1a": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+    "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+    "parse-date-3a759610": "3a7596107abf6bc9c82c41bd1b105205c3e42630f9f83c70610f749266aa20aa",
+    "percussion-massage-massage-guns-evidence-summary-d2329e68": "d2329e6864cf7baf498b37e985349aecfd44c7018a422696c8fe4a493bed331e",
+    "periodization-templates-science-reference-b76292e1": "b76292e19263be450debd3aab0d336d9e71f71001ab8c8b7a8a7364c489619b3",
+    "personality-style-a474eea3": "a474eea3d63fd2f89bf7901594917c5cb8130afdf196e88c2af1e8457a339090",
+    "plan-tools-821c4c46": "821c4c467998e8d4794da0283d5b62d9af4d29791fe5ffb16b10fc5d933b2e25",
+    "projects-ae86e2f4": "ae86e2f4312bd521e3b137601cb376a4f42b91fed3ccabbb73f7ef410084a7eb",
+    "public-api-cb65991f": "cb65991fc45fca3e22146ccea2b40eab282708640e506ef84764d03f503fa138",
+    "pyproject-0d00c775": "0d00c7757bc8936d6b844bf5842c6d0ed1e809cb07d8001fc8295595deac950e",
+    "python-patterns-edad9e6a": "edad9e6adce2dee21d3bc80ab0ef89d4bb75b3be2c83cbc1303ff39d87f0423e",
+    "raw-general-immutable-public-source-documents-1d455c7d": "1d455c7d3ad7b07b2bf4c29250b9c0a07edc764174f0ae05865d04f0df5b0e2f",
+    "read-489534f4": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+    "read-wiki-868b64e4": "868b64e499e45ba9735af1419d1b6e63483018167ff512e3fa92734a8db72ac7",
+    "readiness-tools-087135ec": "087135ec1a9c8de4c655d2fb13e46f0c8ffe3d40782a6fe28a73111680ffa8f6",
+    "recovery-tools-paper-catalogue-e8cbe051": "e8cbe0517327e3cd1eef150d153d42e7959957b4edc8a3096f27228f26d5e064",
+    "running-shoes-paper-catalogue-8c70bd7a": "8c70bd7a659d6d76d1a1726bd603099a9e661eaf187590aac755f880a1af0518",
+    "running-training-science-reference-72f13fcc": "72f13fccdb2b83cdb888e050fadd1031cd48b29a3c761a9e144e96558d821bbf",
+    "safe-resolve-60117322": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+    "security-review-skill-58079098": "58079098ea5f95604452aef459cd58fb45370fa672926db914bda20f9890ff57",
+    "server-062915e6": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+    "settings-b7c2c769": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+    "site-531bcefc": "531bcefc38eb304c83816b194886094c8ad88e6c567f42f0e5d4f7a92eb34cf3",
+    "site-tools-4beea17c": "4beea17cb2fc2ca1dd1c20d30747f6eda4a5b1ab9559e16410b9e2fdb172c659",
+    "skill-show-dashboard-cf665da6": "cf665da67ae425649a4bcf1b9c0ac35004e5cce082c0dd85f0a1ecd7bb12ebaf",
+    "skillfish-1c853384": "1c8533844a98b504ac5aee73ce49204dc98e4ff5fdb7e72dce62565b64e7772b",
+    "skillfish-3d8fffc6": "3d8fffc64a29fa91ddd090999087cd643cffcd6debdb0629d7d1157a9a5084de",
+    "skillfish-65c158e0": "65c158e040815056d0bf9007ba4b03062e3eb5581419deba03f239d0599af39d",
+    "skillfish-a264adc7": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+    "skillfish-e96604ef": "e96604ef95cd2d2f7809c93df7d25db1580b6827e8fa15ef3f4aaa722a796315",
+    "sleep-endurance-athlete-guide-e128e194": "e128e194aa54f7f6d6f55539b209e059f4ff5b941044749e2abcb83e175ef687",
+    "sola-stafette-4b5d5264": "4b5d52645d69088f0d54dd245899d7ec18ca93d259a02ec36e5fe929ef751299",
+    "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8": "c4bb66a8793e9cc4e3ef8078ee54dd1c9e4c49c3bd0d72ea3c93bd53a017527d",
+    "strava-credentials-keep-secret-never-commit-d742f824": "d742f82431374e694ec14d8532b2e5ed926b402d540459d373197a1088262a48",
+    "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9": "1751dae9426d0b99ec5da7e4c8ac6f31eca6588df1d12f5d4ba01d1f5f3a94b5",
+    "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd": "2fb58ffdd76a922129ed10b23156066ede4458e55474110f4787019ab652fc8e",
+    "stretching-science-reference-1c8a0e4f": "1c8a0e4f05bfc3a7055913a1d4135f804e01a509e1c5ca84a451aa590838a05c",
+    "subcommands-d30e7bf1": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+    "swarmvault-config-b6c23841": "b6c2384189fa20d8f52617692a62883a68b118609c509a52cf3351feaa1f9a3e",
+    "swarmvault-graph-first-01587800": "01587800fd2d6a8c0efc962c2de5c3d82656e57e70163377e473316da2c5c650",
+    "swarmvault-graph-first-9c4f5b47": "9c4f5b473ac374dfd70995cbda6d2ea03484c0dee57a85da4c48a9b7aa9348a6",
+    "swarmvault-rules-7d1dab2a": "7d1dab2ae6ab8a6aa7cd5897211c8f240d4860d04cc6fb58fcdfbd5740040103",
+    "swarmvault-schema-b10ad2d9": "b10ad2d95756d1e27cf48f211ebe48e05d76679916a49ab7609c52c8388b0620",
+    "sync-tools-56fe777d": "56fe777dd9cacaf1bcbc5bdb415649338dfb797fa0d23203925fccd1a6aeb8e3",
+    "test-config-c071c562": "c071c56213554f9042c598ca8c8e2bcf27e4124fc8b3715214afa78651e8e7ca",
+    "test-driven-development-workflow-2f5af84b": "2f5af84b4db9206be5b1e0f6b9e9b06a3423faa6e73f6cd16bf65d80a6e9ac7b",
+    "test-tools-smoke-23acf85c": "23acf85cd7753702ffecd6f81d83e6c9a56279aa0dd0ce53c6e366acbde83172",
+    "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+    "tour-de-l-uetliberg-tdu-77461fbe": "77461fbe52c98b6b61530196a5b4e68bb2d1578429a20c0758b2ade680d2b888",
+    "training-gear-science-reference-1b98dbfa": "1b98dbfa3284efbe632b62e5901d015f3117218be36dad7a9798022fd054b8d8",
+    "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+    "update-0842ad5d": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+    "uv-4d480313": "4d480313063686d347cca8e8612dda9a73cc1510d268786fb7c191b73b174360",
+    "verification-loop-skill-beeb59cf": "beeb59cfb3d9ba8aaad0d4d6d99d534f37d6d25dc42561f6cea64b102625a141",
+    "what-i-do-1fa739a7": "1fa739a76c2f78f201d39292b99dfb535db5f30aa94108116983bc4f42f7d81b",
+    "what-i-do-3becbaf3": "3becbaf3e9bee5955df0a2ca432f39e538e321256db56d7399a628aa3193ac86",
+    "what-i-do-a929e628": "a929e62826769be5ad430b6c2d6a0e0ca27ab0872066c1c5175099052367fcb3",
+    "what-i-do-bb6e5c90": "bb6e5c90586fcab34c7ac69d9c5c7ef280d9b73a1da2c42bbe10ad0223c95c4a",
+    "what-i-do-de8b5607": "de8b56074ab8032b293b3798f7b5ae245f4a4bdb6641db301b809932bfba99dd",
+    "wiki-base-29e27f15": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+    "wiki-tools-f7b7c96c": "f7b7c96c860d66d8c2f51ba10840dcade276b7e3c99ac49d1ebd309b8b59f9d2",
+    "with-valid-data-json-555ad9af": "555ad9afe558e9db7aadd31ba94e568c178a1f4a18cafe08e49c51ece61a24a2"
+  },
+  "sourceSemanticHashes": {
+    "activity-tools-4251b5fd": "4251b5fd2a29f1a46db8a4efb6879fc04e8b8958bc5fdd5e7ef95ef1c68ca4b0",
+    "allow-uv-run-from-repo-root-30cc3aa3": "30cc3aa384433214f6e9de2470c592a6ed4c737aaaab0bf42f52947288c8680e",
+    "alpenbrevet-race-reference-e582446a": "c9e5ab770f60f06e503ab1920d46d1aacc683ca8df0d719a392d223fc9835bef",
+    "app-75ed4433": "75ed443325073a75a106f79dc6c436b55ba2096f77dc7e5610b0b87b563a6db0",
+    "athlete-profile-eed5f509": "eed5f509845efbde460789c01d0e31f58c436420d254059ff62db613ba08949b",
+    "athlete-tools-c968b16f": "c968b16f6468958fe7a364e73785488c5821f6cc59f6a380bab19d855c2fb829",
+    "bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550": "8be79550eb1bc92802872ec0ccee33f822bd0150b284c62ec5f40d1d05b66995",
+    "candidates-5bcf0e57": "43d036fc05d2fd6bfb3308e4e69a2b82269412569f2bbcc5df27a9201f73c51a",
+    "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce": "10034ec80e2af2d6c0e67c10f74c140b492c79eb05048af4d52b1f241fcb406a",
+    "coachctl-architecture-conventions-8a2f1253": "4640b691098a69816f4ddf9045ff7f8a0fa3148b3658f0c34fce533b4223ab1b",
+    "coachctl-strava-training-agent-7a3ae9ac": "571fd3b7d9213a3df91b8b96fc33f430a32181629f2536f9decd371c91bb8f56",
+    "code-repo-33978ebf": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+    "code-root-fa300ffa": "fa300ffa208f4e0e0bcfe8577fa533039c48e52b87a96d0e14d9b64d93554350",
+    "config-ed62725e": "ed62725e11419c95daa107661e6a18fc10de9acb2e69318f9c24d7531e4be08f",
+    "cycling-training-science-reference-aa12e3c8": "8b2b70ab5764ad02821aeda893ed895e4da6c218fe5103527ebfd929dc315649",
+    "dashboard-ux-audit-8bc8624b": "e456d0303ae5fb91a5c5d400de36a2c481fc93472f5770235b923442b83239ba",
+    "db-4438bbd2": "4438bbd21afdb81c02cabd1eccf8b8bee5a26b28691802f4af69b5195cd30a26",
+    "deep-research-2f018e7c": "e5908ea7625c27391840bc64c235dac6ee019b6b5d1bdfcaac77366033b99d90",
+    "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6": "8fbb18f69b4c54f078a118042ffe04d94b0344a313c817691a504975fc03f8cf",
+    "dev-app-9552e8c8": "9552e8c824bebfba0a5d9f73579cb81293fc34f08613a2634901d0f14960307e",
+    "dillier-classic-race-reference-74aedee5": "ebb5ea4e64f40e0c5bc9b40979e96a1c19aee7f3af66bb6d1a50cad64a43e9f2",
+    "endurance-nutrition-science-reference-2c888727": "1fa436f21b565577b74a4b3dc4e1084ec9abb5b15b21c5c41469a1b2ba061b9c",
+    "endurance-training-principles-science-reference-318c6f9d": "4219ee9b2ce83a8dd2732f14268397bf2173fcc0d546bae77f7f2cb0b2a62fba",
+    "env-tools-85fd1cad": "85fd1cad4ceba9d25eaf2deca7bf1addad094827d920650759140a664b8b7b48",
+    "event-tools-4028185c": "4028185c7ffb4ab2545225030726fa5d2d035ebece0c127d5d7a81ad164b1759",
+    "exercise-nutrition-timing-paper-catalogue-1aca1a30": "f82d09cf9d63c273a6df059c6258c7b9ffba4ac0e0708dcb23b6d5bdb77d4673",
+    "external-nasal-dilator-strips-in-endurance-sport-b2567952": "74bd90b9cc825b705cebf69e6294d474f6da7991ada930f537e172790c76dec2",
+    "feedback-tools-ff22ee6e": "ff22ee6efd5a44aee702d4804544bf3498d1260c8aaef8cb819677735337230d",
+    "fitness-tools-4c8a250b": "4c8a250b5a1f9776cd3fb5fe0ae159cafe5b0ab305670f4f775ff593973fa026",
+    "fixtures-289681c2": "289681c29cdfbbaf138c2d7b4dc78e814504c0565978af5bb0d85705588eda3b",
+    "fixtures-57e82233": "57e8223330a0684da9e020cefd4c6fcd288aed1879901dc607d8c39fad8234d7",
+    "fixtures-719a3216": "719a3216f93749e0ec1cd8d19b98cf6771b209e708e8a04323670aa8622f4463",
+    "fixtures-b923c1f4": "b923c1f4ea470ccadc1cfba452a18034a3aa106942d408a4c1d236969f273e15",
+    "foot-health-paper-catalogue-fb00356d": "830fbda651bae2f671af170e928511617d32edfa983445477e73d44421cb9911",
+    "foot-health-science-reference-03307eb2": "8712b12db09e0d45db13db37eacf93b0d9c8ce3d14acd9934ecd688957fd8e34",
+    "full-db-schema-mirror-of-db-py-init-db-a3271966": "a3271966ffd2863eb7ac7becbaa9d1af126d76a35fdc4289e0601efb80aa5e7c",
+    "general-wiki-log-220f0221": "46aff26a36183f0727b2b9eff78ae5dd46feecec3d9133587aec62a0e5f13d99",
+    "get-conn-4fe27bf2": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+    "get-dashboard-data-empty-db-9c5a2694": "9c5a26945359af8ee07a7d915c45e36285ff9351a870843e90f4414ae928ff56",
+    "grade-cost-factor-f7014915": "f701491582ac9305762170a6875184ee31aa5afa14079f4a2bec8db5af4f4bb8",
+    "greifenseelauf-half-marathon-87ebe4d4": "e07f0ea7adb6a2f9252c72087356a51662fc9fef91bd9362ea5ef31b41c519d1",
+    "greifenseelauf-race-facts-b1321de2": "a00917b489f4b2ee8bac14762e7c47f54bf864ad2f99262d3bb03c53ca768f67",
+    "helpers-5e2d94cc": "5e2d94cc696b35ddda9ab5623d76f96d02392c8cb52d7b18b4f337e8ccfb12bc",
+    "helpers-be6e284d": "be6e284d59d2fc01709604c7fe7b6ae561a1dda0ddbe15e425f2306e4ad0dfbc",
+    "hooks-a17f6f95": "a17f6f95d4075e1e563abfa9d2a8f6c00acb3f884b3eb34a64744a6070a2aee2",
+    "init-492052c6": "492052c675012b5040662cba8e712fb1be2194fffeed414debbacf6bf1c0e88c",
+    "init-65b76ffa": "65b76ffa8131fb692e8ec6fab9eebaaef68c3acab9c4a952687f217b76701ec5",
+    "init-e3b0c442": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "injury-prevention-science-reference-59a1b257": "831d1231a5f3c6f43b4cb4720ece51a578ca695f84d0423d95df2d6b4401580d",
+    "insert-plan-and-events-a82f6402": "a82f64020a74b12fdb4b708078e3e4dba251a13a54084081b694e6e40c54b7b4",
+    "insights-8a2efcf8": "7ed98748976e1b249ce944a23513c98359945683c317056d0d40b761308abce6",
+    "item-9d66dea1": "9d66dea178c2dc9f827c9e67b0384b804b26caeaf96d3e26157249ca5474256f",
+    "kreuzegg-classic-berg-halbmarathon-e9d08de5": "7f4a1707807e92d0aef0aa6af19cd97985c2ce01d09ac14d13d8c19336385933",
+    "list-files-71abed7b": "71abed7ba0751ba394fc75d3b5ecbd3736f447fefd6d866c680a4f6647d9e61c",
+    "main-07eb9572": "07eb95724b13e2c6877956d6688281f65bed79b93df051a3bbe3ac33e65ea2a3",
+    "migrate-f5ef3835": "f5ef3835595185ebe62e485b1e7c40a9e79a9a08964296acd576d41aedbcaa84",
+    "mock-athlete-fixture-1812cb4d": "1812cb4d578034f5c06092fa639613fb456a10ef504722671047ece36deaec83",
+    "ngp-algorithm-9949f73f": "9949f73f699e7c312ac53c3c7c0ceb370f06add8c90bfc300557fd09baac4a8a",
+    "nutrients-17-00918-3a984432": "3a984432ab989b97a35cf7cd2a7eaa3dd1d4af374f017c81edb849b949502acb",
+    "oauth-helpers-ca87b67b": "ca87b67bb87bebbaecd52632290fa342a3d6ce9c700ccc9820c2c95263e482cb",
+    "openai-17bab3f1": "17bab3f1fef6ad02d8f2fa513767d9bc010750c26add61e04dc4e246be17f2e7",
+    "openai-786b054a": "786b054ad769268d6c4b97754fc22c954489bbbe93785fb2814a532164a9ed03",
+    "openai-df0ed566": "df0ed5667105918b3d5ba38b4e5a85f6ae9d9901e020ca1aadd49ab8d1ceb680",
+    "openai-f9bd5846": "f9bd58463a728823a9a2427ff3b185f2a9dae368b2ef1f28f43aef52c93617e6",
+    "opencode-json-a0cbc058": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+    "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141": "fe83414169764eed83893678b9d39ddbad1ca33ef9b7676514761226e5e6aee5",
+    "optional-google-calendar-push-9f31fa1a": "9f31fa1ace8e9772d26bda5504e56849847fd98978202042a002307575b42a87",
+    "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3": "2b8459c3a72c19051069b3b8b735207b5896e706faa571695dfce9fef036de17",
+    "parse-date-3a759610": "3a7596107abf6bc9c82c41bd1b105205c3e42630f9f83c70610f749266aa20aa",
+    "percussion-massage-massage-guns-evidence-summary-d2329e68": "d02b6b1acccdbb0e4c5db89ceca536a11d79ba705973c6c08786e9f72a2a5426",
+    "periodization-templates-science-reference-b76292e1": "f2397043be5a7a1228b964866dff1749db25dd051b51410c3a49850745d12f6d",
+    "personality-style-a474eea3": "e72aeebb5f45a8f0ea3520fb1c3cd536b985a712ab1fb984a474c306fdcac141",
+    "plan-tools-821c4c46": "821c4c467998e8d4794da0283d5b62d9af4d29791fe5ffb16b10fc5d933b2e25",
+    "projects-ae86e2f4": "c17f3824f10f7496c534034df6643e9aab08bdb9431f5d9bfa9f2ac000bf6187",
+    "public-api-cb65991f": "cb65991fc45fca3e22146ccea2b40eab282708640e506ef84764d03f503fa138",
+    "pyproject-0d00c775": "0d00c7757bc8936d6b844bf5842c6d0ed1e809cb07d8001fc8295595deac950e",
+    "python-patterns-edad9e6a": "d24b89ff53feee069907c650e2ff681e9dd166c771e00dee560a280bf80b56dd",
+    "raw-general-immutable-public-source-documents-1d455c7d": "535638b9511f8e5fa85ed534572d1d9646928415b6c6a54bf3e652101070bed4",
+    "read-489534f4": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+    "read-wiki-868b64e4": "868b64e499e45ba9735af1419d1b6e63483018167ff512e3fa92734a8db72ac7",
+    "readiness-tools-087135ec": "087135ec1a9c8de4c655d2fb13e46f0c8ffe3d40782a6fe28a73111680ffa8f6",
+    "recovery-tools-paper-catalogue-e8cbe051": "c4b3a8fdefc34e7af2e4e99c374a43d1342fedcf76dde0e49e55da7382ec53bc",
+    "running-shoes-paper-catalogue-8c70bd7a": "33a3b94070081e0c8bb7436ab238a03b0764e24269d2e1909a9a80b06e6658da",
+    "running-training-science-reference-72f13fcc": "bb875c1d2ddeb5e11aa2cf9d15c6349734cea6b0c6a208db2ecd4fadf64f91b9",
+    "safe-resolve-60117322": "601173228b10c06a94dbed06a299dfa93530f94ce9e633534fbbc1b76f59f644",
+    "security-review-skill-58079098": "eac6e0263375c8932584f11a2c4ef86725af9c19ac757e04f83dbebb39d68e2b",
+    "server-062915e6": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+    "settings-b7c2c769": "b7c2c769e7a7d898e93fb177cc969cc7f681c086a44dd54ef7a84b7ae0bda194",
+    "site-531bcefc": "531bcefc38eb304c83816b194886094c8ad88e6c567f42f0e5d4f7a92eb34cf3",
+    "site-tools-4beea17c": "4beea17cb2fc2ca1dd1c20d30747f6eda4a5b1ab9559e16410b9e2fdb172c659",
+    "skill-show-dashboard-cf665da6": "a1fdb8695f52bd117640c594a166de3262dab79560ed3e4a302db30d1d3fa726",
+    "skillfish-1c853384": "1c8533844a98b504ac5aee73ce49204dc98e4ff5fdb7e72dce62565b64e7772b",
+    "skillfish-3d8fffc6": "3d8fffc64a29fa91ddd090999087cd643cffcd6debdb0629d7d1157a9a5084de",
+    "skillfish-65c158e0": "65c158e040815056d0bf9007ba4b03062e3eb5581419deba03f239d0599af39d",
+    "skillfish-a264adc7": "a264adc74326dc653481c89850fa4a4427377b3645eb7c93ac566996ca534d42",
+    "skillfish-e96604ef": "e96604ef95cd2d2f7809c93df7d25db1580b6827e8fa15ef3f4aaa722a796315",
+    "sleep-endurance-athlete-guide-e128e194": "20d01a4a9ce094d9067142aa48f9ed9192e49e3f4fcf27c4a14cd79a8dddad8f",
+    "sola-stafette-4b5d5264": "ddebad969caed2cd326799021829d202754ed117b8f98ecd7d875ac63ef7afa2",
+    "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8": "23d2aefcaccb309699463abd3b8b8966aaded42756377ffda3d9e455935526b9",
+    "strava-credentials-keep-secret-never-commit-d742f824": "d742f82431374e694ec14d8532b2e5ed926b402d540459d373197a1088262a48",
+    "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9": "e4b31566693af2d98c486cb828c2738ce0701adae233504b39a162c34290e5ea",
+    "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd": "8e6e5f4e9df619751ca42eea9390fad033e4cc4a8b9fb8769e41662f3856ae52",
+    "stretching-science-reference-1c8a0e4f": "bbabe881512f7371dfaa18b64e1aec46cf915f7cd4d8bd8d39ea688a4abe6f39",
+    "subcommands-d30e7bf1": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+    "swarmvault-config-b6c23841": "b6c2384189fa20d8f52617692a62883a68b118609c509a52cf3351feaa1f9a3e",
+    "swarmvault-graph-first-01587800": "01587800fd2d6a8c0efc962c2de5c3d82656e57e70163377e473316da2c5c650",
+    "swarmvault-graph-first-9c4f5b47": "9c4f5b473ac374dfd70995cbda6d2ea03484c0dee57a85da4c48a9b7aa9348a6",
+    "swarmvault-rules-7d1dab2a": "6003d063e47e89c5ec8ae9e060cbb4ce971526d5368e0a1912d774eae5142030",
+    "swarmvault-schema-b10ad2d9": "9e93581e5ad4eb7a49309af0263d43e8304e383f93a0c606c2161d713334df19",
+    "sync-tools-56fe777d": "56fe777dd9cacaf1bcbc5bdb415649338dfb797fa0d23203925fccd1a6aeb8e3",
+    "test-config-c071c562": "c071c56213554f9042c598ca8c8e2bcf27e4124fc8b3715214afa78651e8e7ca",
+    "test-driven-development-workflow-2f5af84b": "42049fc0abd07acdab8e967b56d47e553fd8f41c4f75f08eb7273a222e03bc81",
+    "test-tools-smoke-23acf85c": "23acf85cd7753702ffecd6f81d83e6c9a56279aa0dd0ce53c6e366acbde83172",
+    "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9": "b6dca8d97880e70d7a629351c529a024da4f9ea129f96a6f303c8b1b9a86bd1a",
+    "tour-de-l-uetliberg-tdu-77461fbe": "bcca5645b1bcc5dc9a35b30672d64afea6e954186d7e15582e37b3d5ae669666",
+    "training-gear-science-reference-1b98dbfa": "caa575c7d8c0912e37fe4673b25b0e1083ad372a2f657d3690d1d31b301b1558",
+    "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5": "153ff1d59c151bc0720e05a0ef862611a180c2eec1cac2dfab3cd009d5683788",
+    "update-0842ad5d": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+    "uv-4d480313": "4d480313063686d347cca8e8612dda9a73cc1510d268786fb7c191b73b174360",
+    "verification-loop-skill-beeb59cf": "44d9656e0fc563db04d79e19922bee6105e0293cfb0c9473995e81e2caf6ed6b",
+    "what-i-do-1fa739a7": "d675c41e397f3b9242acd9f9e1b212ca3519fbdb5b1478b793eef98375c1e6bb",
+    "what-i-do-3becbaf3": "bee949709918f5b49d6aafdb9307d0c4e98402c0beb63b62cf415bc32f0d3d92",
+    "what-i-do-a929e628": "ae7c4c220c832d699e5805d0fb61d507ebf1faabf675f1287863195942e86654",
+    "what-i-do-bb6e5c90": "448ac228927358a97482f8b7572a79e8d7b3880eb8173006db6dfa5005673e9c",
+    "what-i-do-de8b5607": "1bba34c57295c49b24ff5ba2e78626fe324bfe077a8296969f4ad009a08e8731",
+    "wiki-base-29e27f15": "29e27f159a1dcada9cd5abae30e476326a73730520a3e6f80fa3b1f16ec05e5e",
+    "wiki-tools-f7b7c96c": "f7b7c96c860d66d8c2f51ba10840dcade276b7e3c99ac49d1ebd309b8b59f9d2",
+    "with-valid-data-json-555ad9af": "555ad9afe558e9db7aadd31ba94e568c178a1f4a18cafe08e49c51ece61a24a2"
+  },
+  "sourceProjects": {
+    "activity-tools-4251b5fd": null,
+    "allow-uv-run-from-repo-root-30cc3aa3": null,
+    "alpenbrevet-race-reference-e582446a": null,
+    "app-75ed4433": null,
+    "athlete-profile-eed5f509": null,
+    "athlete-tools-c968b16f": null,
+    "bootstrap-load-secrets-from-data-root-env-if-agent-data-root-is-set-8be79550": null,
+    "candidates-5bcf0e57": null,
+    "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce": null,
+    "coachctl-architecture-conventions-8a2f1253": null,
+    "coachctl-strava-training-agent-7a3ae9ac": null,
+    "code-repo-33978ebf": null,
+    "code-root-fa300ffa": null,
+    "config-ed62725e": null,
+    "cycling-training-science-reference-aa12e3c8": null,
+    "dashboard-ux-audit-8bc8624b": null,
+    "db-4438bbd2": null,
+    "deep-research-2f018e7c": null,
+    "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6": null,
+    "dev-app-9552e8c8": null,
+    "dillier-classic-race-reference-74aedee5": null,
+    "endurance-nutrition-science-reference-2c888727": null,
+    "endurance-training-principles-science-reference-318c6f9d": null,
+    "env-tools-85fd1cad": null,
+    "event-tools-4028185c": null,
+    "exercise-nutrition-timing-paper-catalogue-1aca1a30": null,
+    "external-nasal-dilator-strips-in-endurance-sport-b2567952": null,
+    "feedback-tools-ff22ee6e": null,
+    "fitness-tools-4c8a250b": null,
+    "fixtures-289681c2": null,
+    "fixtures-57e82233": null,
+    "fixtures-719a3216": null,
+    "fixtures-b923c1f4": null,
+    "foot-health-paper-catalogue-fb00356d": null,
+    "foot-health-science-reference-03307eb2": null,
+    "full-db-schema-mirror-of-db-py-init-db-a3271966": null,
+    "general-wiki-log-220f0221": null,
+    "get-conn-4fe27bf2": null,
+    "get-dashboard-data-empty-db-9c5a2694": null,
+    "grade-cost-factor-f7014915": null,
+    "greifenseelauf-half-marathon-87ebe4d4": null,
+    "greifenseelauf-race-facts-b1321de2": null,
+    "helpers-5e2d94cc": null,
+    "helpers-be6e284d": null,
+    "hooks-a17f6f95": null,
+    "init-492052c6": null,
+    "init-65b76ffa": null,
+    "init-e3b0c442": null,
+    "injury-prevention-science-reference-59a1b257": null,
+    "insert-plan-and-events-a82f6402": null,
+    "insights-8a2efcf8": null,
+    "item-9d66dea1": null,
+    "kreuzegg-classic-berg-halbmarathon-e9d08de5": null,
+    "list-files-71abed7b": null,
+    "main-07eb9572": null,
+    "migrate-f5ef3835": null,
+    "mock-athlete-fixture-1812cb4d": null,
+    "ngp-algorithm-9949f73f": null,
+    "nutrients-17-00918-3a984432": null,
+    "oauth-helpers-ca87b67b": null,
+    "openai-17bab3f1": null,
+    "openai-786b054a": null,
+    "openai-df0ed566": null,
+    "openai-f9bd5846": null,
+    "opencode-json-a0cbc058": null,
+    "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141": null,
+    "optional-google-calendar-push-9f31fa1a": null,
+    "ordered-from-most-to-least-specific-so-vo2max-matches-before-moderate-etc-2b8459c3": null,
+    "parse-date-3a759610": null,
+    "percussion-massage-massage-guns-evidence-summary-d2329e68": null,
+    "periodization-templates-science-reference-b76292e1": null,
+    "personality-style-a474eea3": null,
+    "plan-tools-821c4c46": null,
+    "projects-ae86e2f4": null,
+    "public-api-cb65991f": null,
+    "pyproject-0d00c775": null,
+    "python-patterns-edad9e6a": null,
+    "raw-general-immutable-public-source-documents-1d455c7d": null,
+    "read-489534f4": null,
+    "read-wiki-868b64e4": null,
+    "readiness-tools-087135ec": null,
+    "recovery-tools-paper-catalogue-e8cbe051": null,
+    "running-shoes-paper-catalogue-8c70bd7a": null,
+    "running-training-science-reference-72f13fcc": null,
+    "safe-resolve-60117322": null,
+    "security-review-skill-58079098": null,
+    "server-062915e6": null,
+    "settings-b7c2c769": null,
+    "site-531bcefc": null,
+    "site-tools-4beea17c": null,
+    "skill-show-dashboard-cf665da6": null,
+    "skillfish-1c853384": null,
+    "skillfish-3d8fffc6": null,
+    "skillfish-65c158e0": null,
+    "skillfish-a264adc7": null,
+    "skillfish-e96604ef": null,
+    "sleep-endurance-athlete-guide-e128e194": null,
+    "sola-stafette-4b5d5264": null,
+    "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8": null,
+    "strava-credentials-keep-secret-never-commit-d742f824": null,
+    "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9": null,
+    "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd": null,
+    "stretching-science-reference-1c8a0e4f": null,
+    "subcommands-d30e7bf1": null,
+    "swarmvault-config-b6c23841": null,
+    "swarmvault-graph-first-01587800": null,
+    "swarmvault-graph-first-9c4f5b47": null,
+    "swarmvault-rules-7d1dab2a": null,
+    "swarmvault-schema-b10ad2d9": null,
+    "sync-tools-56fe777d": null,
+    "test-config-c071c562": null,
+    "test-driven-development-workflow-2f5af84b": null,
+    "test-tools-smoke-23acf85c": null,
+    "the-canonical-set-of-wiki-files-and-their-purpose-single-source-of-truth-b6dca8d9": null,
+    "tour-de-l-uetliberg-tdu-77461fbe": null,
+    "training-gear-science-reference-1b98dbfa": null,
+    "tss-estimates-per-sport-intensity-minutes-tss-153ff1d5": null,
+    "update-0842ad5d": null,
+    "uv-4d480313": null,
+    "verification-loop-skill-beeb59cf": null,
+    "what-i-do-1fa739a7": null,
+    "what-i-do-3becbaf3": null,
+    "what-i-do-a929e628": null,
+    "what-i-do-bb6e5c90": null,
+    "what-i-do-de8b5607": null,
+    "wiki-base-29e27f15": null,
+    "wiki-tools-f7b7c96c": null,
+    "with-valid-data-json-555ad9af": null
+  },
+  "outputHashes": {},
+  "insightHashes": {},
+  "memoryHashes": {},
+  "candidateHistory": {
+    "concept:passes": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "concept:race": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a",
+        "endurance-nutrition-science-reference-2c888727",
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "personality-style-a474eea3",
+        "tour-de-l-uetliberg-tdu-77461fbe",
+        "what-i-do-1fa739a7",
+        "what-i-do-3becbaf3",
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:direction": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "concept:furka": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "concept:hardest": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "concept:nufenen": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "concept:example": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "concept:notes": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "concept:threshold": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "concept:athlete": {
+      "sourceIds": [
+        "athlete-profile-eed5f509",
+        "coachctl-architecture-conventions-8a2f1253",
+        "personality-style-a474eea3",
+        "what-i-do-3becbaf3",
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:cycling": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "concept:goals": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "concept:candidates": {
+      "sourceIds": [
+        "candidates-5bcf0e57"
+      ],
+      "status": "candidate"
+    },
+    "concept:candidate": {
+      "sourceIds": [
+        "candidates-5bcf0e57"
+      ],
+      "status": "candidate"
+    },
+    "concept:compile": {
+      "sourceIds": [
+        "candidates-5bcf0e57",
+        "insights-8a2efcf8",
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "concept:index": {
+      "sourceIds": [
+        "candidates-5bcf0e57",
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "concept:pages": {
+      "sourceIds": [
+        "candidates-5bcf0e57"
+      ],
+      "status": "candidate"
+    },
+    "concept:stage": {
+      "sourceIds": [
+        "candidates-5bcf0e57",
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "concept:glycogen": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce",
+        "endurance-nutrition-science-reference-2c888727",
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "concept:carbohydrate": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce",
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "concept:cold": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "concept:carb": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "concept:pre-race": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "concept:altitude": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "concept:wiki": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253",
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "personality-style-a474eea3",
+        "raw-general-immutable-public-source-documents-1d455c7d",
+        "swarmvault-rules-7d1dab2a",
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "concept:personal": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253",
+        "coachctl-strava-training-agent-7a3ae9ac",
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141",
+        "what-i-do-3becbaf3",
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:repo": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253",
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "concept:data": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253",
+        "coachctl-strava-training-agent-7a3ae9ac",
+        "dashboard-ux-audit-8bc8624b",
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "concept:coachctl": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253",
+        "coachctl-strava-training-agent-7a3ae9ac",
+        "opencode-json-a0cbc058",
+        "pyproject-0d00c775",
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:sync": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "concept:activities": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "concept:power": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "dillier-classic-race-reference-74aedee5",
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "concept:cadence": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "running-training-science-reference-72f13fcc",
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "concept:climbs": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "concept:fatigue": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "concept:long": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "concept:more": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "concept:what": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b",
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "concept:findings": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "concept:finding": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "concept:that": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "concept:coach": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "concept:research": {
+      "sourceIds": [
+        "deep-research-2f018e7c",
+        "openai-17bab3f1"
+      ],
+      "status": "candidate"
+    },
+    "concept:firecrawl": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "concept:search": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "concept:sources": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "concept:with": {
+      "sourceIds": [
+        "deep-research-2f018e7c",
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952",
+        "injury-prevention-science-reference-59a1b257",
+        "openai-f9bd5846"
+      ],
+      "status": "candidate"
+    },
+    "concept:swarmvault": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "insights-8a2efcf8",
+        "swarmvault-rules-7d1dab2a"
+      ],
+      "status": "candidate"
+    },
+    "concept:graph": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "swarmvault-rules-7d1dab2a"
+      ],
+      "status": "candidate"
+    },
+    "concept:before": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "swarmvault-rules-7d1dab2a"
+      ],
+      "status": "candidate"
+    },
+    "concept:query": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "swarmvault-rules-7d1dab2a"
+      ],
+      "status": "candidate"
+    },
+    "concept:source": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "general-wiki-log-220f0221",
+        "raw-general-immutable-public-source-documents-1d455c7d",
+        "swarmvault-rules-7d1dab2a",
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:group": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "concept:climb": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "concept:after": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5",
+        "percussion-massage-massage-guns-evidence-summary-d2329e68",
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:flat": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5",
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5",
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "concept:training": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727",
+        "endurance-training-principles-science-reference-318c6f9d",
+        "injury-prevention-science-reference-59a1b257",
+        "running-training-science-reference-72f13fcc",
+        "sleep-endurance-athlete-guide-e128e194",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "concept:high": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "concept:intensity": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "concept:ratio": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "concept:days": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d",
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "concept:recovery": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d",
+        "percussion-massage-massage-guns-evidence-summary-d2329e68",
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "concept:fitness": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "concept:hard": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "concept:exercise": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "concept:nutrition": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "concept:journal": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "foot-health-paper-catalogue-fb00356d",
+        "recovery-tools-paper-catalogue-e8cbe051",
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "concept:sports": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "injury-prevention-science-reference-59a1b257",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "concept:protein": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "concept:nasal": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "concept:athletes": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952",
+        "nutrients-17-00918-3a984432",
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "concept:benefit": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "concept:performance": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952",
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "concept:foot": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d",
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "concept:running": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d",
+        "foot-health-science-reference-03307eb2",
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "running-training-science-reference-72f13fcc",
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "concept:orthoses": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d"
+      ],
+      "status": "candidate"
+    },
+    "concept:review": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d",
+        "openai-786b054a"
+      ],
+      "status": "candidate"
+    },
+    "concept:systematic": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d"
+      ],
+      "status": "candidate"
+    },
+    "concept:arch": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "concept:pain": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "concept:plantar": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "concept:injury": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2",
+        "injury-prevention-science-reference-59a1b257",
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:updated": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "concept:2026-05-11": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "concept:attachments": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "concept:false": {
+      "sourceIds": [
+        "general-wiki-log-220f0221",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:ingest": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "concept:uster": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "concept:2026": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "concept:greifenseelauf": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "concept:time": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "concept:finish": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "greifenseelauf-race-facts-b1321de2",
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5",
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "concept:start": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2",
+        "sola-stafette-4b5d5264",
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:first": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "concept:greifensee": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "concept:hooks": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:command": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "opencode-json-a0cbc058",
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:codex": {
+      "sourceIds": [
+        "hooks-a17f6f95"
+      ],
+      "status": "candidate"
+    },
+    "concept:json": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef"
+      ],
+      "status": "candidate"
+    },
+    "concept:node": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:object": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:risk": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257"
+      ],
+      "status": "candidate"
+    },
+    "concept:week": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257",
+        "periodization-templates-science-reference-b76292e1",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+        "what-i-do-1fa739a7",
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "concept:insights": {
+      "sourceIds": [
+        "insights-8a2efcf8"
+      ],
+      "status": "candidate"
+    },
+    "concept:applies": {
+      "sourceIds": [
+        "insights-8a2efcf8"
+      ],
+      "status": "candidate"
+    },
+    "concept:authored": {
+      "sourceIds": [
+        "insights-8a2efcf8"
+      ],
+      "status": "candidate"
+    },
+    "concept:during": {
+      "sourceIds": [
+        "insights-8a2efcf8",
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "concept:dietfurt": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "concept:krinau": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "concept:tschwil": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "concept:https": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5",
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:supplementation": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "concept:endurance": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "concept:cited": {
+      "sourceIds": [
+        "openai-17bab3f1"
+      ],
+      "status": "candidate"
+    },
+    "concept:interface": {
+      "sourceIds": [
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846"
+      ],
+      "status": "candidate"
+    },
+    "concept:keys": {
+      "sourceIds": [
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:policy": {
+      "sourceIds": [
+        "openai-17bab3f1",
+        "openai-f9bd5846"
+      ],
+      "status": "candidate"
+    },
+    "concept:security": {
+      "sourceIds": [
+        "openai-786b054a",
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:checklist": {
+      "sourceIds": [
+        "openai-786b054a"
+      ],
+      "status": "candidate"
+    },
+    "concept:verification": {
+      "sourceIds": [
+        "openai-df0ed566",
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:build": {
+      "sourceIds": [
+        "openai-df0ed566",
+        "periodization-templates-science-reference-b76292e1",
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "concept:lint": {
+      "sourceIds": [
+        "openai-df0ed566"
+      ],
+      "status": "candidate"
+    },
+    "concept:yaml": {
+      "sourceIds": [
+        "openai-f9bd5846"
+      ],
+      "status": "candidate"
+    },
+    "concept:enabled": {
+      "sourceIds": [
+        "opencode-json-a0cbc058"
+      ],
+      "status": "candidate"
+    },
+    "concept:local": {
+      "sourceIds": [
+        "opencode-json-a0cbc058",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:type": {
+      "sourceIds": [
+        "opencode-json-a0cbc058"
+      ],
+      "status": "candidate"
+    },
+    "concept:agent": {
+      "sourceIds": [
+        "opencode-json-a0cbc058"
+      ],
+      "status": "candidate"
+    },
+    "concept:opencode": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "concept:config": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "concept:belong": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "concept:cache": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "concept:acute": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "concept:muscle": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68",
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:doms": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "concept:massage": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "concept:phase": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "concept:volume": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "concept:peak": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1",
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "concept:base": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "concept:root": {
+      "sourceIds": [
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "concept:profile": {
+      "sourceIds": [
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "concept:projects": {
+      "sourceIds": [
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "concept:project": {
+      "sourceIds": [
+        "projects-ae86e2f4",
+        "pyproject-0d00c775",
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:rollups": {
+      "sourceIds": [
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "concept:dashboard": {
+      "sourceIds": [
+        "pyproject-0d00c775",
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:pytest": {
+      "sourceIds": [
+        "pyproject-0d00c775"
+      ],
+      "status": "candidate"
+    },
+    "concept:tool": {
+      "sourceIds": [
+        "pyproject-0d00c775"
+      ],
+      "status": "candidate"
+    },
+    "concept:self": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "concept:python": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "concept:user": {
+      "sourceIds": [
+        "python-patterns-edad9e6a",
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:return": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "concept:class": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "concept:none": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "concept:general": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d",
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "concept:added": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "concept:file": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d",
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "concept:only": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "concept:compression": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "concept:rolling": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "concept:foam": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "concept:plate": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "concept:carbon": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a"
+      ],
+      "status": "candidate"
+    },
+    "concept:shoes": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "concept:shoe": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a"
+      ],
+      "status": "candidate"
+    },
+    "concept:pace": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc",
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "concept:downhill": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "concept:error": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:const": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:typescript": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:users": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "concept:claude": {
+      "sourceIds": [
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:matcher": {
+      "sourceIds": [
+        "settings-b7c2c769"
+      ],
+      "status": "candidate"
+    },
+    "concept:port": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:8080": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:browser": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:open": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "concept:string": {
+      "sourceIds": [
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef"
+      ],
+      "status": "candidate"
+    },
+    "concept:branch": {
+      "sourceIds": [
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef"
+      ],
+      "status": "candidate"
+    },
+    "concept:name": {
+      "sourceIds": [
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef"
+      ],
+      "status": "candidate"
+    },
+    "concept:owner": {
+      "sourceIds": [
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef"
+      ],
+      "status": "candidate"
+    },
+    "concept:path": {
+      "sourceIds": [
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "concept:sleep": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "concept:rest": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "concept:caffeine": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "concept:yellow": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "concept:buchlern": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "concept:nggerberg": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "concept:easy": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "concept:strecke": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264",
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:timing": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:changing": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:character": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:expected": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "concept:client": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:strava": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:here": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:secret": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:your": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:refresh": {
+      "sourceIds": [
+        "strava-credentials-keep-secret-never-commit-d742f824"
+      ],
+      "status": "candidate"
+    },
+    "concept:strength": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "concept:hamstring": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "concept:stretching": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd",
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:warm": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "concept:paper": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "concept:static": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd",
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:side": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:post": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "concept:agents": {
+      "sourceIds": [
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:heuristic": {
+      "sourceIds": [
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "concept:should": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:vault": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:claims": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:concept": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:domain": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "concept:test": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:tests": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:await": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:page": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:button": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:markets": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "concept:trail": {
+      "sourceIds": [
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "concept:descent": {
+      "sourceIds": [
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "concept:evidence": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "concept:session": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa",
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "concept:2022": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "concept:files": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:hash": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:packages": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:pythonhosted": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:sha256": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "concept:head": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:check": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:bash": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:include": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "concept:plan": {
+      "sourceIds": [
+        "what-i-do-1fa739a7",
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "concept:weeks": {
+      "sourceIds": [
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "concept:ride": {
+      "sourceIds": [
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "concept:apply": {
+      "sourceIds": [
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:section": {
+      "sourceIds": [
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:propose": {
+      "sourceIds": [
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "concept:activity": {
+      "sourceIds": [
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "concept:flag": {
+      "sourceIds": [
+        "what-i-do-bb6e5c90",
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "concept:sessions": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "concept:next": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "concept:note": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:race-reference": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "entity:personal": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a",
+        "dillier-classic-race-reference-74aedee5",
+        "endurance-nutrition-science-reference-2c888727",
+        "foot-health-science-reference-03307eb2",
+        "injury-prevention-science-reference-59a1b257",
+        "raw-general-immutable-public-source-documents-1d455c7d",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+        "tour-de-l-uetliberg-tdu-77461fbe",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:race-overview": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a",
+        "dillier-classic-race-reference-74aedee5",
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "entity:alpenbrevet": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "entity:andermatt-switzerland": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "entity:distance": {
+      "sourceIds": [
+        "alpenbrevet-race-reference-e582446a"
+      ],
+      "status": "candidate"
+    },
+    "entity:athlete-profile": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:example": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:update": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:cycling": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:functional-threshold-power": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:running": {
+      "sourceIds": [
+        "athlete-profile-eed5f509"
+      ],
+      "status": "candidate"
+    },
+    "entity:candidates": {
+      "sourceIds": [
+        "candidates-5bcf0e57"
+      ],
+      "status": "candidate"
+    },
+    "entity:candidates-run": {
+      "sourceIds": [
+        "candidates-5bcf0e57"
+      ],
+      "status": "candidate"
+    },
+    "entity:supplementation": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:elite-long-distance-endurance-paper-catalogue-ingested": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:source": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:synthesised": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:paper-cao": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:title": {
+      "sourceIds": [
+        "carbohydrate-supplementation-for-elite-long-distance-endurance-paper-catalogue-b895ddce"
+      ],
+      "status": "candidate"
+    },
+    "entity:architecture-conventions-canonical": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:two": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:repo": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:visibility": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:contents": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:watcher": {
+      "sourceIds": [
+        "coachctl-architecture-conventions-8a2f1253"
+      ],
+      "status": "candidate"
+    },
+    "entity:strava-training-agent": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "entity:opencode": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "entity:strava": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac",
+        "general-wiki-log-220f0221",
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "entity:architecture-conventions": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "entity:operational": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac"
+      ],
+      "status": "candidate"
+    },
+    "entity:this": {
+      "sourceIds": [
+        "coachctl-strava-training-agent-7a3ae9ac",
+        "periodization-templates-science-reference-b76292e1",
+        "python-patterns-edad9e6a",
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "entity:training-science-reference": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:power": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "entity:fundamentals": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "entity:why-power": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "entity:heart": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8"
+      ],
+      "status": "candidate"
+    },
+    "entity:key": {
+      "sourceIds": [
+        "cycling-training-science-reference-aa12e3c8",
+        "endurance-nutrition-science-reference-2c888727",
+        "foot-health-science-reference-03307eb2",
+        "injury-prevention-science-reference-59a1b257",
+        "periodization-templates-science-reference-b76292e1",
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:audit": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "entity:dashboard": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "entity:you": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b",
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "entity:these": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "entity:step": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b",
+        "what-i-do-1fa739a7",
+        "what-i-do-bb6e5c90",
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:read": {
+      "sourceIds": [
+        "dashboard-ux-audit-8bc8624b"
+      ],
+      "status": "candidate"
+    },
+    "entity:multi": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "entity:deep-research-produce": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "entity:when": {
+      "sourceIds": [
+        "deep-research-2f018e7c",
+        "security-review-skill-58079098",
+        "test-driven-development-workflow-2f5af84b",
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "entity:activate-user": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "entity:competitive": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "entity:due": {
+      "sourceIds": [
+        "deep-research-2f018e7c"
+      ],
+      "status": "candidate"
+    },
+    "entity:swarmvault": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "general-wiki-log-220f0221",
+        "swarmvault-rules-7d1dab2a",
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:swarmvault-rules-read": {
+      "sourceIds": [
+        "description-swarmvault-graph-first-repository-instructions-alwaysapply-true-8fbb18f6",
+        "swarmvault-rules-7d1dab2a"
+      ],
+      "status": "candidate"
+    },
+    "entity:classic-race-reference": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "entity:dillier-classic": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "entity:switzerland": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "entity:silvan-dillier": {
+      "sourceIds": [
+        "dillier-classic-race-reference-74aedee5"
+      ],
+      "status": "candidate"
+    },
+    "entity:nutrition-science-reference": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "entity:kerksick": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727",
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "entity:position-stand": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "entity:bonilla": {
+      "sourceIds": [
+        "endurance-nutrition-science-reference-2c888727"
+      ],
+      "status": "candidate"
+    },
+    "entity:training-principles-science-reference": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:training-stress-score": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:coggan-cycling": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:where-np-normalised-power": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:intensity-factor": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:requires": {
+      "sourceIds": [
+        "endurance-training-principles-science-reference-318c6f9d"
+      ],
+      "status": "candidate"
+    },
+    "entity:source-pubmed": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "foot-health-paper-catalogue-fb00356d",
+        "recovery-tools-paper-catalogue-e8cbe051",
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "entity:paper": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+        "foot-health-paper-catalogue-fb00356d",
+        "recovery-tools-paper-catalogue-e8cbe051",
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "entity:title-international-society": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "entity:sports-nutrition-position-stand-nutrient-timing-authors-kerksick": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "entity:arent": {
+      "sourceIds": [
+        "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+      ],
+      "status": "candidate"
+    },
+    "entity:nasal-dilator-strips": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:endurance-sport-researched-may": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:overall": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:high": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:summary-external": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:breathe-right": {
+      "sourceIds": [
+        "external-nasal-dilator-strips-in-endurance-sport-b2567952"
+      ],
+      "status": "candidate"
+    },
+    "entity:pires-neves": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d"
+      ],
+      "status": "candidate"
+    },
+    "entity:title-effects": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d",
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "entity:foot-orthoses": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d"
+      ],
+      "status": "candidate"
+    },
+    "entity:pain": {
+      "sourceIds": [
+        "foot-health-paper-catalogue-fb00356d"
+      ],
+      "status": "candidate"
+    },
+    "entity:health-science-reference": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "entity:xu": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "entity:arnold": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "entity:alexander": {
+      "sourceIds": [
+        "foot-health-science-reference-03307eb2"
+      ],
+      "status": "candidate"
+    },
+    "entity:wiki-log-append": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "entity:updated": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "entity:stashed": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "entity:personality-style": {
+      "sourceIds": [
+        "general-wiki-log-220f0221"
+      ],
+      "status": "candidate"
+    },
+    "entity:event": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "entity:full": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "entity:greifenseelauf-uster": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4",
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:halbmarathon-greifensee": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "entity:uster-canton-zurich-switzerland-organiser-markus-ryffel-s": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "entity:minigreifenseelauf": {
+      "sourceIds": [
+        "greifenseelauf-half-marathon-87ebe4d4"
+      ],
+      "status": "candidate"
+    },
+    "entity:race-facts-full": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:halbmarathon-greifensee-organiser-markus-ryffel-s": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:worb-website": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:registration": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:schedule-always": {
+      "sourceIds": [
+        "greifenseelauf-race-facts-b1321de2"
+      ],
+      "status": "candidate"
+    },
+    "entity:format": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:top": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:size": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:nested": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:schema": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:preview": {
+      "sourceIds": [
+        "hooks-a17f6f95",
+        "openai-17bab3f1",
+        "openai-786b054a",
+        "openai-df0ed566",
+        "openai-f9bd5846",
+        "pyproject-0d00c775",
+        "settings-b7c2c769",
+        "skillfish-1c853384",
+        "skillfish-3d8fffc6",
+        "skillfish-65c158e0",
+        "skillfish-a264adc7",
+        "skillfish-e96604ef",
+        "swarmvault-config-b6c23841"
+      ],
+      "status": "candidate"
+    },
+    "entity:prevention-science-reference": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257"
+      ],
+      "status": "candidate"
+    },
+    "entity:hulin": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257"
+      ],
+      "status": "candidate"
+    },
+    "entity:br-j-sports-med-drew-finch": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257"
+      ],
+      "status": "candidate"
+    },
+    "entity:sports-med": {
+      "sourceIds": [
+        "injury-prevention-science-reference-59a1b257"
+      ],
+      "status": "candidate"
+    },
+    "entity:insights": {
+      "sourceIds": [
+        "insights-8a2efcf8"
+      ],
+      "status": "candidate"
+    },
+    "entity:last": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "entity:race": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5",
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:kreuzegg-classic-berg-halbmarathon": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "entity:location": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "entity:b-tschwil": {
+      "sourceIds": [
+        "kreuzegg-classic-berg-halbmarathon-e9d08de5"
+      ],
+      "status": "candidate"
+    },
+    "entity:editor": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432",
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "entity:cao": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "entity:he": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "entity:fu": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "entity:chen": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "entity:yu": {
+      "sourceIds": [
+        "nutrients-17-00918-3a984432"
+      ],
+      "status": "candidate"
+    },
+    "entity:defensive": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141"
+      ],
+      "status": "candidate"
+    },
+    "entity:dist": {
+      "sourceIds": [
+        "opencode-local-config-contains-live-api-tokens-use-opencode-json-example-as-temp-fe834141",
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "entity:massage-massage-guns-evidence-summary-last": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "entity:sources": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "entity:what": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68",
+        "skill-show-dashboard-cf665da6",
+        "what-i-do-1fa739a7",
+        "what-i-do-3becbaf3",
+        "what-i-do-a929e628",
+        "what-i-do-bb6e5c90",
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:theragun-hypervolt-ekrin": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "entity:frequency": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "entity:hz": {
+      "sourceIds": [
+        "percussion-massage-massage-guns-evidence-summary-d2329e68"
+      ],
+      "status": "candidate"
+    },
+    "entity:templates-science-reference": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "entity:coggan-trainingpeaks-ctl-atl-tsb": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "entity:friel": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "entity:cyclist-s": {
+      "sourceIds": [
+        "periodization-templates-science-reference-b76292e1"
+      ],
+      "status": "candidate"
+    },
+    "entity:endurance": {
+      "sourceIds": [
+        "personality-style-a474eea3",
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:strava-data": {
+      "sourceIds": [
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "entity:personality": {
+      "sourceIds": [
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "entity:if": {
+      "sourceIds": [
+        "personality-style-a474eea3",
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "entity:european": {
+      "sourceIds": [
+        "personality-style-a474eea3"
+      ],
+      "status": "candidate"
+    },
+    "entity:projects-run": {
+      "sourceIds": [
+        "projects-ae86e2f4"
+      ],
+      "status": "candidate"
+    },
+    "entity:python": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "entity:pythonic": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "entity:python-patterns": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "entity:protocol-duck-typing-use-protocol": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "entity:protocol": {
+      "sourceIds": [
+        "python-patterns-edad9e6a"
+      ],
+      "status": "candidate"
+    },
+    "entity:immutable": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "entity:rules-human": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "entity:llm": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "entity:see": {
+      "sourceIds": [
+        "raw-general-immutable-public-source-documents-1d455c7d"
+      ],
+      "status": "candidate"
+    },
+    "entity:mart-nez-aranda": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "entity:self-myofascial-release": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "entity:athletes-physical-performance": {
+      "sourceIds": [
+        "recovery-tools-paper-catalogue-e8cbe051"
+      ],
+      "status": "candidate"
+    },
+    "entity:sun": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a",
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:title-systematic-review": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a"
+      ],
+      "status": "candidate"
+    },
+    "entity:role": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a"
+      ],
+      "status": "candidate"
+    },
+    "entity:footwear-constructions": {
+      "sourceIds": [
+        "running-shoes-paper-catalogue-8c70bd7a"
+      ],
+      "status": "candidate"
+    },
+    "entity:pace": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:threshold": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:running-functional-threshold-pace": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:half": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:lactate": {
+      "sourceIds": [
+        "running-training-science-reference-72f13fcc"
+      ],
+      "status": "candidate"
+    },
+    "entity:use": {
+      "sourceIds": [
+        "security-review-skill-58079098",
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "entity:security-review-skill-this": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "entity:activate-implementing": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "entity:handling": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "entity:creating": {
+      "sourceIds": [
+        "security-review-skill-58079098"
+      ],
+      "status": "candidate"
+    },
+    "entity:skill": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "entity:bake": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "entity:steps": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "entity:bake-call": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "entity:check": {
+      "sourceIds": [
+        "skill-show-dashboard-cf665da6"
+      ],
+      "status": "candidate"
+    },
+    "entity:endurance-athlete-guide-general": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:why": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:adenosine": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:halson": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:medicine": {
+      "sourceIds": [
+        "sleep-endurance-athlete-guide-e128e194"
+      ],
+      "status": "candidate"
+    },
+    "entity:stafette-source": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:raw": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:may": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:may-overall": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:z-rich": {
+      "sourceIds": [
+        "sola-stafette-4b5d5264"
+      ],
+      "status": "candidate"
+    },
+    "entity:stafette-strecken": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:fetched": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:overview-total": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:bucheggplatz": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:irchel-sport-center": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:map-gpx": {
+      "sourceIds": [
+        "sola-stafette-strecken-source-asvz-ch-event-643-strecken-c4bb66a8"
+      ],
+      "status": "candidate"
+    },
+    "entity:training": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "entity:endurance-team-sport-athletes-science-reference": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "entity:storen": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "entity:med-sci-sports-exerc-r-nnestad": {
+      "sourceIds": [
+        "strength-training-for-endurance-team-sport-athletes-science-reference-1751dae9"
+      ],
+      "status": "candidate"
+    },
+    "entity:endurance-team-sports-paper-catalogue-ingested": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "entity:warneke": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd",
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:title-acute": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "entity:chronic-effects": {
+      "sourceIds": [
+        "stretching-in-endurance-team-sports-paper-catalogue-2fb58ffd"
+      ],
+      "status": "candidate"
+    },
+    "entity:science-reference-synthesised": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:primary": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:panasc": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:faelli": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:ullman": {
+      "sourceIds": [
+        "stretching-science-reference-1c8a0e4f"
+      ],
+      "status": "candidate"
+    },
+    "entity:schema-edit": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:vault-purpose-describe": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:naming-conventions-prefer": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:page-structure-rules-source": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:categories-list": {
+      "sourceIds": [
+        "swarmvault-schema-b10ad2d9"
+      ],
+      "status": "candidate"
+    },
+    "entity:test-driven-development-workflow-this": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "entity:activate-writing": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "entity:fixing": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "entity:refactoring": {
+      "sourceIds": [
+        "test-driven-development-workflow-2f5af84b"
+      ],
+      "status": "candidate"
+    },
+    "entity:tdu": {
+      "sourceIds": [
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "entity:tour": {
+      "sourceIds": [
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "entity:uetliberg": {
+      "sourceIds": [
+        "tour-de-l-uetliberg-tdu-77461fbe"
+      ],
+      "status": "candidate"
+    },
+    "entity:gear-science-reference": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:relph": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:cochrane": {
+      "sourceIds": [
+        "training-gear-science-reference-1b98dbfa"
+      ],
+      "status": "candidate"
+    },
+    "entity:shellingham": {
+      "sourceIds": [
+        "uv-4d480313"
+      ],
+      "status": "candidate"
+    },
+    "entity:claude-code": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "entity:verification-loop-skill": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "entity:use-invoke": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "entity:after": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf"
+      ],
+      "status": "candidate"
+    },
+    "entity:before": {
+      "sourceIds": [
+        "verification-loop-skill-beeb59cf",
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "entity:build": {
+      "sourceIds": [
+        "what-i-do-1fa739a7",
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "entity:markdown": {
+      "sourceIds": [
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "entity:gather": {
+      "sourceIds": [
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "entity:run": {
+      "sourceIds": [
+        "what-i-do-1fa739a7"
+      ],
+      "status": "candidate"
+    },
+    "entity:ingest": {
+      "sourceIds": [
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "entity:guide": {
+      "sourceIds": [
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "entity:layer": {
+      "sourceIds": [
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "entity:content": {
+      "sourceIds": [
+        "what-i-do-3becbaf3"
+      ],
+      "status": "candidate"
+    },
+    "entity:create": {
+      "sourceIds": [
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "entity:yoy": {
+      "sourceIds": [
+        "what-i-do-a929e628"
+      ],
+      "status": "candidate"
+    },
+    "entity:always": {
+      "sourceIds": [
+        "what-i-do-a929e628",
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "entity:deliver": {
+      "sourceIds": [
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "entity:for": {
+      "sourceIds": [
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "entity:skip": {
+      "sourceIds": [
+        "what-i-do-bb6e5c90"
+      ],
+      "status": "candidate"
+    },
+    "entity:generate": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:ctl-atl-tsb": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:pull": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    },
+    "entity:data": {
+      "sourceIds": [
+        "what-i-do-de8b5607"
+      ],
+      "status": "candidate"
+    }
+  }
+}

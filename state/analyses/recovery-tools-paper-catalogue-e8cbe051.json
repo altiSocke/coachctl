@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "recovery-tools-paper-catalogue-e8cbe051",
+  "sourceHash": "e8cbe0517327e3cd1eef150d153d42e7959957b4edc8a3096f27228f26d5e064",
+  "semanticHash": "c4b3a8fdefc34e7af2e4e99c374a43d1342fedcf76dde0e49e55da7382ec53bc",
+  "extractionHash": "5853f715e4ee56420437fedeb969221a3ec4d2e28f85a6a22b577d226e7ce0ba",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Recovery Tools — Paper Catalogue",
+  "summary": "Recovery Tools — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: foam rolling myofascial release performance recovery; compression garments running recovery performance. Synthesised into: wiki/general/gear.md --- ## SECTION A — FOAM ROLLING (SELF-MYOFASCIAL RELEASE) --- ## Paper 1 — Martínez-Aranda et al. 2024 ⭐ PRIMARY SYSTEMATIC REVIEW Title: Effects of Self-Myofascial Release on Athletes' Physical Performance: A Systematic Review Authors: Martínez-Aranda LM, Sanz-Matesanz M, García-Mantilla ED, González-Fernández FT Journal: Journal of Functional Morphology and Kinesiology Year: 2024 (Jan 11) PMID: 38249097 PMCID: PMC10801590 DOI: 10.3390/jfmk9010020 Access: Free PMC Type: Systematic Review (25 studies, n=517 athletes, databases through Sep 2023) Key findings: - Acute positive effects on flexibility and range of motion (ROM): consistent finding across studies — SMR improves ROM acutely - No negative effect on maximal strength and power: SMR pre-training/warm-up does NOT impair force production (unlike prolonged static stretching) - Positive effects on perceptual recovery and DOMS reduction: athletes subjectively feel better and perceive less soreness - Some evidence of positive effects on agility and very short high-speed actions (sprinting) - Chronic effects on performance: heterogeneous results — no strong consensus for long-term performance gains - Evidence heterogeneity: protocol parameters (duration, pressure, speed) vary greatly across studies Practical takeaway: Use foam rolling before sessions to improve ROM without strength penalties; use after sessions to reduce DOMS and improve recovery perception.",
+  "concepts": [
+    {
+      "id": "concept:recovery",
+      "name": "recovery",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "concept:performance",
+      "name": "performance",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "concept:compression",
+      "name": "compression",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "concept:rolling",
+      "name": "rolling",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "concept:foam",
+      "name": "foam",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "concept:journal",
+      "name": "journal",
+      "description": "Frequently referenced concept in Recovery Tools — Paper Catalogue."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:source-pubmed",
+      "name": "Source: PubMed",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "entity:paper",
+      "name": "Paper",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "entity:mart-nez-aranda",
+      "name": "Martínez-Aranda",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "entity:title-effects",
+      "name": "Title: Effects",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "entity:self-myofascial-release",
+      "name": "Self-Myofascial Release",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    },
+    {
+      "id": "entity:athletes-physical-performance",
+      "name": "Athletes' Physical Performance:",
+      "description": "Named entity mentioned in Recovery Tools — Paper Catalogue."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:recovery-tools-paper-catalogue-e8cbe051:1",
+      "text": "Recovery Tools — Paper Catalogue Ingested: 2026-04-25 Source: PubMed eutils searches (2018–2026), terms: foam rolling myofascial release performance recovery; compression garments running recovery performance.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "recovery-tools-paper-catalogue-e8cbe051"
+    },
+    {
+      "id": "claim:recovery-tools-paper-catalogue-e8cbe051:2",
+      "text": "Synthesised into: wiki/general/gear.md --- ## SECTION A — FOAM ROLLING (SELF-MYOFASCIAL RELEASE) --- ## Paper 1 — Martínez-Aranda et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "recovery-tools-paper-catalogue-e8cbe051"
+    },
+    {
+      "id": "claim:recovery-tools-paper-catalogue-e8cbe051:3",
+      "text": "2024 ⭐ PRIMARY SYSTEMATIC REVIEW Title: Effects of Self-Myofascial Release on Athletes' Physical Performance: A Systematic Review Authors: Martínez-Aranda LM, Sanz-Matesanz M, García-Mantilla ED, González-Fernández FT Journal: Journal of Functional Morphology and Kinesiology Year: 2024 (Jan 11) PMID: 38249097 PMCID: PMC10801590 DOI: 10.3390/jfmk9010020 Access: Free PMC Type: Systematic Review (25 studies, n=517 athletes, databases through Sep 2023) Key findings: - Acute positive effects on flexibility and range of motion (ROM): consistent finding across studies — SMR improves ROM acutely - No negative effect on maximal strength and power: SMR pre-training/warm-up does NOT impair force production (unlike prolonged static stretching) - Positive effects on perceptual recovery and DOMS reduction: athletes subjectively feel better and perceive less soreness - Some evidence of positive effects on agility and very short high-speed actions (sprinting) - Chronic effects on performance: heterogeneous results — no strong consensus for long-term performance gains - Evidence heterogeneity: protocol parameters (duration, pressure, speed) vary greatly across studies Practical takeaway: Use foam rolling before sessions to improve ROM without strength penalties; use after sessions to reduce DOMS and improve recovery perception.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "recovery-tools-paper-catalogue-e8cbe051"
+    },
+    {
+      "id": "claim:recovery-tools-paper-catalogue-e8cbe051:4",
+      "text": "Evidence is strongest for acute use.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "positive",
+      "citation": "recovery-tools-paper-catalogue-e8cbe051"
+    }
+  ],
+  "questions": [
+    "How does recovery relate to Recovery Tools — Paper Catalogue?",
+    "How does performance relate to Recovery Tools — Paper Catalogue?",
+    "How does compression relate to Recovery Tools — Paper Catalogue?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:36.489Z"
+}

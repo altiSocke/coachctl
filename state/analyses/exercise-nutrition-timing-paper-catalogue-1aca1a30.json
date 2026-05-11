@@ -1,0 +1,116 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "exercise-nutrition-timing-paper-catalogue-1aca1a30",
+  "sourceHash": "1aca1a300f108ef2d78e32f0581d84cd4794e3a78c1612575daa21c45cceb892",
+  "semanticHash": "f82d09cf9d63c273a6df059c6258c7b9ffba4ac0e0708dcb23b6d5bdb77d4673",
+  "extractionHash": "2f0053a9d8ba03084fcc9c98308354b8aaf2574a21c5b5c3a60619a42f0c6539",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Exercise Nutrition Timing — Paper Catalogue",
+  "summary": "Exercise Nutrition Timing — Paper Catalogue Ingested: 2026-04-25 Source: PubMed systematic searches (2017–2026), terms: pre/during/post exercise nutrition, carbohydrate timing, nutrient timing, intermittent sports nutrition, glycogen resynthesis, protein synthesis, team sports fuelling. Synthesised into: wiki/general/nutrition.md --- ## Paper 1 — Kerksick et al. 2017 ⭐ PRIMARY POSITION STAND Title: International Society of Sports Nutrition Position Stand: Nutrient Timing Authors: Kerksick CM, Arent S, Schoenfeld BJ, Stout JR, Campbell B, Wilborn CD, Taylor L, Kalman D, Smith-Ryan AE, Kreider RB, Willoughby D, Arciero PJ, VanDusseldorp TA, Ormsbee MJ, Wildman R, Greenwood M, Ziegenfuss TN, Aragon AA, Antonio J Journal: Journal of the International Society of Sports Nutrition Year: 2017 (Aug 29) PMID: 28919842 PMCID: PMC5596471 DOI: 10.1186/s12970-017-0189-4 Access: Free PMC full text Type: Position Stand / Expert Review (ISSN) Key findings: - Glycogen maximised at 8–12 g/kg/day dietary carbohydrate - If <4h between sessions: 1.2 g/kg/hr CHO with high-GI sources; adding caffeine (3–8 mg/kg) further accelerates resynthesis - During exercise >70% VO2max: 30–60 g CHO/hr in 6–8% solution every 10–15 min for efforts >70 min - Post-exercise (0–2h window): 20–40 g high-quality protein stimulates robust MPS increases - Protein dose every 3–4 hours (0.25–0.40 g/kg/dose) optimises MPS throughout day - Casein 30–40 g pre-sleep acutely increases overnight MPS without impairing lipolysis - Combining CHO + protein (0.8 + 0.2–0.4 g/kg/hr) during recovery reduces total CHO requirement while maintaining glycogen resynthesis --- ## Paper 2 — Bonilla et al.",
+  "concepts": [
+    {
+      "id": "concept:exercise",
+      "name": "exercise",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "concept:nutrition",
+      "name": "nutrition",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "concept:journal",
+      "name": "journal",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "concept:glycogen",
+      "name": "glycogen",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "concept:sports",
+      "name": "sports",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "concept:protein",
+      "name": "protein",
+      "description": "Frequently referenced concept in Exercise Nutrition Timing — Paper Catalogue."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:source-pubmed",
+      "name": "Source: PubMed",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "entity:paper",
+      "name": "Paper",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "entity:kerksick",
+      "name": "Kerksick",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "entity:title-international-society",
+      "name": "Title: International Society",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "entity:sports-nutrition-position-stand-nutrient-timing-authors-kerksick",
+      "name": "Sports Nutrition Position Stand: Nutrient Timing Authors: Kerksick",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    },
+    {
+      "id": "entity:arent",
+      "name": "Arent",
+      "description": "Named entity mentioned in Exercise Nutrition Timing — Paper Catalogue."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:exercise-nutrition-timing-paper-catalogue-1aca1a30:1",
+      "text": "Exercise Nutrition Timing — Paper Catalogue Ingested: 2026-04-25 Source: PubMed systematic searches (2017–2026), terms: pre/during/post exercise nutrition, carbohydrate timing, nutrient timing, intermittent sports nutrition, glycogen resynthesis, protein synthesis, team sports fuelling.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+    },
+    {
+      "id": "claim:exercise-nutrition-timing-paper-catalogue-1aca1a30:2",
+      "text": "Synthesised into: wiki/general/nutrition.md --- ## Paper 1 — Kerksick et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+    },
+    {
+      "id": "claim:exercise-nutrition-timing-paper-catalogue-1aca1a30:3",
+      "text": "2017 ⭐ PRIMARY POSITION STAND Title: International Society of Sports Nutrition Position Stand: Nutrient Timing Authors: Kerksick CM, Arent S, Schoenfeld BJ, Stout JR, Campbell B, Wilborn CD, Taylor L, Kalman D, Smith-Ryan AE, Kreider RB, Willoughby D, Arciero PJ, VanDusseldorp TA, Ormsbee MJ, Wildman R, Greenwood M, Ziegenfuss TN, Aragon AA, Antonio J Journal: Journal of the International Society of Sports Nutrition Year: 2017 (Aug 29) PMID: 28919842 PMCID: PMC5596471 DOI: 10.1186/s12970-017-0189-4 Access: Free PMC full text Type: Position Stand / Expert Review (ISSN) Key findings: - Glycogen maximised at 8–12 g/kg/day dietary carbohydrate - If <4h between sessions: 1.2 g/kg/hr CHO with high-GI sources; adding caffeine (3–8 mg/kg) further accelerates resynthesis - During exercise >70% VO2max: 30–60 g CHO/hr in 6–8% solution every 10–15 min for efforts >70 min - Post-exercise (0–2h window): 20–40 g high-quality protein stimulates robust MPS increases - Protein dose every 3–4 hours (0.25–0.40 g/kg/dose) optimises MPS throughout day - Casein 30–40 g pre-sleep acutely increases overnight MPS without impairing lipolysis - Combining CHO + protein (0.8 + 0.2–0.4 g/kg/hr) during recovery reduces total CHO requirement while maintaining glycogen resynthesis --- ## Paper 2 — Bonilla et al.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+    },
+    {
+      "id": "claim:exercise-nutrition-timing-paper-catalogue-1aca1a30:4",
+      "text": "2020 ⭐ 4R FRAMEWORK Title: The 4R's Framework of Nutritional Strategies for Post-Exercise Recovery: A Review with Emphasis on New Generation of Carbohydrates Authors: Bonilla DA, Pérez-Idárraga A, Odriozola-Martínez A, Kreider RB Journal: International Journal of Environmental Research and Public Health Year: 2020 (Dec 24) PMID: 33375691 DOI: 10.3390/ijerph18010103 Access: Free PMC Type: Review The 4R Framework: 1.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "exercise-nutrition-timing-paper-catalogue-1aca1a30"
+    }
+  ],
+  "questions": [
+    "How does exercise relate to Exercise Nutrition Timing — Paper Catalogue?",
+    "How does nutrition relate to Exercise Nutrition Timing — Paper Catalogue?",
+    "How does journal relate to Exercise Nutrition Timing — Paper Catalogue?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:32.451Z"
+}

@@ -1,0 +1,17 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "init-e3b0c442",
+  "sourceHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "semanticHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "extractionHash": "87550ebf3cd64f0f5b517b5b55fb99d62503ce01f5d54235aa6f7ec9e12b21b5",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "__init__",
+  "summary": "Imported code source. Text extraction is not yet available for this source.",
+  "concepts": [],
+  "entities": [],
+  "claims": [],
+  "questions": [],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:30.644Z"
+}

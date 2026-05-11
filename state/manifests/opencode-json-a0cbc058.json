@@ -1,0 +1,18 @@
+{
+  "sourceId": "opencode-json-a0cbc058",
+  "title": "opencode.json",
+  "originType": "file",
+  "sourceKind": "text",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/opencode.json.example",
+  "repoRelativePath": "opencode.json.example",
+  "storedPath": "raw/sources/opencode-json-a0cbc058.example",
+  "extractedTextPath": "state/extracts/opencode-json-a0cbc058.md",
+  "extractedMetadataPath": "state/extracts/opencode-json-a0cbc058.json",
+  "extractionHash": "9dcee00716b297d4ad67745c2a1ffb15afb0c47b24f12e5ec0b0edf5f417fd6d",
+  "mimeType": "application/octet-stream",
+  "contentHash": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+  "semanticHash": "a0cbc058f08f809a1e8b3a66ecb90128f0f570a860da50943e25cd316efb015e",
+  "createdAt": "2026-05-11T08:43:14.706Z",
+  "updatedAt": "2026-05-11T08:43:14.706Z"
+}

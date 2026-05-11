@@ -1,0 +1,19 @@
+{
+  "sourceId": "code-repo-33978ebf",
+  "title": "── Code repo ────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/paths.py",
+  "repoRelativePath": "src/coachctl/paths.py",
+  "storedPath": "raw/sources/code-repo-33978ebf.py",
+  "extractedTextPath": "state/extracts/code-repo-33978ebf.md",
+  "extractedMetadataPath": "state/extracts/code-repo-33978ebf.json",
+  "extractionHash": "a6d6d883e83bf8e3e6694ae52c2c0a10ac5061370d69792a83cee97f0dd03985",
+  "mimeType": "application/octet-stream",
+  "contentHash": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+  "semanticHash": "33978ebf25224178175ab8d6e0d77ca94d623719a29721910299ea2ae25b0675",
+  "createdAt": "2026-05-11T08:43:16.820Z",
+  "updatedAt": "2026-05-11T08:43:16.820Z"
+}

@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "update-0842ad5d",
+  "sourceHash": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+  "semanticHash": "0842ad5d6a7fadaf56a32253ffb00dd5c3bd061256130d8ee7c1ea06c43af618",
+  "extractionHash": "d6bf5dddae6ca7168f106d0a6c71cc3efabf30a52349f53b3bb006f06638080b",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "update",
+  "summary": "update is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:update-0842ad5d:1",
+      "text": "update has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "update-0842ad5d"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does update serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:update-0842ad5d",
+    "language": "python",
+    "moduleName": "coachctl.update",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:38.815Z"
+}

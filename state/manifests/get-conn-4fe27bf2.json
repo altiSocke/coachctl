@@ -1,0 +1,19 @@
+{
+  "sourceId": "get-conn-4fe27bf2",
+  "title": "── get_conn ──────────────────────────────────────────────────────────────────",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/tests/test_db.py",
+  "repoRelativePath": "tests/test_db.py",
+  "storedPath": "raw/sources/get-conn-4fe27bf2.py",
+  "extractedTextPath": "state/extracts/get-conn-4fe27bf2.md",
+  "extractedMetadataPath": "state/extracts/get-conn-4fe27bf2.json",
+  "extractionHash": "600d585a94bb48f8bf34e1f229ccfb2bb6be7827a76e16f191078cd1e8d448b4",
+  "mimeType": "application/octet-stream",
+  "contentHash": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+  "semanticHash": "4fe27bf20d51d0d333f650f65791cb97ac09371f8d3c22dad409f54d84e2f5ee",
+  "createdAt": "2026-05-11T08:43:19.995Z",
+  "updatedAt": "2026-05-11T08:43:19.995Z"
+}

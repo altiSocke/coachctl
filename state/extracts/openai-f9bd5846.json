@@ -1,0 +1,12 @@
+{
+  "extractor": "structured_data",
+  "sourceKind": "data",
+  "mimeType": "text/yaml",
+  "producedAt": "2026-05-11T08:43:14.279Z",
+  "metadata": {
+    "format": "yaml",
+    "top_level_type": "object",
+    "top_level_size": "2",
+    "nested_depth": "2"
+  }
+}

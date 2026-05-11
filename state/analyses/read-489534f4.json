@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "read-489534f4",
+  "sourceHash": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+  "semanticHash": "489534f43d366f33de0cf3b6e5c0f7e4963208555f0b17a7fa82f03c84a27596",
+  "extractionHash": "0a430da5d18c9191b03f52e937b28a87603d9b5302c71e7f642a27e5f1dbb69e",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Read ──────────────────────────────────────────────────────────────────────",
+  "summary": "── Read ────────────────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:read-489534f4:1",
+      "text": "── Read ────────────────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "read-489534f4"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Read ────────────────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:read-489534f4",
+    "language": "python",
+    "moduleName": "coachctl.general_wiki",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:36.013Z"
+}

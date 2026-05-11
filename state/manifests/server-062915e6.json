@@ -1,0 +1,19 @@
+{
+  "sourceId": "server-062915e6",
+  "title": "server",
+  "originType": "file",
+  "sourceKind": "code",
+  "sourceClass": "first_party",
+  "language": "python",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/src/coachctl/dashboard/server.py",
+  "repoRelativePath": "src/coachctl/dashboard/server.py",
+  "storedPath": "raw/sources/server-062915e6.py",
+  "extractedTextPath": "state/extracts/server-062915e6.md",
+  "extractedMetadataPath": "state/extracts/server-062915e6.json",
+  "extractionHash": "f67624101e4e4817860b13f3c76895e59b0032569f7bac651d178ba261a2637b",
+  "mimeType": "application/octet-stream",
+  "contentHash": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+  "semanticHash": "062915e616eb4fded4890f320f6f9845bcc3173a315e70b95843d5ab2c61b4fb",
+  "createdAt": "2026-05-11T08:43:16.285Z",
+  "updatedAt": "2026-05-11T08:43:16.285Z"
+}

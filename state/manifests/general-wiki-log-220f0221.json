@@ -1,0 +1,18 @@
+{
+  "sourceId": "general-wiki-log-220f0221",
+  "title": "General Wiki Log",
+  "originType": "file",
+  "sourceKind": "markdown",
+  "sourceClass": "first_party",
+  "originalPath": "C:/Users/tieschy/workspace/coachctl/wiki/log.md",
+  "repoRelativePath": "wiki/log.md",
+  "storedPath": "raw/sources/general-wiki-log-220f0221.md",
+  "extractedTextPath": "state/extracts/general-wiki-log-220f0221.md",
+  "extractedMetadataPath": "state/extracts/general-wiki-log-220f0221.json",
+  "extractionHash": "f9eddbbe89ecbd4def8edc7997406c0a54840fd77bdcd5e1512165f6c056e039",
+  "mimeType": "text/markdown",
+  "contentHash": "220f0221595be73842ed8d9fc4da9c57e1e28826e3440d3bda0c3eb6a1511758",
+  "semanticHash": "46aff26a36183f0727b2b9eff78ae5dd46feecec3d9133587aec62a0e5f13d99",
+  "createdAt": "2026-05-11T08:43:24.692Z",
+  "updatedAt": "2026-05-11T08:43:24.692Z"
+}

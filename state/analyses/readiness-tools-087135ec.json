@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "readiness-tools-087135ec",
+  "sourceHash": "087135ec1a9c8de4c655d2fb13e46f0c8ffe3d40782a6fe28a73111680ffa8f6",
+  "semanticHash": "087135ec1a9c8de4c655d2fb13e46f0c8ffe3d40782a6fe28a73111680ffa8f6",
+  "extractionHash": "1e9ae58c326df2a7cd3f6d3d9a08317c1bf9445f2dbb86830784a732c105223d",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "readiness_tools",
+  "summary": "readiness_tools is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:readiness-tools-087135ec:1",
+      "text": "readiness_tools has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "readiness-tools-087135ec"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does readiness_tools serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:readiness-tools-087135ec",
+    "language": "python",
+    "moduleName": "coachctl.tools.readiness_tools",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:36.013Z"
+}

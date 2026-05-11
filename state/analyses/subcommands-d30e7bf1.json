@@ -1,0 +1,46 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "subcommands-d30e7bf1",
+  "sourceHash": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+  "semanticHash": "d30e7bf10f4ba54419212a00ab5926227405153ff5f69f99e3dc4720ab57c088",
+  "extractionHash": "b9a1881e6efc23cd0b02b37f1fcd0b1fcbf3a8caa718b235e1484855bc1a616a",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "── Subcommands ────────────────────────────────────────────────────────────",
+  "summary": "── Subcommands ──────────────────────────────────────────────────────────── is a python module, defining 0 top-level symbol(s), exporting 0 symbol(s), with 1 parser diagnostic(s).",
+  "concepts": [],
+  "entities": [],
+  "claims": [
+    {
+      "id": "claim:subcommands-d30e7bf1:1",
+      "text": "── Subcommands ──────────────────────────────────────────────────────────── has 1 parser diagnostic(s) that should be reviewed before trusting the module summary.",
+      "confidence": 1,
+      "status": "extracted",
+      "polarity": "negative",
+      "citation": "subcommands-d30e7bf1"
+    }
+  ],
+  "questions": [
+    "What broader responsibility does ── Subcommands ──────────────────────────────────────────────────────────── serve in the codebase?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "code": {
+    "moduleId": "module:subcommands-d30e7bf1",
+    "language": "python",
+    "moduleName": "coachctl.cli",
+    "imports": [],
+    "dependencies": [],
+    "symbols": [],
+    "exports": [],
+    "diagnostics": [
+      {
+        "code": 9010,
+        "category": "error",
+        "message": "Tree-sitter support for python could not load: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.",
+        "line": 1,
+        "column": 1
+      }
+    ]
+  },
+  "producedAt": "2026-05-11T08:43:38.100Z"
+}

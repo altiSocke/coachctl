@@ -1,0 +1,72 @@
+{
+  "analysisVersion": 8,
+  "sourceId": "candidates-5bcf0e57",
+  "sourceHash": "5bcf0e576788642b6fbc2074cbd2cb6905742f660ce357df901c8c7387046754",
+  "semanticHash": "43d036fc05d2fd6bfb3308e4e69a2b82269412569f2bbcc5df27a9201f73c51a",
+  "extractionHash": "f7819e42a41f425969a2a441b8e35f90740136bc9742c4fdbb49784869336ea3",
+  "schemaHash": "874431dbbfdec0b254a4aa1bf002900574c9b485735a883690c2becb5f717720",
+  "title": "Candidates",
+  "summary": "title: Candidates tags: index, candidates # Candidates - Run swarmvault compile to stage candidate pages.",
+  "concepts": [
+    {
+      "id": "concept:candidates",
+      "name": "candidates",
+      "description": "Frequently referenced concept in Candidates."
+    },
+    {
+      "id": "concept:candidate",
+      "name": "candidate",
+      "description": "Frequently referenced concept in Candidates."
+    },
+    {
+      "id": "concept:compile",
+      "name": "compile",
+      "description": "Frequently referenced concept in Candidates."
+    },
+    {
+      "id": "concept:index",
+      "name": "index",
+      "description": "Frequently referenced concept in Candidates."
+    },
+    {
+      "id": "concept:pages",
+      "name": "pages",
+      "description": "Frequently referenced concept in Candidates."
+    },
+    {
+      "id": "concept:stage",
+      "name": "stage",
+      "description": "Frequently referenced concept in Candidates."
+    }
+  ],
+  "entities": [
+    {
+      "id": "entity:candidates",
+      "name": "Candidates",
+      "description": "Named entity mentioned in Candidates."
+    },
+    {
+      "id": "entity:candidates-run",
+      "name": "Candidates - Run",
+      "description": "Named entity mentioned in Candidates."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim:candidates-5bcf0e57:1",
+      "text": "title: Candidates tags: index, candidates # Candidates - Run swarmvault compile to stage candidate pages.",
+      "confidence": 0.55,
+      "status": "extracted",
+      "polarity": "neutral",
+      "citation": "candidates-5bcf0e57"
+    }
+  ],
+  "questions": [
+    "How does candidates relate to Candidates?",
+    "How does candidate relate to Candidates?",
+    "How does compile relate to Candidates?"
+  ],
+  "tags": [],
+  "rationales": [],
+  "producedAt": "2026-05-11T08:43:31.661Z"
+}
