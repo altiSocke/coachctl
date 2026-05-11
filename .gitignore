@@ -19,3 +19,6 @@ wiki/personal/
 data/
 config/profiles/
 profile/
+
+# SwarmVault — graph and retrieval state (gitignored; rebuild with: swarmvault compile)
+state/

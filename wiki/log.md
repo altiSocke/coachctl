@@ -33,3 +33,32 @@
 - **2026-05-05** — new page: periodization_templates (event demand profiles, phase timelines, TSS/CTL targets, session archetypes, run+bike concurrent rules; 7 sections)
 
 - **2026-05-06T20:50:25** — apply_general_wiki_update: recovery/nasal-dilator-strips
+## [2026-05-11 09:16:34] consolidate | Consolidated 0 tier page(s)
+- working-to-episodic: 1 candidate pages, 1 group(s)
+-   skip: group of 1 below minPages=3
+- episodic-to-semantic: 0 recent episodic pages, 0 recurring node(s)
+- semantic-to-procedural: 0 semantic pages, 0 workflow bucket(s)
+
+## [2026-05-11 09:16:34] consolidate | Consolidated 0 tier page(s)
+- session: `state/sessions/2026-05-11T09-16-34-589Z-consolidate-consolidated-0-tier-page-s.md`
+- working-to-episodic: 1 candidate pages, 1 group(s)
+-   skip: group of 1 below minPages=3
+- episodic-to-semantic: 0 recent episodic pages, 0 recurring node(s)
+- semantic-to-procedural: 0 semantic pages, 0 workflow bucket(s)
+
+## [2026-05-11 09:16:34] compile | Compiled 0 source(s)
+- session: `state/sessions/2026-05-11T09-16-34-369Z-compile-compiled-0-source-s.md`
+- provider=github-models
+- pages=12
+- dirty=0
+- clean=0
+- outputs=0
+- insights=1
+- memory=0
+- candidates=0
+- promoted=0
+- staged=false
+- postPassApproval=none
+- schema=7b0f0cf668ad
+- benchmark=ok
+

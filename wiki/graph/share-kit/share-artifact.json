@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-05-11T09:16:35.457Z",
+  "vaultName": "coachctl",
+  "tagline": "A local-first map of coachctl: 0 sources compiled into 0 graph nodes and 10 wiki pages.",
+  "overview": {
+    "sources": 0,
+    "nodes": 0,
+    "edges": 0,
+    "pages": 10,
+    "communities": 0
+  },
+  "firstPartyOverview": {
+    "nodes": 0,
+    "edges": 0,
+    "pages": 10,
+    "communities": 0
+  },
+  "highlights": {
+    "topHubs": [],
+    "bridgeNodes": [],
+    "surprisingConnections": [],
+    "suggestedQuestions": []
+  },
+  "knowledgeGaps": [],
+  "shortPost": "I scanned coachctl with SwarmVault: 0 sources -> 10 wiki pages, 0 graph nodes, 0 edges.\nTop hubs are still emerging.\nThe graph is ready for its first surprising connection.\nEverything stays local. Try: npm install -g @swarmvaultai/cli && swarmvault quickstart ./your-repo",
+  "relatedNodeIds": [],
+  "relatedPageIds": [],
+  "relatedSourceIds": []
+}

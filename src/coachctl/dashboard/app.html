@@ -688,9 +688,10 @@ main {
 .race-section-body .md-table tr:last-child td { border-bottom: none; }
 .race-empty { font-size: .78rem; color: var(--dim); font-style: italic; }
 
-/* Race section structured renderers */
+/* Race section structured renderers — generic fallback */
 .race-list { margin: 4px 0 0 0; padding-left: 1.1rem; }
 .race-list li { margin-bottom: 4px; }
+.race-list.ordered { list-style: decimal; }
 .race-obj { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
 .race-obj:last-child { border-bottom: none; }
 .race-obj-key { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); white-space: nowrap; }
@@ -700,6 +701,73 @@ main {
 .race-dl-row:last-child { border-bottom: none; }
 .race-dl dt { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); min-width: 90px; flex-shrink: 0; padding-top: 2px; }
 .race-dl dd { font-size: .78rem; color: var(--text); margin: 0; }
+
+/* ── Goal card ─────────────────────────────────────────────────── */
+.race-goal-primary { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--accent); letter-spacing: .01em; line-height: 1.1; }
+.race-goal-stretch { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+.race-goal-stretch strong { color: var(--text); font-weight: 600; }
+.race-goal-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0 8px; }
+.race-goal-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.race-goal-meta-item { font-size: .72rem; color: var(--muted); }
+.race-goal-meta-item strong { color: var(--text); font-weight: 500; }
+
+/* ── Pacing table ──────────────────────────────────────────────── */
+.race-tbl { width: 100%; border-collapse: collapse; font-size: .76rem; margin: 2px 0; }
+.race-tbl th { font-family: var(--font-display); font-size: .6rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--border); }
+.race-tbl td { padding: 6px 8px 6px 0; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--text); line-height: 1.45; }
+.race-tbl tr:last-child td { border-bottom: none; }
+.race-tbl .col-sec { font-weight: 600; font-family: var(--font-display); white-space: nowrap; }
+.race-tbl .col-pace { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.race-tbl .col-hr { white-space: nowrap; color: var(--muted); }
+.race-tbl .col-cue { color: var(--muted); font-size: .72rem; }
+
+/* ── Warmup timeline ───────────────────────────────────────────── */
+.race-warmup { display: flex; flex-direction: column; gap: 0; }
+.race-warmup-step { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.race-warmup-step:last-child { border-bottom: none; }
+.race-warmup-time { font-family: var(--font-display); font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 3px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+.race-warmup-action { font-size: .78rem; color: var(--text); line-height: 1.5; }
+
+/* ── Protocols ─────────────────────────────────────────────────── */
+.race-protocol-row { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; padding: 7px 0; border-bottom: 1px solid var(--border); align-items: start; }
+.race-protocol-row:last-child { border-bottom: none; }
+.race-protocol-label { font-family: var(--font-display); font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; white-space: nowrap; margin-top: 1px; }
+.race-protocol-label.if { background: color-mix(in srgb, var(--warning, #f59e0b) 15%, transparent); color: var(--warning, #f59e0b); border: 1px solid color-mix(in srgb, var(--warning, #f59e0b) 35%, transparent); }
+.race-protocol-label.then { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+.race-protocol-text { font-size: .78rem; color: var(--text); line-height: 1.5; }
+.race-protocol-text.then { color: var(--muted); }
+
+/* ── YoY table ─────────────────────────────────────────────────── */
+.race-yoy-notes { font-size: .7rem; color: var(--muted); font-style: italic; line-height: 1.4; }
+
+/* ── Logistics / weather ───────────────────────────────────────── */
+.race-weather-header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.race-weather-chip { font-size: .72rem; font-weight: 500; padding: 2px 8px; border-radius: 12px; border: 1px solid; }
+.race-weather-chip.condition { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.race-weather-chip.temp { background: color-mix(in srgb, #60a5fa 10%, transparent); color: #60a5fa; border-color: color-mix(in srgb, #60a5fa 30%, transparent); }
+.race-weather-chip.rain { background: color-mix(in srgb, #818cf8 10%, transparent); color: #818cf8; border-color: color-mix(in srgb, #818cf8 30%, transparent); }
+.race-weather-chip.wind { background: color-mix(in srgb, #34d399 10%, transparent); color: #34d399; border-color: color-mix(in srgb, #34d399 30%, transparent); }
+.race-flag-list { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+.race-flag-pill { font-size: .72rem; padding: 3px 8px; border-radius: 4px; background: var(--surface-2, color-mix(in srgb, var(--border) 40%, transparent)); color: var(--text); line-height: 1.4; }
+.race-logistics-dl { margin: 0 0 10px 0; }
+
+/* ── Kit chips ─────────────────────────────────────────────────── */
+.race-kit-row { display: flex; flex-direction: column; gap: 6px; }
+.race-kit-item { display: flex; align-items: flex-start; gap: 8px; }
+.race-kit-key { font-family: var(--font-display); font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); min-width: 72px; flex-shrink: 0; padding-top: 3px; }
+.race-kit-val { font-size: .78rem; color: var(--text); line-height: 1.5; }
+
+/* ── Readiness gate ────────────────────────────────────────────── */
+.race-readiness-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 420px) { .race-readiness-cols { grid-template-columns: 1fr; } }
+.race-readiness-col-title { font-family: var(--font-display); font-size: .6rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 6px; }
+.race-readiness-col-title.go { color: #34d399; }
+.race-readiness-col-title.bail { color: var(--danger); }
+.race-readiness-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+.race-readiness-list li { font-size: .76rem; color: var(--text); line-height: 1.4; padding-left: 16px; position: relative; }
+.race-readiness-list.go li::before { content: '✓'; position: absolute; left: 0; color: #34d399; font-weight: 700; font-size: .72rem; }
+.race-readiness-list.bail li::before { content: '✕'; position: absolute; left: 0; color: var(--danger); font-weight: 700; font-size: .72rem; }
+.race-readiness-notes { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); font-size: .72rem; color: var(--muted); font-style: italic; }
 
 /* Race hero card */
 .race-hero { margin-bottom: 2px; }
@@ -1049,16 +1117,13 @@ function openRacePage(ev) {
     ${ev.summary ? `<div class="race-hero-summary">${mdToHtml(ev.summary)}</div>` : ''}`;
   content.appendChild(heroCard);
 
-  // Render a race card section value as readable HTML
-  function renderSectionValue(body) {
+  // ── Generic fallback renderer ─────────────────────────────────────────────
+  function renderGeneric(body) {
     if (!body) return '';
-    // Plain string — just render as markdown
     if (typeof body === 'string') return mdToHtml(body);
-    // Array of strings → bullet list
     if (Array.isArray(body) && body.every(i => typeof i === 'string')) {
       return '<ul class="race-list">' + body.map(i => `<li>${mdToHtml(i)}</li>`).join('') + '</ul>';
     }
-    // Array of objects → each object as a definition block
     if (Array.isArray(body)) {
       return body.map(item => {
         if (typeof item !== 'object' || !item) return mdToHtml(String(item));
@@ -1070,7 +1135,6 @@ function openRacePage(ev) {
           '</div>';
       }).join('');
     }
-    // Plain object → key: value list (skip empty values)
     if (typeof body === 'object') {
       const entries = Object.entries(body).filter(([, v]) => v != null && String(v).trim());
       if (!entries.length) return '';
@@ -1082,6 +1146,172 @@ function openRacePage(ev) {
     }
     return mdToHtml(String(body));
   }
+
+  // ── Per-section renderers ─────────────────────────────────────────────────
+
+  function renderGoal(g) {
+    if (!g || typeof g !== 'object') return mdToHtml(String(g || ''));
+    const primary  = g.primary || g.target_time || g.goal_time || '';
+    const stretch  = g.stretch || '';
+    const ref      = g.reference || '';
+    const metric   = g.key_metric || '';
+    let html = '';
+    if (primary) html += `<div class="race-goal-primary">${esc(primary)}</div>`;
+    if (stretch)  html += `<div class="race-goal-stretch"><strong>Stretch:</strong> ${esc(stretch)}</div>`;
+    const metas = [];
+    if (ref)    metas.push(['Reference', ref]);
+    if (metric) metas.push(['Key metric', metric]);
+    if (metas.length) {
+      html += '<hr class="race-goal-divider">';
+      html += '<div class="race-goal-meta">' +
+        metas.map(([k, v]) => `<span class="race-goal-meta-item"><strong>${esc(k)}:</strong> ${esc(String(v))}</span>`).join('') +
+        '</div>';
+    }
+    return html;
+  }
+
+  function renderKeyPrinciples(body) {
+    if (!body) return '';
+    if (Array.isArray(body) && body.every(i => typeof i === 'string')) {
+      return '<ol class="race-list ordered">' + body.map(i => `<li>${mdToHtml(i)}</li>`).join('') + '</ol>';
+    }
+    return renderGeneric(body);
+  }
+
+  function renderPacing(rows) {
+    if (!Array.isArray(rows) || !rows.length) return renderGeneric(rows);
+    const head = `<tr>
+      <th>Section / km</th>
+      <th>Pace</th>
+      <th>HR</th>
+      <th>Cue</th>
+    </tr>`;
+    const body = rows.map(r => {
+      const sec  = [r.section, r.km].filter(Boolean).map(v => esc(String(v))).join(' <span style="color:var(--muted);font-size:.7em">km</span> ');
+      const pace = esc(String(r.target_pace || r.pace || '—'));
+      const hr   = esc(String(r.hr || '—'));
+      const cue  = mdToHtml(String(r.cue || r.notes || ''));
+      return `<tr>
+        <td class="col-sec">${sec}</td>
+        <td class="col-pace">${pace}</td>
+        <td class="col-hr">${hr}</td>
+        <td class="col-cue">${cue}</td>
+      </tr>`;
+    }).join('');
+    return `<table class="race-tbl"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  }
+
+  function renderWarmup(steps) {
+    if (!Array.isArray(steps)) return renderGeneric(steps);
+    return '<div class="race-warmup">' + steps.map(s => {
+      const time   = esc(String(s.timing || s.time || ''));
+      const action = mdToHtml(String(s.action || s.description || Object.values(s).join(' ')));
+      return `<div class="race-warmup-step">
+        <span class="race-warmup-time">${time}</span>
+        <span class="race-warmup-action">${action}</span>
+      </div>`;
+    }).join('') + '</div>';
+  }
+
+  function renderProtocols(rows) {
+    if (!Array.isArray(rows)) return renderGeneric(rows);
+    return rows.map(r => {
+      const trigger = esc(String(r.trigger || r.if || r.condition || ''));
+      const action  = mdToHtml(String(r.action || r.then || r.response || ''));
+      return `<div class="race-protocol-row">
+        <span class="race-protocol-label if">IF</span>
+        <span class="race-protocol-text">${trigger}</span>
+        <span class="race-protocol-label then">→</span>
+        <span class="race-protocol-text then">${action}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderYoY(rows) {
+    if (!Array.isArray(rows) || !rows.length) return renderGeneric(rows);
+    // Collect all keys except 'notes' for table columns
+    const colKeys = ['year','time','avg_hr','max_hr','avg_pace'];
+    const colLabels = { year:'Year', time:'Time', avg_hr:'Avg HR', max_hr:'Max HR', avg_pace:'Avg Pace' };
+    const head = '<tr>' + colKeys.map(k => `<th>${esc(colLabels[k]||k)}</th>`).join('') + '</tr>';
+    const body = rows.map(r => {
+      const cells = colKeys.map(k => `<td>${esc(String(r[k] ?? '—'))}</td>`).join('');
+      const notes = r.notes ? `<tr><td colspan="${colKeys.length}" class="race-yoy-notes">${mdToHtml(String(r.notes))}</td></tr>` : '';
+      return `<tr>${cells}</tr>${notes}`;
+    }).join('');
+    return `<table class="race-tbl"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  }
+
+  function renderLogistics(lg) {
+    if (!lg || typeof lg !== 'object') return renderGeneric(lg);
+    let html = '';
+    // Top-level fields (excluding weather)
+    const topEntries = Object.entries(lg).filter(([k, v]) => k !== 'weather' && v != null && String(v).trim());
+    if (topEntries.length) {
+      html += '<dl class="race-dl race-logistics-dl">' +
+        topEntries.map(([k, v]) =>
+          `<div class="race-dl-row"><dt>${esc(k.replace(/_/g,' '))}</dt><dd>${mdToHtml(String(v))}</dd></div>`
+        ).join('') +
+        '</dl>';
+    }
+    // Weather block
+    const w = lg.weather;
+    if (w && typeof w === 'object') {
+      const chips = [];
+      if (w.condition) chips.push(`<span class="race-weather-chip condition">${esc(w.condition)}</span>`);
+      if (w.max_temp_c != null) chips.push(`<span class="race-weather-chip temp">${esc(String(w.max_temp_c))}°C max${w.min_temp_c != null ? ' / ' + esc(String(w.min_temp_c)) + '°C min' : ''}</span>`);
+      if (w.precipitation_mm) chips.push(`<span class="race-weather-chip rain">${esc(String(w.precipitation_mm))}mm</span>`);
+      if (w.wind_kmh) chips.push(`<span class="race-weather-chip wind">${w.wind_direction ? esc(w.wind_direction)+' ' : ''}${esc(String(w.wind_kmh))} km/h</span>`);
+      html += '<div style="border-top:1px solid var(--border);padding-top:8px;margin-top:2px">';
+      html += `<div class="race-section-title" style="margin-bottom:6px">Weather · ${w.forecast_date ? esc(w.forecast_date) : ''}</div>`;
+      if (chips.length) html += `<div class="race-weather-header">${chips.join('')}</div>`;
+      if (Array.isArray(w.race_flags) && w.race_flags.length) {
+        html += '<div class="race-flag-list">' +
+          w.race_flags.map(f => `<div class="race-flag-pill">${mdToHtml(String(f))}</div>`).join('') +
+          '</div>';
+      }
+      if (w.source) html += `<div style="margin-top:6px;font-size:.65rem;color:var(--dim)">Source: ${esc(w.source)}</div>`;
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function renderKit(kit) {
+    if (!kit || typeof kit !== 'object') return renderGeneric(kit);
+    const entries = Object.entries(kit).filter(([, v]) => v != null && String(v).trim());
+    if (!entries.length) return '';
+    return '<div class="race-kit-row">' +
+      entries.map(([k, v]) =>
+        `<div class="race-kit-item">
+          <span class="race-kit-key">${esc(k.replace(/_/g,' '))}</span>
+          <span class="race-kit-val">${mdToHtml(String(v))}</span>
+        </div>`
+      ).join('') +
+      '</div>';
+  }
+
+  function renderReadinessGate(rg) {
+    if (!rg || typeof rg !== 'object') return renderGeneric(rg);
+    const startList = rg.start_criteria || [];
+    const bailList  = rg.bail_criteria  || [];
+    let html = '<div class="race-readiness-cols">';
+    if (startList.length) {
+      html += `<div>
+        <div class="race-readiness-col-title go">Start criteria</div>
+        <ul class="race-readiness-list go">${startList.map(i => `<li>${mdToHtml(String(i))}</li>`).join('')}</ul>
+      </div>`;
+    }
+    if (bailList.length) {
+      html += `<div>
+        <div class="race-readiness-col-title bail">Bail out</div>
+        <ul class="race-readiness-list bail">${bailList.map(i => `<li>${mdToHtml(String(i))}</li>`).join('')}</ul>
+      </div>`;
+    }
+    html += '</div>';
+    if (rg.notes) html += `<div class="race-readiness-notes">${mdToHtml(String(rg.notes))}</div>`;
+    return html;
+  }
+
+  // ── Section dispatch ──────────────────────────────────────────────────────
   const RACE_CARD_KEYS = ['course','key_principles','pacing','climbs','warmup','nutrition','logistics','kit','protocols','yoy','readiness_gate'];
   const RACE_CARD_LABELS = {
     course: 'Course', key_principles: 'Key Principles', pacing: 'Pacing',
@@ -1089,32 +1319,33 @@ function openRacePage(ev) {
     logistics: 'Logistics', kit: 'Kit', protocols: 'Protocols',
     yoy: 'Year-on-Year', readiness_gate: 'Readiness Gate',
   };
+  const RACE_SECTION_RENDERERS = {
+    key_principles: renderKeyPrinciples,
+    pacing:         renderPacing,
+    warmup:         renderWarmup,
+    protocols:      renderProtocols,
+    yoy:            renderYoY,
+    logistics:      renderLogistics,
+    kit:            renderKit,
+    readiness_gate: renderReadinessGate,
+  };
 
-  // Goal section (object with multiple fields)
-  if (goalObj && typeof goalObj === 'object') {
-    const goalLines = Object.entries(goalObj)
-      .filter(([, v]) => v != null && String(v).trim())
-      .map(([k, v]) => `**${k.replace(/_/g,' ')}**: ${v}`)
-      .join('\n');
-    if (goalLines) {
+  // Goal section — special visual card
+  if (goalObj) {
+    const rendered = renderGoal(goalObj);
+    if (rendered && rendered.trim()) {
       const sec = document.createElement('div');
       sec.className = 'race-section card';
-      sec.innerHTML = `<div class="race-section-title">Goal</div>
-        <div class="race-section-body">${mdToHtml(goalLines)}</div>`;
+      sec.innerHTML = `<div class="race-section-title">Goal</div><div class="race-section-body">${rendered}</div>`;
       content.appendChild(sec);
     }
-  } else if (goalObj && typeof goalObj === 'string' && goalObj.trim()) {
-    const sec = document.createElement('div');
-    sec.className = 'race-section card';
-    sec.innerHTML = `<div class="race-section-title">Goal</div>
-      <div class="race-section-body">${mdToHtml(goalObj)}</div>`;
-    content.appendChild(sec);
   }
 
   RACE_CARD_KEYS.forEach(key => {
     const body = payload[key];
     if (body == null) return;
-    const rendered = renderSectionValue(body);
+    const renderer = RACE_SECTION_RENDERERS[key] || renderGeneric;
+    const rendered = renderer(body);
     if (!rendered || !rendered.trim()) return;
     const sec = document.createElement('div');
     sec.className = 'race-section card';

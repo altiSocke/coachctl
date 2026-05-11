@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-05-11T09:16:35.455Z",
+  "graphHash": "0820e7f7c0683e2f7b524ad00fd0a6ca109f52fd673c6794fa510a885e5b6962",
+  "overview": {
+    "nodes": 0,
+    "edges": 0,
+    "pages": 10,
+    "communities": 0
+  },
+  "firstPartyOverview": {
+    "nodes": 0,
+    "edges": 0,
+    "pages": 10,
+    "communities": 0
+  },
+  "sourceClassBreakdown": {
+    "first_party": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    },
+    "third_party": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    },
+    "resource": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    },
+    "generated": {
+      "sources": 0,
+      "pages": 0,
+      "nodes": 0
+    }
+  },
+  "warnings": [],
+  "benchmark": {
+    "generatedAt": "2026-05-11T09:16:35.299Z",
+    "stale": false,
+    "summary": {
+      "questionCount": 3,
+      "uniqueVisitedNodes": 0,
+      "finalContextTokens": 323,
+      "naiveCorpusTokens": 1,
+      "avgReduction": -322,
+      "reductionRatio": -322
+    },
+    "questionCount": 3,
+    "byClass": {
+      "first_party": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      },
+      "third_party": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      },
+      "resource": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      },
+      "generated": {
+        "sourceCount": 0,
+        "pageCount": 0,
+        "nodeCount": 0,
+        "godNodeCount": 0,
+        "finalContextTokens": 0,
+        "naiveCorpusTokens": 0,
+        "reductionRatio": 0
+      }
+    }
+  },
+  "godNodes": [],
+  "bridgeNodes": [],
+  "thinCommunities": [],
+  "surprisingConnections": [],
+  "groupPatterns": [],
+  "suggestedQuestions": [],
+  "communityPages": [],
+  "recentResearchSources": [],
+  "contradictions": [],
+  "communityCohesion": [],
+  "knowledgeGaps": {
+    "isolatedNodes": [],
+    "thinCommunityCount": 0,
+    "ambiguousEdgeRatio": 0,
+    "warnings": []
+  }
+}
