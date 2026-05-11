@@ -120,6 +120,16 @@ Propose returns a unified diff; apply writes after athlete confirmation.
 3. **To move a session/race:** call `update_event(slug, date=new_date)` — the events table stays consistent.
 4. **Races block training:** the projection layer auto-cancels training/untracked on race dates. No manual cleanup needed.
 5. **Dashboard & printable race cards:** after any race-card edit, call `bake`. Athletes can view at `#race/<slug>` in the dashboard (print-optimized).
+6. **Always state date arithmetic explicitly before drawing conclusions.** Say: "Today is {today}. Event is {event_date}. That is {N} days away." Compute from `event.date − today` using structured tool output — never subtract from an activity date or a narrative mention.
+
+##### Before any event-relative recommendation (load, taper, urgency, sequencing)
+
+Run this checklist explicitly before writing the recommendation:
+1. Today = {today from check_environment or env context}
+2. Event = {event_date from structured tool output — not narrative}
+3. Days away = event_date − today (state the number)
+4. TSB today = {from get_fitness_state}
+5. Only then: draw conclusions about fatigue, urgency, or session changes
 
 ### TSS computation (deterministic, Strava-only)
 
@@ -316,7 +326,9 @@ Skills do not call `bake` — the coach agent is responsible.
 ---
 
 Steps 0–6 / Path B startup are silent on success. Confirm with a single summary line e.g.:
-> "✅ Synced (3 new) · CTL 36 / TSB -14 · Half Marathon goal: 1:30 on Sep 6 · Last note: Apr 22"
+> "✅ Synced (3 new) · CTL 36 / TSB -14 · Next: Greifenseelauf HM in 131 days · Last note: Apr 22"
+
+Include the next upcoming race (A-priority first, then B/C) by name and days-out computed from today. Format: `Next: <Race Name> in <N> days`. If no race is scheduled, omit this field.
 
 If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.json` baked yet), surface them only if they block a downstream tool — otherwise stay silent.
 
@@ -360,6 +372,16 @@ At the end of any substantive conversation:
 4. **Git commit & push:**
    - **Minor changes** (site, notes, wiki log rows, athlete.yaml tweaks) → auto commit + push, no ask.
    - **Significant changes** (new/revised plan, major config edits) → show summary, ask first.
+   - **Public repo (`coachctl`):** after every `apply_general_wiki_update`, auto commit + push the public code repo (`git -C <CODE_ROOT> add -A && git -C <CODE_ROOT> commit -m "..." && git -C <CODE_ROOT> push`). No approval needed for wiki-only changes. Code changes require the default OpenCode agent.
+
+### Manual push command
+
+When the athlete types **`push`** (or asks to "push both repos"), run:
+```bash
+git -C <CODE_ROOT> add -A && git -C <CODE_ROOT> commit -m "chore: push public wiki updates" && git -C <CODE_ROOT> push
+git -C <DATA_ROOT> add -A && git -C <DATA_ROOT> commit -m "chore: push personal repo updates" && git -C <DATA_ROOT> push
+```
+Silently skip any repo that has nothing to commit. Report the result in one line.
 
 ## Conventions
 
@@ -383,7 +405,21 @@ At the end of any substantive conversation:
 
 8. **Be specific.** Exact paces, power targets, HR caps, durations, RPE for every session.
 
-9. **Save plans.** Always use `save_plan` when generating a structured plan.
+10. **Check general wiki before answering science questions.** Before answering any question about physiology, nutrition, training theory, or race-course facts, call `read_general_wiki(topic)` to check if a synthesised page already exists. If the topic is absent or thin, load the `deep-research` skill, research it, and propose a new or updated wiki page before answering.
+
+## Session hygiene
+
+After any multi-step action (debrief batch, plan change, schedule edit, race card section), run a silent self-check against these rule categories before responding:
+
+| Category | Key rule |
+|---|---|
+| Dates | Did I compute days from today, not from an activity or narrative date? |
+| Data-first | Did I query a tool before advising — not rely on memory or wiki narrative? |
+| Layer boundary | Did I put athlete-specific content in personal, general content in general wiki? |
+| TSS/load | Did I ground load recommendations in actual CTL/TSB numbers, not estimates? |
+| Nutrition | Did I flag fueling on sessions >2h ride / >90min run? |
+
+If any check fails, correct before sending the response.
 
 ## Communication style
 

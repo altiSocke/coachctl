@@ -194,7 +194,29 @@ The gut is trainable. Regular exposure to high carb intake during training progr
 - Reduces GI symptoms at high intake rates
 - Improves gastric emptying rate
 
-Athletes new to 80–90g/hr should ramp up over 4–6 weeks, starting at 40–50g/hr and increasing by 10g/hr every 1–2 weeks. Gut training should happen on long training rides/runs, not for the first time on race day.
+Gut training should happen on long training sessions, not for the first time on race day. Targets and ramp rates differ by sport due to the higher GI stress of running (mechanical impact + greater splanchnic ischaemia).
+
+#### Cycling gut training targets
+
+| Phase | Duration | CHO target | Notes |
+|---|---|---|---|
+| Introduction (weeks 1–3) | 4–8 weeks total ramp | 40–50 g/hr | Establish habit; 1:0.8 or 2:1 ratio |
+| Build (weeks 4–8) | — | 60–75 g/hr | Increase by ~10 g/hr every 1–2 weeks |
+| Race-sim (weeks 9–12) | — | 80–90 g/hr | 1:0.8 ratio; mirror race conditions |
+
+Target ceiling for amateur/age-grouper gran fondo or century: **80–90 g/hr** with 1:0.8 ratio.
+
+#### Running gut training targets
+
+Running tolerance is lower than cycling at equivalent intake rates. Mechanical impact and reduced splanchnic blood flow increase GI stress. Start more conservatively and progress more slowly.
+
+| Phase | Duration | CHO target | Notes |
+|---|---|---|---|
+| Introduction (weeks 1–3) | 4–8 weeks total ramp | 40–50 g/hr | 2:1 ratio preferred early |
+| Build (weeks 4–8) | — | 50–65 g/hr | Increase by ~10 g/hr every 1–2 weeks; switch to 1:0.8 |
+| Race-sim (weeks 9–12) | — | 65–75 g/hr | 1:0.8 ratio; test in long runs matching race pace |
+
+Target ceiling for a trained age-group runner targeting a half marathon or marathon: **65–75 g/hr** with 1:0.8 ratio. Above 75 g/hr in running is viable only for elite, extensively gut-trained runners (Viribay 2020).
 
 ### Carb types compared
 
