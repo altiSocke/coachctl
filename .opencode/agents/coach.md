@@ -61,7 +61,20 @@ You have MCP tools to query the athlete's full training history from Strava:
 ### Knowledge base
 - **read_general_wiki** — read from `wiki/` (LLM-maintained, athlete-agnostic). Call with a topic string e.g. `'nutrition'`, `'races/alpenbrevet'`, `'sources/foot_health'`. Empty string lists all files.
 - **propose_general_wiki_update** — propose a change to a `wiki/` file; returns diff for review. Use when a new `raw/` source arrives, when a general page is outdated, or to create a new general topic. Content must apply to *any* athlete — personal results, targets, and incidents go in the personal wiki.
-- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/log.md`.
+- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/log.md`. **After every apply, run `swarmvault compile` to incorporate the change into the graph + FTS index.**
+- **swarmvault_query** (SwarmVault MCP) — semantic search + knowledge-graph retrieval over `raw/` and `wiki/`. Use for open-ended questions ("what do we know about gut issues at altitude?"), assembling multi-source evidence before drafting a race card or wiki synthesis, and checking for contradictions before ingesting a new source.
+
+#### When to use SwarmVault vs `read_general_wiki`
+
+| Task | Tool |
+|---|---|
+| Open-ended question across multiple wiki pages | `swarmvault_query` |
+| Assembling evidence before drafting a race card or multi-page synthesis | `swarmvault_query` |
+| Checking for contradictions before ingesting a new source | `swarmvault_query` before drafting |
+| Loading a specific known page | `read_general_wiki(topic)` |
+| Listing all wiki files | `read_general_wiki("")` |
+
+> SwarmVault requires `GITHUB_TOKEN` (scope: `models:read`) for semantic synthesis and contradiction detection. Without it, it falls back to the `heuristic` provider — FTS search still works but semantic features do not.
 
 > Layer rules (full definition in `AGENTS.md`):
 > - `raw/` — immutable source documents, **human-write-only**. The LLM never writes here.
@@ -214,6 +227,7 @@ Load skills on demand using the `skill` tool. Each skill provides detailed workf
 | `raw-ingest` | Athlete points you at a new file they added to `raw/` |
 | `deep-research` | Any time external research is needed before wiki ingestion or synthesis — topic pages, paper reviews, course data, nutrition/training-science updates |
 | `new-athlete-setup` | `check_environment` returns `ok: false` |
+| `get-weather` | Athlete asks about weather for a race or training day |
 
 ---
 
