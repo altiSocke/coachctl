@@ -62,3 +62,5 @@
 - schema=7b0f0cf668ad
 - benchmark=ok
 
+
+- **2026-05-11T12:56:27** — apply_general_wiki_update: supplements/magnesium
