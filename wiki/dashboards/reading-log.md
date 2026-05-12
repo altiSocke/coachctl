@@ -13,7 +13,7 @@ freshness: fresh
 status: active
 confidence: 1
 created_at: '2026-05-11T09:16:34.419Z'
-updated_at: '2026-05-11T09:16:34.419Z'
+updated_at: '2026-05-11T11:19:32.400Z'
 compiled_from: []
 managed_by: system
 backlinks: []
@@ -25,3 +25,4 @@ profile_presets:
 ---
 # Reading Log
 
+- 2026-05-11T11:19:32.316Z: [[sources/magnesium-supplementation-guide-for-endurance-athletes-a392ef47|Magnesium — Supplementation Guide for Endurance Athletes]]

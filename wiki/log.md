@@ -64,3 +64,50 @@
 
 
 - **2026-05-11T12:56:27** — apply_general_wiki_update: supplements/magnesium
+## [2026-05-11 11:11:55] compile | Compiled 0 source(s)
+- session: `state/sessions/2026-05-11T11-11-55-117Z-compile-compiled-0-source-s.md`
+- provider=github-models
+- pages=12
+- dirty=0
+- clean=0
+- outputs=0
+- insights=1
+- memory=0
+- schema=7b0f0cf668ad
+- benchmark=ok
+
+## [2026-05-11 11:19:22] ingest | Magnesium — Supplementation Guide for Endurance Athletes
+- source_id=magnesium-supplementation-guide-for-endurance-athletes-a392ef47
+- kind=markdown
+- attachments=0
+- updated=false
+
+## [2026-05-11 11:19:32] consolidate | Consolidated 0 tier page(s)
+- working-to-episodic: 1 candidate pages, 1 group(s)
+-   skip: group of 1 below minPages=3
+- episodic-to-semantic: 0 recent episodic pages, 0 recurring node(s)
+- semantic-to-procedural: 0 semantic pages, 0 workflow bucket(s)
+
+## [2026-05-11 11:19:32] consolidate | Consolidated 0 tier page(s)
+- session: `state/sessions/2026-05-11T11-19-32-805Z-consolidate-consolidated-0-tier-page-s.md`
+- working-to-episodic: 1 candidate pages, 1 group(s)
+-   skip: group of 1 below minPages=3
+- episodic-to-semantic: 0 recent episodic pages, 0 recurring node(s)
+- semantic-to-procedural: 0 semantic pages, 0 workflow bucket(s)
+
+## [2026-05-11 11:19:31] compile | Compiled 1 source(s)
+- session: `state/sessions/2026-05-11T11-19-31-838Z-compile-compiled-1-source-s.md`
+- provider=github-models
+- pages=26
+- dirty=1
+- clean=0
+- outputs=0
+- insights=1
+- memory=0
+- candidates=12
+- promoted=0
+- staged=false
+- postPassApproval=none
+- schema=7b0f0cf668ad
+- benchmark=ok
+

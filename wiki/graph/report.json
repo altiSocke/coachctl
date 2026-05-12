@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-05-11T09:16:35.455Z",
-  "graphHash": "0820e7f7c0683e2f7b524ad00fd0a6ca109f52fd673c6794fa510a885e5b6962",
+  "generatedAt": "2026-05-11T11:19:33.354Z",
+  "graphHash": "59782cf0b60967356c88958b890f7c9d07a5bff9b49bece63402017a346250bc",
   "overview": {
-    "nodes": 0,
-    "edges": 0,
-    "pages": 10,
-    "communities": 0
+    "nodes": 13,
+    "edges": 12,
+    "pages": 23,
+    "communities": 1
   },
   "firstPartyOverview": {
-    "nodes": 0,
-    "edges": 0,
-    "pages": 10,
-    "communities": 0
+    "nodes": 13,
+    "edges": 12,
+    "pages": 23,
+    "communities": 1
   },
   "sourceClassBreakdown": {
     "first_party": {
@@ -35,17 +35,19 @@
       "nodes": 0
     }
   },
-  "warnings": [],
+  "warnings": [
+    "Non-first-party material accounts for 100.0% of graph nodes."
+  ],
   "benchmark": {
-    "generatedAt": "2026-05-11T09:16:35.299Z",
+    "generatedAt": "2026-05-11T11:19:33.078Z",
     "stale": false,
     "summary": {
       "questionCount": 3,
-      "uniqueVisitedNodes": 0,
-      "finalContextTokens": 323,
-      "naiveCorpusTokens": 1,
-      "avgReduction": -322,
-      "reductionRatio": -322
+      "uniqueVisitedNodes": 12,
+      "finalContextTokens": 2220,
+      "naiveCorpusTokens": 1220,
+      "avgReduction": -0.82,
+      "reductionRatio": -0.82
     },
     "questionCount": 3,
     "byClass": {
@@ -55,7 +57,7 @@
         "nodeCount": 0,
         "godNodeCount": 0,
         "finalContextTokens": 0,
-        "naiveCorpusTokens": 0,
+        "naiveCorpusTokens": 1220,
         "reductionRatio": 0
       },
       "third_party": {
@@ -87,16 +89,345 @@
       }
     }
   },
-  "godNodes": [],
-  "bridgeNodes": [],
+  "godNodes": [
+    {
+      "nodeId": "concept:magnesium",
+      "label": "magnesium",
+      "pageId": "concept:magnesium",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "concept:evidence",
+      "label": "evidence",
+      "pageId": "concept:evidence",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "concept:athletes",
+      "label": "athletes",
+      "pageId": "concept:athletes",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "concept:spray",
+      "label": "spray",
+      "pageId": "concept:spray",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "concept:transdermal",
+      "label": "transdermal",
+      "pageId": "concept:transdermal",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "concept:exercise",
+      "label": "exercise",
+      "pageId": "concept:exercise",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:supplementation-guide",
+      "label": "Supplementation Guide",
+      "pageId": "entity:supplementation-guide",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:endurance-athletes",
+      "label": "Endurance Athletes",
+      "pageId": "entity:endurance-athletes",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:summary-magnesium",
+      "label": "Summary Magnesium",
+      "pageId": "entity:summary-magnesium",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:why-athletes-are-often-deficient-sweat",
+      "label": "Why Athletes Are Often Deficient - Sweat",
+      "pageId": "entity:why-athletes-are-often-deficient-sweat",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:mg-western",
+      "label": "Mg - Western",
+      "pageId": "entity:mg-western",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    },
+    {
+      "nodeId": "entity:mg",
+      "label": "Mg",
+      "pageId": "entity:mg",
+      "degree": 12,
+      "bridgeScore": 0,
+      "surpriseReason": "degree 12"
+    }
+  ],
+  "bridgeNodes": [
+    {
+      "nodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "label": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "pageId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "degree": 12,
+      "bridgeScore": 1
+    }
+  ],
   "thinCommunities": [],
-  "surprisingConnections": [],
+  "surprisingConnections": [
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:athletes",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "concept:athletes",
+      "targetLabel": "athletes",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "concept:athletes"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:athletes"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> athletes",
+      "why": "it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to athletes because it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:evidence",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "concept:evidence",
+      "targetLabel": "evidence",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "concept:evidence"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:evidence"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> evidence",
+      "why": "it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to evidence because it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:magnesium",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "concept:magnesium",
+      "targetLabel": "magnesium",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "concept:magnesium"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:magnesium"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> magnesium",
+      "why": "it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to magnesium because it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:spray",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "concept:spray",
+      "targetLabel": "spray",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "concept:spray"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:spray"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> spray",
+      "why": "it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to spray because it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:transdermal",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "concept:transdermal",
+      "targetLabel": "transdermal",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "concept:transdermal"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->concept:transdermal"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> transdermal",
+      "why": "it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to transdermal because it spans different canonical pages; it bridges source and concept nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:endurance-athletes",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "entity:endurance-athletes",
+      "targetLabel": "Endurance Athletes",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "entity:endurance-athletes"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:endurance-athletes"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> Endurance Athletes",
+      "why": "it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to Endurance Athletes because it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:summary-magnesium",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "entity:summary-magnesium",
+      "targetLabel": "Summary Magnesium",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "entity:summary-magnesium"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:summary-magnesium"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> Summary Magnesium",
+      "why": "it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to Summary Magnesium because it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved."
+    },
+    {
+      "id": "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:supplementation-guide",
+      "sourceNodeId": "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+      "sourceLabel": "Magnesium — Supplementation Guide for Endurance Athletes",
+      "targetNodeId": "entity:supplementation-guide",
+      "targetLabel": "Supplementation Guide",
+      "relation": "mentions",
+      "evidenceClass": "extracted",
+      "confidence": 0.55,
+      "pathNodeIds": [
+        "source:magnesium-supplementation-guide-for-endurance-athletes-a392ef47",
+        "entity:supplementation-guide"
+      ],
+      "pathEdgeIds": [
+        "magnesium-supplementation-guide-for-endurance-athletes-a392ef47->entity:supplementation-guide"
+      ],
+      "pathRelations": [
+        "mentions"
+      ],
+      "pathEvidenceClasses": [
+        "extracted"
+      ],
+      "pathSummary": "Magnesium — Supplementation Guide for Endurance Athletes -> Supplementation Guide",
+      "why": "it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved",
+      "explanation": "Magnesium — Supplementation Guide for Endurance Athletes connects to Supplementation Guide because it spans different canonical pages; it bridges source and entity nodes; a bridge node is involved."
+    }
+  ],
   "groupPatterns": [],
-  "suggestedQuestions": [],
-  "communityPages": [],
+  "suggestedQuestions": [
+    "Why does Magnesium — Supplementation Guide for Endurance Athletes connect multiple communities in the vault?"
+  ],
+  "communityPages": [
+    {
+      "id": "graph:community:magnesium-1",
+      "path": "graph/communities/magnesium-1.md",
+      "title": "Community: magnesium"
+    }
+  ],
   "recentResearchSources": [],
   "contradictions": [],
-  "communityCohesion": [],
+  "communityCohesion": [
+    {
+      "id": "community:magnesium-1",
+      "label": "magnesium",
+      "nodeCount": 12,
+      "cohesion": 0
+    }
+  ],
   "knowledgeGaps": {
     "isolatedNodes": [],
     "thinCommunityCount": 0,

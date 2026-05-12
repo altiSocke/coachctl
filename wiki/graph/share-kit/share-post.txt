@@ -1,4 +1,4 @@
-I scanned coachctl with SwarmVault: 0 sources -> 10 wiki pages, 0 graph nodes, 0 edges.
-Top hubs are still emerging.
-The graph is ready for its first surprising connection.
+I scanned coachctl with SwarmVault: 1 sources -> 23 wiki pages, 13 graph nodes, 12 edges.
+Top hubs: magnesium, evidence, and athletes.
+Most surprising link: Magnesium — Supplementation Guide for Endurance Athletes mentions athletes.
 Everything stays local. Try: npm install -g @swarmvaultai/cli && swarmvault quickstart ./your-repo
