@@ -118,6 +118,23 @@ def compute_activity_metrics(
             result["intensity_factor"] = round(intensity_factor, 3)
             result["tss"] = round(tss, 1)
 
+    # ── Cycling: average_watts fallback (no NP recorded) ─────────────────────
+    # When Strava does not return weighted_average_watts (e.g. incomplete power
+    # file, sensor dropout), fall back to average_watts.  average_watts-based
+    # TSS under-estimates true TSS for variable-effort rides (no variability
+    # penalty) but is substantially better than NULL for load-tracking purposes.
+    # This branch is preferred over hrTSS for cycling (power is more reliable
+    # than HR for estimating training load on the bike).
+    if "ride" in sport and not result["tss"] and activity.get("average_watts"):
+        ftp = athlete.get("ftp")
+        if ftp and ftp > 0:
+            avg_w = float(activity["average_watts"])
+            if avg_w > 0:
+                intensity_factor = avg_w / ftp
+                tss = (moving_time * avg_w * intensity_factor) / (ftp * 3600) * 100
+                result["intensity_factor"] = round(intensity_factor, 3)
+                result["tss"] = round(tss, 1)
+
     # ── Running: pace-based rTSS ──────────────────────────────────────────────
     if "run" in sport and activity.get("average_speed") and moving_time > 0:
         rftp_sec_per_km = athlete.get("rftp")  # sec/km threshold pace
@@ -291,18 +308,23 @@ def get_daily_tss_from_db(conn, sport_category: str = "all") -> dict[date, float
 
     TSS is computed deterministically at sync time from Strava data:
       - Cycling with power meter → Coggan power-based TSS
+      - Cycling with average_watts only → average_watts-based TSS (fallback)
       - Running → rTSS via NGP/Minetti grade-adjusted pace
       - Any sport with HR → Banister hrTSS (fallback)
 
-    Only activities with a non-NULL tss value are included.
+    ``activity_overrides.tss_override`` takes priority over the computed
+    ``activities.tss`` column when set, allowing manual corrections for
+    activities that lack power/HR data.
+
+    Only activities with a non-NULL effective TSS (override or computed) are included.
     """
     _SPORT_SQL: dict[str, tuple[str, list]] = {
-        "all": ("WHERE tss IS NOT NULL", []),
+        "all": ("WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL", []),
         "run": (
-            "WHERE tss IS NOT NULL AND (sport_type LIKE ? OR sport_type LIKE ?)",
+            "WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL AND (a.sport_type LIKE ? OR a.sport_type LIKE ?)",
             ["%Run%", "%Trail%"],
         ),
-        "ride": ("WHERE tss IS NOT NULL AND sport_type LIKE ?", ["%Ride%"]),
+        "ride": ("WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL AND a.sport_type LIKE ?", ["%Ride%"]),
     }
     if sport_category not in _SPORT_SQL:
         raise ValueError(
@@ -312,8 +334,9 @@ def get_daily_tss_from_db(conn, sport_category: str = "all") -> dict[date, float
 
     rows = conn.execute(
         f"""
-        SELECT date(start_date) as day, SUM(tss) as daily_tss
-        FROM activities
+        SELECT date(a.start_date) as day, SUM(COALESCE(o.tss_override, a.tss)) as daily_tss
+        FROM activities a
+        LEFT JOIN activity_overrides o ON o.activity_id = a.id
         {where_clause}
         GROUP BY day
         ORDER BY day

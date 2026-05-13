@@ -135,6 +135,10 @@ def parse_plan(markdown: str) -> Plan:
                 continue
             if set(day_label) <= {"-", " "}:
                 continue
+            # Skip phase-end summary rows and any row without a parseable date
+            # (e.g. "End Phase 1 (May 15) | 40–44 | 0 to +5 | ...").
+            if _parse_date(day_label, plan_year) is None:
+                continue
 
             # Check if completed (✅ in the line)
             completed = "✅" in line

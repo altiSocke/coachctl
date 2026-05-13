@@ -430,3 +430,53 @@ def register(mcp) -> None:  # noqa: ANN001
                 [(now, aid) for aid in activity_ids],
             )
         return f"Marked {len(activity_ids)} activities as reviewed."
+
+    @mcp.tool()
+    def set_activity_tss_override(
+        activity_id: int,
+        tss: float,
+        notes: str = "",
+    ) -> str:
+        """
+        Manually set TSS for an activity.
+
+        Use this for activities that lack power or HR data and therefore have
+        a NULL or inaccurate computed TSS (e.g. rides with no power file and
+        no HR strap).  The override is stored in ``activity_overrides`` and
+        takes priority over the computed ``tss`` column in all load metrics
+        (CTL/ATL/TSB, ACWR, zone distribution, compliance).
+
+        activity_id: Strava activity ID
+        tss: TSS value to assign (must be > 0)
+        notes: optional reason or source (e.g. "estimated from RPE 7, 90min ride")
+        """
+        if tss <= 0:
+            return "TSS must be greater than 0."
+
+        with get_conn() as conn:
+            row = conn.execute(
+                "SELECT id, name, sport_type, start_date, tss FROM activities WHERE id = ?",
+                (activity_id,),
+            ).fetchone()
+            if not row:
+                return f"Activity {activity_id} not found."
+
+            old_tss = row["tss"]
+            conn.execute(
+                """
+                INSERT INTO activity_overrides (activity_id, tss_override, notes, updated_at)
+                VALUES (?, ?, ?, datetime('now'))
+                ON CONFLICT(activity_id) DO UPDATE SET
+                    tss_override = excluded.tss_override,
+                    notes        = excluded.notes,
+                    updated_at   = excluded.updated_at
+                """,
+                (activity_id, tss, notes),
+            )
+
+        old_str = f"{old_tss:.1f}" if old_tss is not None else "NULL"
+        return (
+            f"TSS override set for '{row['name']}' ({row['sport_type']}, "
+            f"{row['start_date'][:10]}): {old_str} → {tss:.1f}"
+            + (f"\nNotes: {notes}" if notes else "")
+        )

@@ -188,6 +188,16 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_events_date ON events(date);
             CREATE INDEX IF NOT EXISTS idx_events_kind ON events(kind);
             CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
+
+            -- Manual TSS overrides for activities that lack power/HR data.
+            -- COALESCE(o.tss_override, a.tss) in metrics queries gives these
+            -- priority over the computed tss column without touching activity rows.
+            CREATE TABLE IF NOT EXISTS activity_overrides (
+                activity_id   INTEGER PRIMARY KEY REFERENCES activities(id),
+                tss_override  REAL,                        -- manually assigned TSS
+                notes         TEXT,                        -- reason / source
+                updated_at    TEXT DEFAULT (datetime('now'))
+            );
         """)
 
         # Idempotent column additions (ALTER TABLE IF NOT EXISTS not supported in older SQLite)

@@ -6,13 +6,13 @@
 <title>coachctl</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Exo+2:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 15px; -webkit-tap-highlight-color: transparent; }
 body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Exo 2', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -20,31 +20,35 @@ body {
   overscroll-behavior-y: none;
 }
 
-/* ── Tokens (dark default) ─────────────────────────────────────────────────── */
+/* ── Tokens (dark default — Tron/Neon) ────────────────────────────────────── */
 :root {
-  --bg:           #111111;
-  --surface:      #1a1a1a;
-  --surface-2:    #222222;
-  --border:       #2a2a2a;
-  --text:         #efefef;
-  --muted:        #777777;
-  --dim:          #444444;
-  --accent:       #f5a623;
-  --accent-bg:    rgba(245,166,35,.10);
-  --accent-dim:   rgba(245,166,35,.25);
-  --success:      #22c55e;
-  --success-bg:   rgba(34,197,94,.10);
-  --warning:      #f5a623;
-  --warning-bg:   rgba(245,166,35,.10);
-  --danger:       #e63946;
-  --danger-bg:    rgba(230,57,70,.10);
-  --run:          #6366f1;
-  --ride:         #f5a623;
+  --bg:           #050510;
+  --surface:      #0b0b1e;
+  --surface-2:    #101028;
+  --border:       #1a1a40;
+  --text:         #dde8ff;
+  --muted:        #7f8aab;
+  --dim:          #4c4c7d;
+  --accent:       #00f0ff;
+  --accent-bg:    rgba(0,240,255,.07);
+  --accent-dim:   rgba(0,240,255,.18);
+  --success:      #39ff7a;
+  --success-bg:   rgba(57,255,122,.07);
+  --warning:      #ffe600;
+  --warning-bg:   rgba(255,230,0,.07);
+  --danger:       #ff2d6b;
+  --danger-bg:    rgba(255,45,107,.07);
+  --run:          #c060ff;
+  --ride:         #ff6b1a;
   --radius:       4px;
   --radius-sm:    3px;
   --gap:          14px;
   --hdr:          48px;
   --font-display: 'Barlow Condensed', system-ui, sans-serif;
+  --glow-accent:  0 0 4px rgba(0,240,255,.7), 0 0 20px rgba(0,240,255,.3);
+  --glow-success: 0 0 4px rgba(57,255,122,.6);
+  --glow-danger:  0 0 4px rgba(255,45,107,.6);
+  --glow-warn:    0 0 4px rgba(255,230,0,.5);
 }
 
 @media (prefers-color-scheme: light) {
@@ -56,11 +60,15 @@ body {
     --text:      #111111;
     --muted:     #666666;
     --dim:       #bbbbbb;
-    --accent-bg: rgba(245,166,35,.08);
-    --accent-dim:rgba(245,166,35,.20);
-    --success-bg:rgba(34,197,94,.07);
-    --warning-bg:rgba(245,166,35,.07);
-    --danger-bg: rgba(230,57,70,.07);
+    --accent-bg: rgba(0,240,255,.06);
+    --accent-dim:rgba(0,240,255,.16);
+    --success-bg:rgba(57,255,122,.07);
+    --warning-bg:rgba(255,230,0,.07);
+    --danger-bg: rgba(255,45,107,.07);
+    --glow-accent: none;
+    --glow-success: none;
+    --glow-danger: none;
+    --glow-warn: none;
   }
 }
 
@@ -82,18 +90,21 @@ header {
   position: sticky; top: 0; z-index: 20;
   height: var(--hdr);
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--accent);
+  box-shadow: 0 1px 18px rgba(0,240,255,.18);
   display: flex; align-items: center;
   padding: 0 var(--gap); gap: 10px;
 }
 .logo {
   font-family: var(--font-display);
-  font-size: 1.1rem; font-weight: 700; letter-spacing: .02em; color: var(--accent);
+  font-size: 1.1rem; font-weight: 700; letter-spacing: .08em; color: var(--accent);
+  text-shadow: var(--glow-accent);
   flex-shrink: 0; display: flex; align-items: center; gap: 6px;
 }
 .logo-mark {
   width: 14px; height: 14px;
   background: var(--accent);
+  box-shadow: var(--glow-accent);
   display: inline-block;
   flex-shrink: 0;
 }
@@ -152,12 +163,17 @@ main {
   border-radius: var(--radius);
   padding: 14px 14px 12px;
   animation: cardEntrance .28s ease-out both;
+  transition: border-color .2s, box-shadow .2s;
+}
+.card:hover {
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 12px rgba(0,240,255,.08);
 }
 .card-title {
   font-family: var(--font-display);
   font-size: .7rem; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 10px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); opacity: .7; margin-bottom: 10px;
 }
 
 /* ── Hidden ────────────────────────────────────────────────────────────────── */
@@ -180,9 +196,9 @@ main {
   min-width: 130px; max-width: 160px;
   position: relative; overflow: hidden;
   cursor: pointer;
-  transition: border-color .15s;
+  transition: border-color .15s, box-shadow .15s;
 }
-.event-card:hover { border-color: var(--dim); }
+.event-card:hover { border-color: var(--accent-dim); box-shadow: 0 0 10px rgba(0,240,255,.1); }
 .event-card::before {
   content: ''; position: absolute;
   left: 0; top: 0; bottom: 0; width: 3px;
@@ -218,7 +234,7 @@ main {
 .ev-pri.B { background: var(--accent-bg); color: var(--accent); }
 .ev-pri.C { background: transparent; color: var(--dim); }
 .event-card.past { opacity: .45; }
-.event-card.today .ev-countdown { color: var(--accent); }
+.event-card.today .ev-countdown { color: var(--accent); text-shadow: var(--glow-accent); }
 
 /* ── Phase bar ──────────────────────────────────────────────────────────────── */
 .phase-wrap { padding: 0 2px; }
@@ -235,10 +251,12 @@ main {
 .phase-track {
   height: 10px; background: var(--surface-2);
   border-radius: 5px; overflow: hidden;
+  border: 1px solid var(--border);
 }
 .phase-fill {
   height: 100%; border-radius: 5px;
-  background: var(--accent);
+  background: linear-gradient(90deg, #00f0ff 0%, #bf5fff 100%);
+  box-shadow: 0 0 10px rgba(0,240,255,.5), 0 0 20px rgba(0,240,255,.2);
   width: 0;
   animation: phaseIn .6s ease-out forwards;
 }
@@ -268,16 +286,16 @@ main {
   margin-top: 4px;
 }
 .fit-sub { font-size: .62rem; color: var(--dim); margin-top: 2px; }
-.fit-pill.positive .fit-val { color: var(--success); }
-.fit-pill.negative .fit-val { color: var(--danger); }
-.fit-pill.warn .fit-val { color: var(--warning); }
-.fit-pill.ok .fit-val { color: var(--success); }
+.fit-pill.positive .fit-val { color: var(--success); text-shadow: var(--glow-success); }
+.fit-pill.negative .fit-val { color: var(--danger);  text-shadow: var(--glow-danger); }
+.fit-pill.warn .fit-val { color: var(--warning); text-shadow: var(--glow-warn); }
+.fit-pill.ok .fit-val { color: var(--success); text-shadow: var(--glow-success); }
 
 /* ACWR pill colour overrides */
-.fit-pill.acwr-optimal .fit-val  { color: var(--success); }
-.fit-pill.acwr-caution .fit-val  { color: var(--warning); }
-.fit-pill.acwr-high_risk .fit-val { color: var(--danger); }
-.fit-pill.acwr-undertrained .fit-val { color: #6b7280; }
+.fit-pill.acwr-optimal .fit-val  { color: var(--success); text-shadow: var(--glow-success); }
+.fit-pill.acwr-caution .fit-val  { color: var(--warning); text-shadow: var(--glow-warn); }
+.fit-pill.acwr-high_risk .fit-val { color: var(--danger); text-shadow: var(--glow-danger); }
+.fit-pill.acwr-undertrained .fit-val { color: #4a5580; }
 
 /* Compliance card */
 .compliance-summary {
@@ -289,9 +307,9 @@ main {
   font-size: 3rem; font-weight: 700; line-height: 1;
   letter-spacing: -.02em;
 }
-.compliance-big.good  { color: var(--success); }
-.compliance-big.warn  { color: var(--warning); }
-.compliance-big.bad   { color: var(--danger); }
+.compliance-big.good  { color: var(--success); text-shadow: var(--glow-success); }
+.compliance-big.warn  { color: var(--warning); text-shadow: var(--glow-warn); }
+.compliance-big.bad   { color: var(--danger);  text-shadow: var(--glow-danger); }
 .compliance-meta { font-size: .8rem; color: var(--muted); line-height: 1.6; }
 .compliance-table {
   width: 100%; border-collapse: collapse; font-size: .78rem;
@@ -326,6 +344,7 @@ main {
   letter-spacing: -.01em;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
+  text-shadow: var(--glow-accent);
 }
 .thresh-unit {
   font-size: .6rem; font-weight: 500; color: var(--muted);
@@ -363,9 +382,9 @@ main {
   font-size: .6rem; font-weight: 500; letter-spacing: .04em;
   padding: 1px 5px; border-radius: 2px; margin-left: 6px;
 }
-.mono-ok   .mono-stat-val  { color: var(--success); }
-.mono-warn .mono-stat-val  { color: var(--warning); }
-.mono-crit .mono-stat-val  { color: var(--danger); }
+.mono-ok   .mono-stat-val  { color: var(--success); text-shadow: var(--glow-success); }
+.mono-warn .mono-stat-val  { color: var(--warning); text-shadow: var(--glow-warn); }
+.mono-crit .mono-stat-val  { color: var(--danger);  text-shadow: var(--glow-danger); }
 .mono-ok   .mono-stat-badge { background: var(--success-bg); color: var(--success); }
 .mono-warn .mono-stat-badge { background: var(--warning-bg); color: var(--warning); }
 .mono-crit .mono-stat-badge { background: var(--danger-bg);  color: var(--danger);  }
@@ -649,7 +668,7 @@ main {
 }
 .race-back {
   background: none; border: none; color: var(--accent);
-  font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500;
+  font-family: 'Exo 2', sans-serif; font-size: .85rem; font-weight: 500;
   cursor: pointer; padding: 4px 0; display: flex; align-items: center; gap: 4px;
   transition: opacity .15s;
 }
@@ -1858,7 +1877,7 @@ function renderZones() {
   if (!dist.length) { hide('zones-card'); return; }
   show('zones-card');
 
-  const colors = ['#3b82f6','#22c55e','#f5a623','#f97316','#e63946'];
+  const colors = ['#1a3aff','#39ff7a','#00f0ff','#c060ff','#ff2d6b'];
   const labels = ['Z1','Z2','Z3','Z4','Z5'];
 
   const bar = document.getElementById('zone-bar');
@@ -1923,7 +1942,8 @@ function renderWeek() {
   // Collect items for this week
   const weekItems = cal.filter(s =>
     s.date >= weekStart && s.date <= weekEnd &&
-    ['training','activity','race','untracked'].includes(s.kind)
+    ['training','activity','race','untracked'].includes(s.kind) &&
+    s.status !== 'cancelled'
   );
 
   // TSS split: actual (completed activities) vs projected (planned sessions not yet done)
@@ -2021,7 +2041,7 @@ function renderWeek() {
       const dotStyle = s.kind === 'activity'
         ? ' style="background:var(--success)"'
         : s.kind === 'untracked'
-          ? ' style="background:#f5a623"'
+          ? ' style="background:#ffe600"'
           : isRace ? ` style="background:${priColor}"` : '';
 
       const isPlanned = s.kind === 'training';
@@ -2074,12 +2094,12 @@ document.getElementById('week-next').addEventListener('click', () => { weekOffse
 
 function chartColors() {
   return {
-    grid:   isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.05)',
-    tick:   isDark ? '#666666' : '#888888',
-    tip_bg: isDark ? '#1a1a1a' : '#ffffff',
-    tip_tx: isDark ? '#efefef' : '#111111',
-    tip_bd: isDark ? '#2a2a2a' : '#e0e0e0',
-    target: isDark ? 'rgba(245,166,35,.50)' : 'rgba(200,130,0,.40)',
+    grid:   isDark ? 'rgba(0,240,255,.05)' : 'rgba(0,0,0,.05)',
+    tick:   isDark ? '#4f5e8a' : '#888888',
+    tip_bg: isDark ? '#0b0b1e' : '#ffffff',
+    tip_tx: isDark ? '#dde8ff' : '#111111',
+    tip_bd: isDark ? '#1a1a40' : '#e0e0e0',
+    target: isDark ? 'rgba(0,240,255,.45)' : 'rgba(0,180,200,.35)',
   };
 }
 
@@ -2106,11 +2126,11 @@ function renderFitnessChart() {
   const anns = {
     tsbBand: {
       type: 'box', yMin: 15, yMax: 25,
-      backgroundColor: 'rgba(34,197,94,.05)', borderColor: 'rgba(34,197,94,.15)', borderWidth: 1,
+      backgroundColor: 'rgba(57,255,122,.04)', borderColor: 'rgba(57,255,122,.18)', borderWidth: 1,
     },
     tsbZero: {
       type: 'line', yMin: 0, yMax: 0,
-      borderColor: isDark ? 'rgba(255,255,255,.12)' : 'rgba(0,0,0,.12)',
+      borderColor: isDark ? 'rgba(0,240,255,.15)' : 'rgba(0,0,0,.12)',
       borderWidth: 1, borderDash: [3, 3],
     },
     overreach: {
@@ -2128,7 +2148,7 @@ function renderFitnessChart() {
         display: true, content: 'Projected →', position: 'start',
         backgroundColor: 'transparent',
         color: isDark ? 'rgba(255,255,255,.45)' : 'rgba(0,0,0,.35)',
-        font: { family: "'DM Sans', sans-serif", size: 9 },
+        font: { family: "'Exo 2', sans-serif", size: 9 },
         padding: { x: 2, y: 0 },
       },
     };
@@ -2136,7 +2156,7 @@ function renderFitnessChart() {
   events.forEach((ev, i) => {
     if (!labels.includes(ev.date)) return;
     const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
-    const c = evPri === 'A' ? '#e63946' : evPri === 'B' ? '#f5a623' : '#666666';
+    const c = evPri === 'A' ? '#ff2d6b' : evPri === 'B' ? '#00f0ff' : '#2a2a5a';
     anns['ev' + i] = {
       type: 'line', xMin: ev.date, xMax: ev.date,
       borderColor: c + '88', borderWidth: evPri === 'A' ? 2 : 1,
@@ -2155,7 +2175,7 @@ function renderFitnessChart() {
     plugins: {
       legend: {
         display: true, position: 'top', align: 'start',
-        labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8,
+        labels: { font: { family: "'Exo 2', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8,
           filter: item => !item.text.endsWith('*') },
       },
       annotation: { annotations: anns },
@@ -2163,30 +2183,30 @@ function renderFitnessChart() {
         backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
         borderColor: C.tip_bd, borderWidth: 1,
         titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
-        bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+        bodyFont:  { family: "'Exo 2', sans-serif", size: 11 },
         callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(1) ?? ''}` },
       },
     },
     scales: {
       x: {
         type: 'category',
-        ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
+        ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
         grid: { color: C.grid }, border: { display: false },
       },
       y: {
-        ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
+        ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 } },
         grid: { color: C.grid }, border: { display: false },
       },
     },
   };
 
   const datasets = [
-    { label: 'CTL',   data: ctlA, borderColor: '#6366f1', borderWidth: 2, pointRadius: 0, tension: .3 },
-    { label: 'ATL',   data: atlA, borderColor: '#f5a623', borderWidth: 2, pointRadius: 0, tension: .3 },
-    { label: 'Form',  data: tsbA, borderColor: '#22c55e', borderWidth: 2, pointRadius: 0, tension: .3 },
-    { label: 'CTL*',  data: ctlP, borderColor: '#6366f166', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
-    { label: 'ATL*',  data: atlP, borderColor: '#f5a62366', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
-    { label: 'Form*', data: tsbP, borderColor: '#22c55e66', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+  { label: 'CTL',   data: ctlA, borderColor: '#00f0ff', borderWidth: 2, pointRadius: 0, tension: .3 },
+  { label: 'ATL',   data: atlA, borderColor: '#ff6b1a', borderWidth: 2, pointRadius: 0, tension: .3 },
+  { label: 'Form',  data: tsbA, borderColor: '#39ff7a', borderWidth: 2, pointRadius: 0, tension: .3 },
+  { label: 'CTL*',  data: ctlP, borderColor: '#00f0ff66', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+  { label: 'ATL*',  data: atlP, borderColor: '#ff6b1a66', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
+  { label: 'Form*', data: tsbP, borderColor: '#39ff7a66', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: .3 },
   ].map(d => ({ ...d, backgroundColor: 'transparent', fill: false }));
 
   const ctx = document.getElementById('chart-fitness').getContext('2d');
@@ -2216,8 +2236,8 @@ function renderTssChart() {
   const isFuture = weekly.map(w => w.week > todayMonStr);
 
   // Per-bar colours (future = dimmed)
-  const runColors   = isFuture.map(f => f ? '#6366f133' : '#6366f1aa');
-  const rideColors  = isFuture.map(f => f ? '#f5a62333' : '#f5a623aa');
+  const runColors   = isFuture.map(f => f ? '#c060ff33' : '#c060ffaa');
+  const rideColors  = isFuture.map(f => f ? '#ff6b1a33' : '#ff6b1aaa');
   const otherColors = isFuture.map(f => f ? '#55555533' : '#55555588');
 
   // "Today" vertical annotation + race event annotations
@@ -2235,7 +2255,7 @@ function renderTssChart() {
         display: true, content: 'now', position: 'end',
         backgroundColor: 'transparent',
         color: isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.35)',
-        font: { family: "'DM Sans', sans-serif", size: 8 },
+        font: { family: "'Exo 2', sans-serif", size: 8 },
         padding: { x: 2, y: 0 },
       },
     };
@@ -2255,7 +2275,7 @@ function renderTssChart() {
     const evMonLabel = evMon.toISOString().slice(5, 10);
     if (!labels.includes(evMonLabel)) return;
     const evPri = (ev.payload && ev.payload.priority) || ev.priority || 'C';
-    const c = evPri === 'A' ? '#e63946' : '#f5a623';
+    const c = evPri === 'A' ? '#ff2d6b' : '#00f0ff';
     anns['race' + i] = {
       type: 'line', xMin: evMonLabel, xMax: evMonLabel,
       borderColor: c + '66', borderWidth: evPri === 'A' ? 2 : 1.5, borderDash: [2, 2],
@@ -2290,14 +2310,14 @@ function renderTssChart() {
       plugins: {
         legend: {
           display: true, position: 'top', align: 'start',
-          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+          labels: { font: { family: "'Exo 2', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
         },
         annotation: { annotations: anns },
         tooltip: {
           backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
           borderColor: C.tip_bd, borderWidth: 1,
           titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
-          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+          bodyFont:  { family: "'Exo 2', sans-serif", size: 11 },
           callbacks: {
             afterTitle: items => {
               const idx = items[0]?.dataIndex;
@@ -2309,12 +2329,12 @@ function renderTssChart() {
       scales: {
         x: {
           stacked: true,
-          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
           grid: { display: false }, border: { display: false },
         },
         y: {
           stacked: true,
-          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
+          ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 } },
           grid: { color: C.grid }, border: { display: false },
         },
       },
@@ -2358,12 +2378,12 @@ function renderMonotonyChart() {
       datasets: [
         {
           label: 'Monotony', data: monotony, yAxisID: 'yMono',
-          borderColor: '#a78bfa', borderWidth: 2, pointRadius: 0, tension: .3,
+          borderColor: '#c060ff', borderWidth: 2, pointRadius: 0, tension: .3,
           backgroundColor: 'transparent', fill: false,
         },
         {
           label: 'Strain', data: strain, yAxisID: 'yStrain',
-          borderColor: '#fb923c', borderWidth: 1.5, pointRadius: 0, tension: .3,
+          borderColor: '#ff6b1a', borderWidth: 1.5, pointRadius: 0, tension: .3,
           backgroundColor: 'rgba(251,146,60,.06)', fill: true,
         },
       ],
@@ -2374,14 +2394,14 @@ function renderMonotonyChart() {
       plugins: {
         legend: {
           display: true, position: 'top', align: 'start',
-          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8 },
+          labels: { font: { family: "'Exo 2', sans-serif", size: 10 }, color: C.tick, boxWidth: 14, padding: 8 },
         },
         annotation: { annotations: anns },
         tooltip: {
           backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
           borderColor: C.tip_bd, borderWidth: 1,
           titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
-          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+          bodyFont:  { family: "'Exo 2', sans-serif", size: 11 },
           callbacks: {
             label: ctx => {
               const v = ctx.parsed.y;
@@ -2396,18 +2416,18 @@ function renderMonotonyChart() {
       scales: {
         x: {
           type: 'category',
-          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxTicksLimit: 10, maxRotation: 0 },
+          ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 }, maxTicksLimit: 10, maxRotation: 0 },
           grid: { color: C.grid }, border: { display: false },
         },
         yMono: {
           type: 'linear', position: 'left',
           min: 0, max: 3,
-          ticks: { color: '#a78bfa', font: { family: "'DM Sans', sans-serif", size: 9 }, stepSize: 0.5 },
+          ticks: { color: '#c060ff', font: { family: "'Exo 2', sans-serif", size: 9 }, stepSize: 0.5 },
           grid: { color: C.grid }, border: { display: false },
         },
         yStrain: {
           type: 'linear', position: 'right',
-          ticks: { color: '#fb923c', font: { family: "'DM Sans', sans-serif", size: 9 } },
+          ticks: { color: '#ff6b1a', font: { family: "'Exo 2', sans-serif", size: 9 } },
           grid: { drawOnChartArea: false }, border: { display: false },
         },
       },
@@ -2444,13 +2464,13 @@ function renderRtssChart() {
       plugins: {
         legend: {
           display: true, position: 'top', align: 'start',
-          labels: { font: { family: "'DM Sans', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
+          labels: { font: { family: "'Exo 2', sans-serif", size: 10 }, color: C.tick, boxWidth: 12, padding: 8 },
         },
         tooltip: {
           backgroundColor: C.tip_bg, titleColor: C.tip_tx, bodyColor: C.tick,
           borderColor: C.tip_bd, borderWidth: 1,
           titleFont: { family: "'Barlow Condensed', sans-serif", weight: '700', size: 12 },
-          bodyFont:  { family: "'DM Sans', sans-serif", size: 11 },
+          bodyFont:  { family: "'Exo 2', sans-serif", size: 11 },
           callbacks: {
             label: ctx => {
               const v = ctx.parsed.y;
@@ -2472,11 +2492,11 @@ function renderRtssChart() {
       },
       scales: {
         x: {
-          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
+          ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 }, maxRotation: 0, maxTicksLimit: 12 },
           grid: { display: false }, border: { display: false },
         },
         y: {
-          ticks: { color: C.tick, font: { family: "'DM Sans', sans-serif", size: 9 } },
+          ticks: { color: C.tick, font: { family: "'Exo 2', sans-serif", size: 9 } },
           grid: { color: C.grid }, border: { display: false },
         },
       },
