@@ -527,6 +527,14 @@ main {
 .day-item:hover { background: var(--surface-2); }
 .day-item.planned { opacity: .5; font-style: italic; }
 .day-item.planned .session-title { font-weight: 400; }
+.day-item.skipped { opacity: .45; }
+.day-item.skipped .session-title { font-weight: 400; text-decoration: line-through; color: var(--muted); }
+.skipped-badge {
+  font-size: .55rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  padding: 1px 4px; border-radius: 2px;
+  background: var(--surface-2); color: var(--dim); border: 1px solid var(--border);
+  flex-shrink: 0;
+}
 .day-item.rest { padding: 4px 6px; }
 .day-item .session-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
 .day-item .session-title { font-size: .78rem; font-weight: 500; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -826,7 +834,22 @@ main {
 .gate-target.b { border-color: var(--muted); }
 .gate-revise { font-size: .65rem; color: var(--danger); margin-top: 2px; opacity: .8; }
 
-/* ── Key Metrics Table ───────────────────────────────────────── */
+/* ── Race accordion ────────────────────────────────────────────── */
+.race-accordion-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none; padding: 2px 0;
+}
+.race-accordion-toggle .race-section-title { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+.race-accordion-chevron {
+  font-size: .7rem; color: var(--muted);
+  transition: transform .2s ease; flex-shrink: 0; margin-left: 8px;
+}
+.race-accordion-body { display: none; padding-top: 10px; }
+.race-section.open .race-accordion-body { display: block; }
+.race-section.open .race-section-title { border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 0; }
+.race-section.open .race-accordion-chevron { transform: rotate(90deg); }
+
+
 .metrics-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
 .metric-row { display: grid; grid-template-columns: 1fr auto auto auto auto; gap: 4px; align-items: center; padding: 5px 8px; border-radius: 4px; background: var(--surface); font-size: .72rem; }
 .metric-row.header { background: transparent; font-weight: 600; color: var(--muted); font-size: .65rem; text-transform: uppercase; letter-spacing: .04em; }
@@ -898,6 +921,12 @@ main {
     <div id="fit-alerts"></div>
   </div>
 
+  <!-- Recent runs — placed here so key numbers are visible before charts -->
+  <div class="card hidden" id="recent-runs-card">
+    <div class="card-title">Recent Runs</div>
+    <div id="recent-runs-table"></div>
+  </div>
+
   <!-- Thresholds card -->
   <div class="card hidden" id="thresholds-card">
     <div class="card-title">Thresholds</div>
@@ -951,11 +980,6 @@ main {
     <div class="card-title">Zone Distribution (8w)</div>
     <div class="zone-bar" id="zone-bar"></div>
     <div class="zone-legend" id="zone-legend"></div>
-  </div>
-
-  <div class="card hidden" id="recent-runs-card">
-    <div class="card-title">Recent Runs</div>
-    <div id="recent-runs-table"></div>
   </div>
 
   <!-- Goals -->
@@ -1319,6 +1343,8 @@ function openRacePage(ev) {
     logistics: 'Logistics', kit: 'Kit', protocols: 'Protocols',
     yoy: 'Year-on-Year', readiness_gate: 'Readiness Gate',
   };
+  // Sections always expanded (no accordion)
+  const RACE_ALWAYS_OPEN = new Set(['pacing']);
   const RACE_SECTION_RENDERERS = {
     key_principles: renderKeyPrinciples,
     pacing:         renderPacing,
@@ -1349,8 +1375,23 @@ function openRacePage(ev) {
     if (!rendered || !rendered.trim()) return;
     const sec = document.createElement('div');
     sec.className = 'race-section card';
-    sec.innerHTML = `<div class="race-section-title">${esc(RACE_CARD_LABELS[key] || key)}</div>
-      <div class="race-section-body">${rendered}</div>`;
+    const label = esc(RACE_CARD_LABELS[key] || key);
+    if (RACE_ALWAYS_OPEN.has(key)) {
+      // Always expanded
+      sec.innerHTML = `<div class="race-section-title">${label}</div>
+        <div class="race-section-body">${rendered}</div>`;
+    } else {
+      // Accordion — starts closed
+      sec.innerHTML = `
+        <div class="race-accordion-toggle">
+          <div class="race-section-title">${label}</div>
+          <span class="race-accordion-chevron">›</span>
+        </div>
+        <div class="race-accordion-body race-section-body">${rendered}</div>`;
+      sec.querySelector('.race-accordion-toggle').addEventListener('click', () => {
+        sec.classList.toggle('open');
+      });
+    }
     content.appendChild(sec);
   });
 
@@ -1602,9 +1643,9 @@ function renderFitness() {
       <div class="fit-sub">TSB</div>
     </div>
     <div class="fit-pill ${acwrClass}">
-      <div class="fit-val" style="font-size:1.05rem;letter-spacing:.03em;line-height:1.1">${acwrRisk ? acwrRisk.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()) : '—'}</div>
-      <div class="fit-lbl">Injury Risk</div>
-      <div class="fit-sub">ACWR ${acwrVal != null ? acwrVal.toFixed(2) + ' (EMA)' : ''}</div>
+      <div class="fit-val">${acwrVal != null ? acwrVal.toFixed(2) : '—'}</div>
+      <div class="fit-lbl">ACWR</div>
+      <div class="fit-sub">${acwrRisk ? acwrRisk.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()) : ''}</div>
     </div>`;
 
   // Monotony + Strain row
@@ -1688,8 +1729,9 @@ function renderCompliance() {
 
   const ov = c.overall;
   const pct = ov.compliance_pct != null ? Math.round(ov.compliance_pct) : null;
-  const pctClass = pct == null ? '' : pct > 120 ? 'warn' : pct >= 90 ? 'good' : pct >= 70 ? 'warn' : 'bad';
-  const pctDisplay = pct == null ? '—' : pct > 120 ? pct + '% ↑' : pct + '%';
+  const pctClass = pct == null ? '' : pct > 100 ? 'warn' : pct >= 90 ? 'good' : pct >= 70 ? 'warn' : 'bad';
+  const pctDisplay = pct == null ? '—' : pct > 100 ? 'Over plan' : pct + '%';
+  const pctSub = pct != null && pct > 100 ? `${pct}% of planned TSS` : '';
 
   const overallEl = document.getElementById('compliance-overall');
   overallEl.innerHTML = `
@@ -1697,7 +1739,8 @@ function renderCompliance() {
       <div class="compliance-big ${pctClass}">${pctDisplay}</div>
       <div class="compliance-meta">
         ${ov.sessions_completed} / ${ov.past_sessions_planned} sessions completed<br>
-        ${Math.round(ov.actual_tss || 0)} / ${Math.round(ov.past_planned_tss || 0)} TSS (past weeks)
+        ${Math.round(ov.actual_tss || 0)} / ${Math.round(ov.past_planned_tss || 0)} TSS actual / planned
+        ${pctSub ? `<br><span style="color:var(--dim);font-size:.7rem">${pctSub}</span>` : ''}
       </div>
     </div>`;
 
@@ -1718,8 +1761,8 @@ function renderCompliance() {
 
   const rows = weekly.map(w => {
     const wp = w.compliance_pct != null ? Math.round(w.compliance_pct) : null;
-    const wc = wp == null ? '' : wp > 120 ? 'warn' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
-    const wpDisplay = wp == null ? '—' : wp > 120 ? wp + '% ↑' : wp + '%';
+    const wc = wp == null ? '' : wp > 100 ? 'warn' : wp >= 90 ? 'good' : wp >= 70 ? 'warn' : 'bad';
+    const wpDisplay = wp == null ? '—' : wp > 100 ? '↑' : wp + '%';
     // Format "2026-W19" → readable "May 5"
     const wkLabel = (() => {
       const m = w.week.match(/^(\d{4})-W(\d{2})$/);
@@ -1982,11 +2025,16 @@ function renderWeek() {
           : isRace ? ` style="background:${priColor}"` : '';
 
       const isPlanned = s.kind === 'training';
-      const itemClass = `day-item${isPlanned ? ' planned' : ''}`;
+      const isPastPlanned = isPlanned && isPast && !isToday;
+      const hasMatchingActivity = isPastPlanned && weekItems.some(a => a.kind === 'activity' && a.date === s.date);
+      const isSkipped = isPastPlanned && !hasMatchingActivity;
+      const itemClass = `day-item${isSkipped ? ' skipped' : isPlanned ? ' planned' : ''}`;
+      const skippedBadge = isSkipped ? `<span class="skipped-badge">?</span>` : '';
 
       return `<div class="${itemClass}" data-slug="${s.slug || ''}" data-kind="${s.kind}" data-name="${esc(s.name||'')}" data-detail="${esc((s.payload&&s.payload.details)||s.summary||s.notes||'')}" data-date="${s.date}" data-tss="${tssStr}">
         <span class="session-dot"${dotStyle}></span>
         ${raceBadge}
+        ${skippedBadge}
         <span class="session-type-dot sport-${sportKey}"></span>
         <span class="session-title">${esc(s.name || '—')}</span>
         ${tssStr ? `<span class="session-tss">${tssStr}</span>` : ''}
@@ -2467,7 +2515,7 @@ function renderRecentRuns() {
   const container = document.getElementById('recent-runs-table');
   if (!runs.length) { hide('recent-runs-card'); return; }
 
-  const filtered = runs.filter(r => r.rtss != null || r.rtss_power != null);
+  const filtered = runs.filter(r => (r.rtss != null || r.rtss_power != null) && (r.dist_km == null || r.dist_km >= 3)).slice(0, 7);
   if (!filtered.length) { hide('recent-runs-card'); return; }
   show('recent-runs-card');
 
