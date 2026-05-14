@@ -13,6 +13,7 @@ from ..metrics import (
     compute_best_efforts,
     fit_critical_power,
     project_fitness,
+    project_fitness_split,
     compute_intensity_distribution,
     compute_fitness_series,
     estimate_session_tss,
@@ -449,10 +450,19 @@ def register(mcp) -> None:  # noqa: ANN001
         else:
             sessions = entries
 
-        result = {
-            "summary": summary,
-            "sessions": sessions,
-        }
+        result: dict = {"sessions": sessions}
+
+        if sport == "all":
+            # Present per-sport summaries as top-level keys for clarity.
+            # Mixed-scale rolling mean (W/bpm vs m·s⁻¹/bpm) is meaningless — suppress it.
+            by_sport = (summary or {}).get("by_sport", {})
+            result["run"] = by_sport.get("run")
+            result["ride"] = by_sport.get("ride")
+            result["note"] = (summary or {}).get("note", "")
+            result["sessions_analysed"] = (summary or {}).get("sessions_analysed", len(sessions))
+        else:
+            result["summary"] = summary
+
         return json.dumps(result, indent=2, default=str)
 
     # ── Best Efforts ───────────────────────────────────────────────────────────
@@ -565,6 +575,7 @@ def register(mcp) -> None:  # noqa: ANN001
         weekly_tss: float = 0.0,
         taper_weeks: int = 3,
         sport: str = "all",
+        split: bool = False,
     ) -> str:
         """
         Project CTL/ATL/TSB forward to a target race date.
@@ -578,7 +589,12 @@ def register(mcp) -> None:  # noqa: ANN001
         weekly_tss  : assumed weekly TSS going forward.
                       0 = auto-detect from last 4-week average.
         taper_weeks : weeks of taper before race (default 3; use 2 for B/C races)
-        sport       : 'all', 'run', or 'ride' — affects load history used
+        sport       : 'all', 'run', or 'ride' — affects load history used.
+                      Ignored when split=True (all three are returned).
+        split       : if True and sport='all', returns three parallel projections:
+                      combined / run / ride — each with independent CTL history
+                      and auto-detected weekly TSS. Useful for sport-specific
+                      race preparation (e.g. run-CTL for a half marathon).
 
         Returns
         -------
@@ -601,6 +617,16 @@ def register(mcp) -> None:  # noqa: ANN001
 
         taper_weeks = max(1, min(taper_weeks, 8))
 
+        if split and sport == "all":
+            with get_conn() as conn:
+                result = project_fitness_split(
+                    conn=conn,
+                    target_date=td,
+                    weekly_tss=weekly_tss if weekly_tss > 0 else None,
+                    taper_weeks=taper_weeks,
+                )
+            return json.dumps(result, indent=2, default=str)
+
         with get_conn() as conn:
             daily_tss = get_daily_tss_from_db(conn, sport)
 
@@ -619,11 +645,11 @@ def register(mcp) -> None:  # noqa: ANN001
     # ── Intensity Distribution (Seiler tripartite model) ──────────────────────
 
     @mcp.tool()
-    def get_intensity_distribution(weeks: int = 8) -> str:
+    def get_intensity_distribution(weeks: int = 8, sport: str = "all") -> str:
         """
         Tripartite intensity distribution over the last N weeks (Seiler model).
 
-        Bins all training time with HR data into three physiological zones:
+        Bins training time with HR data into three physiological zones:
           Easy     — below LT1 (< 72% HRR) — aerobic base work
           Moderate — LT1 to LT2 (72–82% HRR) — the metabolic 'no-man's land'
           Hard     — above LT2 (> 82% HRR) — threshold and VO2max work
@@ -637,6 +663,9 @@ def register(mcp) -> None:  # noqa: ANN001
 
         Includes gap analysis vs polarized target and an actionable interpretation.
 
+        sport : 'all' (default) — returns nested overall / run / ride breakdown.
+                'run' or 'ride' — returns a flat result for that sport only.
+
         Note: uses session average HR as a proxy — polarized sessions (long easy
         + short hard intervals) will appear shifted toward moderate. Use
         get_activity_streams on key sessions for second-by-second precision.
@@ -646,5 +675,5 @@ def register(mcp) -> None:  # noqa: ANN001
         """
         weeks = max(1, min(weeks, 104))
         with get_conn() as conn:
-            result = compute_intensity_distribution(conn, weeks=weeks)
+            result = compute_intensity_distribution(conn, weeks=weeks, sport=sport)
         return json.dumps(result, indent=2)

@@ -1147,53 +1147,97 @@ def compute_efficiency_factor_trend(
     if not entries:
         return []
 
-    # 4-week rolling mean
-    for i, e in enumerate(entries):
-        d = date.fromisoformat(e["date"])
-        window_start = (d - timedelta(weeks=4)).isoformat()
-        window = [x["ef"] for x in entries[: i + 1] if x["date"] >= window_start]
-        e["rolling_4w_ef"] = round(sum(window) / len(window), 6) if window else e["ef"]
+    def _compute_sport_ef_stats(sport_entries: list[dict]) -> dict:
+        """Compute rolling 4-week EF mean and trend for a homogeneous sport list."""
+        # 4-week rolling mean (per-session)
+        for i, e in enumerate(sport_entries):
+            d = date.fromisoformat(e["date"])
+            window_start = (d - timedelta(weeks=4)).isoformat()
+            window = [x["ef"] for x in sport_entries[: i + 1] if x["date"] >= window_start]
+            e["rolling_4w_ef"] = round(sum(window) / len(window), 6) if window else e["ef"]
 
-    # Trend: compare mean of first-half EF to mean of last 4 weeks
-    if len(entries) >= 4:
-        split = max(len(entries) // 2, 1)
-        early_mean = sum(x["ef"] for x in entries[:split]) / split
-        late_mean = sum(x["ef"] for x in entries[split:]) / (len(entries) - split)
-        delta_pct = (late_mean - early_mean) / max(early_mean, 1e-9) * 100
-        if delta_pct >= 2.0:
-            trend = "rising"
-        elif delta_pct <= -2.0:
-            trend = "declining"
+        # Trend: compare first-half mean to last-4-week mean
+        if len(sport_entries) >= 4:
+            split = max(len(sport_entries) // 2, 1)
+            early_mean = sum(x["ef"] for x in sport_entries[:split]) / split
+            late_mean = sum(x["ef"] for x in sport_entries[split:]) / (len(sport_entries) - split)
+            delta_pct = (late_mean - early_mean) / max(early_mean, 1e-9) * 100
+            if delta_pct >= 2.0:
+                trend = "rising"
+            elif delta_pct <= -2.0:
+                trend = "declining"
+            else:
+                trend = "stable"
+            trend_pct = round(delta_pct, 1)
         else:
-            trend = "stable"
-        trend_pct = round(delta_pct, 1)
-    else:
-        trend = "insufficient_data"
-        trend_pct = 0.0
+            trend = "insufficient_data"
+            trend_pct = 0.0
 
-    # Attach summary to the last entry for easy access (tool layer will peel it off)
-    last_session_ef = entries[-1]["rolling_4w_ef"] if entries else None
-    entries.append(
-        {
-            "__summary__": True,
-            "sessions_analysed": len(entries),
-            "earliest_date": entries[0]["date"],
-            "latest_date": entries[-1]["date"],
-            "current_4w_ef": last_session_ef,
+        _trend_msg = {
+            "rising": "Aerobic fitness improving — good adaptation signal.",
+            "declining": "Aerobic efficiency dropping — review recovery, illness, or heat stress.",
+            "stable": "EF holding steady — consistent aerobic base.",
+            "insufficient_data": "Not enough sessions to assess trend.",
+        }
+        current_4w_ef = sport_entries[-1]["rolling_4w_ef"] if sport_entries else None
+        return {
+            "sessions_analysed": len(sport_entries),
+            "earliest_date": sport_entries[0]["date"] if sport_entries else None,
+            "latest_date": sport_entries[-1]["date"] if sport_entries else None,
+            "current_4w_ef": current_4w_ef,
             "trend": trend,
             "trend_pct": trend_pct,
-            "interpretation": (
-                f"EF is {trend} ({trend_pct:+.1f}% from first half to recent 4 weeks). "
-                + {
-                    "rising": "Aerobic fitness improving — good adaptation signal.",
-                    "declining": "Aerobic efficiency dropping — review recovery, illness, or heat stress.",
-                    "stable": "EF holding steady — consistent aerobic base.",
-                    "insufficient_data": "Not enough sessions to assess trend.",
-                }[trend]
+            "interpretation": f"EF is {trend} ({trend_pct:+.1f}% from first half to recent 4 weeks). "
+            + _trend_msg[trend],
+        }
+
+    # Split entries by sport category
+    run_entries = [
+        e
+        for e in entries
+        if "run" in (e["sport_type"] or "").lower() or "trail" in (e["sport_type"] or "").lower()
+    ]
+    ride_entries = [e for e in entries if "ride" in (e["sport_type"] or "").lower()]
+
+    # When sport='all', compute rolling means per-sport to avoid cross-sport scale pollution.
+    # When filtered to a single sport, all entries belong to that sport.
+    if sport == "all":
+        if run_entries:
+            _compute_sport_ef_stats(run_entries)
+        if ride_entries:
+            _compute_sport_ef_stats(ride_entries)
+        # Backfill rolling_4w_ef for any entry that wasn't covered (shouldn't happen)
+        for e in entries:
+            e.setdefault("rolling_4w_ef", e["ef"])
+        # Merge back in date order (already sorted from SQL)
+    else:
+        _compute_sport_ef_stats(entries)
+
+    # Build by-sport summary for the 'all' case
+    by_sport: dict = {}
+    if sport == "all":
+        if run_entries:
+            by_sport["run"] = _compute_sport_ef_stats(run_entries)
+        if ride_entries:
+            by_sport["ride"] = _compute_sport_ef_stats(ride_entries)
+        # Overall combined summary (directional only — not a meaningful EF value)
+        combined_sessions = len(entries)
+        summary_entry: dict = {
+            "__summary__": True,
+            "sessions_analysed": combined_sessions,
+            "earliest_date": entries[0]["date"],
+            "latest_date": entries[-1]["date"],
+            "by_sport": by_sport,
+            "note": (
+                "Run EF (m/s ÷ bpm) and ride EF (W ÷ bpm) are on different scales — "
+                "compare within each sport only. See by_sport for per-sport trends."
             ),
         }
-    )
+    else:
+        stats = _compute_sport_ef_stats(entries)
+        summary_entry = {"__summary__": True, **stats, "by_sport": {}}
 
+    entries.append(summary_entry)
     return entries
 
 
@@ -1919,10 +1963,52 @@ def project_fitness(
     }
 
 
+def project_fitness_split(
+    conn,
+    target_date: date,
+    weekly_tss: float | None = None,
+    taper_weeks: int = 3,
+    taper_factor: float = 0.70,
+) -> dict:
+    """
+    Project CTL/ATL/TSB forward split by sport (run + ride + combined).
+
+    Calls project_fitness three times — once per sport category — using
+    independent TSS histories so the projections are not cross-contaminated.
+
+    Parameters
+    ----------
+    conn         : SQLite connection
+    target_date  : race/event date to project to
+    weekly_tss   : assumed weekly TSS per sport going forward.
+                   If None: auto-detected per sport from last 4-week mean.
+    taper_weeks  : weeks of taper before race (default 3)
+    taper_factor : fractional load reduction per taper week (default 0.70)
+
+    Returns
+    -------
+    dict with keys:
+      "combined" : project_fitness result using all-sport TSS
+      "run"      : project_fitness result using run-only TSS
+      "ride"     : project_fitness result using ride-only TSS
+    """
+    combined_tss = get_daily_tss_from_db(conn, "all")
+    run_tss = get_daily_tss_from_db(conn, "run")
+    ride_tss = get_daily_tss_from_db(conn, "ride")
+
+    combined = project_fitness(
+        combined_tss, target_date, weekly_tss, taper_weeks, taper_factor, "combined"
+    )
+    run = project_fitness(run_tss, target_date, weekly_tss, taper_weeks, taper_factor, "run")
+    ride = project_fitness(ride_tss, target_date, weekly_tss, taper_weeks, taper_factor, "ride")
+
+    return {"combined": combined, "run": run, "ride": ride}
+
+
 # ── Intensity Distribution (Tripartite model) ─────────────────────────────────
 
 
-def compute_intensity_distribution(conn, weeks: int = 8) -> dict:
+def compute_intensity_distribution(conn, weeks: int = 8, sport: str = "all") -> dict:
     """
     Tripartite intensity distribution using HR-based zone boundaries.
 
@@ -1950,6 +2036,9 @@ def compute_intensity_distribution(conn, weeks: int = 8) -> dict:
     ----------
     conn  : SQLite connection
     weeks : how many weeks of history to analyse (default 8)
+    sport : 'all' (default), 'run', or 'ride'.
+            'all' returns a nested dict with keys 'overall', 'run', 'ride'.
+            'run' / 'ride' return a single flat result dict.
 
     Sources
     -------
@@ -1970,113 +2059,134 @@ def compute_intensity_distribution(conn, weeks: int = 8) -> dict:
     lt1_hr = resting_hr + 0.72 * hrr  # aerobic threshold (top of Z2)
     lt2_hr = resting_hr + 0.82 * hrr  # lactate threshold (top of Z3)
 
-    cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
-    rows = conn.execute(
-        """
-        SELECT average_heartrate, moving_time, sport_type
-        FROM activities
-        WHERE start_date >= ?
-          AND average_heartrate IS NOT NULL
-          AND average_heartrate > 0
-          AND moving_time > 0
-        """,
-        (cutoff,),
-    ).fetchall()
+    thresholds = {
+        "lt1_hr": round(lt1_hr, 0),
+        "lt2_hr": round(lt2_hr, 0),
+        "threshold_hr_config": threshold_hr,
+        "resting_hr_config": resting_hr,
+    }
 
-    if not rows:
-        return {"error": "No activities with HR data in this period."}
-
-    easy_min = moderate_min = hard_min = 0.0
-    total_min = 0.0
-
-    for row in rows:
-        avg_hr = row["average_heartrate"]
-        mins = row["moving_time"] / 60.0
-        total_min += mins
-        if avg_hr < lt1_hr:
-            easy_min += mins
-        elif avg_hr < lt2_hr:
-            moderate_min += mins
-        else:
-            hard_min += mins
-
-    if total_min == 0:
-        return {"error": "No training time with HR data found."}
-
-    easy_pct = round(easy_min / total_min * 100, 1)
-    moderate_pct = round(moderate_min / total_min * 100, 1)
-    hard_pct = round(hard_min / total_min * 100, 1)
-
-    # ── Classify current distribution ────────────────────────────────────────
-    if moderate_pct <= 10 and hard_pct >= 8:
-        classification = "polarized"
-        class_note = (
-            "Distribution is polarized — healthy aerobic base with targeted intensity. "
-            "Consistent with high-performance endurance evidence."
-        )
-    elif moderate_pct <= 25 and hard_pct >= 5:
-        classification = "pyramidal"
-        class_note = (
-            "Pyramidal distribution — majority of work is easy with moderate threshold work. "
-            "Effective model for many amateur athletes."
-        )
-    elif moderate_pct > 30:
-        classification = "threshold-heavy"
-        class_note = (
-            "Threshold-heavy distribution — high proportion of moderate Z3 work. "
-            "Often leads to chronic fatigue without maximising adaptation. "
-            "Consider reducing Z3 and shifting either easier or harder."
-        )
-    else:
-        classification = "mixed"
-        class_note = "Distribution does not match a standard model cleanly. Review session intensity targets."
-
-    # ── Gap analysis vs polarized target ─────────────────────────────────────
     polarized_target = {"easy": 80.0, "moderate": 10.0, "hard": 15.0}
     pyramidal_target = {"easy": 70.0, "moderate": 20.0, "hard": 10.0}
     threshold_target = {"easy": 50.0, "moderate": 30.0, "hard": 20.0}
-
-    gap_vs_polarized = {
-        "easy_gap": round(easy_pct - polarized_target["easy"], 1),
-        "moderate_gap": round(moderate_pct - polarized_target["moderate"], 1),
-        "hard_gap": round(hard_pct - polarized_target["hard"], 1),
+    canonical_targets = {
+        "polarized": polarized_target,
+        "pyramidal": pyramidal_target,
+        "threshold": threshold_target,
     }
+    caveat = (
+        "Binning uses session average HR as a proxy. "
+        "Polarized sessions (easy + hard intervals) will appear as moderate. "
+        "For precision, use get_activity_streams on key sessions."
+    )
 
+    cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
+
+    def _sport_filter(s: str) -> str:
+        if s == "run":
+            return "AND (LOWER(sport_type) LIKE '%run%' OR LOWER(sport_type) LIKE '%trail%')"
+        elif s == "ride":
+            return "AND LOWER(sport_type) LIKE '%ride%'"
+        return ""
+
+    def _fetch_and_classify(sport_key: str) -> dict:
+        rows = conn.execute(
+            f"""
+            SELECT average_heartrate, moving_time, sport_type
+            FROM activities
+            WHERE start_date >= ?
+              AND average_heartrate IS NOT NULL
+              AND average_heartrate > 0
+              AND moving_time > 0
+              {_sport_filter(sport_key)}
+            """,
+            (cutoff,),
+        ).fetchall()
+
+        if not rows:
+            return {"error": f"No activities with HR data in this period ({sport_key})."}
+
+        easy_min = moderate_min = hard_min = 0.0
+        total_min = 0.0
+        for row in rows:
+            avg_hr = row["average_heartrate"]
+            mins = row["moving_time"] / 60.0
+            total_min += mins
+            if avg_hr < lt1_hr:
+                easy_min += mins
+            elif avg_hr < lt2_hr:
+                moderate_min += mins
+            else:
+                hard_min += mins
+
+        if total_min == 0:
+            return {"error": "No training time with HR data found."}
+
+        easy_pct = round(easy_min / total_min * 100, 1)
+        moderate_pct = round(moderate_min / total_min * 100, 1)
+        hard_pct = round(hard_min / total_min * 100, 1)
+
+        # Classify
+        if moderate_pct <= 10 and hard_pct >= 8:
+            classification = "polarized"
+            class_note = (
+                "Distribution is polarized — healthy aerobic base with targeted intensity. "
+                "Consistent with high-performance endurance evidence."
+            )
+        elif moderate_pct <= 25 and hard_pct >= 5:
+            classification = "pyramidal"
+            class_note = (
+                "Pyramidal distribution — majority of work is easy with moderate threshold work. "
+                "Effective model for many amateur athletes."
+            )
+        elif moderate_pct > 30:
+            classification = "threshold-heavy"
+            class_note = (
+                "Threshold-heavy distribution — high proportion of moderate Z3 work. "
+                "Often leads to chronic fatigue without maximising adaptation. "
+                "Consider reducing Z3 and shifting either easier or harder."
+            )
+        else:
+            classification = "mixed"
+            class_note = "Distribution does not match a standard model cleanly. Review session intensity targets."
+
+        gap_vs_polarized = {
+            "easy_gap": round(easy_pct - polarized_target["easy"], 1),
+            "moderate_gap": round(moderate_pct - polarized_target["moderate"], 1),
+            "hard_gap": round(hard_pct - polarized_target["hard"], 1),
+        }
+
+        return {
+            "weeks_analysed": weeks,
+            "total_hours": round(total_min / 60, 1),
+            "athlete_thresholds": thresholds,
+            "distribution_pct": {
+                "easy": easy_pct,
+                "moderate": moderate_pct,
+                "hard": hard_pct,
+            },
+            "distribution_hours": {
+                "easy": round(easy_min / 60, 1),
+                "moderate": round(moderate_min / 60, 1),
+                "hard": round(hard_min / 60, 1),
+            },
+            "classification": classification,
+            "classification_note": class_note,
+            "canonical_targets": canonical_targets,
+            "gap_vs_polarized": gap_vs_polarized,
+            "interpretation": f"{easy_pct}% easy / {moderate_pct}% moderate / {hard_pct}% hard. "
+            + class_note,
+            "caveat": caveat,
+        }
+
+    if sport in ("run", "ride"):
+        return _fetch_and_classify(sport)
+
+    # sport == "all": return nested overall + run + ride
     return {
-        "weeks_analysed": weeks,
-        "total_hours": round(total_min / 60, 1),
-        "athlete_thresholds": {
-            "lt1_hr": round(lt1_hr, 0),
-            "lt2_hr": round(lt2_hr, 0),
-            "threshold_hr_config": threshold_hr,
-            "resting_hr_config": resting_hr,
-        },
-        "distribution_pct": {
-            "easy": easy_pct,
-            "moderate": moderate_pct,
-            "hard": hard_pct,
-        },
-        "distribution_hours": {
-            "easy": round(easy_min / 60, 1),
-            "moderate": round(moderate_min / 60, 1),
-            "hard": round(hard_min / 60, 1),
-        },
-        "classification": classification,
-        "classification_note": class_note,
-        "canonical_targets": {
-            "polarized": polarized_target,
-            "pyramidal": pyramidal_target,
-            "threshold": threshold_target,
-        },
-        "gap_vs_polarized": gap_vs_polarized,
-        "interpretation": (
-            f"{easy_pct}% easy / {moderate_pct}% moderate / {hard_pct}% hard. " + class_note
-        ),
-        "caveat": (
-            "Binning uses session average HR as a proxy. "
-            "Polarized sessions (easy + hard intervals) will appear as moderate. "
-            "For precision, use get_activity_streams on key sessions."
-        ),
+        "overall": _fetch_and_classify("all"),
+        "run": _fetch_and_classify("run"),
+        "ride": _fetch_and_classify("ride"),
     }
 
 

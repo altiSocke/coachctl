@@ -916,6 +916,13 @@ main {
     <div class="sessions-list" id="sessions-list"></div>
   </div>
 
+  <!-- Fitness pills — immediately below week so daily go/no-go has both inputs visible together -->
+  <div class="card" id="fitness-card">
+    <div class="card-title">Fitness</div>
+    <div class="fit-pills" id="fit-pills"></div>
+    <div id="fit-alerts"></div>
+  </div>
+
   <!-- Phase bar -->
   <div class="card" id="phase-card">
     <div class="phase-wrap">
@@ -932,13 +939,6 @@ main {
 
   <!-- Upcoming races -->
   <div id="events-strip" class="events-strip"></div>
-
-  <!-- Fitness pills -->
-  <div class="card" id="fitness-card">
-    <div class="card-title">Fitness</div>
-    <div class="fit-pills" id="fit-pills"></div>
-    <div id="fit-alerts"></div>
-  </div>
 
   <!-- Recent runs — placed here so key numbers are visible before charts -->
   <div class="card hidden" id="recent-runs-card">
@@ -1301,7 +1301,11 @@ function openRacePage(ev) {
     if (w && typeof w === 'object') {
       const chips = [];
       if (w.condition) chips.push(`<span class="race-weather-chip condition">${esc(w.condition)}</span>`);
-      if (w.max_temp_c != null) chips.push(`<span class="race-weather-chip temp">${esc(String(w.max_temp_c))}°C max${w.min_temp_c != null ? ' / ' + esc(String(w.min_temp_c)) + '°C min' : ''}</span>`);
+      if (w.race_temp_c != null) {
+        chips.push(`<span class="race-weather-chip temp">${esc(String(w.race_temp_c))}</span>`);
+      } else if (w.max_temp_c != null) {
+        chips.push(`<span class="race-weather-chip temp">${esc(String(w.max_temp_c))}°C max${w.min_temp_c != null ? ' / ' + esc(String(w.min_temp_c)) + '°C min' : ''}</span>`);
+      }
       if (w.precipitation_mm) chips.push(`<span class="race-weather-chip rain">${esc(String(w.precipitation_mm))}mm</span>`);
       if (w.wind_kmh) chips.push(`<span class="race-weather-chip wind">${w.wind_direction ? esc(w.wind_direction)+' ' : ''}${esc(String(w.wind_kmh))} km/h</span>`);
       html += '<div style="border-top:1px solid var(--border);padding-top:8px;margin-top:2px">';
@@ -1579,10 +1583,14 @@ function renderEvents() {
     }
 
     const pri = evPriority;
+    const goalPrimary = ev.payload && ev.payload.goal && ev.payload.goal.primary
+      ? ev.payload.goal.primary
+      : (ev.goal_time || null);
     card.innerHTML = `
       ${countdownHtml}
       <div class="ev-name">${esc(ev.name)}</div>
       <div class="ev-date">${fmtDate(ev.date)}</div>
+      ${goalPrimary ? `<div class="ev-date" style="margin-top:2px;color:var(--text);font-weight:500">${esc(goalPrimary)}</div>` : ''}
       <div class="ev-pri ${pri}">${pri}</div>`;
 
     card.addEventListener('click', () => {
@@ -1639,6 +1647,18 @@ function renderFitness() {
 
   const pillsEl = document.getElementById('fit-pills');
 
+  // CTL 7-day ramp delta from trend data
+  let ctlRamp = null;
+  const trend = DATA.trend || [];
+  if (trend.length >= 8) {
+    const ctlNow  = +trend[trend.length - 1].ctl;
+    const ctlWeek = +trend[trend.length - 8].ctl;
+    if (!isNaN(ctlNow) && !isNaN(ctlWeek)) ctlRamp = ctlNow - ctlWeek;
+  }
+  const ctlRampStr = ctlRamp != null
+    ? (ctlRamp >= 0 ? '+' : '') + ctlRamp.toFixed(1) + '/w'
+    : 'Fitness';
+
   // ACWR pill
   const acwr = DATA.acwr || {};
   const acwrVal = acwr.acwr_ema != null ? +acwr.acwr_ema : null;
@@ -1649,7 +1669,7 @@ function renderFitness() {
     <div class="fit-pill">
       <div class="fit-val">${ctl != null ? Math.round(ctl) : '—'}</div>
       <div class="fit-lbl">CTL</div>
-      <div class="fit-sub">Fitness</div>
+      <div class="fit-sub">${esc(ctlRampStr)}</div>
     </div>
     <div class="fit-pill">
       <div class="fit-val">${atl != null ? Math.round(atl) : '—'}</div>
@@ -1902,14 +1922,23 @@ function renderZones() {
     leg.appendChild(item);
   });
 
-  // Polarization note
+  // Polarization note + target annotation
   if (zones.interpretation) {
     const note = document.createElement('div');
-    note.style.cssText = 'font-size:.72rem;color:var(--muted);margin-top:8px;';
     const pi = zones.polarization_index != null ? ` (PI ${zones.polarization_index.toFixed(2)})` : '';
+    const interp = zones.interpretation.toLowerCase();
+    const interpColor = interp.includes('polarized') ? 'var(--success)'
+      : interp.includes('threshold') ? 'var(--danger)'
+      : 'var(--warning)';
+    note.style.cssText = `font-size:.72rem;color:${interpColor};margin-top:8px;font-weight:500`;
     note.textContent = zones.interpretation + pi;
     leg.appendChild(note);
   }
+  // Fixed target line
+  const target = document.createElement('div');
+  target.style.cssText = 'font-size:.65rem;color:var(--dim);margin-top:4px;';
+  target.textContent = 'Target (polarized): Z1+Z2 ≥80% · Z3 <10% · Z4+Z5 ~15%';
+  leg.appendChild(target);
 }
 
 // ── Week sessions ─────────────────────────────────────────────────────────── 
