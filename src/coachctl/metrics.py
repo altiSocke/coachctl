@@ -50,6 +50,7 @@ available (30s rolling NP-style 4th-power average — Coggan & Allen).
 
 from __future__ import annotations
 
+import json
 import math
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -324,7 +325,10 @@ def get_daily_tss_from_db(conn, sport_category: str = "all") -> dict[date, float
             "WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL AND (a.sport_type LIKE ? OR a.sport_type LIKE ?)",
             ["%Run%", "%Trail%"],
         ),
-        "ride": ("WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL AND a.sport_type LIKE ?", ["%Ride%"]),
+        "ride": (
+            "WHERE COALESCE(o.tss_override, a.tss) IS NOT NULL AND a.sport_type LIKE ?",
+            ["%Ride%"],
+        ),
     }
     if sport_category not in _SPORT_SQL:
         raise ValueError(
@@ -1012,6 +1016,1068 @@ def predict_race_times(
             }
         )
     return results
+
+
+# ── Efficiency Factor Trend ───────────────────────────────────────────────────
+
+
+def compute_efficiency_factor_trend(
+    conn,
+    sport: str = "all",
+    weeks: int = 16,
+) -> list[dict]:
+    """
+    Compute Efficiency Factor (EF) for each aerobic session over the last N weeks.
+
+    EF measures aerobic output per unit of cardiac strain:
+      - Cycling: EF = normalised_power (W) / avg_HR
+      - Running: EF = NGP (m/s) / avg_HR
+
+    Only aerobic sessions are included (intensity_factor < 0.85 for rides;
+    for runs: sessions where avg HR < threshold_hr × 0.95).  Sessions shorter
+    than 45 minutes are excluded (insufficient steady-state signal).
+
+    A rising EF trend at constant RPE indicates improving aerobic economy.
+
+    Parameters
+    ----------
+    conn        : SQLite connection
+    sport       : 'all', 'run', or 'ride'
+    weeks       : how many weeks of history to include (default 16)
+
+    Returns
+    -------
+    list of per-activity dicts plus a summary:
+      {date, activity_id, name, sport_type, ef, if_val, avg_hr, notes}
+    Plus a top-level summary with rolling_4w_mean and trend direction.
+
+    Sources
+    -------
+    Allen & Coggan, "Training and Racing with a Power Meter" (2010), Ch.4
+    Friel, "The Cyclist's Training Bible" (2009) — Pa:HR ratio
+    Coggan, "Power Training Levels" (2003) — IF < 0.85 aerobic filter
+    """
+    from .config import load_athlete
+
+    athlete = load_athlete()
+    threshold_hr = athlete.get("threshold_hr", 175)
+
+    cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
+
+    sport_filter = ""
+    params: list = [cutoff]
+    if sport == "run":
+        sport_filter = "AND (LOWER(sport_type) LIKE '%run%' OR LOWER(sport_type) LIKE '%trail%')"
+    elif sport == "ride":
+        sport_filter = "AND LOWER(sport_type) LIKE '%ride%'"
+
+    rows = conn.execute(
+        f"""
+        SELECT
+            id, name, sport_type,
+            date(start_date) AS day,
+            average_heartrate,
+            average_watts,
+            weighted_avg_watts,
+            ngp,
+            intensity_factor,
+            moving_time
+        FROM activities
+        WHERE start_date >= ?
+          AND average_heartrate IS NOT NULL
+          AND average_heartrate > 0
+          AND moving_time >= 2700           -- ≥ 45 minutes
+          {sport_filter}
+        ORDER BY start_date ASC
+        """,
+        params,
+    ).fetchall()
+
+    entries: list[dict] = []
+    for row in rows:
+        r = dict(row)
+        stype = (r.get("sport_type") or "").lower()
+        is_run = "run" in stype or "trail" in stype
+        is_ride = "ride" in stype
+        avg_hr = r["average_heartrate"]
+        if_val = r.get("intensity_factor")
+
+        ef: float | None = None
+        note = ""
+
+        if is_ride:
+            # Use NP (weighted_avg_watts) if available, else average_watts
+            power = r.get("weighted_avg_watts") or r.get("average_watts")
+            if not power or avg_hr <= 0:
+                continue
+            # Skip threshold/intensity sessions
+            if if_val is not None and if_val >= 0.85:
+                continue
+            ef = round(power / avg_hr, 4)
+            note = f"NP/HR ({power:.0f}W / {avg_hr:.0f}bpm)"
+
+        elif is_run:
+            ngp = r.get("ngp")  # stored in m/s
+            if not ngp or ngp <= 0 or avg_hr <= 0:
+                continue
+            # Skip hard running sessions (avg HR > 95% of threshold)
+            if avg_hr >= threshold_hr * 0.95:
+                continue
+            ef = round(ngp / avg_hr, 6)
+            ngp_pace = format_pace(1000 / ngp)
+            note = f"NGP/HR ({ngp_pace}/km / {avg_hr:.0f}bpm)"
+
+        else:
+            continue
+
+        entries.append(
+            {
+                "date": r["day"],
+                "activity_id": r["id"],
+                "name": r["name"],
+                "sport_type": r["sport_type"],
+                "ef": ef,
+                "if_val": if_val,
+                "avg_hr": avg_hr,
+                "duration_min": round(r["moving_time"] / 60),
+                "note": note,
+            }
+        )
+
+    if not entries:
+        return []
+
+    # 4-week rolling mean
+    for i, e in enumerate(entries):
+        d = date.fromisoformat(e["date"])
+        window_start = (d - timedelta(weeks=4)).isoformat()
+        window = [x["ef"] for x in entries[: i + 1] if x["date"] >= window_start]
+        e["rolling_4w_ef"] = round(sum(window) / len(window), 6) if window else e["ef"]
+
+    # Trend: compare mean of first-half EF to mean of last 4 weeks
+    if len(entries) >= 4:
+        split = max(len(entries) // 2, 1)
+        early_mean = sum(x["ef"] for x in entries[:split]) / split
+        late_mean = sum(x["ef"] for x in entries[split:]) / (len(entries) - split)
+        delta_pct = (late_mean - early_mean) / max(early_mean, 1e-9) * 100
+        if delta_pct >= 2.0:
+            trend = "rising"
+        elif delta_pct <= -2.0:
+            trend = "declining"
+        else:
+            trend = "stable"
+        trend_pct = round(delta_pct, 1)
+    else:
+        trend = "insufficient_data"
+        trend_pct = 0.0
+
+    # Attach summary to the last entry for easy access (tool layer will peel it off)
+    last_session_ef = entries[-1]["rolling_4w_ef"] if entries else None
+    entries.append(
+        {
+            "__summary__": True,
+            "sessions_analysed": len(entries),
+            "earliest_date": entries[0]["date"],
+            "latest_date": entries[-1]["date"],
+            "current_4w_ef": last_session_ef,
+            "trend": trend,
+            "trend_pct": trend_pct,
+            "interpretation": (
+                f"EF is {trend} ({trend_pct:+.1f}% from first half to recent 4 weeks). "
+                + {
+                    "rising": "Aerobic fitness improving — good adaptation signal.",
+                    "declining": "Aerobic efficiency dropping — review recovery, illness, or heat stress.",
+                    "stable": "EF holding steady — consistent aerobic base.",
+                    "insufficient_data": "Not enough sessions to assess trend.",
+                }[trend]
+            ),
+        }
+    )
+
+    return entries
+
+
+# ── Best Efforts ──────────────────────────────────────────────────────────────
+
+# Standard brackets for running best efforts: (label, min_m, max_m, canonical_km)
+_RUN_EFFORT_BRACKETS: list[tuple[str, float, float, float]] = [
+    ("pace_1km", 900, 1100, 1.0),
+    ("pace_5km", 4750, 5250, 5.0),
+    ("pace_10km", 9500, 10500, 10.0),
+    ("pace_half", 20000, 22200, 21.1),
+    ("pace_marathon", 41000, 43400, 42.2),
+]
+
+# Standard durations for cycling power best efforts (label, seconds)
+_RIDE_EFFORT_DURATIONS: list[tuple[str, int]] = [
+    ("power_5s", 5),
+    ("power_30s", 30),
+    ("power_1min", 60),
+    ("power_5min", 300),
+    ("power_20min", 1200),
+    ("power_60min", 3600),
+]
+
+
+def _is_best_efforts_stale(conn) -> bool:
+    """Return True if best_efforts table needs recomputation (new activities since last compute)."""
+    row = conn.execute("SELECT MAX(computed_at) FROM best_efforts WHERE sport = 'ride'").fetchone()
+    last_computed = row[0] if row else None
+    if not last_computed:
+        return True
+    row2 = conn.execute("SELECT MAX(synced_at) FROM activities").fetchone()
+    last_synced = row2[0] if row2 else None
+    if not last_synced:
+        return False
+    return last_synced > last_computed
+
+
+def _compute_run_best_efforts(conn) -> list[dict]:
+    """Compute running best efforts from activities table (no streams needed)."""
+    season_cutoff = (date.today() - timedelta(days=365)).isoformat()
+    results = []
+
+    for effort_type, min_m, max_m, canonical_km in _RUN_EFFORT_BRACKETS:
+        # All-time best
+        row = conn.execute(
+            """
+            SELECT id, date(start_date) AS day, distance, moving_time
+            FROM activities
+            WHERE (LOWER(sport_type) LIKE '%run%' OR LOWER(sport_type) LIKE '%trail%')
+              AND distance BETWEEN ? AND ?
+              AND moving_time > 0
+            ORDER BY (CAST(moving_time AS REAL) / distance) ASC
+            LIMIT 1
+            """,
+            (min_m, max_m),
+        ).fetchone()
+
+        if not row:
+            continue
+
+        d_km = row["distance"] / 1000.0
+        pace_sec_per_km = row["moving_time"] / d_km
+
+        # Season best (last 365 days)
+        srow = conn.execute(
+            """
+            SELECT id, date(start_date) AS day, distance, moving_time
+            FROM activities
+            WHERE (LOWER(sport_type) LIKE '%run%' OR LOWER(sport_type) LIKE '%trail%')
+              AND distance BETWEEN ? AND ?
+              AND moving_time > 0
+              AND date(start_date) >= ?
+            ORDER BY (CAST(moving_time AS REAL) / distance) ASC
+            LIMIT 1
+            """,
+            (min_m, max_m, season_cutoff),
+        ).fetchone()
+
+        season_pace = None
+        season_date = None
+        season_act_id = None
+        if srow:
+            s_d_km = srow["distance"] / 1000.0
+            season_pace = srow["moving_time"] / s_d_km
+            season_date = srow["day"]
+            season_act_id = srow["id"]
+
+        results.append(
+            {
+                "sport": "run",
+                "effort_type": effort_type,
+                "activity_id": row["id"],
+                "activity_date": row["day"],
+                "value": round(pace_sec_per_km, 1),
+                "value_per_kg": None,
+                "season_activity_id": season_act_id,
+                "season_date": season_date,
+                "season_value": round(season_pace, 1) if season_pace else None,
+                "season_value_per_kg": None,
+            }
+        )
+
+    return results
+
+
+def _compute_ride_best_efforts(conn, weight_kg: float | None) -> list[dict]:
+    """
+    Compute cycling power best efforts by scanning all cached activity streams.
+
+    Uses a sliding-window mean over each duration to find the best mean power.
+    Results are cached in the best_efforts table.
+
+    Sources
+    -------
+    Coggan, "Power Profiling" (2003/2010) — standard 5s/1min/5min/20min durations
+    """
+    # Collect all cached streams for rides
+    stream_rows = conn.execute(
+        """
+        SELECT a.id, date(a.start_date) AS day, s.streams_json
+        FROM activity_streams s
+        JOIN activities a ON a.id = s.activity_id
+        WHERE LOWER(a.sport_type) LIKE '%ride%'
+          AND a.moving_time > 0
+        ORDER BY a.start_date ASC
+        """,
+    ).fetchall()
+
+    season_cutoff = (date.today() - timedelta(days=365)).isoformat()
+
+    # all_time best: {effort_type: (value, activity_id, date)}
+    best_all: dict[str, tuple[float, int, str]] = {}
+    best_season: dict[str, tuple[float, int, str]] = {}
+
+    for srow in stream_rows:
+        act_id = srow["id"]
+        act_date = srow["day"]
+        try:
+            streams = json.loads(srow["streams_json"])
+        except Exception:
+            continue
+
+        watts_stream = streams.get("watts")
+        if isinstance(watts_stream, dict):
+            watts = watts_stream.get("data") or []
+        elif isinstance(watts_stream, list):
+            watts = watts_stream
+        else:
+            continue
+
+        if not watts or len(watts) < 5:
+            continue
+
+        for effort_type, dur_s in _RIDE_EFFORT_DURATIONS:
+            if len(watts) < dur_s:
+                continue
+
+            # Sliding window sum
+            window_sum = float(sum(watts[:dur_s]))
+            best_sum = window_sum
+            for i in range(dur_s, len(watts)):
+                window_sum += watts[i] - watts[i - dur_s]
+                if window_sum > best_sum:
+                    best_sum = window_sum
+            mean_power = best_sum / dur_s
+
+            if mean_power <= 0:
+                continue
+
+            if effort_type not in best_all or mean_power > best_all[effort_type][0]:
+                best_all[effort_type] = (mean_power, act_id, act_date)
+
+            if act_date >= season_cutoff:
+                if effort_type not in best_season or mean_power > best_season[effort_type][0]:
+                    best_season[effort_type] = (mean_power, act_id, act_date)
+
+    results = []
+    for effort_type, _ in _RIDE_EFFORT_DURATIONS:
+        if effort_type not in best_all:
+            continue
+        val, act_id, act_date = best_all[effort_type]
+        vpkg = round(val / weight_kg, 3) if weight_kg and weight_kg > 0 else None
+
+        s_val = s_act_id = s_date = s_vpkg = None
+        if effort_type in best_season:
+            s_val, s_act_id, s_date = best_season[effort_type]
+            s_vpkg = round(s_val / weight_kg, 3) if weight_kg and weight_kg > 0 else None
+
+        results.append(
+            {
+                "sport": "ride",
+                "effort_type": effort_type,
+                "activity_id": act_id,
+                "activity_date": act_date,
+                "value": round(val, 1),
+                "value_per_kg": vpkg,
+                "season_activity_id": s_act_id,
+                "season_date": s_date,
+                "season_value": round(s_val, 1) if s_val is not None else None,
+                "season_value_per_kg": s_vpkg,
+            }
+        )
+
+    return results
+
+
+def compute_best_efforts(conn, athlete: dict | None = None) -> dict:
+    """
+    Return the athlete's best efforts for standard running distances and
+    cycling power durations.  Results are lazily cached in the best_efforts
+    table — only recomputed when new activities have been synced since the
+    last computation.
+
+    Running efforts (from activities table):
+      pace_1km, pace_5km, pace_10km, pace_half, pace_marathon
+
+    Cycling power efforts (from cached activity_streams):
+      power_5s, power_30s, power_1min, power_5min, power_20min, power_60min
+
+    Each effort shows:
+      - all_time: best ever value + date
+      - season:   best in last 365 days (None if no qualifying activity)
+      - stale:    True if the all-time best is > 12 months old (consider re-testing)
+
+    Sources
+    -------
+    Coggan, "Power Profiling" (2003/2010) — standard cycling power durations
+    Péronnet & Thibault (1989) — distance effort model basis
+    """
+    if athlete is None:
+        from .config import load_athlete
+
+        athlete = load_athlete()
+
+    weight_kg = athlete.get("weight_kg")
+    recompute_rides = _is_best_efforts_stale(conn)
+
+    if recompute_rides:
+        # Recompute runs too (cheap) to keep everything consistent
+        run_rows = _compute_run_best_efforts(conn)
+        ride_rows = _compute_ride_best_efforts(conn, weight_kg)
+        all_rows = run_rows + ride_rows
+
+        now_str = datetime.now().isoformat()
+        for r in all_rows:
+            conn.execute(
+                """
+                INSERT INTO best_efforts (
+                    sport, effort_type, activity_id, activity_date,
+                    value, value_per_kg,
+                    season_activity_id, season_date, season_value, season_value_per_kg,
+                    computed_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(sport, effort_type) DO UPDATE SET
+                    activity_id         = excluded.activity_id,
+                    activity_date       = excluded.activity_date,
+                    value               = excluded.value,
+                    value_per_kg        = excluded.value_per_kg,
+                    season_activity_id  = excluded.season_activity_id,
+                    season_date         = excluded.season_date,
+                    season_value        = excluded.season_value,
+                    season_value_per_kg = excluded.season_value_per_kg,
+                    computed_at         = excluded.computed_at
+                """,
+                (
+                    r["sport"],
+                    r["effort_type"],
+                    r["activity_id"],
+                    r["activity_date"],
+                    r["value"],
+                    r["value_per_kg"],
+                    r["season_activity_id"],
+                    r["season_date"],
+                    r["season_value"],
+                    r["season_value_per_kg"],
+                    now_str,
+                ),
+            )
+
+    rows = conn.execute("SELECT * FROM best_efforts ORDER BY sport, effort_type").fetchall()
+
+    season_cutoff = (date.today() - timedelta(days=365)).isoformat()
+    run_efforts: list[dict] = []
+    ride_efforts: list[dict] = []
+
+    for row in rows:
+        r = dict(row)
+        is_stale = r["activity_date"] < season_cutoff if r["activity_date"] else True
+        effort_type = r["effort_type"]
+        sport = r["sport"]
+
+        # Human-readable formatting
+        if sport == "run":
+            val_fmt = format_pace(r["value"]) + "/km"
+            s_val_fmt = format_pace(r["season_value"]) + "/km" if r["season_value"] else None
+        else:
+            val_fmt = f"{r['value']:.0f} W"
+            if r.get("value_per_kg"):
+                val_fmt += f" ({r['value_per_kg']:.2f} W/kg)"
+            s_val_fmt = None
+            if r["season_value"]:
+                s_val_fmt = f"{r['season_value']:.0f} W"
+                if r.get("season_value_per_kg"):
+                    s_val_fmt += f" ({r['season_value_per_kg']:.2f} W/kg)"
+
+        entry = {
+            "effort": effort_type,
+            "all_time": {
+                "value_raw": r["value"],
+                "value_fmt": val_fmt,
+                "activity_id": r["activity_id"],
+                "date": r["activity_date"],
+            },
+            "season": (
+                {
+                    "value_raw": r["season_value"],
+                    "value_fmt": s_val_fmt,
+                    "activity_id": r["season_activity_id"],
+                    "date": r["season_date"],
+                }
+                if r["season_value"]
+                else None
+            ),
+            "stale": is_stale,
+            "stale_note": "All-time best is >12 months old — consider a test effort."
+            if is_stale
+            else None,
+        }
+
+        if sport == "run":
+            run_efforts.append(entry)
+        else:
+            ride_efforts.append(entry)
+
+    return {
+        "run": run_efforts,
+        "ride": ride_efforts,
+        "cache_status": "recomputed" if recompute_rides else "cached",
+        "season_window": "last 365 days",
+    }
+
+
+# ── Critical Power / W' model ─────────────────────────────────────────────────
+
+# Durations used for the CP fit — long enough to be aerobically dominated.
+# 5s and 30s are excluded: both are largely anaerobic and inflate W'.
+_CP_FIT_EFFORTS: dict[str, int] = {
+    "power_1min": 60,
+    "power_5min": 300,
+    "power_20min": 1200,
+    "power_60min": 3600,
+}
+
+_CP_MIN_POINTS = 3  # minimum MMP points to attempt a fit
+
+# Physiological sanity bounds (flag if outside, but still return the value)
+_CP_BOUNDS = (80.0, 700.0)  # watts
+_W_PRIME_BOUNDS = (1_000.0, 80_000.0)  # joules (1–80 kJ)
+
+
+def _ols_fit(x: list[float], y: list[float]) -> tuple[float, float, float]:
+    """
+    Ordinary least-squares linear regression of y on x.
+
+    Returns (slope, intercept, r_squared).
+
+    Uses stdlib ``statistics`` (Python ≥ 3.10).  No external dependencies.
+
+    The CP linearisation maps the 2-param hyperbola ``P = CP + W'/t`` to:
+        E = P × t = W' + CP × t
+    so slope = CP, intercept = W' (in joules).
+    """
+    from statistics import linear_regression, mean
+
+    n = len(x)
+    if n < 2:
+        return 0.0, 0.0, 0.0
+
+    slope, intercept = linear_regression(x, y)
+
+    # R²
+    y_mean = mean(y)
+    ss_tot = sum((yi - y_mean) ** 2 for yi in y)
+    if ss_tot == 0:
+        r_sq = 1.0
+    else:
+        ss_res = sum((yi - (slope * xi + intercept)) ** 2 for xi, yi in zip(x, y))
+        r_sq = max(0.0, 1.0 - ss_res / ss_tot)
+
+    return slope, intercept, round(r_sq, 4)
+
+
+def _fit_cp_from_mmp_points(
+    mmp_points: list[tuple[str, float]],
+) -> dict | None:
+    """
+    Fit the CP / W' model from a list of (effort_type, mean_power_watts) tuples.
+
+    Only effort types listed in ``_CP_FIT_EFFORTS`` are used; others are ignored.
+    Returns ``None`` if fewer than ``_CP_MIN_POINTS`` valid points are available.
+
+    Returns
+    -------
+    dict with keys:
+        cp_watts      : Critical Power in watts (slope of linearised fit)
+        w_prime_kj    : Anaerobic capacity W' in kilojoules
+        w_prime_j     : W' in joules (raw)
+        r_squared     : Goodness-of-fit (0–1; ≥0.95 is excellent)
+        n_points      : Number of MMP durations used
+        durations_used: list of effort_type labels
+        out_of_range  : True if CP or W' fall outside physiological bounds
+    """
+    xs: list[float] = []
+    ys: list[float] = []
+    labels: list[str] = []
+
+    for effort_type, dur_s in _CP_FIT_EFFORTS.items():
+        # Find matching point
+        power_w = next(
+            (p for et, p in mmp_points if et == effort_type and p and p > 0),
+            None,
+        )
+        if power_w is None:
+            continue
+        xs.append(float(dur_s))
+        ys.append(float(power_w) * dur_s)  # E = P × t  (joules)
+        labels.append(effort_type)
+
+    if len(xs) < _CP_MIN_POINTS:
+        return None
+
+    cp, w_prime_j, r_sq = _ols_fit(xs, ys)
+
+    if cp <= 0 or w_prime_j <= 0:
+        return None
+
+    w_prime_kj = round(w_prime_j / 1000, 2)
+    cp_rounded = round(cp, 1)
+    out_of_range = not (
+        _CP_BOUNDS[0] <= cp <= _CP_BOUNDS[1]
+        and _W_PRIME_BOUNDS[0] <= w_prime_j <= _W_PRIME_BOUNDS[1]
+    )
+
+    return {
+        "cp_watts": cp_rounded,
+        "w_prime_kj": w_prime_kj,
+        "w_prime_j": round(w_prime_j, 1),
+        "r_squared": r_sq,
+        "n_points": len(xs),
+        "durations_used": labels,
+        "out_of_range": out_of_range,
+    }
+
+
+def fit_critical_power(
+    ride_best_efforts: list[dict],
+    ftp: float | int | None = None,
+) -> dict | None:
+    """
+    Estimate Critical Power (CP) and anaerobic work capacity (W') from the
+    athlete's mean maximal power best efforts.
+
+    Parameters
+    ----------
+    ride_best_efforts :
+        List of ride effort dicts as returned by ``compute_best_efforts()["ride"]``.
+        Each dict must have ``effort`` (str) and ``all_time.value_raw`` /
+        ``season.value_raw`` (float | None).
+    ftp :
+        Athlete's current FTP in watts (from ``athlete.yaml``).
+        Used only for the FTP comparison note.
+
+    Returns
+    -------
+    dict | None
+        ``None`` if insufficient MMP data to fit either model.
+
+        Otherwise a dict with:
+          all_time      : CP/W' fit from all-time MMP (may be None)
+          season        : CP/W' fit from season MMP (may be None)
+          ftp_comparison: CP vs athlete FTP ratio + interpretation note
+                          (only present when ftp is provided and all_time fit succeeded)
+
+    Algorithm
+    ---------
+    Linearises ``P(t) = CP + W'/t`` as ``E(t) = W' + CP × t`` where
+    ``E = P × t`` is total mechanical work.  OLS slope = CP, intercept = W'.
+    Uses durations ≥ 1 min to stay in the aerobic-dominated domain.
+
+    Sources
+    -------
+    Morton (1996) — CP model review, J Sports Sci 14(6):491–514.
+    Monod & Scherrer (1965) — original W' / limit-of-work concept.
+    Coggan (2003/2010) — MMP profiling and FTP as ≈95–97% CP.
+    """
+    # Build (effort_type, power_w) lists for all_time and season
+    all_time_pts: list[tuple[str, float]] = []
+    season_pts: list[tuple[str, float]] = []
+
+    for entry in ride_best_efforts:
+        effort_type = entry.get("effort", "")
+        if effort_type not in _CP_FIT_EFFORTS:
+            continue
+
+        at = entry.get("all_time") or {}
+        if at.get("value_raw") and at["value_raw"] > 0:
+            all_time_pts.append((effort_type, float(at["value_raw"])))
+
+        s = entry.get("season") or {}
+        if s.get("value_raw") and s["value_raw"] > 0:
+            season_pts.append((effort_type, float(s["value_raw"])))
+
+    all_time_fit = _fit_cp_from_mmp_points(all_time_pts)
+    season_fit = _fit_cp_from_mmp_points(season_pts)
+
+    if all_time_fit is None and season_fit is None:
+        return None
+
+    result: dict = {
+        "all_time": all_time_fit,
+        "season": season_fit,
+    }
+
+    # FTP comparison (uses all_time CP as the reference)
+    if ftp and ftp > 0 and all_time_fit:
+        cp = all_time_fit["cp_watts"]
+        ratio = round(cp / ftp, 3)
+        if ratio < 1.00:
+            note = (
+                f"CP ({cp:.0f} W) is below FTP ({ftp} W) — FTP may be set too high "
+                f"or CP estimate needs more max efforts."
+            )
+        elif ratio <= 1.08:
+            note = (
+                f"CP/FTP ratio {ratio:.2f} is within the expected 1.00–1.08 range — "
+                f"FTP looks well-calibrated."
+            )
+        else:
+            note = (
+                f"CP/FTP ratio {ratio:.2f} is above 1.08 — FTP may be underestimated "
+                f"(consider a 20-min or ramp test)."
+            )
+        result["ftp_comparison"] = {
+            "athlete_ftp": ftp,
+            "cp_watts": cp,
+            "ratio": ratio,
+            "note": note,
+        }
+
+    return result
+
+
+# ── Fitness Projection ────────────────────────────────────────────────────────
+
+
+def project_fitness(
+    daily_tss: dict[date, float],
+    target_date: date,
+    weekly_tss: float | None = None,
+    taper_weeks: int = 3,
+    taper_factor: float = 0.70,
+    sport_label: str = "all",
+) -> dict:
+    """
+    Project CTL/ATL/TSB forward from today to a target race date.
+
+    The model extends the historical EMA fitness series with an assumed
+    future daily TSS, applying a standard taper in the final ``taper_weeks``
+    before the target date.
+
+    Taper schedule (default taper_factor = 0.70, i.e. 30% load reduction):
+      Week -N to -3 : 100% of weekly_tss / 7 per day  (build phase)
+      Week -2       : weekly_tss × taper_factor / 7   (~70%)
+      Week -1       : weekly_tss × taper_factor² / 7  (~49%)
+      Race day      : 0 TSS
+
+    Parameters
+    ----------
+    daily_tss    : historical {date: tss} dict (from get_daily_tss_from_db)
+    target_date  : race/event date to project to
+    weekly_tss   : assumed weekly training load going forward.
+                   If None or 0: auto-detected as the mean of the last 4 weeks.
+    taper_weeks  : how many weeks before race to begin taper (default 3)
+    taper_factor : fractional load reduction per taper week (default 0.70)
+    sport_label  : informational only (used in output)
+
+    Returns
+    -------
+    dict with:
+      current          : {ctl, atl, tsb} today
+      projected        : {ctl, atl, tsb, date} on race day
+      taper_start_date : ISO date when taper begins
+      weekly_tss_used  : assumed weekly TSS (auto or provided)
+      form_status      : 'under-tapered' / 'optimal' / 'over-tapered'
+      recommendation   : coaching text
+      daily_series     : [{date, ctl, atl, tsb, tss, projected: bool}]
+                         last 4 weeks of history + full projection window
+
+    Sources
+    -------
+    Banister et al. (1975), "A systems model of training for athletic performance"
+    Busso (2003), "Variable dose-response relationship between exercise training
+      and performance" — EMA fitness-fatigue model
+    Mujika & Padilla (2003), "Scientific bases for precompetition tapering
+      strategies", Med Sci Sports Exerc 35(7) — taper duration/load reduction
+    Coggan (2003) — TSB +15 to +25 optimal A-race form window
+    """
+    today = date.today()
+
+    if target_date <= today:
+        return {"error": f"target_date {target_date} must be in the future."}
+
+    days_to_target = (target_date - today).days
+
+    # ── Determine assumed weekly TSS ─────────────────────────────────────────
+    if not weekly_tss:
+        lookback = 28
+        recent = [daily_tss.get(today - timedelta(days=i), 0.0) for i in range(1, lookback + 1)]
+        weekly_tss = round(sum(recent) / lookback * 7, 1)
+
+    daily_tss_per_day = weekly_tss / 7.0
+    taper_start = target_date - timedelta(weeks=taper_weeks)
+
+    # ── Build projected daily TSS ─────────────────────────────────────────────
+    combined_tss: dict[date, float] = dict(daily_tss)  # historical copy
+
+    for i in range(1, days_to_target + 1):
+        d = today + timedelta(days=i)
+        days_before_race = (target_date - d).days
+
+        if days_before_race == 0:
+            tss_val = 0.0  # race day — no training load
+        elif days_before_race < 7:
+            tss_val = daily_tss_per_day * (taper_factor**2)
+        elif days_before_race < 14:
+            tss_val = daily_tss_per_day * taper_factor
+        else:
+            tss_val = daily_tss_per_day  # maintain load in build phase
+
+        combined_tss[d] = tss_val
+
+    # ── Run EMA model over combined series ────────────────────────────────────
+    full_series = compute_fitness_series(combined_tss, end_date=target_date)
+
+    # Identify today's values
+    today_str = today.isoformat()
+    current = {"ctl": 0.0, "atl": 0.0, "tsb": 0.0}
+    for entry in full_series:
+        if entry["date"] == today_str:
+            current = {"ctl": entry["ctl"], "atl": entry["atl"], "tsb": entry["tsb"]}
+            break
+
+    # Race-day values
+    target_str = target_date.isoformat()
+    projected_entry = None
+    for entry in full_series:
+        if entry["date"] == target_str:
+            projected_entry = entry
+            break
+
+    if not projected_entry:
+        return {"error": "Could not project to target_date — series ended before that date."}
+
+    projected_tsb = projected_entry["tsb"]
+
+    # ── Form status and recommendation ───────────────────────────────────────
+    if projected_tsb < 5:
+        form_status = "under-tapered"
+        recommendation = (
+            f"Projected TSB {projected_tsb:+.1f} on race day is too low. "
+            f"Target is +10 to +25. Consider starting the taper earlier "
+            f"(try taper_weeks={taper_weeks + 1}) or reducing load this week."
+        )
+    elif projected_tsb <= 25:
+        form_status = "optimal"
+        recommendation = (
+            f"Projected TSB {projected_tsb:+.1f} is in the optimal window (+10 to +25). "
+            f"Execute the plan as designed — taper begins {taper_start.isoformat()}."
+        )
+    elif projected_tsb <= 35:
+        form_status = "over-tapered"
+        recommendation = (
+            f"Projected TSB {projected_tsb:+.1f} is high (>+25). "
+            "Risk of detraining during taper. Consider a shorter taper or "
+            f"adding a quality session 10–12 days out."
+        )
+    else:
+        form_status = "heavily_over-tapered"
+        recommendation = (
+            f"Projected TSB {projected_tsb:+.1f} is very high (>+35). "
+            "Significant detraining risk. Shorten taper to 1–2 weeks or maintain "
+            "higher volume in weeks -3 and -2."
+        )
+
+    # ── Build output daily series (last 4 weeks history + projection) ─────────
+    series_cutoff = (today - timedelta(weeks=4)).isoformat()
+    output_series = []
+    for entry in full_series:
+        if entry["date"] < series_cutoff:
+            continue
+        out = dict(entry)
+        out["projected"] = entry["date"] > today_str
+        output_series.append(out)
+
+    return {
+        "sport": sport_label,
+        "target_date": target_str,
+        "days_to_target": days_to_target,
+        "current": current,
+        "projected": {
+            "ctl": projected_entry["ctl"],
+            "atl": projected_entry["atl"],
+            "tsb": projected_entry["tsb"],
+            "date": target_str,
+        },
+        "taper_start_date": taper_start.isoformat(),
+        "taper_weeks": taper_weeks,
+        "weekly_tss_used": weekly_tss,
+        "form_status": form_status,
+        "recommendation": recommendation,
+        "daily_series": output_series,
+    }
+
+
+# ── Intensity Distribution (Tripartite model) ─────────────────────────────────
+
+
+def compute_intensity_distribution(conn, weeks: int = 8) -> dict:
+    """
+    Tripartite intensity distribution using HR-based zone boundaries.
+
+    Bins training time into three physiological zones based on LT1 and LT2:
+      Easy     (< LT1) — below aerobic threshold (Z1+Z2 in 5-zone model)
+      Moderate (LT1 to LT2) — the metabolic "no-man's land" (Z3)
+      Hard     (> LT2) — at and above lactate threshold (Z4+Z5)
+
+    LT1 and LT2 are derived from the athlete's threshold HR and resting HR:
+      LT1_HR = resting_hr + 0.72 × HRR   (top of Z2 / aerobic threshold)
+      LT2_HR = resting_hr + 0.82 × HRR   (top of Z3 / lactate threshold)
+
+    Note: these use the session avg HR as a proxy, which underestimates true
+    zone time slightly for polarized sessions (avg can be Z2 even if intervals
+    crossed Z4).  For more accuracy, stream-level analysis per second is needed.
+
+    Compares to three canonical distributions:
+      Polarized  : ~80% easy, <10% moderate, ~15% hard  (Seiler 2010)
+      Pyramidal  : ~70% easy, ~20% moderate, ~10% hard
+      Threshold  : ~50% easy, ~30% moderate, ~20% hard
+
+    Classifies the current distribution and outputs gap analysis.
+
+    Parameters
+    ----------
+    conn  : SQLite connection
+    weeks : how many weeks of history to analyse (default 8)
+
+    Sources
+    -------
+    Seiler & Tønnessen (2009), "Intervals, Thresholds, and Long Slow Distance",
+      Sportscience 13 — tripartite model + LT1/LT2 HR boundaries
+    Seiler (2010), "What is best practice for training intensity and duration
+      distribution?", Int J Sports Physiol Perform 5(3)
+    Stoggl & Sperlich (2014), "Polarized training has greater impact on key
+      endurance variables", Front Physiol — polarized vs threshold RCT
+    """
+    from .config import load_athlete
+
+    athlete = load_athlete()
+    threshold_hr = athlete.get("threshold_hr", 175)
+    resting_hr = athlete.get("resting_hr", 50)
+    hrr = threshold_hr - resting_hr
+
+    lt1_hr = resting_hr + 0.72 * hrr  # aerobic threshold (top of Z2)
+    lt2_hr = resting_hr + 0.82 * hrr  # lactate threshold (top of Z3)
+
+    cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
+    rows = conn.execute(
+        """
+        SELECT average_heartrate, moving_time, sport_type
+        FROM activities
+        WHERE start_date >= ?
+          AND average_heartrate IS NOT NULL
+          AND average_heartrate > 0
+          AND moving_time > 0
+        """,
+        (cutoff,),
+    ).fetchall()
+
+    if not rows:
+        return {"error": "No activities with HR data in this period."}
+
+    easy_min = moderate_min = hard_min = 0.0
+    total_min = 0.0
+
+    for row in rows:
+        avg_hr = row["average_heartrate"]
+        mins = row["moving_time"] / 60.0
+        total_min += mins
+        if avg_hr < lt1_hr:
+            easy_min += mins
+        elif avg_hr < lt2_hr:
+            moderate_min += mins
+        else:
+            hard_min += mins
+
+    if total_min == 0:
+        return {"error": "No training time with HR data found."}
+
+    easy_pct = round(easy_min / total_min * 100, 1)
+    moderate_pct = round(moderate_min / total_min * 100, 1)
+    hard_pct = round(hard_min / total_min * 100, 1)
+
+    # ── Classify current distribution ────────────────────────────────────────
+    if moderate_pct <= 10 and hard_pct >= 8:
+        classification = "polarized"
+        class_note = (
+            "Distribution is polarized — healthy aerobic base with targeted intensity. "
+            "Consistent with high-performance endurance evidence."
+        )
+    elif moderate_pct <= 25 and hard_pct >= 5:
+        classification = "pyramidal"
+        class_note = (
+            "Pyramidal distribution — majority of work is easy with moderate threshold work. "
+            "Effective model for many amateur athletes."
+        )
+    elif moderate_pct > 30:
+        classification = "threshold-heavy"
+        class_note = (
+            "Threshold-heavy distribution — high proportion of moderate Z3 work. "
+            "Often leads to chronic fatigue without maximising adaptation. "
+            "Consider reducing Z3 and shifting either easier or harder."
+        )
+    else:
+        classification = "mixed"
+        class_note = "Distribution does not match a standard model cleanly. Review session intensity targets."
+
+    # ── Gap analysis vs polarized target ─────────────────────────────────────
+    polarized_target = {"easy": 80.0, "moderate": 10.0, "hard": 15.0}
+    pyramidal_target = {"easy": 70.0, "moderate": 20.0, "hard": 10.0}
+    threshold_target = {"easy": 50.0, "moderate": 30.0, "hard": 20.0}
+
+    gap_vs_polarized = {
+        "easy_gap": round(easy_pct - polarized_target["easy"], 1),
+        "moderate_gap": round(moderate_pct - polarized_target["moderate"], 1),
+        "hard_gap": round(hard_pct - polarized_target["hard"], 1),
+    }
+
+    return {
+        "weeks_analysed": weeks,
+        "total_hours": round(total_min / 60, 1),
+        "athlete_thresholds": {
+            "lt1_hr": round(lt1_hr, 0),
+            "lt2_hr": round(lt2_hr, 0),
+            "threshold_hr_config": threshold_hr,
+            "resting_hr_config": resting_hr,
+        },
+        "distribution_pct": {
+            "easy": easy_pct,
+            "moderate": moderate_pct,
+            "hard": hard_pct,
+        },
+        "distribution_hours": {
+            "easy": round(easy_min / 60, 1),
+            "moderate": round(moderate_min / 60, 1),
+            "hard": round(hard_min / 60, 1),
+        },
+        "classification": classification,
+        "classification_note": class_note,
+        "canonical_targets": {
+            "polarized": polarized_target,
+            "pyramidal": pyramidal_target,
+            "threshold": threshold_target,
+        },
+        "gap_vs_polarized": gap_vs_polarized,
+        "interpretation": (
+            f"{easy_pct}% easy / {moderate_pct}% moderate / {hard_pct}% hard. " + class_note
+        ),
+        "caveat": (
+            "Binning uses session average HR as a proxy. "
+            "Polarized sessions (easy + hard intervals) will appear as moderate. "
+            "For precision, use get_activity_streams on key sessions."
+        ),
+    }
 
 
 def get_best_recent_run(conn, lookback_days: int = 365) -> dict | None:

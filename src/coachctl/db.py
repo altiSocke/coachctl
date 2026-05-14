@@ -198,6 +198,31 @@ def init_db():
                 notes         TEXT,                        -- reason / source
                 updated_at    TEXT DEFAULT (datetime('now'))
             );
+
+            -- ── Best Efforts cache ───────────────────────────────────────────
+            -- One row per (sport, effort_type) — always the athlete's all-time best.
+            -- Populated lazily by compute_best_efforts(); invalidated when new
+            -- activities arrive (computed_at < MAX(activities.synced_at)).
+            -- effort_type values:
+            --   Running pace:  'pace_1km','pace_5km','pace_10km','pace_half','pace_marathon'
+            --   Cycling power: 'power_5s','power_30s','power_1min','power_5min',
+            --                  'power_20min','power_60min'
+            CREATE TABLE IF NOT EXISTS best_efforts (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                sport           TEXT NOT NULL,          -- 'run' or 'ride'
+                effort_type     TEXT NOT NULL,          -- see above
+                activity_id     INTEGER REFERENCES activities(id),
+                activity_date   TEXT NOT NULL,          -- YYYY-MM-DD of the best effort
+                value           REAL NOT NULL,          -- sec/km (pace) or watts (power)
+                value_per_kg    REAL,                   -- W/kg for power efforts (NULL for pace)
+                season_activity_id  INTEGER REFERENCES activities(id),
+                season_date         TEXT,               -- YYYY-MM-DD of current-season best
+                season_value        REAL,               -- season best value (same units as value)
+                season_value_per_kg REAL,
+                computed_at     TEXT DEFAULT (datetime('now'))
+            );
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_best_efforts_type
+                ON best_efforts(sport, effort_type);
         """)
 
         # Idempotent column additions (ALTER TABLE IF NOT EXISTS not supported in older SQLite)

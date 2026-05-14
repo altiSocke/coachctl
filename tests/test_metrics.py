@@ -15,6 +15,7 @@ from coachctl.metrics import (
     compute_activity_metrics,
     compute_fitness_series,
     compute_training_monotony,
+    fit_critical_power,
     format_pace,
     hr_zones,
     pace_sec_per_km,
@@ -228,7 +229,9 @@ def test_fitness_series_rest_drops_atl():
     for i in range(14):
         daily[rest_start + timedelta(days=i)] = 0.0
 
-    series = compute_fitness_series(daily, start_date=start, end_date=rest_start + timedelta(days=13))
+    series = compute_fitness_series(
+        daily, start_date=start, end_date=rest_start + timedelta(days=13)
+    )
     # At end of load block
     load_end = series[41]
     # At end of rest block
@@ -301,3 +304,176 @@ def test_power_zones_ftp_in_z4():
     zones = power_zones(ftp)
     lo, hi = zones["Z4_Threshold"]
     assert lo <= ftp <= hi
+
+
+# ── fit_critical_power ────────────────────────────────────────────────────────
+
+
+def _make_ride_efforts(
+    power_1min: float | None = None,
+    power_5min: float | None = None,
+    power_20min: float | None = None,
+    power_60min: float | None = None,
+    season_1min: float | None = None,
+    season_5min: float | None = None,
+    season_20min: float | None = None,
+    season_60min: float | None = None,
+) -> list[dict]:
+    """Build synthetic ride best-effort dicts matching compute_best_efforts() output."""
+    mapping = {
+        "power_1min": (power_1min, season_1min),
+        "power_5min": (power_5min, season_5min),
+        "power_20min": (power_20min, season_20min),
+        "power_60min": (power_60min, season_60min),
+    }
+    efforts = []
+    for effort_type, (at_val, s_val) in mapping.items():
+        efforts.append(
+            {
+                "effort": effort_type,
+                "all_time": {"value_raw": at_val, "value_fmt": f"{at_val} W", "date": "2025-01-01"},
+                "season": {"value_raw": s_val, "value_fmt": f"{s_val} W", "date": "2025-06-01"}
+                if s_val
+                else None,
+                "stale": False,
+            }
+        )
+    return efforts
+
+
+def test_fit_cp_happy_path():
+    """4 MMP points from a known CP=250 W, W'=20 kJ model should recover those values."""
+    # Generate synthetic MMP from P(t) = 250 + 20000/t
+    cp_true = 250.0
+    w_prime_j_true = 20_000.0
+    durations = {"power_1min": 60, "power_5min": 300, "power_20min": 1200, "power_60min": 3600}
+    powers = {k: cp_true + w_prime_j_true / t for k, t in durations.items()}
+
+    efforts = _make_ride_efforts(**powers)
+    result = fit_critical_power(efforts)
+
+    assert result is not None
+    at = result["all_time"]
+    assert at is not None
+    assert at["cp_watts"] == pytest.approx(cp_true, abs=1.0)
+    assert at["w_prime_kj"] == pytest.approx(w_prime_j_true / 1000, abs=0.5)
+    assert at["r_squared"] >= 0.999
+    assert at["n_points"] == 4
+    assert not at["out_of_range"]
+
+
+def test_fit_cp_minimum_three_points():
+    """Exactly 3 valid MMP points should still produce a fit."""
+    cp_true = 230.0
+    w_prime_j_true = 18_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j_true / 60,
+        power_5min=cp_true + w_prime_j_true / 300,
+        power_20min=cp_true + w_prime_j_true / 1200,
+        # power_60min absent
+    )
+    result = fit_critical_power(efforts)
+    assert result is not None
+    assert result["all_time"] is not None
+    assert result["all_time"]["n_points"] == 3
+
+
+def test_fit_cp_too_few_points_returns_none():
+    """Only 2 valid MMP points → must return None (below _CP_MIN_POINTS=3)."""
+    efforts = _make_ride_efforts(
+        power_5min=320.0,
+        power_20min=290.0,
+    )
+    result = fit_critical_power(efforts)
+    assert result is None
+
+
+def test_fit_cp_season_populated():
+    """When season MMP data is present, season fit should be returned."""
+    cp_true = 240.0
+    w_prime_j = 15_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j / 60,
+        power_5min=cp_true + w_prime_j / 300,
+        power_20min=cp_true + w_prime_j / 1200,
+        power_60min=cp_true + w_prime_j / 3600,
+        season_1min=cp_true - 10 + w_prime_j / 60,
+        season_5min=cp_true - 10 + w_prime_j / 300,
+        season_20min=cp_true - 10 + w_prime_j / 1200,
+        season_60min=cp_true - 10 + w_prime_j / 3600,
+    )
+    result = fit_critical_power(efforts)
+    assert result is not None
+    assert result["season"] is not None
+    assert result["season"]["cp_watts"] == pytest.approx(cp_true - 10, abs=1.0)
+
+
+def test_fit_cp_season_none_when_missing():
+    """When no season MMP data is available, season key should be None."""
+    cp_true = 260.0
+    w_prime_j = 22_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j / 60,
+        power_5min=cp_true + w_prime_j / 300,
+        power_20min=cp_true + w_prime_j / 1200,
+        power_60min=cp_true + w_prime_j / 3600,
+        # no season values
+    )
+    result = fit_critical_power(efforts)
+    assert result is not None
+    assert result["season"] is None
+
+
+def test_fit_cp_ftp_comparison_calibrated():
+    """CP/FTP ratio in [1.00, 1.08] → note says well-calibrated."""
+    cp_true = 260.0
+    w_prime_j = 18_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j / 60,
+        power_5min=cp_true + w_prime_j / 300,
+        power_20min=cp_true + w_prime_j / 1200,
+        power_60min=cp_true + w_prime_j / 3600,
+    )
+    result = fit_critical_power(efforts, ftp=250)
+    assert result is not None
+    assert "ftp_comparison" in result
+    cmp = result["ftp_comparison"]
+    assert 1.00 <= cmp["ratio"] <= 1.08
+    assert "well-calibrated" in cmp["note"]
+
+
+def test_fit_cp_ftp_comparison_underestimated():
+    """CP/FTP ratio > 1.08 → note flags possible FTP underestimation."""
+    cp_true = 290.0
+    w_prime_j = 18_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j / 60,
+        power_5min=cp_true + w_prime_j / 300,
+        power_20min=cp_true + w_prime_j / 1200,
+        power_60min=cp_true + w_prime_j / 3600,
+    )
+    result = fit_critical_power(efforts, ftp=250)
+    assert result is not None
+    cmp = result["ftp_comparison"]
+    assert cmp["ratio"] > 1.08
+    assert "underestimated" in cmp["note"]
+
+
+def test_fit_cp_empty_efforts_returns_none():
+    """Empty ride efforts list → None."""
+    assert fit_critical_power([]) is None
+
+
+def test_fit_cp_no_ftp_no_comparison():
+    """When ftp=None, ftp_comparison key should be absent."""
+    cp_true = 250.0
+    w_prime_j = 20_000.0
+    efforts = _make_ride_efforts(
+        power_1min=cp_true + w_prime_j / 60,
+        power_5min=cp_true + w_prime_j / 300,
+        power_20min=cp_true + w_prime_j / 1200,
+        power_60min=cp_true + w_prime_j / 3600,
+    )
+    result = fit_critical_power(efforts, ftp=None)
+    assert result is not None
+    assert "ftp_comparison" not in result

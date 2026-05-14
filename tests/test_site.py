@@ -348,6 +348,14 @@ def test_dashboard_data_has_zones_key(site_db):
     assert "zones" in result
 
 
+def test_dashboard_data_has_critical_power_key(site_db):
+    """critical_power key present in output (None when no power stream data)."""
+    result = site_module.get_dashboard_data()
+    assert "critical_power" in result
+    # Empty DB → no stream data → None
+    assert result["critical_power"] is None
+
+
 def test_dashboard_data_compliance_with_plan(site_db):
     """compliance is populated when an active plan with events exists."""
     from datetime import date, timedelta

@@ -9,6 +9,11 @@ from itertools import groupby
 from ..db import get_conn
 from ..metrics import (
     compute_acwr,
+    compute_efficiency_factor_trend,
+    compute_best_efforts,
+    fit_critical_power,
+    project_fitness,
+    compute_intensity_distribution,
     compute_fitness_series,
     estimate_session_tss,
     estimate_week_tss,
@@ -404,4 +409,242 @@ def register(mcp) -> None:  # noqa: ANN001
 
         athlete = load_athlete()
         result = estimate_vo2max_from_athlete(athlete)
+        return json.dumps(result, indent=2)
+
+    # ── Efficiency Factor Trend ────────────────────────────────────────────────
+
+    @mcp.tool()
+    def get_efficiency_factor_trend(sport: str = "all", weeks: int = 16) -> str:
+        """
+        Aerobic Efficiency Factor (EF) trend over the last N weeks.
+
+        EF measures aerobic output per unit of cardiac strain:
+          - Cycling: EF = normalised power (W) ÷ avg HR
+          - Running: EF = NGP (m/s) ÷ avg HR
+
+        Only aerobic sessions are included (IF < 0.85; sessions ≥ 45min).
+        A rising EF trend = improving aerobic economy / fitness adaptation.
+
+        Sport filter: 'all', 'run', or 'ride'.
+        weeks: history window (default 16 — enough to see a training block trend).
+
+        Returns per-session EF values, a 4-week rolling mean, and a trend
+        summary (rising / stable / declining with % change).
+
+        Sources: Allen & Coggan "Training and Racing with a Power Meter" (2010);
+        Friel "The Cyclist's Training Bible" (2009).
+        """
+        weeks = max(4, min(weeks, 104))
+        with get_conn() as conn:
+            entries = compute_efficiency_factor_trend(conn, sport=sport, weeks=weeks)
+
+        if not entries:
+            return "No aerobic sessions with HR + power/pace data found in this period."
+
+        # Peel off the summary entry
+        summary = None
+        if entries and entries[-1].get("__summary__"):
+            summary = entries[-1]
+            sessions = entries[:-1]
+        else:
+            sessions = entries
+
+        result = {
+            "summary": summary,
+            "sessions": sessions,
+        }
+        return json.dumps(result, indent=2, default=str)
+
+    # ── Best Efforts ───────────────────────────────────────────────────────────
+
+    @mcp.tool()
+    def get_best_efforts(sport: str = "all") -> str:
+        """
+        Personal best efforts across standard distances (running) and power
+        durations (cycling).
+
+        Running — fastest average pace in distance brackets:
+          1km, 5km, 10km, Half Marathon, Marathon
+
+        Cycling — best mean power over standard durations (from cached streams):
+          5s, 30s, 1min, 5min, 20min, 60min
+          W/kg shown where body weight is set in athlete.yaml.
+
+        Each effort shows:
+          - all_time: best ever value + date
+          - season:   best in last 365 days
+          - stale:    True if all-time best is >12 months old (retest suggested)
+
+        Cycling power bests are computed from cached activity streams and
+        written to the best_efforts table for fast repeated calls.
+        Run best_efforts table when new activities are synced.
+
+        Sources: Coggan "Power Profiling" (2003/2010);
+        Péronnet & Thibault (1989).
+        """
+        with get_conn() as conn:
+            result = compute_best_efforts(conn)
+
+        if sport == "run":
+            result.pop("ride", None)
+        elif sport == "ride":
+            result.pop("run", None)
+
+        return json.dumps(result, indent=2, default=str)
+
+    # ── Critical Power ─────────────────────────────────────────────────────────
+
+    @mcp.tool()
+    def get_critical_power() -> str:
+        """
+        Estimate Critical Power (CP) and anaerobic work capacity (W') from the
+        athlete's mean maximal power curve.
+
+        CP is the highest power output that can be sustained aerobically over a
+        long duration. W' (pronounced "W-prime") is the finite anaerobic energy
+        reserve above CP — depleted during hard efforts, replenished below CP.
+
+        Model
+        -----
+        Fits the 2-parameter hyperbolic model ``P(t) = CP + W'/t`` linearised as
+        ``E(t) = W' + CP × t`` (total work vs duration) via ordinary least squares.
+        Uses MMP durations ≥ 1 min (power_1min through power_60min).
+        The 5s and 30s durations are excluded — they are neuromuscular/anaerobic
+        and would inflate W' artificially.
+
+        Requires ≥ 3 cached power stream best efforts to produce a fit.
+        Run ``get_best_efforts`` or sync activities first if the result is empty.
+
+        Returns
+        -------
+        - all_time : CP/W' from all-time MMP bests
+        - season   : CP/W' from last-365-day MMP bests (None if insufficient)
+        - ftp_comparison : CP vs athlete FTP ratio + coaching note
+        - r_squared : model fit quality (≥0.95 = excellent; <0.90 = check max efforts)
+        - out_of_range : True if values fall outside physiological norms
+
+        Sources
+        -------
+        Morton (1996) J Sports Sci 14(6):491–514;
+        Monod & Scherrer (1965);
+        Coggan (2003/2010) Power Profiling.
+        """
+        from ..config import load_athlete
+
+        with get_conn() as conn:
+            best_efforts = compute_best_efforts(conn)
+
+        athlete = load_athlete()
+        ftp = athlete.get("ftp")
+
+        ride_efforts = best_efforts.get("ride", [])
+        cp_result = fit_critical_power(ride_efforts, ftp=ftp)
+
+        if cp_result is None:
+            return json.dumps(
+                {
+                    "error": (
+                        "Insufficient MMP data to fit CP model. "
+                        f"Need ≥{3} power duration bests (power_1min through power_60min). "
+                        "Sync activities with power data and ensure activity streams are cached."
+                    ),
+                    "mmp_points_available": len(
+                        [e for e in ride_efforts if e.get("all_time", {}).get("value_raw")]
+                    ),
+                },
+                indent=2,
+            )
+
+        return json.dumps(cp_result, indent=2, default=str)
+
+    # ── Fitness Projection ─────────────────────────────────────────────────────
+
+    @mcp.tool()
+    def get_projected_fitness(
+        target_date: str,
+        weekly_tss: float = 0.0,
+        taper_weeks: int = 3,
+        sport: str = "all",
+    ) -> str:
+        """
+        Project CTL/ATL/TSB forward to a target race date.
+
+        Models a standard taper: full load maintained until taper_weeks before
+        the race, then load reduced by ~30% per week (taper_factor=0.70).
+
+        Parameters
+        ----------
+        target_date : race date in YYYY-MM-DD format
+        weekly_tss  : assumed weekly TSS going forward.
+                      0 = auto-detect from last 4-week average.
+        taper_weeks : weeks of taper before race (default 3; use 2 for B/C races)
+        sport       : 'all', 'run', or 'ride' — affects load history used
+
+        Returns
+        -------
+        - current CTL/ATL/TSB today
+        - projected CTL/ATL/TSB on race day
+        - taper_start_date
+        - form_status: optimal (+10 to +25 TSB) / under-tapered / over-tapered
+        - recommendation: actionable coaching text
+        - daily_series: last 4 weeks history + projected forward (for charting)
+
+        Sources: Banister et al. (1975); Mujika & Padilla (2003) Med Sci Sports
+        Exerc 35(7); Coggan (2003) TSB +15 to +25 optimal window.
+        """
+        try:
+            from datetime import date as _date
+
+            td = _date.fromisoformat(target_date)
+        except ValueError:
+            return f"Error: target_date must be YYYY-MM-DD, got '{target_date}'."
+
+        taper_weeks = max(1, min(taper_weeks, 8))
+
+        with get_conn() as conn:
+            daily_tss = get_daily_tss_from_db(conn, sport)
+
+        if not daily_tss:
+            return "No TSS data found. Run sync_activities first."
+
+        result = project_fitness(
+            daily_tss=daily_tss,
+            target_date=td,
+            weekly_tss=weekly_tss if weekly_tss > 0 else None,
+            taper_weeks=taper_weeks,
+            sport_label=sport,
+        )
+        return json.dumps(result, indent=2, default=str)
+
+    # ── Intensity Distribution (Seiler tripartite model) ──────────────────────
+
+    @mcp.tool()
+    def get_intensity_distribution(weeks: int = 8) -> str:
+        """
+        Tripartite intensity distribution over the last N weeks (Seiler model).
+
+        Bins all training time with HR data into three physiological zones:
+          Easy     — below LT1 (< 72% HRR) — aerobic base work
+          Moderate — LT1 to LT2 (72–82% HRR) — the metabolic 'no-man's land'
+          Hard     — above LT2 (> 82% HRR) — threshold and VO2max work
+
+        LT1 and LT2 are derived from threshold_hr and resting_hr in athlete.yaml.
+
+        Classifies the current distribution as:
+          polarized     : ~80% easy, <10% moderate, ~15% hard
+          pyramidal     : ~70% easy, ~20% moderate, ~10% hard
+          threshold-heavy : >30% moderate (common issue for amateur athletes)
+
+        Includes gap analysis vs polarized target and an actionable interpretation.
+
+        Note: uses session average HR as a proxy — polarized sessions (long easy
+        + short hard intervals) will appear shifted toward moderate. Use
+        get_activity_streams on key sessions for second-by-second precision.
+
+        Sources: Seiler & Tønnessen (2009) Sportscience 13; Seiler (2010)
+        Int J Sports Physiol Perform 5(3); Stoggl & Sperlich (2014) Front Physiol.
+        """
+        weeks = max(1, min(weeks, 104))
+        with get_conn() as conn:
+            result = compute_intensity_distribution(conn, weeks=weeks)
         return json.dumps(result, indent=2)

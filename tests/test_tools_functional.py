@@ -125,6 +125,200 @@ class TestFitnessTools:
         assert isinstance(result, list)
         assert len(result) > 0
 
+    def test_get_efficiency_factor_trend_empty(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_efficiency_factor_trend"]()
+        # Empty DB → returns a string message
+        assert isinstance(result, str)
+
+    def test_get_efficiency_factor_trend_with_ride_data(self, mem_db, monkeypatch):
+        with mem_db() as conn:
+            for i in range(6):
+                d = (date.today() - timedelta(days=i * 10)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, moving_time, "
+                    "average_heartrate, weighted_avg_watts, intensity_factor) "
+                    "VALUES (?,?,?,?,?,?,?,?)",
+                    (i + 1, f"Ride {i}", "Ride", d, 3600, 130.0, 180.0, 0.72),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_efficiency_factor_trend"](sport="ride", weeks=16))
+        assert "summary" in result
+        assert "sessions" in result
+        summary = result["summary"]
+        assert summary["trend"] in ("rising", "stable", "declining", "insufficient_data")
+
+    def test_get_efficiency_factor_trend_with_run_data(self, mem_db, monkeypatch):
+        with mem_db() as conn:
+            for i in range(6):
+                d = (date.today() - timedelta(days=i * 10)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, moving_time, "
+                    "average_heartrate, ngp) VALUES (?,?,?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 3600, 140.0, 3.5),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_efficiency_factor_trend"](sport="run", weeks=16))
+        assert "sessions" in result
+
+    def test_get_best_efforts_empty(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_best_efforts"]())
+        # Empty DB → empty run/ride lists
+        assert "run" in result or "ride" in result
+
+    def test_get_best_efforts_with_run(self, mem_db, monkeypatch):
+        with mem_db() as conn:
+            conn.execute(
+                "INSERT INTO activities (id, name, sport_type, start_date, moving_time, distance) "
+                "VALUES (1, '5km Race', 'Run', ?, 1200, 5000)",
+                ((date.today() - timedelta(days=10)).isoformat(),),
+            )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_best_efforts"](sport="run"))
+        assert "run" in result
+        # Should have pace_5km entry
+        efforts = {e["effort"]: e for e in result["run"]}
+        assert "pace_5km" in efforts
+        assert efforts["pace_5km"]["all_time"] is not None
+
+    def test_get_best_efforts_sport_filter(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result_run = json.loads(tools["get_best_efforts"](sport="run"))
+        assert "ride" not in result_run
+        result_ride = json.loads(tools["get_best_efforts"](sport="ride"))
+        assert "run" not in result_ride
+
+    def test_get_critical_power_no_data(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_critical_power"]())
+        # No stream data → error key
+        assert "error" in result
+
+    def test_get_projected_fitness_invalid_date(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_projected_fitness"]("not-a-date")
+        assert "Error" in result
+
+    def test_get_projected_fitness_past_date(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        past = (date.today() - timedelta(days=5)).isoformat()
+        result = tools["get_projected_fitness"](past)
+        # No TSS data in empty DB → plain string message, or JSON error
+        try:
+            parsed = json.loads(result)
+            assert "error" in parsed
+        except json.JSONDecodeError:
+            assert "No TSS data" in result or "error" in result.lower()
+
+    def test_get_projected_fitness_future(self, mem_db, monkeypatch):
+        with mem_db() as conn:
+            for i in range(60):
+                d = (date.today() - timedelta(days=i)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, tss) "
+                    "VALUES (?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 50.0),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        target = (date.today() + timedelta(days=60)).isoformat()
+        result = json.loads(tools["get_projected_fitness"](target, weekly_tss=350.0))
+        assert "projected" in result
+        assert "form_status" in result
+        assert result["form_status"] in (
+            "optimal",
+            "under-tapered",
+            "over-tapered",
+            "heavily_over-tapered",
+        )
+
+    def test_get_intensity_distribution_empty(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_intensity_distribution"]())
+        assert "error" in result
+
+    def test_get_intensity_distribution_with_data(self, mem_db, monkeypatch):
+        with mem_db() as conn:
+            for i in range(10):
+                d = (date.today() - timedelta(days=i * 3)).isoformat()
+                hr = 130 + (i % 3) * 20  # varies: 130, 150, 170
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, "
+                    "moving_time, average_heartrate) VALUES (?,?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 3600, float(hr)),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_intensity_distribution"](weeks=8))
+        assert "distribution_pct" in result
+        assert "classification" in result
+        dist = result["distribution_pct"]
+        assert abs(dist["easy"] + dist["moderate"] + dist["hard"] - 100.0) < 0.5
+
+    def test_get_vo2max_estimate(self, mem_db, monkeypatch):
+        import coachctl.tools.fitness_tools as m
+
+        monkeypatch.setattr(
+            m,
+            "load_athlete",
+            lambda: {"ftp": 250, "weight_kg": 70, "rftp": 270, "threshold_hr": 170},
+            raising=False,
+        )
+        # Also patch via config module path used inside the tool
+        import coachctl.config as cfg_mod
+
+        monkeypatch.setattr(
+            cfg_mod, "load_athlete", lambda: {"ftp": 250, "weight_kg": 70, "rftp": 270}
+        )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_vo2max_estimate"]())
+        assert isinstance(result, dict)
+
+    def test_estimate_week_tss_invalid_json(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["estimate_week_tss_tool"](sessions_json="not-json")
+        assert "Error" in result
+
+    def test_estimate_week_tss_not_list(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["estimate_week_tss_tool"](sessions_json='{"key": "val"}')
+        assert "Error" in result
+
+    def test_estimate_week_tss_with_sessions(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        sessions = json.dumps(
+            [
+                {"sport": "run", "duration_min": 60, "intensity": "easy"},
+                {"sport": "ride", "duration_min": 90, "intensity": "moderate"},
+            ]
+        )
+        result = json.loads(tools["estimate_week_tss_tool"](sessions_json=sessions))
+        assert "total_tss_estimate" in result
+        assert result["total_tss_estimate"] > 0
+
+    def test_predict_race_time_with_reference(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(
+            tools["predict_race_time"](
+                reference_distance_km=21.1,
+                reference_time="1:45:00",
+                mode="road",
+            )
+        )
+        assert "predictions" in result
+        assert any(p["distance"] == "Marathon" for p in result["predictions"])
+
+    def test_predict_race_time_invalid_mode(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["predict_race_time"](
+            reference_distance_km=10, reference_time="45:00", mode="bad"
+        )
+        assert "Error" in result
+
+    def test_predict_race_time_only_dist_no_time(self, mem_db, monkeypatch):
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = tools["predict_race_time"](reference_distance_km=10.0, reference_time="")
+        assert "Error" in result
+
 
 # ---------------------------------------------------------------------------
 # feedback_tools

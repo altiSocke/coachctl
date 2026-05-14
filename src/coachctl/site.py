@@ -936,6 +936,22 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
     except Exception:
         pass
 
+    critical_power = None
+    try:
+        from .metrics import compute_best_efforts as _compute_be, fit_critical_power
+        from .config import load_athlete as _load_athlete
+        from .db import get_conn as _get_conn
+
+        with _get_conn() as _conn:
+            _be = _compute_be(_conn)
+        _athlete_cfg = _load_athlete()
+        critical_power = fit_critical_power(
+            _be.get("ride", []),
+            ftp=_athlete_cfg.get("ftp"),
+        )
+    except Exception:
+        pass
+
     try:
         from .config import load_athlete
 
@@ -997,6 +1013,7 @@ def get_dashboard_data(plan_path: Path | None = None) -> dict:
         "compliance": compliance,
         "acwr": acwr,
         "zones": zones,
+        "critical_power": critical_power,
         "decision_gates": decision_gates,
         "key_metrics": key_metrics,
     }

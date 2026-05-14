@@ -161,6 +161,30 @@ _FULL_SCHEMA_SQL = """
         note            TEXT NOT NULL,
         created_at      TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS activity_overrides (
+        activity_id   INTEGER PRIMARY KEY REFERENCES activities(id),
+        tss_override  REAL,
+        notes         TEXT,
+        updated_at    TEXT DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS best_efforts (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        sport           TEXT NOT NULL,
+        effort_type     TEXT NOT NULL,
+        activity_id     INTEGER REFERENCES activities(id),
+        activity_date   TEXT NOT NULL,
+        value           REAL NOT NULL,
+        value_per_kg    REAL,
+        season_activity_id  INTEGER REFERENCES activities(id),
+        season_date         TEXT,
+        season_value        REAL,
+        season_value_per_kg REAL,
+        computed_at     TEXT DEFAULT (datetime('now'))
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_best_efforts_type
+        ON best_efforts(sport, effort_type);
 """
 
 
