@@ -12,8 +12,8 @@ workflows. **This file is the single source of truth for architecture.**
 
 | Repo | Visibility | Contents | Watcher |
 |---|---|---|---|
-| `coachctl` (this repo) | public | code, general knowledge, dashboard UI source, public race captures | — |
-| `coachctl-personal` (per-athlete) | private | one athlete's wiki, secrets, activities DB, baked dashboard data, Vercel deploy surface | Vercel auto-deploy |
+| `coachctl` (this repo) | public | code, dashboard UI source, public raw sources | — |
+| `coachctl-personal` (per-athlete) | private | wiki (general + personal), secrets, activities DB, baked dashboard data, Vercel deploy surface | Vercel auto-deploy |
 
 Dependency direction is **strictly one-way**: the private repo depends on the
 public one via `pip install`. The public repo never reads, imports, or assumes
@@ -21,18 +21,19 @@ anything about the private repo.
 
 ```
  ┌──────────────── coachctl  (public)  ────────────────┐
- │  raw/                 wiki/           src/...       │
- │  (sources)           (synthesis)      (code + UI)   │
- └──────────────┬──────────────────────────────┬───────┘
-                │ read at session time         │ pip install
-                ▼                              ▼
- ┌─────────── coachctl-personal (private) ───────────┐
- │  raw/   profile/*.md   data/activities.db           │
- │         athlete.yaml   deploy/dist/data.json   .env │
- │         deploy/web.py ─────────────► Vercel         │
- └─────────────────────────────────────────────────────┘
-                                          ▲
-                  coachctl update ──┘  (sync→bake→push)
+ │  raw/                                 src/...       │
+ │  (sources)                            (code + UI)   │
+ └──────────────────────────────────────────┬──────────┘
+                                            │ pip install
+                                            ▼
+ ┌─────────── coachctl-personal (private) ───────────────┐
+ │  raw/   wiki/          profile/*.md   data/activities.db│
+ │         (general)      athlete.yaml   deploy/dist/data.json│
+ │  swarmvault.config.json               .env              │
+ │         deploy/web.py ─────────────► Vercel             │
+ └──────────────────────────────────────────────────────────┘
+                                           ▲
+                   coachctl update ──┘  (sync→bake→push)
 ```
 
 Path resolution lives in `src/coachctl/paths.py`:
@@ -74,11 +75,6 @@ src/coachctl/         ← Python package
 
 raw/                      ← Layer 1 — public, immutable source documents
   races/...
-wiki/                      ← Layer 2a — LLM-maintained, athlete-agnostic knowledge
-state/                     ← SwarmVault graph + FTS index (gitignored, rebuilt on demand)
-
-swarmvault.config.json     ← SwarmVault provider + profile config
-swarmvault.schema.md       ← SwarmVault domain schema (wiki naming rules, categories, grounding)
 config/athlete.yaml.template
 .opencode/agents/coach.md  ← coach agent operational workflows
 AGENTS.md                  ← this file
@@ -88,6 +84,11 @@ README.md                  ← user-facing setup, install, deployment
 ## Personal-repo layout (`coachctl-personal`)
 
 ```
+wiki/                      ← Layer 2a — LLM-maintained, athlete-agnostic knowledge
+  races/  recovery/  sources/  ...
+state/                     ← SwarmVault graph + FTS index (gitignored, rebuilt on demand)
+swarmvault.config.json     ← SwarmVault provider + profile config
+swarmvault.schema.md       ← SwarmVault domain schema (wiki naming rules, categories, grounding)
 profile/                  ← Layer 2b — LLM-maintained, this athlete only
   athlete.yaml             thresholds, events, weight
   profile.md  goals.md  nutrition.md  training_history.md
@@ -133,10 +134,11 @@ Source material as it arrived. Split across the two repos:
 > If the LLM produces a synthesis (paper catalogue, course summary, distilled
 > protocol), that synthesis lives in a `wiki/` layer — never in `raw/`.
 
-### Layer 2a — `wiki/` (LLM-maintained, athlete-agnostic, public)
+### Layer 2a — `wiki/` (LLM-maintained, athlete-agnostic, private)
 
-Lives in the public code repo. Synthesised from `raw/` and from coaching
-expertise. Useful to **any** athlete using the system.
+Lives in the **personal repo** (`coachctl-personal/wiki/`). Synthesised from `raw/` and from coaching
+expertise. Useful to **any** athlete using the system but kept private to avoid
+leaking context about which races or protocols are in use.
 
 - **Write rule:** content here must be useful to *any* athlete using the system.
   Physiology, training theory, course facts, nutrition science, evidence reviews.
@@ -162,7 +164,9 @@ expertise. Useful to **any** athlete using the system.
 
 SwarmVault runs alongside coachctl as a **separate Node.js CLI** and MCP server.
 It indexes `raw/` and `wiki/` into a local knowledge graph + FTS retrieval layer
-stored in `state/` (gitignored).
+stored in `state/` (gitignored). **All SwarmVault commands run from the personal
+repo** (`coachctl-personal/`), where `swarmvault.config.json` and
+`swarmvault.schema.md` now live.
 
 **When to use SwarmVault tools instead of `read_general_wiki`:**
 
@@ -177,8 +181,9 @@ stored in `state/` (gitignored).
 **Rebuild `state/` after a fresh clone:**
 
 ```bash
-npm install -g @swarmvaultai/cli   # requires Node >=24; one-time
-swarmvault compile                  # builds state/graph.json + state/retrieval/
+cd ../coachctl-personal          # run from the personal repo
+npm install -g @swarmvaultai/cli  # requires Node >=24; one-time
+swarmvault compile                # builds state/graph.json + state/retrieval/
 ```
 
 `GITHUB_TOKEN` (with `models:read` scope) must be in the environment for the
@@ -186,8 +191,8 @@ swarmvault compile                  # builds state/graph.json + state/retrieval/
 SwarmVault falls back to the offline `heuristic` provider — FTS search still
 works, semantic synthesis and contradiction detection do not.
 
-**Provider config:** `swarmvault.config.json` (committed).
-**Domain schema:** `swarmvault.schema.md` (committed) — wiki naming rules,
+**Provider config:** `swarmvault.config.json` (in personal repo).
+**Domain schema:** `swarmvault.schema.md` (in personal repo) — wiki naming rules,
 categories, grounding requirements, and the public/private boundary rule.
 
 ### Layer 2b — `<data_root>/profile/` (LLM-maintained, this athlete, private)
@@ -236,15 +241,15 @@ bundles it alongside `web.py`.
 
 ### Boundary rule
 
-> *"If two athletes could share it, it belongs in **general** (public repo);
->  otherwise **personal** (private repo). If unsure, **personal** wins."*
+> *"If two athletes could share it, it belongs in **general** (private wiki);
+>  otherwise **personal** (private profile). If unsure, **personal** wins."*
 
 A course-level fact about a race → general. A time, a cramp, a goal, a
 strategy → personal.
 
 #### Cheat sheet
 
-| Goes to **public** `wiki/` | Goes to **private** `profile/` |
+| Goes to **general** `wiki/` | Goes to **private** `profile/` |
 |---|---|
 | Course profile facts, climb gradients, cutoffs | "I cramped on Furka in 2024" |
 | Polarized training theory, periodization models | My Z2 HR cap is 148 |
@@ -256,9 +261,9 @@ strategy → personal.
 
 A coaching session that updates both layers will commit to two repos:
 
-* General-wiki edits land in the **public code repo**. The user (or a separate
-  workflow) commits and pushes those.
-* Personal-wiki edits, plans, feedback, baked `data.json` land in the **personal
+* General-wiki edits land in the **personal repo** (`coachctl-personal/wiki/`).
+  `uv run coachctl update` automates sync → bake → commit → push for all personal-repo changes.
+* Personal-wiki edits, plans, feedback, baked `data.json` also land in the **personal
   repo**. `uv run coachctl update` automates sync → bake → commit → push.
 
 ---
@@ -324,5 +329,6 @@ sync time and stored in `activities.tss`.
 - Preserve frontmatter fields including `page_id`, `source_ids`, `node_ids`, `freshness`, and `source_hashes`.
 - Save high-value answers back into `wiki/outputs/` instead of leaving them only in chat.
 - Prefer `swarmvault ingest`, `swarmvault compile`, `swarmvault query`, and `swarmvault lint` for SwarmVault maintenance tasks.
+- **Run all SwarmVault commands from the personal repo (`coachctl-personal/`).** `swarmvault.config.json` and `swarmvault.schema.md` live there.
 <!-- swarmvault:managed:end -->
 

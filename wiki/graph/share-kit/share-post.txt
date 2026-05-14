@@ -1,4 +1,0 @@
-I scanned coachctl with SwarmVault: 1 sources -> 23 wiki pages, 13 graph nodes, 12 edges.
-Top hubs: magnesium, evidence, and athletes.
-Most surprising link: Magnesium — Supplementation Guide for Endurance Athletes mentions athletes.
-Everything stays local. Try: npm install -g @swarmvaultai/cli && swarmvault quickstart ./your-repo

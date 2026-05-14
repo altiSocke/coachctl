@@ -177,7 +177,18 @@ def raw_personal_dir() -> Path:
 
 
 def general_wiki_dir() -> Path:
-    """``<CODE_ROOT>/wiki/`` — LLM-maintained, athlete-agnostic knowledge."""
+    """LLM-maintained, athlete-agnostic knowledge.
+
+    Resolves to ``<DATA_ROOT>/wiki/`` when it exists (personal repo — preferred),
+    otherwise falls back to ``<CODE_ROOT>/wiki/`` for CI or fresh clones without
+    a personal repo configured.
+    """
+    try:
+        personal_wiki = data_root() / "wiki"
+        if personal_wiki.exists():
+            return personal_wiki
+    except RuntimeError:
+        pass
     return code_root() / "wiki"
 
 
