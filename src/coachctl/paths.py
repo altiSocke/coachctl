@@ -193,7 +193,19 @@ def general_wiki_dir() -> Path:
 
 
 def raw_general_dir() -> Path:
-    """``<CODE_ROOT>/raw/`` — public source documents."""
+    """Source documents (papers, race captures, public exports).
+
+    Resolves to ``<DATA_ROOT>/raw/`` when it exists (personal repo — preferred),
+    otherwise falls back to ``<CODE_ROOT>/raw/`` for CI or fresh clones.
+
+    After the raw/ migration this is an alias for ``raw_personal_dir()``.
+    """
+    try:
+        personal_raw = data_root() / "raw"
+        if personal_raw.exists():
+            return personal_raw
+    except RuntimeError:
+        pass
     return code_root() / "raw"
 
 

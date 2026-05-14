@@ -73,7 +73,7 @@ src/coachctl/         ← Python package
     __main__.py            — `strava-web` CLI entry (local dev)
   tools/                   — MCP @tool registrations (one module per domain)
 
-raw/                      ← Layer 1 — public, immutable source documents
+raw/                      ← Layer 1 — public source documents
   races/...
 config/athlete.yaml.template
 .opencode/agents/coach.md  ← coach agent operational workflows
@@ -97,7 +97,8 @@ profile/                  ← Layer 2b — LLM-maintained, this athlete only
   feedback/                session feedback (YAML)
 data/
   activities.db            Strava activity cache (committed; LFS once large)
-raw/                      ← Layer 1 (personal) — your GPX, photos, scans
+raw/                      ← Layer 1 — all source documents (papers, race captures, GPX, scans)
+  races/  sources/  ...
 deploy/                    ← Vercel project root
   web.py                   from coachctl.dashboard import create_app; ...
   vercel.json
@@ -117,14 +118,11 @@ The knowledge model has three layers with strictly different write rules.
 
 ### Layer 1 — `raw/` (immutable, human-write-only)
 
-Source material as it arrived. Split across the two repos:
+Source material as it arrived. Lives in `<DATA_ROOT>/raw/` (`coachctl-personal/raw/`):
+papers, race-website captures, public data exports, GPX files, race photos, scans,
+training-camp notes — everything in one place.
 
-* `<code_root>/raw/` — public sources: peer-reviewed papers, race-website
-  captures, public data exports.
-* `<data_root>/raw/` — personal sources: your GPX files, race photos, scans,
-  training-camp notes.
-
-**Rules (both):**
+**Rules:**
 
 - Humans (or an ingest pipeline) are the only writers.
 - The LLM **reads** raw files when synthesising wiki updates. It **never**
