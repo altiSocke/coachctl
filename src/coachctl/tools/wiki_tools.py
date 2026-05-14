@@ -136,7 +136,7 @@ def register(mcp) -> None:  # noqa: ANN001
         IMPORTANT: Only write content that applies to any athlete (physiology,
         training theory, course facts, nutrition science). Athlete-specific data
         (personal results, personal targets, personal incidents) belongs in
-        wiki/personal/ — use propose_wiki_update instead.
+        <DATA_ROOT>/profile/ — use propose_wiki_update instead.
 
         topic: relative path within wiki/, e.g. 'nutrition',
                'races/alpenbrevet', 'recovery/percussion_massage'.
@@ -210,7 +210,7 @@ def register(mcp) -> None:  # noqa: ANN001
         wiki_dir = paths.general_wiki_dir()
         if wiki_dir.exists():
             search_dirs.append(("general_wiki", wiki_dir))
-        profile_dir = paths.profile_dir()
+        profile_dir = paths.personal_dir()
         if profile_dir.exists():
             search_dirs.append(("personal_wiki", profile_dir))
 

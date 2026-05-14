@@ -14,7 +14,7 @@ generating periodized training plans.
 - HR zone distribution and polarisation analysis
 - Power-based TSS for cycling; pace-based rTSS and grade-adjusted NGP for running
 - Generate and save periodized training plans as Markdown
-- Three-layer knowledge base (`raw/general/` + `wiki/general/` + private personal repo)
+- Three-layer knowledge base (`<DATA_ROOT>/raw/` + `<DATA_ROOT>/wiki/` + `<DATA_ROOT>/profile/`) — all in the private personal repo
 - Log untracked activities (hockey, gym, etc.) with TSS estimates
 - FastAPI training plan dashboard, deployable to Vercel from the personal repo
 

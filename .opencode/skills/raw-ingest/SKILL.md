@@ -94,7 +94,7 @@ After all general wiki pages have been applied, run:
 ```bash
 swarmvault compile
 ```
-This rebuilds the knowledge graph and FTS index in `state/` so future `swarmvault_query` calls reflect the new content. Skip this step if only personal (`profile/`) pages were updated — SwarmVault indexes the public `wiki/` layer only.
+This rebuilds the knowledge graph and FTS index in `state/` so future `swarmvault_query` calls reflect the new content. Skip this step if only personal (`profile/`) pages were updated — SwarmVault indexes the `wiki/` layer (in the personal repo) only.
 
 ---
 

@@ -12,7 +12,7 @@ workflows. **This file is the single source of truth for architecture.**
 
 | Repo | Visibility | Contents | Watcher |
 |---|---|---|---|
-| `coachctl` (this repo) | public | code, dashboard UI source, public raw sources | — |
+| `coachctl` (this repo) | public | code, dashboard UI source | — |
 | `coachctl-personal` (per-athlete) | private | wiki (general + personal), secrets, activities DB, baked dashboard data, Vercel deploy surface | Vercel auto-deploy |
 
 Dependency direction is **strictly one-way**: the private repo depends on the
@@ -21,8 +21,8 @@ anything about the private repo.
 
 ```
  ┌──────────────── coachctl  (public)  ────────────────┐
- │  raw/                                 src/...       │
- │  (sources)                            (code + UI)   │
+ │                                       src/...       │
+ │                                       (code + UI)   │
  └──────────────────────────────────────────┬──────────┘
                                             │ pip install
                                             ▼
@@ -38,7 +38,7 @@ anything about the private repo.
 
 Path resolution lives in `src/coachctl/paths.py`:
 
-* **`code_root()`** — this checkout. Hosts general layers and code templates.
+* **`code_root()`** — this checkout. Hosts code, dashboard UI source, and templates only.
 * **`data_root()`** — resolved in this order:
   1. `AGENT_DATA_ROOT` environment variable.
   2. Sibling `../coachctl-personal/` directory (auto-discovered).
@@ -73,8 +73,6 @@ src/coachctl/         ← Python package
     __main__.py            — `strava-web` CLI entry (local dev)
   tools/                   — MCP @tool registrations (one module per domain)
 
-raw/                      ← Layer 1 — public source documents
-  races/...
 config/athlete.yaml.template
 .opencode/agents/coach.md  ← coach agent operational workflows
 AGENTS.md                  ← this file

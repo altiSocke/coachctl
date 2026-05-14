@@ -4,14 +4,15 @@ Central path resolver — splits public code paths from private personal data.
 Two roots:
 
 * ``code_root()``      — the public coachctl checkout (this package's repo).
-                          Hosts general knowledge: ``wiki/``, ``raw/``,
-                          dashboard UI source, code templates.
+                          Hosts code, dashboard UI source, and templates only.
 
 * ``data_root()``      — the private per-athlete data repo (e.g.
-                          ``coachctl-personal``). Hosts ``profile/`` (was
-                          ``wiki/personal/<profile>/``), ``data/activities.db``,
+                          ``coachctl-personal``). Hosts ``wiki/`` (general
+                          knowledge), ``raw/`` (all source documents),
+                          ``profile/`` (athlete-specific data),
+                          ``data/activities.db``,
                           ``deploy/dist/data.json`` (baked dashboard payload),
-                          ``raw/`` (personal source documents), and ``.env``.
+                          and ``.env``.
 
 Resolution order for ``data_root()``:
 
@@ -177,36 +178,18 @@ def raw_personal_dir() -> Path:
 
 
 def general_wiki_dir() -> Path:
-    """LLM-maintained, athlete-agnostic knowledge.
-
-    Resolves to ``<DATA_ROOT>/wiki/`` when it exists (personal repo — preferred),
-    otherwise falls back to ``<CODE_ROOT>/wiki/`` for CI or fresh clones without
-    a personal repo configured.
-    """
-    try:
-        personal_wiki = data_root() / "wiki"
-        if personal_wiki.exists():
-            return personal_wiki
-    except RuntimeError:
-        pass
-    return code_root() / "wiki"
+    """``<DATA_ROOT>/wiki/`` — LLM-maintained, athlete-agnostic knowledge."""
+    return data_root() / "wiki"
 
 
 def raw_general_dir() -> Path:
-    """Source documents (papers, race captures, public exports).
+    """All source documents — alias for ``raw_personal_dir()``.
 
-    Resolves to ``<DATA_ROOT>/raw/`` when it exists (personal repo — preferred),
-    otherwise falls back to ``<CODE_ROOT>/raw/`` for CI or fresh clones.
-
-    After the raw/ migration this is an alias for ``raw_personal_dir()``.
+    ``wiki/`` and ``raw/`` both live in the personal repo (``<DATA_ROOT>``).
+    This function is kept for back-compat with callers that distinguish
+    "general" from "personal" raw sources; they are now the same directory.
     """
-    try:
-        personal_raw = data_root() / "raw"
-        if personal_raw.exists():
-            return personal_raw
-    except RuntimeError:
-        pass
-    return code_root() / "raw"
+    return raw_personal_dir()
 
 
 # ── Bootstrap ────────────────────────────────────────────────────────────────
@@ -227,7 +210,6 @@ def ensure_profile_dirs() -> None:
     feedback_dir().mkdir(parents=True, exist_ok=True)
     dist_dir().mkdir(parents=True, exist_ok=True)
     general_wiki_dir().mkdir(parents=True, exist_ok=True)
-    raw_general_dir().mkdir(parents=True, exist_ok=True)
     raw_personal_dir().mkdir(parents=True, exist_ok=True)
     db_path().parent.mkdir(parents=True, exist_ok=True)
     env_file().parent.mkdir(parents=True, exist_ok=True)
