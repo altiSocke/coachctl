@@ -143,12 +143,12 @@ def test_raw_personal_dir(tmp_path, monkeypatch):
 
 def test_general_wiki_dir():
     d = paths_module.general_wiki_dir()
-    assert d == paths_module.code_root() / "wiki"
+    assert d == paths_module.data_root() / "wiki"
 
 
 def test_raw_general_dir():
     d = paths_module.raw_general_dir()
-    assert d == paths_module.code_root() / "raw"
+    assert d == paths_module.data_root() / "raw"
 
 
 # ── ensure_profile_dirs ───────────────────────────────────────────────────────
