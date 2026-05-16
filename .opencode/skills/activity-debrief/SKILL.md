@@ -155,6 +155,11 @@ After delivering feedback on **all** new activities in the batch:
 
 1. **`mark_activities_reviewed([id1, id2, ...])`** — pass all IDs in one call
 2. **`log_feedback(activity_date, rpe, felt, notes, activity_id)`** — only if athlete provides RPE in conversation
+3. **Mark race events completed** — for each debriefed activity that is a race (sport_type contains "Race" or the activity name/date matches a race-day event):
+   - Call `get_calendar_window(start=<activity_date>, end=<activity_date>, kinds='race')`
+   - If a race event is returned with `status = 'planned'`, call `update_event(slug, status='completed')`
+   - If no race event found on that date, skip silently
+   - This ensures the event disappears from upcoming-race queries at the data layer — no LLM inference needed at next startup
 
 ---
 

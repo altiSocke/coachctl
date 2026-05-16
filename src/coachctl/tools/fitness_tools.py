@@ -36,6 +36,17 @@ def _fmt_seconds(total_seconds: int) -> str:
     return f"{h}:{m:02d}:{s:02d}"
 
 
+def _sparkline(values: list[float]) -> str:
+    """Convert a list of numbers into a unicode block sparkline ▁▂▃▄▅▆▇█."""
+    blocks = " ▁▂▃▄▅▆▇█"
+    if not values:
+        return ""
+    lo, hi = min(values), max(values)
+    if lo == hi:
+        return blocks[4] * len(values)
+    return "".join(blocks[round((v - lo) / (hi - lo) * 8)] for v in values)
+
+
 def _weekly_summary(daily: list[dict]) -> list[dict]:
     """Aggregate daily CTL/ATL/TSB into weekly summaries."""
     result = []
@@ -90,8 +101,40 @@ def register(mcp) -> None:  # noqa: ANN001
         filtered = [s for s in series if s["date"] >= cutoff]
 
         if weeks > 8 and len(filtered) > 60:
-            return json.dumps(_weekly_summary(filtered), indent=2)
-        return json.dumps(filtered, indent=2)
+            summary = _weekly_summary(filtered)
+            return json.dumps(
+                {
+                    "weeks": summary,
+                    "sparklines": {
+                        "ctl": _sparkline([w["ctl"] for w in summary]),
+                        "atl": _sparkline([w["atl"] for w in summary]),
+                        "tsb": _sparkline([w["tsb"] for w in summary]),
+                    },
+                },
+                indent=2,
+            )
+        return json.dumps(
+            {
+                "days": filtered,
+                "sparklines": {
+                    "ctl": _sparkline([d["ctl"] for d in filtered]),
+                    "atl": _sparkline([d["atl"] for d in filtered]),
+                    "tsb": _sparkline([d["tsb"] for d in filtered]),
+                },
+            },
+            indent=2,
+        )
+        result = {
+            "days": filtered,
+            "sparklines": {
+                "ctl": _sparkline([d["ctl"] for d in filtered]),
+                "atl": _sparkline([d["atl"] for d in filtered]),
+                "tsb": _sparkline(
+                    [d["tsb"] + abs(min(d["tsb"] for d in filtered)) for d in filtered]
+                ),
+            },
+        }
+        return json.dumps(result, indent=2)
 
     @mcp.tool()
     def get_zone_distribution(weeks: int = 8) -> str:
@@ -152,7 +195,22 @@ def register(mcp) -> None:  # noqa: ANN001
         for w in result.values():
             w["total_hours"] = round(w["total_hours"], 1)
 
-        return json.dumps(list(result.values()), indent=2)
+        weeks_ordered = list(reversed(list(result.values())))
+
+        def _run_km(w: dict) -> float:
+            return sum(s["km"] for sport, s in w["sports"].items() if "run" in sport.lower())
+
+        def _elev(w: dict) -> float:
+            return sum(s["elevation"] for s in w["sports"].values())
+
+        sparklines = {
+            "tss": _sparkline([w["total_tss"] for w in weeks_ordered]),
+            "run_km": _sparkline([_run_km(w) for w in weeks_ordered]),
+            "elev": _sparkline([_elev(w) for w in weeks_ordered]),
+            "hours": _sparkline([w["total_hours"] for w in weeks_ordered]),
+        }
+
+        return json.dumps({"weeks": list(result.values()), "sparklines": sparklines}, indent=2)
 
     # ── ACWR ──────────────────────────────────────────────────────────────────
 

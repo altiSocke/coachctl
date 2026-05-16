@@ -260,7 +260,7 @@ def _get_race_events_from_db() -> list[dict]:
                 """
                 SELECT slug, name, date, payload_json
                 FROM events
-                WHERE kind = 'race' AND date >= ? AND status != 'cancelled'
+                WHERE kind = 'race' AND date >= ? AND status NOT IN ('cancelled', 'completed')
                 ORDER BY date
                 """,
                 (cutoff,),
