@@ -15,6 +15,7 @@ resting_hr: 55            # Resting HR (bpm)
 
 # Body
 weight_kg: 70
+gender: neutral           # male | female | neutral — affects Banister hrTSS coefficient
 
 # Events (priority: A = key race, B = important, C = tune-up)
 events:

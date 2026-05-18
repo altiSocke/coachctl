@@ -10,6 +10,7 @@ Outputs: ``<DATA_ROOT>/deploy/dist/data.json`` (see ``paths.py`` for resolution)
 from __future__ import annotations
 
 import json
+import math
 import re as _re
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -231,11 +232,13 @@ def _project_fitness(plan_id: int | None, fitness: dict, weeks: int = 8) -> list
             daily_tss[s["date"]] = assigned.get(s["date"], max(0.0, per_session))
 
     projected = []
+    _ctl_k = 1 - math.exp(-1 / 42)
+    _atl_k = 1 - math.exp(-1 / 7)
     for i in range(1, weeks * 7 + 1):
         d = today + timedelta(days=i)
         tss = daily_tss.get(str(d), 0.0)
-        ctl = ctl + (tss - ctl) / 42
-        atl = atl + (tss - atl) / 7
+        ctl = ctl + _ctl_k * (tss - ctl)
+        atl = atl + _atl_k * (tss - atl)
         projected.append(
             {
                 "date": str(d),
@@ -348,11 +351,31 @@ def _get_plan_from_db() -> dict | None:
             (plan_id,),
         ).fetchall()
 
-        # Also fetch activity dates for completion cross-reference
-        activity_dates = {
-            r[0]
-            for r in conn.execute("SELECT DISTINCT date(start_date) FROM activities").fetchall()
-        }
+        # Fetch (date, sport_type) pairs for sport-aware completion detection.
+        # Using a set of (date, sport_category) tuples avoids false positives
+        # where any activity on a planned day marks the session complete.
+        activity_sport_dates: set[tuple[str, str]] = set()
+        for r in conn.execute(
+            "SELECT date(start_date) as d, sport_type FROM activities"
+        ).fetchall():
+            sport_type = (r["sport_type"] or "").lower()
+            if "run" in sport_type or "trail" in sport_type:
+                cat = "run"
+            elif "ride" in sport_type or "cycle" in sport_type or "virtual" in sport_type:
+                cat = "ride"
+            else:
+                cat = "other"
+            activity_sport_dates.add((r["d"], cat))
+            activity_sport_dates.add((r["d"], "any"))  # always allow any-sport match
+
+    def _infer_session_sport(name: str) -> str:
+        """Return 'run', 'ride', or 'any' based on session name keywords."""
+        n = name.lower()
+        if any(w in n for w in ("run", "jog", "tempo", "interval", "long run", "trail", "5k", "10k", "half", "marathon")):
+            return "run"
+        if any(w in n for w in ("ride", "bike", "cycle", "cycling", "zwift", "criterium", "fondo")):
+            return "ride"
+        return "any"
 
     # Group events by week_number from payload
     from collections import defaultdict
@@ -369,7 +392,9 @@ def _get_plan_from_db() -> dict | None:
             pass
         wn: int = payload.get("week_number", 1)
         phases_map[wn] = payload.get("phase", "")
-        completed = er["status"] == "completed" or er["date"] in activity_dates
+        session_sport = _infer_session_sport(er["name"] or "")
+        activity_match = (er["date"], session_sport) in activity_sport_dates
+        completed = er["status"] == "completed" or activity_match
         weeks_map[wn].append(
             {
                 "day_label": _day_label(er["date"]),

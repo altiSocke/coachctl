@@ -124,17 +124,6 @@ def register(mcp) -> None:  # noqa: ANN001
             },
             indent=2,
         )
-        result = {
-            "days": filtered,
-            "sparklines": {
-                "ctl": _sparkline([d["ctl"] for d in filtered]),
-                "atl": _sparkline([d["atl"] for d in filtered]),
-                "tsb": _sparkline(
-                    [d["tsb"] + abs(min(d["tsb"] for d in filtered)) for d in filtered]
-                ),
-            },
-        }
-        return json.dumps(result, indent=2)
 
     @mcp.tool()
     def get_zone_distribution(weeks: int = 8) -> str:

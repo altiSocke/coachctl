@@ -86,7 +86,10 @@ class TestFitnessTools:
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = tools["get_fitness_trend"](weeks=4)
         data = json.loads(result)
-        assert isinstance(data, list)
+        # Tool returns {days: [...], sparklines: {...}} for short windows
+        assert isinstance(data, dict)
+        assert "days" in data
+        assert isinstance(data["days"], list)
 
     def test_get_fitness_trend_weekly_summary(self, mem_db, monkeypatch):
         # Insert enough data to trigger weekly summary (weeks > 8 and > 60 points)
@@ -100,7 +103,10 @@ class TestFitnessTools:
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = tools["get_fitness_trend"](weeks=10)
         data = json.loads(result)
-        assert isinstance(data, list)
+        # Tool returns {weeks: [...], sparklines: {...}} for long windows
+        assert isinstance(data, dict)
+        assert "weeks" in data
+        assert isinstance(data["weeks"], list)
 
     def test_get_zone_distribution(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
@@ -110,7 +116,10 @@ class TestFitnessTools:
     def test_get_weekly_summary_empty(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_weekly_summary"]())
-        assert isinstance(result, list)
+        # Tool returns {weeks: [...], sparklines: {...}}
+        assert isinstance(result, dict)
+        assert "weeks" in result
+        assert isinstance(result["weeks"], list)
 
     def test_get_weekly_summary_with_data(self, mem_db, monkeypatch):
         with mem_db() as conn:
@@ -122,8 +131,10 @@ class TestFitnessTools:
             )
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_weekly_summary"]())
-        assert isinstance(result, list)
-        assert len(result) > 0
+        # Tool returns {weeks: [...], sparklines: {...}}
+        assert isinstance(result, dict)
+        assert "weeks" in result
+        assert len(result["weeks"]) > 0
 
     def test_get_efficiency_factor_trend_empty(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
@@ -235,7 +246,10 @@ class TestFitnessTools:
     def test_get_intensity_distribution_empty(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_intensity_distribution"]())
-        assert "error" in result
+        # Tool returns {overall: {...}, run: {...}, ride: {...}}; each sub-dict has "error" when no data
+        assert isinstance(result, dict)
+        assert "overall" in result
+        assert "error" in result["overall"]
 
     def test_get_intensity_distribution_with_data(self, mem_db, monkeypatch):
         with mem_db() as conn:
@@ -249,9 +263,13 @@ class TestFitnessTools:
                 )
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_intensity_distribution"](weeks=8))
-        assert "distribution_pct" in result
-        assert "classification" in result
-        dist = result["distribution_pct"]
+        # Tool returns {overall: {...}, run: {...}, ride: {...}}
+        assert isinstance(result, dict)
+        assert "overall" in result
+        overall = result["overall"]
+        assert "distribution_pct" in overall
+        assert "classification" in overall
+        dist = overall["distribution_pct"]
         assert abs(dist["easy"] + dist["moderate"] + dist["hard"] - 100.0) < 0.5
 
     def test_get_vo2max_estimate(self, mem_db, monkeypatch):

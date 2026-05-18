@@ -333,6 +333,7 @@ def upsert_activity(conn, activity: dict, streams: dict | None = None, athlete: 
             intensity_factor=excluded.intensity_factor, hrss=excluded.hrss,
             rtss=excluded.rtss, ngp=excluded.ngp,
             rtss_power=excluded.rtss_power,
+            raw_json=excluded.raw_json,
             synced_at=datetime('now')
     """,
         {

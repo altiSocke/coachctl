@@ -206,8 +206,12 @@ def compute_activity_metrics(
             # Banister hrTSS
             hrr_ratio = (avg_hr - resting_hr) / (threshold_hr - resting_hr)
             hrr_ratio = max(0.0, min(hrr_ratio, 1.5))
-            # Trimp multiplier (gender-neutral approximation)
-            trimp_factor = 0.64 * math.exp(1.92 * hrr_ratio)
+            # Trimp multiplier — gender-specific Banister coefficients:
+            #   male=1.67, female=1.92 (Banister 1991); neutral midpoint=1.80
+            _BANISTER_K = {"male": 1.67, "female": 1.92, "neutral": 1.80}
+            gender = (athlete.get("gender") or "neutral").lower()
+            banister_k = _BANISTER_K.get(gender, 1.80)
+            trimp_factor = 0.64 * math.exp(banister_k * hrr_ratio)
             hrss = (moving_time / 60) * hrr_ratio * trimp_factor
             result["hrss"] = round(hrss, 1)
             # Use hrTSS if no power/pace TSS computed
@@ -788,13 +792,17 @@ def estimate_week_tss(sessions: list[dict]) -> float:
 
 def estimate_vo2max_running(rftp_sec_per_km: float) -> float:
     """
-    Estimate VO2max from running threshold pace (Daniels formula).
+    Estimate VO2max from running threshold pace (ACSM formula).
 
-    Daniels (2005) Running Formula:
-        vVO2max ≈ rFTP / 0.88   (rFTP is ~88% of vVO2max speed)
-        VO2max (mL/kg/min) = 0.182258 × vVO2max_km_per_min + 4.702
+    ACSM flat-running oxygen cost formula:
+        VO2 (mL/kg/min) = 0.2 × speed_m_per_min + 3.5
 
-    Where vVO2max is speed at VO2max in km/min.
+    Threshold pace is assumed to be ~88% of vVO2max speed (Daniels 2005), so:
+        vVO2max = rFTP_speed / 0.88
+        VO2max  = 0.2 × vVO2max_m_per_min + 3.5
+
+    This formula is calibrated for flat road running; results for trail or
+    hilly athletes may be slightly underestimated.
 
     Parameters
     ----------
@@ -806,15 +814,11 @@ def estimate_vo2max_running(rftp_sec_per_km: float) -> float:
     """
     if rftp_sec_per_km <= 0:
         return 0.0
-    rftp_km_per_min = 60 / rftp_sec_per_km  # km/min at threshold
-    v_vo2max_km_per_min = rftp_km_per_min / 0.88  # threshold ≈ 88% of vVO2max
-    vo2max = 0.182258 * v_vo2max_km_per_min * 60 + 4.702  # Daniels formula uses km/h
-    # Correct: Daniels formula: VO2max = v × 3.5 + 3.5  (where v is in m/min)
-    # More common form: VO2 at speed v (m/min) = 0.2 × v + 3.5 (flat running)
-    # At vVO2max: VO2max = 0.2 × vVO2max_m_per_min + 3.5 (ACSM formula)
-    v_vo2max_m_per_min = v_vo2max_km_per_min * 1000
-    vo2max_acsm = 0.2 * v_vo2max_m_per_min + 3.5
-    return round(vo2max_acsm, 1)
+    rftp_km_per_min = 60 / rftp_sec_per_km          # km/min at threshold
+    v_vo2max_km_per_min = rftp_km_per_min / 0.88    # threshold ≈ 88% of vVO2max
+    v_vo2max_m_per_min = v_vo2max_km_per_min * 1000 # convert to m/min
+    vo2max = 0.2 * v_vo2max_m_per_min + 3.5         # ACSM formula
+    return round(vo2max, 1)
 
 
 def estimate_vo2max_cycling(ftp_watts: float, weight_kg: float) -> float:
