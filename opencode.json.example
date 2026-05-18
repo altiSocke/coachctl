@@ -19,11 +19,6 @@
       "type": "local",
       "command": ["<path-to-coros-mcp>/.venv/bin/coros-mcp", "serve"],
       "enabled": false
-    },
-    "swarmvault": {
-      "type": "local",
-      "command": ["swarmvault", "mcp"],
-      "enabled": true
     }
   }
 }

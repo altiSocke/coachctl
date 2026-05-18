@@ -89,13 +89,6 @@ Call `apply_general_wiki_update(topic, content)` for approved general pages.
 Call `apply_wiki_update(section, content)` for approved personal pages.
 Each apply auto-logs to the relevant `log.md`. Confirm to the athlete which pages were updated.
 
-### Step 8 — Rebuild SwarmVault index
-After all general wiki pages have been applied, run:
-```bash
-swarmvault compile
-```
-This rebuilds the knowledge graph and FTS index in `state/` so future `swarmvault_query` calls reflect the new content. Skip this step if only personal (`profile/`) pages were updated — SwarmVault indexes the `wiki/` layer (in the personal repo) only.
-
 ---
 
 ## Immutability rules
