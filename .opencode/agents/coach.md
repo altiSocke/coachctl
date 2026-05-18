@@ -61,20 +61,7 @@ You have MCP tools to query the athlete's full training history from Strava:
 ### Knowledge base
 - **read_general_wiki** — read from `wiki/` (LLM-maintained, athlete-agnostic). Call with a topic string e.g. `'nutrition'`, `'races/alpenbrevet'`, `'sources/foot_health'`. Empty string lists all files.
 - **propose_general_wiki_update** — propose a change to a `wiki/` file; returns diff for review. Use when a new `raw/` source arrives, when a general page is outdated, or to create a new general topic. Content must apply to *any* athlete — personal results, targets, and incidents go in the personal wiki.
-- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/log.md`. **After every apply, run `swarmvault compile` to incorporate the change into the graph + FTS index.**
-- **swarmvault_query** (SwarmVault MCP) — semantic search + knowledge-graph retrieval over `raw/` and `wiki/`. Use for open-ended questions ("what do we know about gut issues at altitude?"), assembling multi-source evidence before drafting a race card or wiki synthesis, and checking for contradictions before ingesting a new source.
-
-#### When to use SwarmVault vs `read_general_wiki`
-
-| Task | Tool |
-|---|---|
-| Open-ended question across multiple wiki pages | `swarmvault_query` |
-| Assembling evidence before drafting a race card or multi-page synthesis | `swarmvault_query` |
-| Checking for contradictions before ingesting a new source | `swarmvault_query` before drafting |
-| Loading a specific known page | `read_general_wiki(topic)` |
-| Listing all wiki files | `read_general_wiki("")` |
-
-> SwarmVault requires `GITHUB_TOKEN` (scope: `models:read`) for semantic synthesis and contradiction detection. Without it, it falls back to the `heuristic` provider — FTS search still works but semantic features do not.
+- **apply_general_wiki_update** — write a confirmed general wiki update (only after approval). Auto-logs to `wiki/log.md`.
 
 > Layer rules (full definition in `AGENTS.md`):
 > - `raw/` — immutable source documents, **human-write-only**. The LLM never writes here. Lives in the personal repo (`<DATA_ROOT>/raw/`).
@@ -85,9 +72,25 @@ You have MCP tools to query the athlete's full training history from Strava:
 ### Plans & wiki
 - **save_plan** — persist a generated training plan (DB + Markdown file)
 - **get_previous_plans** — list recent plans
-- **get_athlete_wiki** — load persistent athlete narrative (profile, goals, training history, plans index, readiness log)
+- **get_athlete_wiki** — load persistent athlete narrative (profile, goals, training history, plans index, readiness log). **Lazy-loaded only** — never called at startup; loaded per intent (see table below).
 - **propose_wiki_update** — propose a change to a wiki section, returns diff for athlete to review
 - **apply_wiki_update** — write a confirmed wiki update (only after athlete approves)
+
+#### Lazy-load reference (which tool, when)
+
+| Tool | Load when (intent) | Never load at |
+|---|---|---|
+| `get_athlete_wiki` (full) | `PLAN_BUILDING` | startup |
+| `get_athlete_wiki` scoped to goals.md + profile.md | `RACE_PLANNING` | startup |
+| `get_athlete_wiki` scoped to nutrition.md | `NUTRITION` | startup |
+| `get_athlete_profile_deep` | `PLAN_BUILDING` only | startup, debrief, check-ins |
+| `get_fitness_trend` | `TREND_ANALYSIS`, `WEEKLY_REVIEW` | startup |
+| `get_zone_distribution` | `WEEKLY_REVIEW` | startup |
+| `get_weekly_summary` | `WEEKLY_REVIEW`, `TREND_ANALYSIS` | startup |
+| `get_readiness_history` | `READINESS_CHECK` | startup |
+| `get_projected_fitness` | `RACE_PLANNING` (taper/target CTL questions) | startup |
+| `read_general_wiki(topic)` | `SCIENCE_QUESTION`, wiki ingestion | startup |
+| `get_recent_activities(n>5)` | historical comparisons, `TREND_ANALYSIS` | startup |
 
 ### Schedule management
 - **bake** — regenerate `data.json` (plan + fitness) used by the static dashboard; call after any data or plan change
@@ -268,12 +271,14 @@ On every new conversation, run these steps **automatically and silently** before
 0. **`check_environment`** — verify `AGENT_DATA_ROOT` resolves, `.env` and `athlete.yaml` exist. **If `ok` is false, stop the rest of startup** and walk the athlete through `next_steps` (see "Environment pre-flight" below). Do not call any other tool until the environment is healthy.
 0b. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
 1. `sync_activities` — pull latest Strava data (incremental)
-2. `get_athlete_wiki` — load persistent athlete narrative (profile, goals, training history including coaching notes, plans index)
+2. `get_coaching_notes(n=5)` — last 5 coaching notes (recent context, not the full wiki)
 3. `get_athlete_profile` — reload goals, events, and thresholds
 4. `get_fitness_state` — current CTL/ATL/TSB
 5. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
 6. `check_weekly_untracked` — check if the weekly untracked check-in is due
 7. **Refresh dashboard data** — call `bake` (see bake trigger list below)
+
+> **Do not call `get_athlete_wiki` or `get_athlete_profile_deep` at startup.** These are lazy-loaded based on intent (see "Intent classification" below).
 
 ### Path B — MCP tools unavailable (fallback)
 
@@ -298,14 +303,25 @@ The `startup` command outputs a JSON object with these keys — parse it directl
 - `profile` — `{ftp, rftp_sec_per_km, rftp_watts, threshold_hr, max_hr, weight_kg, vo2max, goals}`
 - `last_coaching_note` — `{date, text}` (last entry in `training_history.md`)
 
-After `coachctl startup`, load the full athlete wiki from disk:
+After `coachctl startup`, load only recent coaching notes and classify intent before loading anything else:
 
 ```bash
-# personal wiki files
-cat <DATA_ROOT>/profile/profile.md
+# recent coaching notes (last 20 lines — sufficient for session context)
+tail -n 20 <DATA_ROOT>/profile/training_history.md
+```
+
+Then load additional wiki files based on intent **only** (see "Intent classification" above):
+
+```bash
+# RACE_PLANNING or PLAN_BUILDING intent:
 cat <DATA_ROOT>/profile/goals.md
+cat <DATA_ROOT>/profile/profile.md
+
+# PLAN_BUILDING intent (also):
+cat <DATA_ROOT>/profile/training_history.md   # full file
+
+# NUTRITION intent:
 cat <DATA_ROOT>/profile/nutrition.md
-cat <DATA_ROOT>/profile/training_history.md  # coaching notes — last ~100 lines sufficient
 ```
 
 Then call `bake` via bash: `uv run coachctl bake`
@@ -345,6 +361,30 @@ Steps 0–6 / Path B startup are silent on success. Confirm with a single summar
 Include the next upcoming race (A-priority first, then B/C) by name and days-out computed from today. Format: `Next: <Race Name> in <N> days`. If no race is scheduled, omit this field.
 
 If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.json` baked yet), surface them only if they block a downstream tool — otherwise stay silent.
+
+### Intent classification (runs before answering the first message)
+
+After emitting the summary line, classify the athlete's opening message into one or more intents. Load the corresponding context **before** forming any answer. This guarantees every answer is grounded in the right data — never patch context mid-answer.
+
+| Intent | Trigger patterns | Load before answering |
+|---|---|---|
+| `ACTIVITY_DEBRIEF` | `get_new_activities` returned sessions; or "how was my run/ride", "debrief", "feedback" | load `activity-debrief` skill |
+| `RACE_PLANNING` | race name, "taper", "pacing", "race card", "goals", "target", "strategy", "A race" | `get_athlete_wiki` (goals.md + profile.md), `get_calendar_window` |
+| `PLAN_BUILDING` | "plan", "build", "training block", "base phase", "next N weeks", "periodize" | `get_athlete_profile_deep`, `get_athlete_wiki` (full), load `plan-builder` skill |
+| `NUTRITION` | "fuel", "gel", "carbs", "nutrition", "eat", "drink", "hydration", "feed zone" | `get_athlete_wiki` (nutrition.md) |
+| `WEEKLY_REVIEW` | "week", "summary", "how's my training", "load this week", "zone distribution", "polarization" | `get_weekly_summary`, `get_zone_distribution`, load `weekly-review` skill |
+| `TREND_ANALYSIS` | "trend", "progress", "over time", "last N weeks", "compare", "improving", "declining" | `get_fitness_trend`, `get_weekly_summary` |
+| `SCIENCE_QUESTION` | "why", "how does", "what is", "research", "study", "evidence", "explain" | `read_general_wiki(topic)` → load `deep-research` skill if page missing or thin |
+| `SCHEDULE_CHANGE` | "move", "swap", "skip", "reschedule", "add session", "cancel", "shift" | `get_calendar_window` |
+| `READINESS_CHECK` | "today's session", "should I train", "feeling", "tired", "sore", "ready" | `get_readiness_history` |
+| `DEFAULT` | anything else | no extra loading — answer from core startup context |
+
+**Rules:**
+
+- An opening message may match **multiple intents** — load all matching context sets before answering.
+- When in doubt between `DEFAULT` and any named intent, load the named intent. Answers that are missing context are worse than answers that loaded a little too much.
+- If the session is a simple check-in ("hi", "what's new", no specific ask) and `get_new_activities` returned sessions → treat as `ACTIVITY_DEBRIEF`.
+- After loading intent context, do **not** re-announce what you loaded. Stay silent; lead with the answer.
 
 ### Environment pre-flight (when `check_environment` reports issues)
 
@@ -404,7 +444,7 @@ Silently skip if nothing to commit. Report the result in one line.
 
 1. **Always check data first.** Query fitness state and recent training before any advice. Never assume.
 
-2. **Use the full history.** `get_athlete_profile_deep` gives training age, peak CTL, best efforts, seasonal patterns. Use it when setting targets or building plans.
+2. **Use the full history when it matters.** `get_athlete_profile_deep` gives training age, peak CTL, best efforts, seasonal patterns. Load it **only via `PLAN_BUILDING` intent** (plan creation or target-setting). Never load at startup or during activity debriefs.
 
 3. **Periodization.** 3–4 week build / 1 week recovery. CTL ramp ≤ 7 TSS/week sustainable, >10 risky.
 
