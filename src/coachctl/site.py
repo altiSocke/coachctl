@@ -741,7 +741,7 @@ def _extract_decision_gates_from_plan() -> list[dict]:
     """Parse decision gates table from the active plan's markdown."""
     with get_conn() as conn:
         row = conn.execute(
-            "SELECT source_md_path FROM plans WHERE active = 1 ORDER BY id DESC LIMIT 1"
+            "SELECT source_md_path, start_date, end_date FROM plans WHERE active = 1 ORDER BY id DESC LIMIT 1"
         ).fetchone()
     if not row or not row["source_md_path"]:
         return []
@@ -752,6 +752,9 @@ def _extract_decision_gates_from_plan() -> list[dict]:
         md_path = paths.data_root() / row["source_md_path"]
         if not md_path.exists():
             return []
+
+    # Determine base year from plan dates for accurate gate date parsing
+    plan_start = date.fromisoformat(row["start_date"]) if row["start_date"] else None
 
     import re
 
@@ -770,14 +773,17 @@ def _extract_decision_gates_from_plan() -> list[dict]:
         if len(cols) < 5:
             continue
         gate_date_str = cols[0]
-        # Parse date like "Jun 14" → YYYY-MM-DD
+        # Parse date like "Jun 14" → YYYY-MM-DD using plan start year
         try:
             from datetime import datetime as _dt
 
-            # Parse month+day then set year explicitly to avoid 3.15 deprecation
-            year = date.today().year
-            dt = _dt.strptime(f"{gate_date_str} {year}", "%b %d %Y")
-            gate_date = dt.strftime("%Y-%m-%d")
+            base_year = plan_start.year if plan_start else date.today().year
+            dt = _dt.strptime(f"{gate_date_str} {base_year}", "%b %d %Y")
+            gate_date_candidate = dt.date()
+            # If gate is before plan start, it likely belongs to the next year
+            if plan_start and gate_date_candidate < plan_start:
+                gate_date_candidate = gate_date_candidate.replace(year=base_year + 1)
+            gate_date = gate_date_candidate.isoformat()
         except Exception:
             gate_date = gate_date_str
 

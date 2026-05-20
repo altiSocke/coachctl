@@ -501,3 +501,72 @@ def test_compliance_weekly_has_plan_week_field(site_db):
     assert any(pw is not None for pw in plan_weeks), (
         f"No plan_week found in weekly entries: {weekly}"
     )
+
+
+# ── _extract_decision_gates_from_plan year inference ─────────────────────────
+
+
+_GATE_TABLE = """\
+## Decision Gates
+
+| Date | Test | Target | Actual | Status |
+|------|------|--------|--------|--------|
+| Jun 14 | 5k time trial | <20:00 | — | upcoming |
+| Jan 05 | Long run 25k | complete | — | upcoming |
+"""
+
+
+def _insert_plan(conn, data_root, start_date, end_date, slug, md_content=_GATE_TABLE):
+    """Write a plan markdown and insert a plans row."""
+    plan_file = data_root / "profile" / "plans" / f"{slug}.md"
+    plan_file.parent.mkdir(parents=True, exist_ok=True)
+    plan_file.write_text(md_content, encoding="utf-8")
+    # Deactivate any existing active plans first
+    conn.execute("UPDATE plans SET active = 0")
+    conn.execute(
+        """INSERT INTO plans (slug, title, start_date, end_date, active, source_md_path)
+           VALUES (?, 'Test Plan', ?, ?, 1, ?)""",
+        (slug, start_date, end_date, f"{slug}.md"),
+    )
+    conn.commit()
+
+
+def test_decision_gate_same_year_as_plan(site_db, tmp_data_root):
+    """Gate 'Jun 14' with plan starting 2026-05-01 → 2026-06-14."""
+    with site_db() as conn:
+        _insert_plan(conn, tmp_data_root, "2026-05-01", "2026-08-01", "gate-same-year")
+    gates = site_module._extract_decision_gates_from_plan()
+    jun_gate = next(g for g in gates if "06-14" in g["date"])
+    assert jun_gate["date"] == "2026-06-14"
+
+
+def test_decision_gate_year_boundary_rolls_forward(site_db, tmp_data_root):
+    """Gate 'Jan 05' with plan starting 2026-11-01 → 2027-01-05 (not 2026)."""
+    with site_db() as conn:
+        _insert_plan(conn, tmp_data_root, "2026-11-01", "2027-03-01", "gate-boundary")
+    gates = site_module._extract_decision_gates_from_plan()
+    jan_gate = next(g for g in gates if "01-05" in g["date"])
+    assert jan_gate["date"] == "2027-01-05"
+
+
+def test_decision_gate_no_start_date_falls_back(site_db, tmp_data_root):
+    """When plan has no start_date, uses date.today().year as fallback."""
+    with site_db() as conn:
+        _insert_plan(conn, tmp_data_root, None, None, "gate-nodate")
+    gates = site_module._extract_decision_gates_from_plan()
+    jun_gate = next(g for g in gates if "06-14" in g["date"])
+    assert jun_gate["date"] == f"{date.today().year}-06-14"
+
+
+def test_decision_gate_malformed_date_returns_raw(site_db, tmp_data_root):
+    """Unparseable date string is returned as-is."""
+    md = (
+        "## Decision Gates\n\n"
+        "| Date | Test | Target | Actual | Status |\n"
+        "|------|------|--------|--------|--------|\n"
+        "| TBD | 5k trial | <20:00 | — | upcoming |\n"
+    )
+    with site_db() as conn:
+        _insert_plan(conn, tmp_data_root, "2026-05-01", "2026-08-01", "gate-malformed", md)
+    gates = site_module._extract_decision_gates_from_plan()
+    assert gates[0]["date"] == "TBD"
