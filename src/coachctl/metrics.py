@@ -200,15 +200,18 @@ def compute_activity_metrics(
     # ── HR-based TSS (fallback for any sport) ────────────────────────────────
     avg_hr = activity.get("average_heartrate")
     if avg_hr and moving_time > 0:
+        max_hr = athlete.get("max_hr")
         threshold_hr = athlete.get("threshold_hr")
         resting_hr = athlete.get("resting_hr", 50)
-        if threshold_hr and threshold_hr > 0:
-            # Banister hrTSS
-            hrr_ratio = (avg_hr - resting_hr) / (threshold_hr - resting_hr)
+        # Banister TRIMP uses HRmax for HRR; fall back to threshold_hr if unavailable
+        hr_ceiling = max_hr or threshold_hr
+        if hr_ceiling and hr_ceiling > resting_hr:
+            # Banister hrTSS — HRR as fraction of heart rate reserve
+            hrr_ratio = (avg_hr - resting_hr) / (hr_ceiling - resting_hr)
             hrr_ratio = max(0.0, min(hrr_ratio, 1.5))
             # Trimp multiplier — gender-specific Banister coefficients:
-            #   male=1.67, female=1.92 (Banister 1991); neutral midpoint=1.80
-            _BANISTER_K = {"male": 1.67, "female": 1.92, "neutral": 1.80}
+            #   male=1.92, female=1.67 (Banister 1975); neutral midpoint=1.80
+            _BANISTER_K = {"male": 1.92, "female": 1.67, "neutral": 1.80}
             gender = (athlete.get("gender") or "neutral").lower()
             banister_k = _BANISTER_K.get(gender, 1.80)
             trimp_factor = 0.64 * math.exp(banister_k * hrr_ratio)

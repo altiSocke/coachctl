@@ -86,6 +86,7 @@ def mock_athlete(monkeypatch):
         "ftp": 250,
         "rftp": 270,  # sec/km threshold pace (≈ 4:30/km)
         "threshold_hr": 170,
+        "max_hr": 190,
         "resting_hr": 50,
     }
     monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete)
@@ -171,7 +172,59 @@ def test_hrtss_fallback():
     assert m["tss"] == m["hrss"]
 
 
-def test_no_tss_when_no_data():
+def test_hrtss_uses_max_hr_over_threshold_hr(monkeypatch):
+    """hrTSS should use max_hr (not threshold_hr) as HRR ceiling when available."""
+    athlete_with_max = {
+        "ftp": 250, "rftp": 270, "threshold_hr": 170, "max_hr": 190, "resting_hr": 50,
+    }
+    athlete_without_max = {
+        "ftp": 250, "rftp": 270, "threshold_hr": 170, "resting_hr": 50,
+    }
+    activity = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 140}
+
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete_with_max)
+    m_with = compute_activity_metrics(activity)
+
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete_without_max)
+    m_without = compute_activity_metrics(activity)
+
+    # Both should produce hrss
+    assert m_with["hrss"] > 0
+    assert m_without["hrss"] > 0
+    # Using max_hr (190) gives a smaller HRR ratio than threshold_hr (170),
+    # so hrss should be lower with max_hr
+    assert m_with["hrss"] < m_without["hrss"]
+
+
+def test_hrtss_clamp_at_1_5(monkeypatch):
+    """hrr_ratio is clamped at 1.5 even when avg_hr far exceeds max_hr."""
+    athlete = {
+        "ftp": 250, "rftp": 270, "threshold_hr": 170, "max_hr": 180, "resting_hr": 50,
+    }
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete)
+    # avg_hr=250 → unclamped ratio = (250-50)/(180-50) = 1.54 → clamped to 1.5
+    activity = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 250}
+    m_extreme = compute_activity_metrics(activity)
+    # avg_hr=245 → unclamped ratio = (245-50)/(180-50) = 1.5 → exactly at clamp
+    activity2 = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 245}
+    m_at_clamp = compute_activity_metrics(activity2)
+    # Both should produce the same hrss (both clamped to 1.5)
+    assert m_extreme["hrss"] == m_at_clamp["hrss"]
+
+
+def test_hrtss_male_constant(monkeypatch):
+    """Male athlete uses Banister k=1.92 (higher than female k=1.67)."""
+    base = {"ftp": 250, "rftp": 270, "threshold_hr": 170, "max_hr": 190, "resting_hr": 50}
+    activity = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 150}
+
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: {**base, "gender": "male"})
+    m_male = compute_activity_metrics(activity)
+
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: {**base, "gender": "female"})
+    m_female = compute_activity_metrics(activity)
+
+    # Male k=1.92 produces higher TRIMP than female k=1.67
+    assert m_male["hrss"] > m_female["hrss"]
     """Activity with no HR, power, or pace → tss stays None."""
     activity = {
         "sport_type": "WeightTraining",
