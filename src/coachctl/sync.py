@@ -2,11 +2,11 @@
 Strava OAuth2 + activity sync.
 
 First-time setup:
-    python -m coachctl.sync --auth
+    uv run coachctl sync --auth
 
 Subsequent syncs (incremental):
-    python -m coachctl.sync
-    python -m coachctl.sync --full   # re-pull everything
+    uv run coachctl sync
+    uv run coachctl sync --full   # re-pull everything
 """
 
 import argparse

@@ -63,7 +63,7 @@ def register(mcp) -> None:  # noqa: ANN001
         except RuntimeError as e:
             result["errors"].append(f"Data root unresolved: {e}")
             result["next_steps"] = [
-                "Run: uv run new-profile --target ~/workspace/coachctl-personal",
+                "Run: uv run coachctl new-profile --target ~/workspace/coachctl-personal",
                 "Then: export AGENT_DATA_ROOT=~/workspace/coachctl-personal",
                 "Restart OpenCode so the MCP server picks up the new env.",
             ]
@@ -97,14 +97,14 @@ def register(mcp) -> None:  # noqa: ANN001
         db = paths.db_path()
         if not db.exists():
             result["warnings"].append(
-                f"Activities DB not yet created at {db}. Run: uv run sync --auth (first time) "
-                "or uv run sync (incremental)."
+                f"Activities DB not yet created at {db}. Run: uv run coachctl sync --auth "
+                "(first time) or uv run coachctl sync (incremental)."
             )
 
         data_json = paths.data_json()
         if not data_json.exists():
             result["warnings"].append(
-                f"Dashboard data not yet baked at {data_json}. Run: uv run bake."
+                f"Dashboard data not yet baked at {data_json}. Run: uv run coachctl bake."
             )
 
         # 3. Profile label is informational

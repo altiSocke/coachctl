@@ -32,8 +32,8 @@ def _setup_html(error: str | None) -> str:
 </style></head><body>
 <h1>coachctl dashboard</h1>
 <p>No <code>data.json</code> available yet.</p>
-<p>Run <code>bake</code> in your personal repo to generate it, then commit and push:</p>
-<pre>uv run bake
+<p>Run <code>coachctl bake</code> to generate it, then commit and push:</p>
+<pre>uv run coachctl bake
 git -C $AGENT_DATA_ROOT add deploy/dist/data.json
 git -C $AGENT_DATA_ROOT commit -m "bake $(date -I)"
 git -C $AGENT_DATA_ROOT push</pre>
