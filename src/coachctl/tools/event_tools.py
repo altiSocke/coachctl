@@ -80,6 +80,21 @@ def _diff_payload_section(slug: str, key: str, new_value: Any) -> str:
     return text if text.strip() else "(no changes)"
 
 
+def _get_training_event(slug: str) -> Event | str:
+    ev = get_event(slug)
+    if not ev:
+        return f"Error: event '{slug}' not found."
+    if ev.kind != KIND_TRAINING:
+        return f"Error: event '{slug}' is kind='{ev.kind}', not training."
+    return ev
+
+
+def _append_reason(notes: str | None, label: str, reason: str) -> str | None:
+    if not reason:
+        return notes
+    return (notes + "\n" if notes else "") + f"{label}: {reason}"
+
+
 def register(mcp) -> None:  # noqa: ANN001
 
     # ── Calendar reads ────────────────────────────────────────────────────
@@ -284,6 +299,74 @@ def register(mcp) -> None:  # noqa: ANN001
         """Hard-delete an event row. Prefer ``cancel_event`` for history."""
         ok = _delete_event(slug)
         return f"Deleted '{slug}'." if ok else f"Error: '{slug}' not found."
+
+    @mcp.tool()
+    def move_training_session(slug: str, date: str, reason: str = "") -> str:
+        """Move a planned training session to a new date without regenerating its plan."""
+        ev = _get_training_event(slug)
+        if isinstance(ev, str):
+            return ev
+        _validate_date(date)
+        old_date = ev.date
+        ev.date = date
+        ev.notes = _append_reason(ev.notes, "Moved", reason)
+        upsert_event(ev)
+        return f"Moved training session '{slug}' from {old_date} to {date}."
+
+    @mcp.tool()
+    def resize_training_session(
+        slug: str,
+        duration_min: int = 0,
+        estimated_tss: float = -1.0,
+        reason: str = "",
+    ) -> str:
+        """Adjust duration and/or estimated TSS for a training session."""
+        ev = _get_training_event(slug)
+        if isinstance(ev, str):
+            return ev
+        if duration_min < 0:
+            return "Error: duration_min must be >= 0."
+        if estimated_tss < -1:
+            return "Error: estimated_tss must be >= 0, or -1 to leave unchanged."
+        if duration_min == 0 and estimated_tss < 0:
+            return "Error: provide duration_min or estimated_tss."
+        if duration_min > 0:
+            ev.duration_min = duration_min
+        if estimated_tss >= 0:
+            ev.estimated_tss = estimated_tss or None
+        ev.notes = _append_reason(ev.notes, "Resized", reason)
+        upsert_event(ev)
+        return f"Resized training session '{slug}'."
+
+    @mcp.tool()
+    def replace_training_session(
+        slug: str,
+        name: str,
+        summary: str = "",
+        duration_min: int = 0,
+        estimated_tss: float = -1.0,
+        notes: str = "",
+    ) -> str:
+        """Replace the workout prescription for a training session while preserving its slug."""
+        ev = _get_training_event(slug)
+        if isinstance(ev, str):
+            return ev
+        if not name.strip():
+            return "Error: name is required."
+        if duration_min < 0:
+            return "Error: duration_min must be >= 0."
+        if estimated_tss < -1:
+            return "Error: estimated_tss must be >= 0, or -1 to leave unchanged."
+        old_name = ev.name
+        ev.name = name.strip()
+        ev.summary = summary or None
+        if duration_min > 0:
+            ev.duration_min = duration_min
+        if estimated_tss >= 0:
+            ev.estimated_tss = estimated_tss or None
+        ev.notes = _append_reason(ev.notes, "Replaced", notes or f"{old_name} -> {ev.name}")
+        upsert_event(ev)
+        return f"Replaced training session '{slug}' ({old_name} -> {ev.name})."
 
     # ── Race-card section editors ─────────────────────────────────────────
     #

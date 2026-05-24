@@ -897,6 +897,68 @@ class TestEventTools:
         result = tools["delete_event"](slug="ghost")
         assert "Error" in result or "not found" in result
 
+    def test_move_training_session(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_event"](kind="training", date="2026-03-01", name="Run", slug="move-ev")
+        result = tools["move_training_session"](slug="move-ev", date="2026-03-03", reason="travel")
+        detail = json.loads(tools["get_event_detail"]("move-ev"))
+        assert "Moved" in result
+        assert detail["date"] == "2026-03-03"
+        assert "travel" in detail["notes"]
+
+    def test_move_training_session_rejects_race(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_race"](date="2026-06-01", name="Race", slug="race-move")
+        result = tools["move_training_session"](slug="race-move", date="2026-06-02")
+        assert "not training" in result
+
+    def test_resize_training_session(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_event"](kind="training", date="2026-03-01", name="Run", slug="resize-ev")
+        result = tools["resize_training_session"](
+            slug="resize-ev", duration_min=75, estimated_tss=82, reason="extend aerobic"
+        )
+        detail = json.loads(tools["get_event_detail"]("resize-ev"))
+        assert "Resized" in result
+        assert detail["duration_min"] == 75
+        assert detail["estimated_tss"] == 82
+        assert "extend aerobic" in detail["notes"]
+
+    def test_resize_training_session_requires_change(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_event"](kind="training", date="2026-03-01", name="Run", slug="resize-empty")
+        result = tools["resize_training_session"](slug="resize-empty")
+        assert "Error" in result
+
+    def test_replace_training_session(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_event"](
+            kind="training", date="2026-03-01", name="Easy Run", slug="replace-ev"
+        )
+        result = tools["replace_training_session"](
+            slug="replace-ev",
+            name="Threshold Intervals",
+            summary="3x10min threshold",
+            duration_min=70,
+            estimated_tss=88,
+            notes="better quality stimulus",
+        )
+        detail = json.loads(tools["get_event_detail"]("replace-ev"))
+        assert "Replaced" in result
+        assert detail["name"] == "Threshold Intervals"
+        assert detail["summary"] == "3x10min threshold"
+        assert detail["duration_min"] == 70
+        assert detail["estimated_tss"] == 88
+        assert "better quality stimulus" in detail["notes"]
+
+    def test_replace_training_session_requires_name(self, mem_db, monkeypatch):
+        tools = self._get_tools(mem_db, monkeypatch)
+        tools["create_event"](
+            kind="training", date="2026-03-01", name="Easy Run", slug="replace-empty"
+        )
+        result = tools["replace_training_session"](slug="replace-empty", name="")
+        assert "Error" in result
+
     def test_propose_race_section(self, mem_db, monkeypatch):
         tools = self._get_tools(mem_db, monkeypatch)
         tools["create_race"](date="2026-06-01", name="Test Race", slug="test-race")
