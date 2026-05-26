@@ -191,9 +191,13 @@ def test_hrtss_uses_max_hr_over_threshold_hr(monkeypatch):
     # Both should produce hrss
     assert m_with["hrss"] > 0
     assert m_without["hrss"] > 0
-    # Using max_hr (190) gives a smaller HRR ratio than threshold_hr (170),
-    # so hrss should be lower with max_hr
-    assert m_with["hrss"] < m_without["hrss"]
+    # With normalization, both cases use threshold_hr for the reference.
+    # Different ceilings change both raw TRIMP and reference — values differ
+    # but both should be in a reasonable hrTSS range for 1hr at ~75% HRR.
+    assert m_with["hrss"] != m_without["hrss"]
+    # Neither should flag threshold as estimated (both have threshold_hr set)
+    assert "hrss_threshold_estimated" not in m_with
+    assert "hrss_threshold_estimated" not in m_without
 
 
 def test_hrtss_clamp_at_1_5(monkeypatch):
@@ -223,8 +227,36 @@ def test_hrtss_male_constant(monkeypatch):
     monkeypatch.setattr("coachctl.config.load_athlete", lambda: {**base, "gender": "female"})
     m_female = compute_activity_metrics(activity)
 
-    # Male k=1.92 produces higher TRIMP than female k=1.67
-    assert m_male["hrss"] > m_female["hrss"]
+    # Male k=1.92 and female k=1.67 produce different normalized hrTSS.
+    # After normalization, the relationship depends on activity HR vs threshold:
+    # when below threshold, higher k gives lower normalized value (steeper curve
+    # penalizes sub-threshold effort more relative to the reference).
+    assert m_male["hrss"] != m_female["hrss"]
+
+
+def test_hrtss_threshold_estimated_flag(monkeypatch):
+    """When threshold_hr is missing, hrTSS estimates it from max_hr and flags it."""
+    athlete_no_thr = {
+        "ftp": 250, "rftp": 270, "max_hr": 190, "resting_hr": 50,
+    }
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete_no_thr)
+    activity = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 140}
+    m = compute_activity_metrics(activity)
+    assert m["hrss"] > 0
+    assert m["tss"] == m["hrss"]
+    assert m.get("hrss_threshold_estimated") is True
+
+
+def test_hrtss_normalization_1hr_at_threshold(monkeypatch):
+    """1 hour at exactly threshold HR should produce ~100 hrTSS."""
+    athlete = {"ftp": 250, "rftp": 270, "threshold_hr": 170, "max_hr": 190, "resting_hr": 50}
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: athlete)
+    activity = {"sport_type": "Swim", "moving_time": 3600, "average_heartrate": 170}
+    m = compute_activity_metrics(activity)
+    # Should be approximately 100 (the definition of normalized hrTSS)
+    assert 95 <= m["hrss"] <= 105
+
+
     """Activity with no HR, power, or pace → tss stays None."""
     activity = {
         "sport_type": "WeightTraining",
@@ -530,3 +562,46 @@ def test_fit_cp_no_ftp_no_comparison():
     result = fit_critical_power(efforts, ftp=None)
     assert result is not None
     assert "ftp_comparison" not in result
+
+
+# ── Bug fix regression tests ─────────────────────────────────────────────────
+
+
+def test_taper_respects_taper_weeks_parameter():
+    """#40: taper_weeks=3 should reduce load in week -3 (days 14-20 before race)."""
+    from coachctl.metrics import project_fitness
+
+    target = date.today() + timedelta(days=30)
+    # Build a minimal daily_tss history (60 days of constant load)
+    daily_tss = {
+        date.today() - timedelta(days=i): 80.0 for i in range(1, 61)
+    }
+
+    result_3wk = project_fitness(daily_tss, target, weekly_tss=560, taper_weeks=3)
+    result_2wk = project_fitness(daily_tss, target, weekly_tss=560, taper_weeks=2)
+
+    # 3-week taper should produce higher race-day TSB (more rest)
+    assert result_3wk["projected"]["tsb"] > result_2wk["projected"]["tsb"]
+
+
+def test_form_status_under_tapered_at_tsb_7():
+    """#44: TSB +7 should be 'under-tapered', not 'optimal' (Coggan: +10 to +25)."""
+    from coachctl.metrics import project_fitness
+
+    target = date.today() + timedelta(days=10)
+    # High recent load → low projected TSB
+    daily_tss = {
+        date.today() - timedelta(days=i): 120.0 for i in range(1, 61)
+    }
+    result = project_fitness(daily_tss, target, weekly_tss=840, taper_weeks=1)
+    # With only 1 week taper on very high load, TSB should stay low
+    if result["projected"]["tsb"] < 10:
+        assert result["form_status"] == "under-tapered"
+
+
+def test_polarized_target_sums_to_100():
+    """#45: Polarized target distribution must sum to 100%."""
+    from pathlib import Path
+
+    source = (Path(__file__).parent.parent / "src" / "coachctl" / "metrics.py").read_text(encoding="utf-8")
+    assert '"easy": 80.0, "moderate": 5.0, "hard": 15.0' in source

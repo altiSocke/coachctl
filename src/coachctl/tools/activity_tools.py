@@ -101,7 +101,7 @@ def register(mcp) -> None:  # noqa: ANN001
         result: dict = {"activity_id": activity_id, "stream_points": n}
 
         if hr:
-            zones = hr_zones(thr_hr, rest_hr)
+            zones = hr_zones(thr_hr, rest_hr, athlete.get("hr_zones"))
             zone_secs: dict[str, float] = {z: 0.0 for z in zones}
             for i in range(1, len(hr)):
                 dt = time_s[i] - time_s[i - 1] if i < len(time_s) else 1

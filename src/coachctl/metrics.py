@@ -215,7 +215,19 @@ def compute_activity_metrics(
             gender = (athlete.get("gender") or "neutral").lower()
             banister_k = _BANISTER_K.get(gender, 1.80)
             trimp_factor = 0.64 * math.exp(banister_k * hrr_ratio)
-            hrss = (moving_time / 60) * hrr_ratio * trimp_factor
+            hrss_raw = (moving_time / 60) * hrr_ratio * trimp_factor
+
+            # Normalize so that 1 hour at threshold HR = 100 hrTSS
+            _thr_hr_ref = threshold_hr
+            if not _thr_hr_ref and hr_ceiling:
+                # Estimate LTHR as 85% of heart rate reserve (Karvonen)
+                _thr_hr_ref = resting_hr + 0.85 * (hr_ceiling - resting_hr)
+                result["hrss_threshold_estimated"] = True
+            ref_hrr = (_thr_hr_ref - resting_hr) / (hr_ceiling - resting_hr)
+            ref_trimp_factor = 0.64 * math.exp(banister_k * ref_hrr)
+            ref_trimp = 60 * ref_hrr * ref_trimp_factor  # 1hr at LTHR
+            hrss = (hrss_raw / ref_trimp) * 100 if ref_trimp > 0 else hrss_raw
+
             result["hrss"] = round(hrss, 1)
             # Use hrTSS if no power/pace TSS computed
             if not result["tss"]:
@@ -390,8 +402,35 @@ def get_current_fitness(conn, sport_category: str = "all") -> dict:
 # ── Zone distributions ────────────────────────────────────────────────────────
 
 
-def hr_zones(threshold_hr: int, resting_hr: int = 50) -> dict[str, tuple[int, int]]:
-    """5-zone HR model based on threshold HR."""
+def hr_zones(
+    threshold_hr: int,
+    resting_hr: int = 50,
+    hr_zones_config: dict | None = None,
+) -> dict[str, tuple[int, int]]:
+    """Return HR zones as {label: (lo, hi)} tuples.
+
+    If *hr_zones_config* is supplied (the ``hr_zones`` dict from athlete.yaml),
+    those zones are parsed and returned verbatim.  String ranges may use either
+    a hyphen (``-``) or an en-dash (``–``) as separator; the upper bound of the
+    last zone is set to 999 when absent.
+
+    Falls back to a computed 5-zone HRR model when no config is provided, for
+    backwards compatibility with athletes that have no ``hr_zones:`` block.
+    """
+    if hr_zones_config:
+        result: dict[str, tuple[int, int]] = {}
+        keys = list(hr_zones_config.keys())
+        for i, key in enumerate(keys):
+            raw = str(hr_zones_config[key])
+            # normalise en-dash / em-dash to hyphen, then split
+            raw = raw.replace("\u2013", "-").replace("\u2014", "-")
+            parts = raw.split("-")
+            lo = int(parts[0].strip())
+            hi = int(parts[1].strip()) if len(parts) > 1 else 999
+            result[key] = (lo, hi)
+        return result
+
+    # fallback: computed 5-zone HRR model
     hrr = threshold_hr - resting_hr
     return {
         "Z1": (resting_hr, int(resting_hr + 0.60 * hrr)),
@@ -700,6 +739,84 @@ def compute_acwr(
         "risk_zone": risk_zone,
         "interpretation": interpretation,
     }
+
+
+def compute_acwr_series(
+    daily_tss: dict[date, float],
+    short_days: int = 7,
+    long_days: int = 28,
+) -> dict[str, dict]:
+    """
+    Compute per-day ACWR values in a single O(N) forward pass.
+
+    Replaces the O(N²) pattern of calling compute_acwr() in a loop for each
+    historical date. Produces identical rolling and EMA ACWR values.
+
+    Returns dict keyed by ISO date string, each value containing:
+      acwr_rolling, acwr_ema, risk_zone
+    """
+    from collections import deque
+
+    if not daily_tss:
+        return {}
+
+    all_dates = sorted(daily_tss.keys())
+    start = all_dates[0]
+    end = date.today()
+
+    # EMA constants
+    k_short = 1 - math.exp(-1 / short_days)
+    k_long = 1 - math.exp(-1 / long_days)
+    ema_short = 0.0
+    ema_long = 0.0
+
+    # Rolling window: keep last `long_days` values in a deque
+    window: deque[float] = deque(maxlen=long_days)
+
+    result: dict[str, dict] = {}
+    current = start
+    while current <= end:
+        tss = daily_tss.get(current, 0.0)
+
+        # Update EMA
+        ema_short += k_short * (tss - ema_short)
+        ema_long += k_long * (tss - ema_long)
+
+        # Update rolling window
+        window.append(tss)
+
+        # Rolling ACWR: acute (last short_days) / chronic (last long_days)
+        window_list = list(window)
+        chronic_n = len(window_list)
+        acute_n = min(short_days, chronic_n)
+        chronic_avg = sum(window_list) / chronic_n
+        acute_avg = sum(window_list[-acute_n:]) / acute_n
+        acwr_rolling = round(acute_avg / chronic_avg, 3) if chronic_avg > 0 else None
+
+        # EMA ACWR
+        acwr_ema = round(ema_short / ema_long, 3) if ema_long > 0 else None
+
+        # Risk zone (based on rolling, per Gabbett 2016)
+        ratio = acwr_rolling
+        if ratio is None:
+            risk_zone = "unknown"
+        elif ratio < 0.8:
+            risk_zone = "undertrained"
+        elif ratio <= 1.3:
+            risk_zone = "optimal"
+        elif ratio <= 1.5:
+            risk_zone = "caution"
+        else:
+            risk_zone = "high_risk"
+
+        result[current.isoformat()] = {
+            "acwr_rolling": acwr_rolling,
+            "acwr_ema": acwr_ema,
+            "risk_zone": risk_zone,
+        }
+        current += timedelta(days=1)
+
+    return result
 
 
 def get_acwr_from_db(conn, sport_category: str = "all") -> dict:
@@ -1878,10 +1995,12 @@ def project_fitness(
 
         if days_before_race == 0:
             tss_val = 0.0  # race day — no training load
-        elif days_before_race < 7:
-            tss_val = daily_tss_per_day * (taper_factor**2)
-        elif days_before_race < 14:
-            tss_val = daily_tss_per_day * taper_factor
+        elif days_before_race < taper_weeks * 7:
+            # Progressive exponential taper (Bosquet et al. 2007):
+            # Higher exponent closer to race → steeper reduction.
+            weeks_out = days_before_race // 7  # 0=race week, 1=week-2, ...
+            exponent = taper_weeks - weeks_out
+            tss_val = daily_tss_per_day * (taper_factor ** exponent)
         else:
             tss_val = daily_tss_per_day  # maintain load in build phase
 
@@ -1912,7 +2031,7 @@ def project_fitness(
     projected_tsb = projected_entry["tsb"]
 
     # ── Form status and recommendation ───────────────────────────────────────
-    if projected_tsb < 5:
+    if projected_tsb < 10:
         form_status = "under-tapered"
         recommendation = (
             f"Projected TSB {projected_tsb:+.1f} on race day is too low. "
@@ -2073,7 +2192,7 @@ def compute_intensity_distribution(conn, weeks: int = 8, sport: str = "all") -> 
         "resting_hr_config": resting_hr,
     }
 
-    polarized_target = {"easy": 80.0, "moderate": 10.0, "hard": 15.0}
+    polarized_target = {"easy": 80.0, "moderate": 5.0, "hard": 15.0}
     pyramidal_target = {"easy": 70.0, "moderate": 20.0, "hard": 10.0}
     threshold_target = {"easy": 50.0, "moderate": 30.0, "hard": 20.0}
     canonical_targets = {

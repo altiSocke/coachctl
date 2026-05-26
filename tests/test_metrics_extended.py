@@ -11,6 +11,7 @@ import pytest
 
 from coachctl.metrics import (
     compute_acwr,
+    compute_acwr_series,
     estimate_session_tss,
     estimate_vo2max_cycling,
     estimate_vo2max_running,
@@ -267,6 +268,33 @@ def test_acwr_window_params():
     result = compute_acwr(daily, short_days=14, long_days=42)
     assert result["acute_window_days"] == 14
     assert result["chronic_window_days"] == 42
+
+
+def test_acwr_series_matches_single_call():
+    """compute_acwr_series() should match compute_acwr() for today's date."""
+    today = date.today()
+    daily = {today - timedelta(days=i): 80.0 if i > 7 else 50.0 for i in range(28)}
+    single = compute_acwr(daily)
+    series = compute_acwr_series(daily)
+    today_val = series[today.isoformat()]
+    assert today_val["acwr_rolling"] == pytest.approx(single["acwr_rolling"], abs=0.05)
+    assert today_val["acwr_ema"] == pytest.approx(single["acwr_ema"], abs=0.05)
+    assert today_val["risk_zone"] == single["risk_zone"]
+
+
+def test_acwr_series_empty():
+    """Empty input returns empty dict."""
+    assert compute_acwr_series({}) == {}
+
+
+def test_acwr_series_covers_all_days():
+    """Series should have an entry for every day from first data to today."""
+    today = date.today()
+    start = today - timedelta(days=30)
+    daily = {start + timedelta(days=i): 60.0 for i in range(31)}
+    series = compute_acwr_series(daily)
+    expected_days = (today - start).days + 1
+    assert len(series) == expected_days
 
 
 # ── estimate_session_tss ──────────────────────────────────────────────────────

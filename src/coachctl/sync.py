@@ -27,6 +27,7 @@ from .db import get_conn, init_db
 from .metrics import (
     compute_activity_metrics,
     compute_acwr,
+    compute_acwr_series,
     compute_fitness_series,
     compute_training_monotony,
     get_daily_tss_from_db,
@@ -446,28 +447,8 @@ def _refresh_fitness_table():
             # Index by date string for O(1) merge
             fitness_by_date = {row["date"]: row for row in fitness_series}
 
-            # ── Series 2: ACWR (per day) ──────────────────────────────────────
-            # We need a daily ACWR value for every day in the series.
-            # compute_acwr() returns today's value; we need to compute it for
-            # every historical date by slicing the daily_tss dict up to that date.
-            # For performance: build rolling cumulative slices using a deque.
-            from collections import deque
-            from datetime import timedelta as _td
-
-            all_dates_sorted = sorted(daily_tss.keys())
-            series_start = all_dates_sorted[0]
-            series_end = _date.today()
-
-            acwr_by_date: dict[str, dict] = {}
-            current = series_start
-            while current <= series_end:
-                # Slice daily_tss up to and including current date, then compute
-                # ACWR relative to that date (not today) so historical values
-                # reflect the actual load state on each past day.
-                tss_slice = {d: v for d, v in daily_tss.items() if d <= current}
-                acwr_result = compute_acwr(tss_slice, reference_date=current)
-                acwr_by_date[current.isoformat()] = acwr_result
-                current += _td(days=1)
+            # ── Series 2: ACWR (per day, single O(N) forward pass) ────────────
+            acwr_by_date = compute_acwr_series(daily_tss)
 
             # ── Series 3: Monotony & Strain ───────────────────────────────────
             monotony_series = compute_training_monotony(daily_tss, window=7)

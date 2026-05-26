@@ -37,7 +37,9 @@ def register(mcp) -> None:  # noqa: ANN001
             result["hr_zones"] = {
                 k: f"{lo}-{hi}bpm"
                 for k, (lo, hi) in hr_zones(
-                    athlete["threshold_hr"], athlete.get("resting_hr", 50)
+                    athlete["threshold_hr"],
+                    athlete.get("resting_hr", 50),
+                    athlete.get("hr_zones"),
                 ).items()
             }
 
@@ -178,7 +180,7 @@ def register(mcp) -> None:  # noqa: ANN001
             athlete = load_athlete()
             thr_hr = athlete.get("threshold_hr", 178)
             rest_hr = athlete.get("resting_hr", 50)
-            zones = hr_zones(thr_hr, rest_hr)
+            zones = hr_zones(thr_hr, rest_hr, athlete.get("hr_zones"))
 
             hr_rows = conn.execute("""
                 SELECT average_heartrate, moving_time
