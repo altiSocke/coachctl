@@ -53,16 +53,30 @@ def read_wiki() -> dict[str, str]:
     return result
 
 
-def read_wiki_combined() -> str:
-    """All wiki files concatenated with clear section headers."""
-    sections = read_wiki()
-    if not sections:
+def read_wiki_combined(sections: list[str] | None = None) -> str:
+    """All wiki files concatenated with clear section headers.
+
+    Parameters
+    ----------
+    sections:
+        Optional list of filenames to include (e.g. ``['goals.md', 'profile.md']``).
+        When ``None`` (default) all wiki files are returned.  Names not in
+        ``VALID_SECTIONS`` are silently ignored — validation is the caller's
+        responsibility.
+    """
+    all_sections = read_wiki()
+    if not all_sections:
         return "(Wiki is empty — no files found.)"
 
+    files_to_read = WIKI_FILES if sections is None else [f for f in WIKI_FILES if f in sections]
+
     parts: list[str] = []
-    for name in WIKI_FILES:
-        if name in sections:
-            parts.append(f"═══ {name} ═══\n{sections[name]}")
+    for name in files_to_read:
+        if name in all_sections:
+            parts.append(f"═══ {name} ═══\n{all_sections[name]}")
+
+    if not parts:
+        return "(No matching wiki files found.)"
     return "\n\n".join(parts)
 
 

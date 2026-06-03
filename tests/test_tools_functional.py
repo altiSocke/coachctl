@@ -116,10 +116,10 @@ class TestFitnessTools:
     def test_get_weekly_summary_empty(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_weekly_summary"]())
-        # Tool returns {weeks: [...], sparklines: {...}}
+        # Tool returns {resolution: ..., periods: [...], sparklines: {...}}
         assert isinstance(result, dict)
-        assert "weeks" in result
-        assert isinstance(result["weeks"], list)
+        assert "periods" in result
+        assert isinstance(result["periods"], list)
 
     def test_get_weekly_summary_with_data(self, mem_db, monkeypatch):
         with mem_db() as conn:
@@ -131,10 +131,10 @@ class TestFitnessTools:
             )
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = json.loads(tools["get_weekly_summary"]())
-        # Tool returns {weeks: [...], sparklines: {...}}
+        # Tool returns {resolution: ..., periods: [...], sparklines: {...}}
         assert isinstance(result, dict)
-        assert "weeks" in result
-        assert len(result["weeks"]) > 0
+        assert "periods" in result
+        assert len(result["periods"]) > 0
 
     def test_get_efficiency_factor_trend_empty(self, mem_db, monkeypatch):
         tools, _ = self._get_tools(mem_db, monkeypatch)
@@ -336,6 +336,127 @@ class TestFitnessTools:
         tools, _ = self._get_tools(mem_db, monkeypatch)
         result = tools["predict_race_time"](reference_distance_km=10.0, reference_time="")
         assert "Error" in result
+
+    def test_get_weekly_summary_weekly_resolution(self, mem_db, monkeypatch):
+        """weeks <= 16 → resolution = 'weekly'."""
+        with mem_db() as conn:
+            d = (date.today() - timedelta(days=3)).isoformat()
+            conn.execute(
+                "INSERT INTO activities (id, name, sport_type, start_date, moving_time, distance, tss) "
+                "VALUES (1, 'Run', 'Run', ?, 3600, 10000, 55.0)",
+                (d,),
+            )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_weekly_summary"](weeks=8))
+        assert result["resolution"] == "weekly"
+
+    def test_get_weekly_summary_monthly_resolution(self, mem_db, monkeypatch):
+        """weeks > 16 → resolution = 'monthly', periods keyed by month."""
+        with mem_db() as conn:
+            for i in range(5):
+                d = (date.today() - timedelta(days=i * 30)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, moving_time, distance, tss) "
+                    "VALUES (?,?,?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 3600, 10000, 55.0),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(tools["get_weekly_summary"](weeks=52))
+        assert result["resolution"] == "monthly"
+        periods = result["periods"]
+        assert isinstance(periods, list)
+        if periods:
+            assert "month" in periods[0]
+            assert "-W" not in periods[0]["month"]
+
+    def test_get_projected_fitness_no_series_by_default(self, mem_db, monkeypatch):
+        """daily_series must be absent from the default response."""
+        with mem_db() as conn:
+            for i in range(60):
+                d = (date.today() - timedelta(days=i)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, tss) "
+                    "VALUES (?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 50.0),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        target = (date.today() + timedelta(days=60)).isoformat()
+        result = json.loads(tools["get_projected_fitness"](target, weekly_tss=350.0))
+        assert "daily_series" not in result
+
+    def test_get_projected_fitness_with_series(self, mem_db, monkeypatch):
+        """include_series=True must include daily_series."""
+        with mem_db() as conn:
+            for i in range(60):
+                d = (date.today() - timedelta(days=i)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, tss) "
+                    "VALUES (?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 50.0),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        target = (date.today() + timedelta(days=60)).isoformat()
+        result = json.loads(
+            tools["get_projected_fitness"](target, weekly_tss=350.0, include_series=True)
+        )
+        assert "daily_series" in result
+        assert isinstance(result["daily_series"], list)
+
+    def test_get_projected_fitness_split_no_series(self, mem_db, monkeypatch):
+        """split=True with include_series=False must strip daily_series from all sub-objects."""
+        with mem_db() as conn:
+            for i in range(60):
+                d = (date.today() - timedelta(days=i)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, tss) "
+                    "VALUES (?,?,?,?,?)",
+                    (i + 1, f"Run {i}", "Run", d, 50.0),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        target = (date.today() + timedelta(days=60)).isoformat()
+        result = json.loads(
+            tools["get_projected_fitness"](target, weekly_tss=350.0, split=True)
+        )
+        for key in ("all", "run", "ride"):
+            if key in result and isinstance(result[key], dict):
+                assert "daily_series" not in result[key], f"daily_series present in result['{key}']"
+
+    def test_get_efficiency_factor_trend_max_sessions_truncation(self, mem_db, monkeypatch):
+        """When session count exceeds max_sessions (clamped min=10), list is capped."""
+        with mem_db() as conn:
+            for i in range(25):
+                d = (date.today() - timedelta(days=i * 3)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, moving_time, "
+                    "average_heartrate, weighted_avg_watts, intensity_factor) "
+                    "VALUES (?,?,?,?,?,?,?,?)",
+                    (i + 1, f"Ride {i}", "Ride", d, 3600, 130.0, 180.0, 0.72),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        # max_sessions=10 is the minimum allowed by the clamp; 25 rides → truncation expected
+        result = json.loads(
+            tools["get_efficiency_factor_trend"](sport="ride", weeks=104, max_sessions=10)
+        )
+        assert len(result["sessions"]) <= 10
+        assert result.get("truncated") is True
+        assert result["total_sessions"] > 10
+
+    def test_get_efficiency_factor_trend_max_sessions_no_truncation(self, mem_db, monkeypatch):
+        """When session count is within max_sessions, truncated key is absent."""
+        with mem_db() as conn:
+            for i in range(4):
+                d = (date.today() - timedelta(days=i * 10)).isoformat()
+                conn.execute(
+                    "INSERT INTO activities (id, name, sport_type, start_date, moving_time, "
+                    "average_heartrate, weighted_avg_watts, intensity_factor) "
+                    "VALUES (?,?,?,?,?,?,?,?)",
+                    (i + 1, f"Ride {i}", "Ride", d, 3600, 130.0, 180.0, 0.72),
+                )
+        tools, _ = self._get_tools(mem_db, monkeypatch)
+        result = json.loads(
+            tools["get_efficiency_factor_trend"](sport="ride", weeks=16, max_sessions=60)
+        )
+        assert result.get("truncated") is not True
 
 
 # ---------------------------------------------------------------------------
@@ -1150,6 +1271,52 @@ class TestWikiTools:
         # Should not crash; returns either seed message or empty wiki message
         assert isinstance(result, str)
         assert len(result) > 0
+
+    def test_get_athlete_wiki_scoped_single(self, mem_db, monkeypatch, tmp_data_root):
+        """sections='goals.md' returns only goals, not profile."""
+        self._seed_wiki_files(tmp_data_root)
+        (tmp_data_root / "profile" / "goals.md").write_text(
+            "# Goals\nTarget: sub-3h marathon\n", encoding="utf-8"
+        )
+        (tmp_data_root / "profile" / "profile.md").write_text(
+            "# Profile\nFTP: 280W\n", encoding="utf-8"
+        )
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_athlete_wiki"](sections="goals.md")
+        assert "goals.md" in result
+        assert "Target: sub-3h" in result
+        assert "FTP: 280W" not in result
+
+    def test_get_athlete_wiki_scoped_multiple(self, mem_db, monkeypatch, tmp_data_root):
+        """sections='goals.md,profile.md' returns both files."""
+        self._seed_wiki_files(tmp_data_root)
+        (tmp_data_root / "profile" / "goals.md").write_text(
+            "# Goals\nrace goals\n", encoding="utf-8"
+        )
+        (tmp_data_root / "profile" / "profile.md").write_text(
+            "# Profile\nftp data\n", encoding="utf-8"
+        )
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_athlete_wiki"](sections="goals.md,profile.md")
+        assert "goals.md" in result
+        assert "profile.md" in result
+        assert "race goals" in result
+        assert "ftp data" in result
+
+    def test_get_athlete_wiki_invalid_section(self, mem_db, monkeypatch, tmp_data_root):
+        """Unknown section name returns an error string."""
+        self._seed_wiki_files(tmp_data_root)
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_athlete_wiki"](sections="nonexistent.md")
+        assert "Unknown section" in result or "unknown" in result.lower()
+
+    def test_get_athlete_wiki_empty_sections_returns_all(self, mem_db, monkeypatch, tmp_data_root):
+        """sections='' (default) returns all seeded files."""
+        self._seed_wiki_files(tmp_data_root)
+        tools = self._get_tools(mem_db, monkeypatch)
+        result = tools["get_athlete_wiki"](sections="")
+        # All seed files should be represented
+        assert "profile.md" in result or "goals.md" in result
 
 
 # ---------------------------------------------------------------------------

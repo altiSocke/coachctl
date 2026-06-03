@@ -24,14 +24,39 @@ from ..wiki import (
 def register(mcp) -> None:  # noqa: ANN001
 
     @mcp.tool()
-    def get_athlete_wiki() -> str:
+    def get_athlete_wiki(sections: str = "") -> str:
         """
         Load the athlete wiki — persistent markdown knowledge about the athlete.
-        Returns all wiki files (profile, goals, training history, plans index)
+        Returns wiki files (profile, goals, training history, plans index, etc.)
         concatenated for context injection.
         Auto-seeds from athlete.yaml and coaching notes on first call.
-        Call this at the start of every session.
+
+        Parameters
+        ----------
+        sections : comma-separated list of filenames to load, e.g.
+            ``"goals.md,profile.md"`` or ``"nutrition.md"``.
+            Leave empty (default) to load all wiki files.
+            Valid values: profile.md, goals.md, training_history.md,
+            plans_index.md, readiness.md, nutrition.md.
+
+        Examples
+        --------
+        - ``get_athlete_wiki()``                          # all files
+        - ``get_athlete_wiki(sections="goals.md,profile.md")``  # RACE_PLANNING
+        - ``get_athlete_wiki(sections="nutrition.md")``         # NUTRITION
         """
+        # Parse and validate sections
+        requested: list[str] | None = None
+        if sections.strip():
+            names = [s.strip() for s in sections.split(",") if s.strip()]
+            invalid = [n for n in names if n not in VALID_SECTIONS]
+            if invalid:
+                return (
+                    f"Unknown section(s): {', '.join(invalid)}. "
+                    f"Valid sections: {', '.join(sorted(VALID_SECTIONS))}."
+                )
+            requested = names
+
         if not is_seeded():
             with get_conn() as conn:
                 created = seed_wiki(conn)
@@ -39,8 +64,8 @@ def register(mcp) -> None:  # noqa: ANN001
                 header = f"Wiki seeded from existing data: {', '.join(created)}\n\n"
             else:
                 header = "Wiki is empty and no seed data found.\n\n"
-            return header + read_wiki_combined()
-        return read_wiki_combined()
+            return header + read_wiki_combined(sections=requested)
+        return read_wiki_combined(sections=requested)
 
     @mcp.tool()
     def propose_wiki_update(section: str, proposed_content: str, reason: str) -> str:

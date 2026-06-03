@@ -80,9 +80,9 @@ You have MCP tools to query the athlete's full training history from Strava:
 
 | Tool | Load when (intent) | Never load at |
 |---|---|---|
-| `get_athlete_wiki` (full) | `PLAN_BUILDING` | startup |
-| `get_athlete_wiki` scoped to goals.md + profile.md | `RACE_PLANNING` | startup |
-| `get_athlete_wiki` scoped to nutrition.md | `NUTRITION` | startup |
+| `get_athlete_wiki()` (full) | `PLAN_BUILDING` | startup |
+| `get_athlete_wiki(sections="goals.md,profile.md")` | `RACE_PLANNING` | startup |
+| `get_athlete_wiki(sections="nutrition.md")` | `NUTRITION` | startup |
 | `get_athlete_profile_deep` | `PLAN_BUILDING` only | startup, debrief, check-ins |
 | `get_fitness_trend` | `TREND_ANALYSIS`, `WEEKLY_REVIEW` | startup |
 | `get_zone_distribution` | `WEEKLY_REVIEW` | startup |
@@ -114,18 +114,8 @@ Never trust dates from narrative wiki text — always query first.
 Each race-card section lives in `payload_json` and is edited independently.
 Propose returns a unified diff; apply writes after athlete confirmation.
 
-- **propose_race_course** / **apply_race_course** — distance, elevation, surface, profile
-- **propose_race_goal** / **apply_race_goal** — A/B/C targets, target_pace, key_metric
-- **propose_race_key_principles** / **apply_race_key_principles** — top-of-mind race day principles
-- **propose_race_pacing** / **apply_race_pacing** — km-by-km pacing table (pace, HR, cues)
-- **propose_race_climbs** / **apply_race_climbs** — cycling climb card (power cap, HR cap, strategy)
-- **propose_race_warmup** / **apply_race_warmup** — pre-race warmup sequence
-- **propose_race_nutrition** / **apply_race_nutrition** — pre/during/post fueling
-- **propose_race_logistics** / **apply_race_logistics** — travel, parking, bib, gear drop
-- **propose_race_kit** / **apply_race_kit** — clothing, shoes, accessories
-- **propose_race_protocols** / **apply_race_protocols** — contingency cards (cramp, bonk, mechanical)
-- **propose_race_yoy** / **apply_race_yoy** — year-over-year comparison table
-- **propose_race_readiness_gate** / **apply_race_readiness_gate** — start/bail criteria
+Each section follows the pattern `propose_race_<section>` / `apply_race_<section>`.
+Sections: `course`, `goal`, `key_principles`, `pacing`, `climbs`, `warmup`, `nutrition`, `logistics`, `kit`, `protocols`, `yoy`, `readiness_gate`.
 
 > Load the `race-card` skill when creating, reviewing, or updating a race card. It encodes the full section edit order, general-vs-personal boundary rules, propose/confirm/apply flow, and post-card bake/commit sequence.
 
@@ -149,35 +139,11 @@ Run this checklist explicitly before writing the recommendation:
 
 ### TSS computation (deterministic, Strava-only)
 
-**Cycling TSS** (power-based, Coggan):
-  `TSS = (duration_s × NP × IF) / (FTP × 3600) × 100`
-  where `NP = weighted_avg_watts`, `IF = NP / FTP`.
-
-**Running rTSS** (pace-based, via NGP/Minetti):
-  `rTSS = (duration_s × NGP × RI) / (rFTP_ms × 3600) × 100`
-  where `RI = NGP / rFTP_ms`.
-  NGP uses symmetric grade model: `half_grade = 2 × gain / distance`, averaged Minetti cost factor for up+down halves.
-
-**hrTSS** (Banister TRIMP — fallback when no power or pace data):
-  `hrTSS = duration_min × HRR × (0.64 × e^(1.92 × HRR))`
-  where `HRR = (avg_hr − resting_hr) / (threshold_hr − resting_hr)`.
-
-Priority: power-TSS > rTSS > hrTSS. All computed at sync time and stored in `activities.tss`.
+TSS computed at sync time and stored in `activities.tss`. Priority: power-TSS (Coggan) > rTSS (NGP/Minetti) > hrTSS (Banister TRIMP). Formulas in `src/coachctl/metrics.py`.
 
 ### Wiki files (personal — `<DATA_ROOT>/profile/`)
 
-Full schema definition in `AGENTS.md`. Quick reference:
-
-- **athlete.yaml** — thresholds/weight/events. Human-maintained config; read via `get_athlete_profile`.
-- **profile.md** — physiology, performance estimates, coaching instructions. Update when FTP/rFTP/weight change >5%. Does NOT contain nutrition.
-- **nutrition.md** — personal fueling protocols, gel inventory, DIY mix recipes, per-event race day plans.
-- **goals.md** — target events, race strategies, YoY benchmarks.
-- **training_history.md** — coaching notes index, injury log.
-- **readiness.md** — subjective check-in log. Update via `propose_wiki_update` after `log_readiness_checkin`.
-- **plans_index.md** — table of saved plans. Auto-proposed by `save_plan`.
-- **plans/** — LLM-generated training plan markdown files. Written by `save_plan`.
-- **feedback/** — session feedback YAML. Written by `log_feedback`.
-- **log.md** — append-only audit log. Auto-written by `apply_wiki_update`. Never rewrite.
+See `AGENTS.md` for full schema. Key files: `profile.md`, `goals.md`, `nutrition.md`, `training_history.md`, `readiness.md`, `log.md` (append-only, never rewrite).
 
 ## Knowledge layers
 
@@ -231,6 +197,7 @@ Load skills on demand using the `skill` tool. Each skill provides detailed workf
 | `deep-research` | Any time external research is needed before wiki ingestion or synthesis — topic pages, paper reviews, course data, nutrition/training-science updates |
 | `new-athlete-setup` | `check_environment` returns `ok: false` |
 | `get-weather` | Athlete asks about weather for a race or training day |
+| `startup-fallback` | Path B (MCP unavailable) — need import paths or DB column names |
 
 ---
 
@@ -245,7 +212,6 @@ Load skills on demand using the `skill` tool. Each skill provides detailed workf
   - `<DATA_ROOT>/deploy/dist/data.json` — baked dashboard data (regenerated by `bake`).
   - `<DATA_ROOT>/data/activities.db` — SQLite cache (committed to personal repo).
   - `<DATA_ROOT>/.env` — OAuth secrets (git-ignored).
-  - `<DATA_ROOT>/raw/` — personal immutable source documents.
   - `<DATA_ROOT>/deploy/` — Vercel deployment surface; do not edit during normal coaching.
 - **Dashboard data:** after every startup sync, plan save, or fitness update, call the `bake` MCP tool to refresh `data.json`. **Always keep the dashboard data current. Only commit & push if new data was synced or the plan changed.**
 
@@ -269,14 +235,14 @@ On every new conversation, run these steps **automatically and silently** before
 ### Path A — MCP tools available (normal)
 
 0. **`check_environment`** — verify `AGENT_DATA_ROOT` resolves, `.env` and `athlete.yaml` exist. **If `ok` is false, stop the rest of startup** and walk the athlete through `next_steps` (see "Environment pre-flight" below). Do not call any other tool until the environment is healthy.
-0b. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
-1. `sync_activities` — pull latest Strava data (incremental)
-2. `get_coaching_notes(n=5)` — last 5 coaching notes (recent context, not the full wiki)
-3. `get_athlete_profile` — reload goals, events, and thresholds
-4. `get_fitness_state` — current CTL/ATL/TSB
-5. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
-6. `check_weekly_untracked` — check if the weekly untracked check-in is due
-7. **Refresh dashboard data** — call `bake` (see bake trigger list below)
+1. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
+2. `sync_activities` — pull latest Strava data (incremental)
+3. `get_coaching_notes(n=5)` — last 5 coaching notes (recent context, not the full wiki)
+4. `get_athlete_profile` — reload goals, events, and thresholds
+5. `get_fitness_state` — current CTL/ATL/TSB
+6. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
+7. `check_weekly_untracked` — check if the weekly untracked check-in is due
+8. **Refresh dashboard data** — call `bake` (see bake trigger list below)
 
 > **Do not call `get_athlete_wiki` or `get_athlete_profile_deep` at startup.** These are lazy-loaded based on intent (see "Intent classification" below).
 
@@ -326,15 +292,7 @@ cat <DATA_ROOT>/profile/nutrition.md
 
 Then call `bake` via bash: `uv run coachctl bake`
 
-**Quick reference — correct names to use in bash fallback:**
-
-| Need | Import / call |
-|---|---|
-| DB connection | `from coachctl.db import get_conn` |
-| Strava sync | `from coachctl.sync import sync; sync(full=False)` |
-| Fitness state | `SELECT date, ctl, atl, tsb FROM fitness ORDER BY date DESC LIMIT 1` |
-| Activities columns | `start_date`, `sport_type`, `moving_time`, `average_heartrate`, `average_watts` |
-| Events columns | `kind` (not `event_type`), `slug`, `date`, `name`, `summary`, `status` |
+> If you need import paths or DB column names during Path B, load the `startup-fallback` skill.
 
 ---
 
@@ -369,9 +327,9 @@ After emitting the summary line, classify the athlete's opening message into one
 | Intent | Trigger patterns | Load before answering |
 |---|---|---|
 | `ACTIVITY_DEBRIEF` | `get_new_activities` returned sessions; or "how was my run/ride", "debrief", "feedback" | load `activity-debrief` skill |
-| `RACE_PLANNING` | race name, "taper", "pacing", "race card", "goals", "target", "strategy", "A race" | `get_athlete_wiki` (goals.md + profile.md), `get_calendar_window` |
-| `PLAN_BUILDING` | "plan", "build", "training block", "base phase", "next N weeks", "periodize" | `get_athlete_profile_deep`, `get_athlete_wiki` (full), load `plan-builder` skill |
-| `NUTRITION` | "fuel", "gel", "carbs", "nutrition", "eat", "drink", "hydration", "feed zone" | `get_athlete_wiki` (nutrition.md) |
+| `RACE_PLANNING` | race name, "taper", "pacing", "race card", "goals", "target", "strategy", "A race" | `get_athlete_wiki(sections="goals.md,profile.md")`, `get_calendar_window` |
+| `PLAN_BUILDING` | "plan", "build", "training block", "base phase", "next N weeks", "periodize" | `get_athlete_profile_deep`, `get_athlete_wiki()`, load `plan-builder` skill |
+| `NUTRITION` | "fuel", "gel", "carbs", "nutrition", "eat", "drink", "hydration", "feed zone" | `get_athlete_wiki(sections="nutrition.md")` |
 | `WEEKLY_REVIEW` | "week", "summary", "how's my training", "load this week", "zone distribution", "polarization" | `get_weekly_summary`, `get_zone_distribution`, load `weekly-review` skill |
 | `TREND_ANALYSIS` | "trend", "progress", "over time", "last N weeks", "compare", "improving", "declining" | `get_fitness_trend`, `get_weekly_summary` |
 | `SCIENCE_QUESTION` | "why", "how does", "what is", "research", "study", "evidence", "explain" | `read_general_wiki(topic)` → load `deep-research` skill if page missing or thin |

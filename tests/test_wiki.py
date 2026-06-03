@@ -71,6 +71,51 @@ def test_read_wiki_combined_has_sections(personal_dir):
     assert "profile content" in result
 
 
+def test_read_wiki_combined_scoped_single(personal_dir):
+    """sections=['goals.md'] returns only goals content."""
+    (personal_dir / "profile.md").write_text("profile content\n", encoding="utf-8")
+    (personal_dir / "goals.md").write_text("goals content\n", encoding="utf-8")
+    result = wiki_module.read_wiki_combined(sections=["goals.md"])
+    assert "goals.md" in result
+    assert "goals content" in result
+    assert "profile content" not in result
+
+
+def test_read_wiki_combined_scoped_multiple(personal_dir):
+    """sections=['goals.md', 'profile.md'] returns both files in canonical order."""
+    (personal_dir / "profile.md").write_text("profile content\n", encoding="utf-8")
+    (personal_dir / "goals.md").write_text("goals content\n", encoding="utf-8")
+    result = wiki_module.read_wiki_combined(sections=["goals.md", "profile.md"])
+    assert "goals.md" in result
+    assert "profile.md" in result
+    assert "goals content" in result
+    assert "profile content" in result
+
+
+def test_read_wiki_combined_invalid_sections_skipped(personal_dir):
+    """Invalid names in sections list are silently skipped; valid ones still returned."""
+    (personal_dir / "goals.md").write_text("goals content\n", encoding="utf-8")
+    result = wiki_module.read_wiki_combined(sections=["goals.md", "bogus.md"])
+    assert "goals content" in result
+    assert "bogus" not in result
+
+
+def test_read_wiki_combined_none_sections_returns_all(personal_dir):
+    """sections=None (default) returns all present files."""
+    (personal_dir / "profile.md").write_text("profile content\n", encoding="utf-8")
+    (personal_dir / "goals.md").write_text("goals content\n", encoding="utf-8")
+    result = wiki_module.read_wiki_combined(sections=None)
+    assert "profile content" in result
+    assert "goals content" in result
+
+
+def test_read_wiki_combined_empty_match(personal_dir):
+    """sections list with no matching files returns the no-match message."""
+    (personal_dir / "profile.md").write_text("profile content\n", encoding="utf-8")
+    result = wiki_module.read_wiki_combined(sections=["goals.md"])  # goals.md not written
+    assert "No matching" in result
+
+
 # ── diff_section ──────────────────────────────────────────────────────────────
 
 

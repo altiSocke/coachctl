@@ -140,14 +140,26 @@ def register(mcp) -> None:  # noqa: ANN001
     def get_weekly_summary(weeks: int = 8) -> str:
         """
         Weekly training summary: volume, TSS, intensity breakdown per sport.
+
+        For windows of 16 weeks or fewer the response uses weekly granularity.
+        For windows longer than 16 weeks the response is automatically collapsed
+        into calendar-month buckets to keep output size manageable.  The
+        ``resolution`` field in the response indicates which granularity was used
+        (``"weekly"`` or ``"monthly"``).
         """
         weeks = max(1, min(weeks, 260))
         cutoff = (date.today() - timedelta(weeks=weeks)).isoformat()
+
+        # For monthly resolution query by month directly; for weekly use strftime week.
+        use_monthly = weeks > 16
+
+        group_expr = "strftime('%Y-%m', start_date)" if use_monthly else "strftime('%Y-W%W', start_date)"
+
         with get_conn() as conn:
             rows = conn.execute(
-                """
+                f"""
                 SELECT
-                    strftime('%Y-W%W', start_date) as week,
+                    {group_expr} as period,
                     sport_type,
                     COUNT(*) as sessions,
                     SUM(moving_time) as total_time_s,
@@ -157,20 +169,21 @@ def register(mcp) -> None:  # noqa: ANN001
                     AVG(average_heartrate) as avg_hr
                 FROM activities
                 WHERE start_date >= ?
-                GROUP BY week, sport_type
-                ORDER BY week DESC, sport_type
+                GROUP BY period, sport_type
+                ORDER BY period DESC, sport_type
                 """,
                 (cutoff,),
             ).fetchall()
 
         result = {}
+        period_key = "month" if use_monthly else "week"
         for r in rows:
-            w = r["week"]
-            if w not in result:
-                result[w] = {"week": w, "sports": {}, "total_tss": 0, "total_hours": 0}
+            p = r["period"]
+            if p not in result:
+                result[p] = {period_key: p, "sports": {}, "total_tss": 0, "total_hours": 0}
             sport = r["sport_type"]
             hours = round((r["total_time_s"] or 0) / 3600, 1)
-            result[w]["sports"][sport] = {
+            result[p]["sports"][sport] = {
                 "sessions": r["sessions"],
                 "hours": hours,
                 "km": round((r["total_distance_m"] or 0) / 1000, 1),
@@ -178,28 +191,35 @@ def register(mcp) -> None:  # noqa: ANN001
                 "tss": round(r["total_tss"] or 0),
                 "avg_hr": round(r["avg_hr"] or 0),
             }
-            result[w]["total_tss"] += round(r["total_tss"] or 0)
-            result[w]["total_hours"] += hours
+            result[p]["total_tss"] += round(r["total_tss"] or 0)
+            result[p]["total_hours"] += hours
 
-        for w in result.values():
-            w["total_hours"] = round(w["total_hours"], 1)
+        for p in result.values():
+            p["total_hours"] = round(p["total_hours"], 1)
 
-        weeks_ordered = list(reversed(list(result.values())))
+        periods_ordered = list(reversed(list(result.values())))
 
-        def _run_km(w: dict) -> float:
-            return sum(s["km"] for sport, s in w["sports"].items() if "run" in sport.lower())
+        def _run_km(p: dict) -> float:
+            return sum(s["km"] for sport, s in p["sports"].items() if "run" in sport.lower())
 
-        def _elev(w: dict) -> float:
-            return sum(s["elevation"] for s in w["sports"].values())
+        def _elev(p: dict) -> float:
+            return sum(s["elevation"] for s in p["sports"].values())
 
         sparklines = {
-            "tss": _sparkline([w["total_tss"] for w in weeks_ordered]),
-            "run_km": _sparkline([_run_km(w) for w in weeks_ordered]),
-            "elev": _sparkline([_elev(w) for w in weeks_ordered]),
-            "hours": _sparkline([w["total_hours"] for w in weeks_ordered]),
+            "tss": _sparkline([p["total_tss"] for p in periods_ordered]),
+            "run_km": _sparkline([_run_km(p) for p in periods_ordered]),
+            "elev": _sparkline([_elev(p) for p in periods_ordered]),
+            "hours": _sparkline([p["total_hours"] for p in periods_ordered]),
         }
 
-        return json.dumps({"weeks": list(result.values()), "sparklines": sparklines}, indent=2)
+        return json.dumps(
+            {
+                "resolution": "monthly" if use_monthly else "weekly",
+                "periods": list(result.values()),
+                "sparklines": sparklines,
+            },
+            indent=2,
+        )
 
     # ── ACWR ──────────────────────────────────────────────────────────────────
 
@@ -462,7 +482,7 @@ def register(mcp) -> None:  # noqa: ANN001
     # ── Efficiency Factor Trend ────────────────────────────────────────────────
 
     @mcp.tool()
-    def get_efficiency_factor_trend(sport: str = "all", weeks: int = 16) -> str:
+    def get_efficiency_factor_trend(sport: str = "all", weeks: int = 16, max_sessions: int = 60) -> str:
         """
         Aerobic Efficiency Factor (EF) trend over the last N weeks.
 
@@ -475,6 +495,12 @@ def register(mcp) -> None:  # noqa: ANN001
 
         Sport filter: 'all', 'run', or 'ride'.
         weeks: history window (default 16 — enough to see a training block trend).
+        max_sessions: maximum number of individual session rows to return (default 60).
+            The summary and rolling mean are always computed from all sessions;
+            only the per-session list is capped. When truncation occurs, the
+            response includes ``truncated: true`` and ``total_sessions: N``.
+            Set higher (e.g. 200) to retrieve the full per-session list for a
+            deep EF analysis over a full season.
 
         Returns per-session EF values, a 4-week rolling mean, and a trend
         summary (rising / stable / declining with % change).
@@ -483,6 +509,7 @@ def register(mcp) -> None:  # noqa: ANN001
         Friel "The Cyclist's Training Bible" (2009).
         """
         weeks = max(4, min(weeks, 104))
+        max_sessions = max(10, min(max_sessions, 500))
         with get_conn() as conn:
             entries = compute_efficiency_factor_trend(conn, sport=sport, weeks=weeks)
 
@@ -497,7 +524,16 @@ def register(mcp) -> None:  # noqa: ANN001
         else:
             sessions = entries
 
+        total_sessions = len(sessions)
+        truncated = total_sessions > max_sessions
+        if truncated:
+            sessions = sessions[-max_sessions:]
+
         result: dict = {"sessions": sessions}
+
+        if truncated:
+            result["truncated"] = True
+            result["total_sessions"] = total_sessions
 
         if sport == "all":
             # Present per-sport summaries as top-level keys for clarity.
@@ -506,7 +542,7 @@ def register(mcp) -> None:  # noqa: ANN001
             result["run"] = by_sport.get("run")
             result["ride"] = by_sport.get("ride")
             result["note"] = (summary or {}).get("note", "")
-            result["sessions_analysed"] = (summary or {}).get("sessions_analysed", len(sessions))
+            result["sessions_analysed"] = (summary or {}).get("sessions_analysed", total_sessions)
         else:
             result["summary"] = summary
 
@@ -623,6 +659,7 @@ def register(mcp) -> None:  # noqa: ANN001
         taper_weeks: int = 3,
         sport: str = "all",
         split: bool = False,
+        include_series: bool = False,
     ) -> str:
         """
         Project CTL/ATL/TSB forward to a target race date.
@@ -642,6 +679,10 @@ def register(mcp) -> None:  # noqa: ANN001
                       combined / run / ride — each with independent CTL history
                       and auto-detected weekly TSS. Useful for sport-specific
                       race preparation (e.g. run-CTL for a half marathon).
+        include_series : if True, include ``daily_series`` (last 4 weeks history
+                      + forward projection) in the response. Defaults to False
+                      to keep response size small. Set to True when you need
+                      the raw series for charting or detailed day-by-day analysis.
 
         Returns
         -------
@@ -650,7 +691,7 @@ def register(mcp) -> None:  # noqa: ANN001
         - taper_start_date
         - form_status: optimal (+10 to +25 TSB) / under-tapered / over-tapered
         - recommendation: actionable coaching text
-        - daily_series: last 4 weeks history + projected forward (for charting)
+        - daily_series: only included when include_series=True
 
         Sources: Banister et al. (1975); Mujika & Padilla (2003) Med Sci Sports
         Exerc 35(7); Coggan (2003) TSB +15 to +25 optimal window.
@@ -672,6 +713,10 @@ def register(mcp) -> None:  # noqa: ANN001
                     weekly_tss=weekly_tss if weekly_tss > 0 else None,
                     taper_weeks=taper_weeks,
                 )
+            if not include_series:
+                for key in ("all", "run", "ride"):
+                    if key in result and isinstance(result[key], dict):
+                        result[key].pop("daily_series", None)
             return json.dumps(result, indent=2, default=str)
 
         with get_conn() as conn:
@@ -687,6 +732,8 @@ def register(mcp) -> None:  # noqa: ANN001
             taper_weeks=taper_weeks,
             sport_label=sport,
         )
+        if not include_series:
+            result.pop("daily_series", None)
         return json.dumps(result, indent=2, default=str)
 
     # ── Intensity Distribution (Seiler tripartite model) ──────────────────────
