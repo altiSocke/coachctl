@@ -24,16 +24,36 @@ Pull laps with: `get_activity_laps(activity_id)` for interval sessions where lap
 
 ## Step 2 — Stream interpretation rules
 
-### HR decoupling (cardiac drift)
+### HR drift vs aerobic decoupling
+
+Do not conflate these two metrics.
+
+**Simple HR drift** measures only cardiac strain over time:
 
 `drift_pct = (second_half_avg_hr - first_half_avg_hr) / first_half_avg_hr × 100`
 
 | drift_pct | Interpretation | Flag? |
 |---|---|---|
-| < 0% (negative) | First half HR higher than second — went out too hard, faded | ⚠️ Flag: pacing error |
-| 0–5% | Good aerobic conditioning, well-paced | ✅ |
+| < 0% (negative) | First half HR higher than second — went out too hard, faded, or terrain made halves incomparable | ⚠️ Mention pacing/terrain context |
+| 0–5% | HR stayed stable; good cardiovascular control | ✅ |
 | 5–8% | Acceptable, minor cardiovascular drift | Mention if relevant |
-| > 8% | Cardiac decoupling — effort exceeded aerobic capacity, or underfueled | 🚨 Flag: overcooked or bonk |
+| > 8% | HR rose materially; check heat, hydration, fueling, accumulated fatigue, or too-high intensity | 🚨 Flag if session was prescribed easy/aerobic |
+
+**Aerobic decoupling** (`cardiac_decoupling_pct`, Pa:Hr for running or Pw:Hr for cycling) compares output-to-HR between halves. It is the better aerobic-durability metric when the effort is steady and output is reliable.
+
+| decoupling_pct | Interpretation | Flag? |
+|---|---|---|
+| <5% | Well coupled; athlete handled that output economically | ✅ |
+| 5–10% | Some durability/fatigue/heat/fueling signal | Mention and contextualise |
+| >10% | Output-to-HR relationship degraded; likely above aerobic threshold, fatigued, heat-stressed, underfueled, or beyond current durability | 🚨 Flag on clean steady sessions |
+
+Context rules:
+- Low HR drift does **not** prove the session was easy. A well-paced tempo can have low drift but still be wrong for an easy/Z2 prescription.
+- High decoupling on hilly trail runs is noisy: gradient, hiking, descents, footing, GPS error, and running-power models can distort output. Treat it as a rough fatigue/terrain-efficiency signal, not a clean aerobic diagnosis.
+- For clean road Z2 runs or steady rides with power, decoupling is high-value. For technical trails, intervals, group rides, and stop-start files, down-weight it.
+- If simple HR drift and decoupling disagree, explain why instead of averaging them.
+
+Reference page: general wiki `training_metrics/hr_drift_decoupling`.
 
 ### HR zones (zone_distribution)
 
@@ -128,7 +148,8 @@ Use this exact structure for every activity. Keep each section to 1–3 lines.
 - Key takeaway for next race card revision
 
 **Long run / long ride:**
-- Aerobic decoupling (key metric)
+- Aerobic decoupling (key metric on steady road/ride files; down-weight on technical trail)
+- Simple HR drift as a separate cardiac-stability signal; do not call simple HR drift "decoupling"
 - Fueling compliance (flag if >2h and no mention of eating)
 - Fatigue signature in final 20% of splits
 
@@ -144,6 +165,7 @@ Use this exact structure for every activity. Keep each section to 1–3 lines.
 
 **Trail run / race:**
 - NGP vs rFTP (not raw pace — trail gradient adjustment matters)
+- Interpret HR drift and decoupling cautiously; terrain can make halves non-comparable
 - Cadence on climbs vs descents
 - Descent-then-climb pattern (classic quad depletion trap)
 
@@ -177,7 +199,8 @@ Log each with `log_untracked_activity`, then call `mark_weekly_checkin_done` —
 
 | Metric | Green | Amber | Red |
 |---|---|---|---|
-| HR decoupling | <5% | 5–8% | >8% or negative |
+| Simple HR drift | 0–5% | 5–8% | >8% |
+| Aerobic decoupling (Pa:Hr/Pw:Hr) | <5% | 5–10% | >10% on clean steady sessions |
 | Z3 time (easy session) | <10% | 10–20% | >20% |
 | Z4+Z5 (hard session) | >25% | 15–25% | <15% |
 | Cycling cadence (flat) | >85rpm | 80–85rpm | <80rpm |

@@ -350,7 +350,7 @@ After emitting the summary line, classify the athlete's opening message into one
 
 ### New activity feedback
 
-If `get_new_activities` returns sessions, load the `activity-debrief` skill and deliver a structured debrief for each one immediately after the summary line. The skill encodes the debrief format, stream interpretation rules (HR decoupling, power curve, zone flags, cadence, nutrition signals), session-type templates, and post-debrief actions (`mark_activities_reviewed`, `log_feedback`, `bake`).
+If `get_new_activities` returns sessions, load the `activity-debrief` skill and deliver a structured debrief for each one immediately after the summary line. The skill encodes the debrief format, stream interpretation rules (simple HR drift vs aerobic decoupling, power curve, zone flags, cadence, nutrition signals), session-type templates, and post-debrief actions (`mark_activities_reviewed`, `log_feedback`, `bake`). When interpreting streams, keep simple HR drift and Pa:Hr/Pw:Hr decoupling separate: low HR drift does not prove an easy session, and trail-run decoupling is noisy because terrain, hiking, descents, and running-power models distort output.
 
 ## Readiness check-in (hard sessions only)
 
