@@ -1,0 +1,40 @@
+# signal-cli-rest-api — Docker Compose template
+#
+# Copy this file to your coachctl-personal repo (or anywhere convenient)
+# and run:
+#
+#   docker compose up -d
+#
+# Then link your Signal account once:
+#
+#   open http://localhost:9922/v1/qrcodelink?device_name=coachctl
+#   Scan the QR code from Signal > Linked Devices > Link New Device
+#
+# After linking, test with:
+#
+#   uv run coachctl signal check
+#   uv run coachctl signal daily-plan --dry-run
+
+services:
+  signal-cli:
+    image: bbernhard/signal-cli-rest-api:latest
+    container_name: signal-cli-rest-api
+    restart: unless-stopped
+    ports:
+      - "9922:8080"
+    volumes:
+      - signal-data:/home/.signal-cli
+    environment:
+      # json-rpc mode gives best performance; required for the v2 send API
+      - MODE=json-rpc
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/v1/about"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  signal-data:
+    # Persists the linked-device credentials across container restarts.
+    # Back this up if you want to avoid re-linking after data loss.
