@@ -16,9 +16,9 @@
       "enabled": false
     },
     "coros": {
-      "type": "local",
-      "command": ["<path-to-coros-mcp>/.venv/bin/coros-mcp", "serve"],
-      "enabled": false
+      "type": "remote",
+      "url": "https://mcpeu.coros.com/mcp",
+      "enabled": true
     }
   }
 }

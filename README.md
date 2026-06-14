@@ -176,6 +176,9 @@ uv run coachctl web --reload --port 8000 # auto-reload mode
 | `coachctl new-profile --target <dir>` | Scaffold a new personal repo |
 | `coachctl web [--port N] [--reload]` | Serve dashboard locally |
 | `coachctl serve` | Run the MCP server (used by opencode) |
+| `coachctl signal daily-plan` | Send tomorrow's training plan via Signal |
+| `coachctl signal daily-plan --dry-run` | Print the message without sending |
+| `coachctl signal check` | Test connectivity to signal-cli-rest-api |
 
 ---
 
@@ -231,6 +234,53 @@ protocols (IF/THEN), year-on-year comparison, and readiness gate.
 
 ---
 
+
+## Signal bot — daily plan notifications
+
+Sends tomorrow's training plan to your phone via [Signal](https://signal.org) at a scheduled time (e.g. 21:00 every evening).
+
+### Infrastructure
+
+The bot talks to [signal-cli-rest-api](https://github.com/bbernhard/signal-cli-rest-api) — a self-hosted HTTP wrapper around the Signal CLI. It runs in Docker as a secondary linked device on your Signal account.
+
+A compose template is provided at `docker/signal-cli/docker-compose.yml`.
+
+**One-time setup:**
+
+```bash
+# 1. Start the container (copy the template to coachctl-personal or anywhere)
+cp /path/to/coachctl/docker/signal-cli/docker-compose.yml .
+docker compose up -d
+
+# 2. Open the QR link in a browser, scan with your phone
+#    Signal > Settings > Linked Devices > Link New Device
+open http://localhost:9922/v1/qrcodelink?device_name=coachctl
+
+# 3. Add to coachctl-personal/.env
+SIGNAL_API_URL=http://localhost:9922
+SIGNAL_NUMBER=+41xxxxxxxxx      # the number you just linked
+SIGNAL_RECIPIENT=+41xxxxxxxxx   # the phone to send to (can be the same number)
+
+# 4. Test connectivity
+uv run coachctl signal check
+
+# 5. Preview tomorrow's message without sending
+uv run coachctl signal daily-plan --dry-run
+```
+
+### Scheduling (cron)
+
+Add to crontab (`crontab -e`):
+
+```
+0 21 * * * cd /home/yves/workspace/coachctl && uv run coachctl signal daily-plan >> /tmp/signal-bot.log 2>&1
+```
+
+The bot guards against duplicate sends — if the plan for tomorrow was already sent today it exits cleanly. Use `--force` to override.
+
+Set `SIGNAL_DASHBOARD_URL` in `.env` to append your Vercel dashboard link to every message.
+
+---
 
 ## Roadmap
 

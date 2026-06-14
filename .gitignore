@@ -9,6 +9,8 @@ dist/
 
 # opencode local config — contains live API tokens; use opencode.json.example as template
 opencode.json
+# opencode per-project MCP overrides — may contain local binary paths
+.opencode/mcp.json
 
 # Editor / IDE state
 .obsidian/

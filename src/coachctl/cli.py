@@ -368,6 +368,115 @@ def backfill_event_tss_cmd(
         )
 
 
+# ── Signal bot sub-app ─────────────────────────────────────────────────────
+
+
+_signal_app = typer.Typer(
+    help="Signal bot — send training plans to your phone.",
+    no_args_is_help=True,
+)
+app.add_typer(_signal_app, name="signal")
+
+
+@_signal_app.command("daily-plan", help="Send tomorrow's training plan via Signal.")
+def signal_daily_plan_cmd(
+    date: str = typer.Option(
+        "",
+        "--date",
+        "-d",
+        help="Target date YYYY-MM-DD (default: tomorrow).",
+    ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="Resend even if already sent for this date.",
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Print the message without sending.",
+    ),
+    dashboard_url: str = typer.Option(
+        "",
+        "--dashboard-url",
+        help="URL appended to the message footer.",
+        envvar="SIGNAL_DASHBOARD_URL",
+    ),
+) -> None:
+    if dry_run:
+        from datetime import date as _date, timedelta as _td
+
+        from dotenv import load_dotenv as _load_dotenv
+
+        from . import paths as _paths
+        from .events import get_calendar as _get_cal
+        from .config import load_athlete as _load_athlete
+        from .db import get_conn as _get_conn
+        from .signal_bot import format_daily_plan, _detect_dominant_sport
+
+        dr = _paths.data_root()
+        env_file = dr / ".env"
+        if env_file.exists():
+            _load_dotenv(env_file)
+
+        target = date or (_date.today() + _td(days=1)).isoformat()
+        all_events = _get_cal(target, target)
+        events = [e for e in all_events if e.status != "cancelled" and e.kind != "activity"]
+        athlete = _load_athlete()
+        fitness_by_sport: dict = {}
+        with _get_conn() as conn:
+            rows = conn.execute(
+                "SELECT sport_category, ctl, atl, tsb FROM fitness "
+                "WHERE date = (SELECT MAX(date) FROM fitness)"
+            ).fetchall()
+            for row in rows:
+                fitness_by_sport[row["sport_category"]] = {
+                    "ctl": float(row["ctl"] or 0.0),
+                    "atl": float(row["atl"] or 0.0),
+                    "tsb": float(row["tsb"] or 0.0),
+                }
+        msg = format_daily_plan(target, events, athlete, fitness_by_sport, dashboard_url)
+        typer.echo(msg)
+        return
+
+    from .signal_bot import send_tomorrows_plan
+
+    try:
+        result = send_tomorrows_plan(
+            target_date=date,
+            force=force,
+            dashboard_url=dashboard_url,
+        )
+        typer.echo(result)
+    except Exception as exc:  # noqa: BLE001
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(1)
+
+
+@_signal_app.command("check", help="Test connectivity to signal-cli-rest-api.")
+def signal_check_cmd() -> None:
+    from dotenv import load_dotenv as _load_dotenv
+
+    from . import paths as _paths
+    from .signal_bot import check_connectivity, get_signal_config
+
+    dr = _paths.data_root()
+    env_file = dr / ".env"
+    if env_file.exists():
+        _load_dotenv(env_file)
+
+    try:
+        cfg = get_signal_config()
+    except RuntimeError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(1)
+
+    ok, msg = check_connectivity(cfg["SIGNAL_API_URL"])
+    typer.echo(msg)
+    if not ok:
+        raise typer.Exit(1)
+
+
 def main() -> None:
     app()
 
