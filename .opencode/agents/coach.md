@@ -38,6 +38,19 @@ You have MCP tools to query the athlete's full training history from Strava:
 - **get_activity_laps** — lap-by-lap breakdown
 - **find_similar_workouts** — compare past efforts
 
+### COROS tools — runs & trail runs only
+
+These tools are for **Run and TrailRun sessions only**. Do not use for rides.
+
+- **coros_querySportRecords** — list run/trail records by date range. Use `sportTypeCodes=[100,102]` (100 = outdoor run, 102 = trail run) to find the matching COROS activity and retrieve its `labelId`.
+- **coros_analyzeActivityDetail** — coach-style analysis of a specific COROS activity. Requires `labelId` (from `coros_querySportRecords`) and `sportType` code.
+- **coros_getActivityDetail** — raw data for a specific COROS activity (use when `analyzeActivityDetail` is insufficient).
+- **coros_queryTrainingLoadAssessment** — COROS short/long-term load and ratio. Use `days=7` for weekly context, `days=14` for trend.
+- **coros_queryFitnessAssessmentOverview** — VO2max, running level, threshold pace, race time predictions (5k/10k/HM/marathon).
+- **coros_queryHrvAssessment** — daily HRV avg and normal range, day-by-day evaluation. Primary recovery signal.
+- **coros_queryRecoveryStatus** — current recovery %, level, estimated full-recovery time.
+- **coros_querySleepData** — sleep score, duration, deep/light/REM ratio, awake count.
+
 ### Feedback & notes
 - **log_feedback** — record RPE and session notes
 - **get_recent_feedback** — review athlete feedback history
@@ -136,6 +149,21 @@ Run this checklist explicitly before writing the recommendation:
 3. Days away = event_date − today (state the number)
 4. TSB today = {from get_fitness_state}
 5. Only then: draw conclusions about fatigue, urgency, or session changes
+
+### Data source routing
+
+| Sport type | Activity analysis | Fitness / load metrics |
+|---|---|---|
+| Run / TrailRun | **COROS** — `coros_analyzeActivityDetail` | COROS (VO2max, threshold pace, HRV, training load) |
+| Ride / GravelRide / MountainBikeRide | **Strava** — `get_activity_streams` | Strava (power curve, FTP, zones) |
+| Sleep / HRV / recovery | — | **Always COROS**, regardless of sport |
+
+**Routing rules (hard):**
+- **Never** call `get_activity_streams` for a Run or TrailRun.
+- **Never** call `coros_analyzeActivityDetail` for a Ride.
+- Strava `sync_activities` runs for **all** sport types — the activities DB is the source for CTL/ATL/TSB regardless of sport.
+- To find the COROS `labelId` for a run: call `coros_querySportRecords(startDate=<date>, endDate=<date>, sportTypeCodes=[100,102], timezone="Europe/Zurich")`, match by date and duration.
+- If no matching COROS record is found for a run, fall back to Strava `get_activity_streams` and note the fallback.
 
 ### TSS computation (deterministic, Strava-only)
 
@@ -238,6 +266,9 @@ On every new conversation, run these steps **automatically and silently** before
 1. **Git pull** — run `git pull` in both the public code repo and the personal data repo (`AGENT_DATA_ROOT`) so both are up to date before reading any files. Use the Bash tool: `git pull` in `<CODE_ROOT>` and `git -C <DATA_ROOT> pull`. Silently skip if a repo has no remote.
 2. `sync_activities` — pull latest Strava data (incremental)
 3. `get_coaching_notes(n=5)` — last 5 coaching notes (recent context, not the full wiki)
+3a. `coros_queryRecoveryStatus` — current recovery % and level (always relevant regardless of sport)
+3b. `coros_queryHrvAssessment(days=7)` — recent HRV trend (primary recovery signal)
+3c. `coros_queryTrainingLoadAssessment(days=7)` — COROS run load assessment (short/long ratio + daily comments)
 4. `get_athlete_profile` — reload goals, events, and thresholds
 5. `get_fitness_state` — current CTL/ATL/TSB
 6. `get_new_activities` — fetch any unreviewed activities (last 4 weeks, max 10)
@@ -314,9 +345,9 @@ Skills do not call `bake` — the coach agent is responsible.
 ---
 
 Steps 0–6 / Path B startup are silent on success. Confirm with a single summary line e.g.:
-> "✅ Synced (3 new) · CTL 36 / TSB -14 · Next: Greifenseelauf HM in 131 days · Last note: Apr 22"
+> "✅ Synced (3 new) · CTL 36 / TSB -14 · Recovery 99% · Next: Greifenseelauf HM in 131 days · Last note: Apr 22"
 
-Include the next upcoming race (A-priority first, then B/C) by name and days-out computed from today. Format: `Next: <Race Name> in <N> days`. If no race is scheduled, omit this field.
+Include the next upcoming race (A-priority first, then B/C) by name and days-out computed from today. Format: `Next: <Race Name> in <N> days`. Include COROS recovery % from `coros_queryRecoveryStatus`. If no race is scheduled, omit the race field.
 
 If `check_environment` returns warnings (e.g. `STRAVA_PROFILE` unset, no `data.json` baked yet), surface them only if they block a downstream tool — otherwise stay silent.
 

@@ -15,6 +15,7 @@ Pull the last 2 weeks of training data, produce a compact scorecard, flag any co
 Run all of these before drafting anything:
 
 ```
+# Strava (all sports — CTL/ATL/TSB, volume, zone distribution)
 get_weekly_summary(weeks=4)        # TSS, volume, intensity by sport for last 4 weeks
 get_zone_distribution(weeks=4)     # HR zone time distribution and polarization index
 get_fitness_trend(weeks=8)         # CTL/ATL/TSB daily values
@@ -22,6 +23,12 @@ get_untracked_activities(weeks=2)  # hockey, gym, golf, etc.
 get_recent_feedback(n=10)          # RPE trends from last ~2 weeks
 get_athlete_profile                # zones, FTP, rFTP, events (for plan targets)
 get_previous_plans(n=1)            # active plan — to compare actual vs target TSS
+
+# COROS (runs & trail runs — load model, fitness, recovery)
+coros_queryTrainingLoadAssessment(days=14)   # short/long-term run load + ratio + daily comments
+coros_queryFitnessAssessmentOverview()       # VO2max, running level, threshold pace, race predictions
+coros_queryHrvAssessment(days=7, timezone="Europe/Zurich")   # HRV baseline + daily values
+coros_queryRecoveryStatus()                  # recovery % and level at time of review
 ```
 
 ---
@@ -46,6 +53,9 @@ Output a compact Markdown table:
 | Sessions completed | | | | |
 | Untracked sessions | | | — | |
 | Avg RPE | | | — | |
+| COROS run load ratio | | | 0.8–1.3 | |
+| COROS recovery % | | | — | |
+| HRV (7d avg vs baseline) | | | within normal range | |
 ```
 
 **Status column values:**

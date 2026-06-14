@@ -10,15 +10,43 @@ Deliver structured, data-driven feedback on each unreviewed activity. Pull strea
 
 ---
 
-## Step 1 — For each activity in `get_new_activities`
+## Step 1 — Route by sport type, then fetch data
 
-For every activity returned, decide whether to pull streams:
+For every activity returned by `get_new_activities`, first check `sport_type`, then fetch the appropriate data source.
 
-- **Always pull streams** for: races, intervals, threshold sessions, long runs (>75min), long rides (>90min), any session where the athlete reported something unusual
-- **Skip streams** for: easy Z2 sessions <60min with no flags, rest days, untracked activities (Badminton, gym, golf)
+### Runs and trail runs (sport_type = Run, TrailRun)
+
+Use **COROS only**. Do not call `get_activity_streams` for runs.
+
+1. Find the matching COROS activity:
+   ```
+   coros_querySportRecords(
+     startDate=<activity_date as yyyyMMdd>,
+     endDate=<activity_date as yyyyMMdd>,
+     sportTypeCodes=[100, 102],   # 100=outdoor run, 102=trail run
+     timezone="Europe/Zurich"
+   )
+   ```
+2. Match by date and duration (closest duration to the Strava activity within ±10 min).
+3. If a match is found → call `coros_analyzeActivityDetail(labelId, sportType, focus="pace stability")` for the primary analysis.
+4. For long runs (>75 min) or races, also call:
+   - `coros_queryHrvAssessment(days=3, timezone="Europe/Zurich")` — recovery context around the session
+   - `coros_queryRecoveryStatus` — current recovery % to frame the next-session prescription
+5. **Fallback:** if no matching COROS record is found, fall back to `get_activity_streams(activity_id)` and note: "COROS record not found — using Strava streams."
+
+### Rides (sport_type = Ride, GravelRide, VirtualRide, MountainBikeRide, EBikeRide)
+
+Use **Strava only**. Do not call any COROS tools for rides.
+
+- **Always pull streams** for: races, intervals, threshold sessions, long rides (>90 min), any session where the athlete reported something unusual
+- **Skip streams** for: easy Z2 sessions <60 min with no flags
 
 Pull with: `get_activity_streams(activity_id)`  
 Pull laps with: `get_activity_laps(activity_id)` for interval sessions where lap structure matters
+
+### Other / untracked activities (gym, hockey, yoga, etc.)
+
+Skip all stream/COROS calls. Brief debrief only based on Strava metadata.
 
 ---
 
