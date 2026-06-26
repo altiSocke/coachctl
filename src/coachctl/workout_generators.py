@@ -5,10 +5,21 @@ from __future__ import annotations
 from dataclasses import replace
 from datetime import date, timedelta
 
-from .workout_archetypes import easy_run, hill_activation, rest_day, shakeout, trail_race_simulation
+from .workout_archetypes import (
+    easy_aerobic_run,
+    easy_run,
+    hill_activation,
+    mechanics_check_run,
+    mobility_rest,
+    recovery_spin,
+    rest_day,
+    shakeout,
+    trail_race_simulation,
+)
 from .workouts import WorkoutSpec
 
-GENERATOR_VERSION = "trail_race_week.v1"
+TRAIL_RACE_WEEK_GENERATOR_VERSION = "trail_race_week.v1"
+POST_TRAIL_RACE_WEEK_GENERATOR_VERSION = "post_trail_race_week.v1"
 
 
 def generate_trail_race_week(
@@ -87,12 +98,91 @@ def generate_trail_race_week(
             notes=["Pack kit and protect sleep."],
         ),
     ]
-    return [_with_generator_context(w, race_name) for w in workouts]
+    return [
+        _with_generator_context(w, race_name, TRAIL_RACE_WEEK_GENERATOR_VERSION)
+        for w in workouts
+    ]
 
 
-def _with_generator_context(workout: WorkoutSpec, race_name: str) -> WorkoutSpec:
+def generate_post_trail_race_week(
+    *,
+    race_date: str,
+    race_name: str,
+    start_date: str,
+) -> list[WorkoutSpec]:
+    """Generate a conservative adaptive week after a steep trail race."""
+    race_day = date.fromisoformat(race_date)
+    start = date.fromisoformat(start_date)
+    expected_start = race_day + timedelta(days=1)
+    if start != expected_start:
+        raise ValueError("post trail race-week generation requires start_date = race_date + 1d")
+
+    workouts = [
+        rest_day(
+            date=_iso(race_day + timedelta(days=1)),
+            title="Rest or 30-45min recovery spin",
+            estimated_tss=10.0,
+            notes=["Spin only if legs feel better after walking."],
+            optional_alternative="30-45min recovery spin <160W",
+        ),
+        mechanics_check_run(date=_iso(race_day + timedelta(days=2)), estimated_tss=15.0),
+        recovery_spin(
+            date=_iso(race_day + timedelta(days=3)),
+            title="45-60min Z1-Z2 ride or rest",
+            duration_min=50,
+            estimated_tss=20.0,
+            power_cap_watts=180,
+            notes=["Ride if quads are still sore; no run pressure."],
+        ),
+        easy_aerobic_run(
+            date=_iso(race_day + timedelta(days=4)),
+            title="35-45min easy run",
+            duration_min=40,
+            estimated_tss=25.0,
+            hr_cap=150,
+            notes=["No strides, no hills, no intensity."],
+        ),
+        mobility_rest(
+            date=_iso(race_day + timedelta(days=5)),
+            notes=["No strength yet; skip eccentric work this week."],
+        ),
+        easy_aerobic_run(
+            date=_iso(race_day + timedelta(days=6)),
+            title="45-55min easy run",
+            duration_min=50,
+            estimated_tss=35.0,
+            hr_cap=150,
+            notes=["Flat or soft surface only; Greifenseelauf block resumes after absorption."],
+        ),
+        easy_aerobic_run(
+            date=_iso(race_day + timedelta(days=7)),
+            title="60-75min easy aerobic run or Z2 ride",
+            duration_min=60,
+            estimated_tss=35.0,
+            hr_cap=150,
+            notes=["Run only if fully normal; otherwise ride Z2."],
+            fallback="60-75min_Z2_ride",
+        ),
+        recovery_spin(
+            date=_iso(race_day + timedelta(days=8)),
+            title="60min optional Z2 ride",
+            duration_min=60,
+            estimated_tss=15.0,
+            power_cap_watts=190,
+            notes=["Low-stress aerobic only."],
+        ),
+    ]
+    return [
+        _with_generator_context(w, race_name, POST_TRAIL_RACE_WEEK_GENERATOR_VERSION)
+        for w in workouts
+    ]
+
+
+def _with_generator_context(
+    workout: WorkoutSpec, race_name: str, generator_version: str
+) -> WorkoutSpec:
     generator = dict(workout.generator)
-    generator["generator_version"] = GENERATOR_VERSION
+    generator["generator_version"] = generator_version
     generator["race_name"] = race_name
     return replace(workout, generator=generator)
 

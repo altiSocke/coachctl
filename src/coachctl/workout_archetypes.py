@@ -251,6 +251,142 @@ def rest_day(
     )
 
 
+def recovery_spin(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    estimated_tss: float | None,
+    power_cap_watts: int | None = None,
+    optional: bool = True,
+    notes: list[str] | None = None,
+) -> WorkoutSpec:
+    """Build an easy post-race recovery ride option."""
+    target: dict[str, object] = {"effort": "very_easy" if optional else "easy"}
+    if power_cap_watts is not None:
+        target["power_cap_watts"] = power_cap_watts
+    return WorkoutSpec(
+        date=date,
+        sport="ride",
+        archetype="recovery_spin",
+        title=title,
+        duration_min=duration_min,
+        intensity="recovery",
+        priority="optional" if optional else "recovery",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(
+                kind="main",
+                duration_min=duration_min,
+                target=target,
+                cue="Keep cadence light and stop if legs feel worse.",
+            )
+        ],
+        notes=notes or [],
+        generator=_generator("recovery_spin.v1"),
+    )
+
+
+def mechanics_check_run(
+    *,
+    date: str,
+    title: str = "25-35min mechanics-check easy jog or rest",
+    duration_min: int = 30,
+    estimated_tss: float | None = 20.0,
+) -> WorkoutSpec:
+    """Build the first post-race run with explicit mechanics gates."""
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="mechanics_check_run",
+        title=title,
+        duration_min=duration_min,
+        intensity="recovery",
+        priority="optional",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(
+                kind="main",
+                duration_min=duration_min,
+                target={"hr_cap": 145, "terrain": "flat_soft_surface", "effort": "very_easy"},
+                cue="Stop immediately if mechanics are not symmetric.",
+            )
+        ],
+        constraints={
+            "run_allowed_if": [
+                "normal_downstairs_walking",
+                "no_hamstring_warning",
+                "symmetric_jog_after_10min",
+            ],
+            "fallback": "rest_or_30min_recovery_spin",
+            "stop_if": ["limp", "sharp_quad_pain", "hamstring_warning"],
+        },
+        notes=["First run back is mechanics-gated, not load-gated."],
+        generator=_generator("mechanics_check_run.v1"),
+    )
+
+
+def easy_aerobic_run(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    estimated_tss: float | None,
+    hr_cap: int = 150,
+    terrain: str = "flat_soft_surface",
+    notes: list[str] | None = None,
+    fallback: str = "rest_or_recovery_spin",
+) -> WorkoutSpec:
+    """Build a post-race easy run with conservative stop rules."""
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="easy_aerobic_run",
+        title=title,
+        duration_min=duration_min,
+        intensity="easy",
+        priority="support",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(
+                kind="main",
+                duration_min=duration_min,
+                target={"hr_cap": hr_cap, "terrain": terrain, "effort": "easy"},
+                cue="Keep it flat and conversational.",
+            )
+        ],
+        constraints={
+            "fallback": fallback,
+            "stop_if": ["limp", "sharp_quad_pain", "hamstring_warning", "mechanics_fade"],
+        },
+        notes=notes or [],
+        generator=_generator("easy_aerobic_run.v1"),
+    )
+
+
+def mobility_rest(
+    *,
+    date: str,
+    title: str = "Rest or mobility only",
+    notes: list[str] | None = None,
+) -> WorkoutSpec:
+    """Build a post-race rest day that explicitly suppresses strength."""
+    return WorkoutSpec(
+        date=date,
+        sport="rest",
+        archetype="mobility_rest",
+        title=title,
+        duration_min=0,
+        intensity="rest",
+        priority="recovery",
+        estimated_tss=0.0,
+        steps=[WorkoutStep(kind="note", cue="No training.")],
+        constraints={"stop_if": ["fatigue_spike"]},
+        notes=notes or ["No strength yet; skip eccentric work this week."],
+        generator=_generator("mobility_rest.v1"),
+    )
+
+
 def _generator(archetype_version: str) -> dict[str, str]:
     return {
         "name": GENERATOR_NAME,

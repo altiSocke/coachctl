@@ -239,6 +239,8 @@ def _render_target(target: dict[str, Any]) -> list[str]:
         out.append(f"RPE {target['rpe']}")
     if "rpe_max" in target:
         out.append(f"RPE max {target['rpe_max']}")
+    if "power_cap_watts" in target:
+        out.append(f"power cap {target['power_cap_watts']}W")
     if "terrain" in target:
         out.append(f"terrain {_fmt_label(target['terrain'])}")
     if "cadence_spm" in target:
@@ -264,6 +266,12 @@ def _render_constraints(constraints: dict[str, Any]) -> str:
             out.append("Route: " + " or ".join(str(v) for v in values))
     if "optional_alternative" in constraints:
         out.append(f"Optional: {constraints['optional_alternative']}")
+    if "fallback" in constraints:
+        out.append(f"Fallback: {constraints['fallback']}")
+    if "run_allowed_if" in constraints:
+        values = constraints["run_allowed_if"]
+        if isinstance(values, list) and values:
+            out.append("Run allowed if " + ", ".join(_fmt_label(v) for v in values))
     if "max_elevation_gain_m" in constraints:
         out.append(f"Max elevation gain {constraints['max_elevation_gain_m']}m")
     if "stop_if" in constraints:
