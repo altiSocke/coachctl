@@ -6,13 +6,15 @@ from dataclasses import dataclass
 import json
 from typing import Literal
 
-from .events import KIND_TRAINING, STATUS_COMPLETED, Event, get_event, upsert_event
+from .events import KIND_TRAINING, STATUS_CANCELLED, STATUS_COMPLETED, Event, get_event, upsert_event
 from .workout_preview import (
     WorkoutEventPreview,
+    preview_post_trail_race_week_from_db,
+    preview_sessions_from_db,
     preview_trail_race_week_from_db,
 )
 
-ApplyAction = Literal["created", "updated", "matched", "skipped"]
+ApplyAction = Literal["created", "updated", "matched", "skipped", "cancelled"]
 _UNSET = object()
 
 
@@ -48,6 +50,10 @@ class WorkoutApplyResult:
     def skipped(self) -> int:
         return self._count("skipped")
 
+    @property
+    def cancelled(self) -> int:
+        return self._count("cancelled")
+
     def _count(self, action: ApplyAction) -> int:
         return sum(1 for row in (self.rows or []) if row.action == action)
 
@@ -79,6 +85,62 @@ def apply_trail_race_week_from_db(
     )
 
 
+def apply_post_trail_race_week_from_db(
+    *,
+    race_slug: str,
+    start_date: str,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+    allow_skips: bool = False,
+) -> WorkoutApplyResult:
+    """Re-run preview and apply the deterministic post-trail-race week."""
+    preview = preview_post_trail_race_week_from_db(
+        race_slug=race_slug,
+        start_date=start_date,
+        slug_prefix=slug_prefix,
+        plan_id=plan_id,
+    )
+    if preview.error:
+        raise RuntimeError(preview.error)
+    result = apply_workout_previews(preview.previews, allow_skips=allow_skips)
+    return WorkoutApplyResult(
+        race_slug=preview.race_slug,
+        race_name=preview.race_name,
+        window_start=preview.window_start,
+        window_end=preview.window_end,
+        rows=result.rows or [],
+    )
+
+
+def apply_sessions_from_db(
+    *,
+    mode: str,
+    race_slug: str,
+    start_date: str,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+    allow_skips: bool = False,
+) -> WorkoutApplyResult:
+    """Dispatch session apply by mode."""
+    preview = preview_sessions_from_db(
+        mode=mode,
+        race_slug=race_slug,
+        start_date=start_date,
+        slug_prefix=slug_prefix,
+        plan_id=plan_id,
+    )
+    if preview.error:
+        raise RuntimeError(preview.error)
+    result = apply_workout_previews(preview.previews, allow_skips=allow_skips)
+    return WorkoutApplyResult(
+        race_slug=preview.race_slug,
+        race_name=preview.race_name,
+        window_start=preview.window_start,
+        window_end=preview.window_end,
+        rows=result.rows or [],
+    )
+
+
 def format_apply_text(result: WorkoutApplyResult) -> str:
     """Format a compact apply result."""
     lines = [
@@ -93,7 +155,8 @@ def format_apply_text(result: WorkoutApplyResult) -> str:
             "",
             "Summary: "
             f"{result.created} created, {result.updated} updated, "
-            f"{result.matched} matched, {result.skipped} skipped",
+            f"{result.matched} matched, {result.skipped} skipped, "
+            f"{result.cancelled} cancelled",
         ]
     )
     return "\n".join(lines).rstrip()
@@ -111,6 +174,7 @@ def format_apply_json(result: WorkoutApplyResult) -> str:
             "updated": result.updated,
             "matched": result.matched,
             "skipped": result.skipped,
+            "cancelled": result.cancelled,
             "rows": [
                 {
                     "date": row.date,
@@ -174,6 +238,16 @@ def apply_workout_previews(
                     reason=item.reason,
                 )
             )
+        elif item.action == "cancel":
+            _apply_cancel(item)
+            rows.append(
+                WorkoutApplyRow(
+                    date=item.date,
+                    action="cancelled",
+                    target_slug=item.target_slug,
+                    reason=item.reason,
+                )
+            )
     return WorkoutApplyResult(rows=rows)
 
 
@@ -206,6 +280,19 @@ def _apply_update(item: WorkoutEventPreview) -> None:
         activity_id=existing.activity_id,
         notes=existing.notes,
     )
+    upsert_event(event)
+
+
+def _apply_cancel(item: WorkoutEventPreview) -> None:
+    existing = get_event(item.target_slug)
+    if existing is None:
+        raise RuntimeError(f"cancel target missing: {item.target_slug}")
+    if existing.status == STATUS_COMPLETED:
+        raise RuntimeError(f"refusing to cancel completed event: {item.target_slug}")
+    if existing.payload.get("locked") is True:
+        raise RuntimeError(f"refusing to cancel locked event: {item.target_slug}")
+    event = _copy_event(existing, slug=existing.slug)
+    event.status = STATUS_CANCELLED
     upsert_event(event)
 
 

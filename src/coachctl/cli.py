@@ -370,6 +370,7 @@ def backfill_event_tss_cmd(
 
 @app.command("preview-sessions", help="Preview deterministic generated sessions without writing.")
 def preview_sessions_cmd(
+    mode: str = typer.Option("race-week", "--mode", help="Generation mode: race-week or post-race."),
     race: str = typer.Option(..., "--race", help="Race event slug."),
     start: str = typer.Option(..., "--start", help="Preview start date YYYY-MM-DD."),
     slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
@@ -380,11 +381,12 @@ def preview_sessions_cmd(
     from .workout_preview import (
         format_preview_json,
         format_preview_text,
-        preview_trail_race_week_from_db,
+        preview_sessions_from_db,
     )
 
     init_db()
-    result = preview_trail_race_week_from_db(
+    result = preview_sessions_from_db(
+        mode=mode,
         race_slug=race,
         start_date=start,
         slug_prefix=slug_prefix or None,
@@ -411,6 +413,7 @@ def preview_sessions_cmd(
 
 @app.command("apply-sessions", help="Apply deterministic generated sessions to events.")
 def apply_sessions_cmd(
+    mode: str = typer.Option("race-week", "--mode", help="Generation mode: race-week or post-race."),
     race: str = typer.Option(..., "--race", help="Race event slug."),
     start: str = typer.Option(..., "--start", help="Preview/apply start date YYYY-MM-DD."),
     slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
@@ -421,19 +424,20 @@ def apply_sessions_cmd(
 ) -> None:
     from .db import init_db
     from .workout_apply import (
-        apply_trail_race_week_from_db,
+        apply_sessions_from_db,
         format_apply_json,
         format_apply_text,
     )
     from .workout_preview import (
         format_preview_json,
         format_preview_text,
-        preview_trail_race_week_from_db,
+        preview_sessions_from_db,
     )
 
     init_db()
     if not yes:
-        result = preview_trail_race_week_from_db(
+        result = preview_sessions_from_db(
+            mode=mode,
             race_slug=race,
             start_date=start,
             slug_prefix=slug_prefix or None,
@@ -460,7 +464,8 @@ def apply_sessions_cmd(
         return
 
     try:
-        result = apply_trail_race_week_from_db(
+        result = apply_sessions_from_db(
+            mode=mode,
             race_slug=race,
             start_date=start,
             slug_prefix=slug_prefix or None,

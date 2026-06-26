@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from coachctl.events import KIND_TRAINING, STATUS_COMPLETED, STATUS_PLANNED, Event
+from coachctl.events import KIND_TRAINING, STATUS_CANCELLED, STATUS_COMPLETED, STATUS_PLANNED, Event
 from coachctl.events import KIND_RACE, upsert_event
 from coachctl.workout_archetypes import easy_run
 from coachctl.workout_preview import (
     format_preview_json,
     format_preview_text,
+    preview_post_trail_race_week_from_db,
+    preview_sessions_from_db,
     preview_trail_race_week_from_db,
     preview_workout_events,
     workouts_to_events,
@@ -221,6 +223,154 @@ def test_preview_trail_race_week_from_db_errors_for_missing_race(mem_db) -> None
 
     assert result.error == "race_not_found"
     assert result.previews == []
+
+
+def test_preview_post_trail_race_week_from_db_reads_existing_events(mem_db) -> None:
+    race = Event(
+        slug="2026-07-04-steinbock",
+        kind=KIND_RACE,
+        date="2026-07-04",
+        name="Bernina Ultraks Steinbock",
+    )
+    existing_training = Event(
+        slug="legacy-2026-07-08",
+        kind=KIND_TRAINING,
+        date="2026-07-08",
+        name="Mona fartlek",
+        status=STATUS_PLANNED,
+    )
+    upsert_event(race)
+    upsert_event(existing_training)
+
+    result = preview_post_trail_race_week_from_db(
+        race_slug="2026-07-04-steinbock",
+        start_date="2026-07-05",
+        slug_prefix="steinbock-post",
+    )
+
+    assert result.race_name == "Bernina Ultraks Steinbock"
+    assert result.window_start == "2026-07-05"
+    assert result.window_end == "2026-07-12"
+    assert len(result.previews) == 8
+    jul8 = next(p for p in result.previews if p.date == "2026-07-08")
+    assert jul8.action == "update"
+    assert jul8.target_slug == "legacy-2026-07-08"
+
+
+def test_preview_post_trail_race_week_cancels_same_day_strength(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="2026-07-04-steinbock",
+            kind=KIND_RACE,
+            date="2026-07-04",
+            name="Bernina Ultraks Steinbock",
+        )
+    )
+    upsert_event(
+        Event(
+            slug="plan-run-2026-07-06",
+            kind=KIND_TRAINING,
+            date="2026-07-06",
+            name="40min easy Z1-Z2 run",
+            status=STATUS_PLANNED,
+        )
+    )
+    upsert_event(
+        Event(
+            slug="strength-2026-07-06",
+            kind=KIND_TRAINING,
+            date="2026-07-06",
+            name="Strength M1 maintenance block",
+            status=STATUS_PLANNED,
+        )
+    )
+
+    result = preview_post_trail_race_week_from_db(
+        race_slug="2026-07-04-steinbock",
+        start_date="2026-07-05",
+        slug_prefix="steinbock-post",
+    )
+
+    jul6 = [p for p in result.previews if p.date == "2026-07-06"]
+    assert [(p.action, p.target_slug) for p in jul6] == [
+        ("update", "plan-run-2026-07-06"),
+        ("cancel", "strength-2026-07-06"),
+    ]
+    assert jul6[1].reason == "superseded_by_post_race_generator"
+
+
+def test_preview_post_trail_race_week_ignores_cancelled_strength(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="2026-07-04-steinbock",
+            kind=KIND_RACE,
+            date="2026-07-04",
+            name="Bernina Ultraks Steinbock",
+        )
+    )
+    upsert_event(
+        Event(
+            slug="plan-run-2026-07-06",
+            kind=KIND_TRAINING,
+            date="2026-07-06",
+            name="25-35min mechanics-check easy jog or rest",
+            status=STATUS_PLANNED,
+            payload={
+                "schema": "workout_spec.v1",
+                "workout": {"archetype": "mechanics_check_run"},
+            },
+        )
+    )
+    upsert_event(
+        Event(
+            slug="strength-2026-07-06",
+            kind=KIND_TRAINING,
+            date="2026-07-06",
+            name="Strength M1 maintenance block",
+            status=STATUS_CANCELLED,
+        )
+    )
+
+    result = preview_post_trail_race_week_from_db(
+        race_slug="2026-07-04-steinbock",
+        start_date="2026-07-05",
+        slug_prefix="steinbock-post",
+    )
+
+    jul6 = [p for p in result.previews if p.date == "2026-07-06"]
+    assert not any(p.action == "cancel" for p in jul6)
+    assert len(jul6) == 1
+
+
+def test_preview_sessions_from_db_dispatches_post_race_mode(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="2026-07-04-steinbock",
+            kind=KIND_RACE,
+            date="2026-07-04",
+            name="Bernina Ultraks Steinbock",
+        )
+    )
+
+    result = preview_sessions_from_db(
+        mode="post-race",
+        race_slug="2026-07-04-steinbock",
+        start_date="2026-07-05",
+        slug_prefix="steinbock-post",
+    )
+
+    assert result.window_end == "2026-07-12"
+    assert len(result.previews) == 8
+
+
+def test_preview_sessions_from_db_rejects_unknown_mode(mem_db) -> None:
+    result = preview_sessions_from_db(
+        mode="bad-mode",
+        race_slug="whatever",
+        start_date="2026-07-05",
+    )
+
+    assert result.error == "unsupported_mode"
 
 
 def test_format_preview_text_and_json() -> None:

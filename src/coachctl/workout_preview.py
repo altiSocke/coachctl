@@ -10,11 +10,19 @@ from dataclasses import dataclass
 import json
 from typing import Any, Literal
 
-from .events import KIND_RACE, KIND_TRAINING, STATUS_COMPLETED, Event, get_calendar, get_event
-from .workout_generators import generate_trail_race_week
+from .events import (
+    KIND_RACE,
+    KIND_TRAINING,
+    STATUS_CANCELLED,
+    STATUS_COMPLETED,
+    Event,
+    get_calendar,
+    get_event,
+)
+from .workout_generators import generate_post_trail_race_week, generate_trail_race_week
 from .workouts import WorkoutSpec, workout_to_event
 
-PreviewAction = Literal["create", "update", "match", "skip"]
+PreviewAction = Literal["create", "update", "match", "skip", "cancel"]
 
 
 @dataclass(frozen=True)
@@ -170,6 +178,128 @@ def preview_trail_race_week_from_db(
     )
 
 
+def preview_post_trail_race_week_from_db(
+    *,
+    race_slug: str,
+    start_date: str,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+) -> WorkoutPreviewResult:
+    """Build a read-only post-trail-race week preview from the events table."""
+    race = get_event(race_slug)
+    if race is None:
+        return WorkoutPreviewResult(
+            race_slug=race_slug,
+            race_name="",
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="race_not_found",
+        )
+    if race.kind != KIND_RACE:
+        return WorkoutPreviewResult(
+            race_slug=race_slug,
+            race_name=race.name,
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="event_is_not_race",
+        )
+
+    from datetime import date, timedelta
+
+    window_end = (date.fromisoformat(race.date) + timedelta(days=8)).isoformat()
+    prefix = slug_prefix or f"{_default_slug_prefix(race_slug)}-post"
+    workouts = generate_post_trail_race_week(
+        race_date=race.date,
+        race_name=race.name,
+        start_date=start_date,
+    )
+    generated = workouts_to_events(workouts, slug_prefix=prefix, plan_id=plan_id)
+    existing = get_calendar(start_date, window_end, kinds=[KIND_TRAINING])
+    previews = _preview_post_race_events(generated, existing)
+    return WorkoutPreviewResult(
+        race_slug=race_slug,
+        race_name=race.name,
+        window_start=start_date,
+        window_end=window_end,
+        previews=previews,
+    )
+
+
+def _preview_post_race_events(
+    generated: list[Event],
+    existing: list[Event],
+) -> list[WorkoutEventPreview]:
+    """Preview post-race events, cancelling same-day strength where needed."""
+    existing_training = [
+        event
+        for event in existing
+        if event.kind == KIND_TRAINING
+        and not (_is_strength_event(event) and event.status == STATUS_CANCELLED)
+    ]
+    out: list[WorkoutEventPreview] = []
+    for event in generated:
+        same_date = [e for e in existing_training if e.date == event.date]
+        if len(same_date) <= 1:
+            out.extend(preview_workout_events([event], existing_training))
+            continue
+
+        non_strength = [e for e in same_date if not _is_strength_event(e)]
+        strength = [e for e in same_date if _is_strength_event(e)]
+        if len(non_strength) == 1 and strength:
+            out.extend(preview_workout_events([event], [non_strength[0]]))
+            for existing_strength in strength:
+                out.append(
+                    WorkoutEventPreview(
+                        date=existing_strength.date,
+                        slug=existing_strength.slug,
+                        target_slug=existing_strength.slug,
+                        action="cancel",
+                        reason="superseded_by_post_race_generator",
+                        existing=existing_strength,
+                        generated=None,
+                        field_diffs={"status": (existing_strength.status, "cancelled")},
+                    )
+                )
+            continue
+        out.extend(preview_workout_events([event], existing_training))
+    return out
+
+
+def preview_sessions_from_db(
+    *,
+    mode: str,
+    race_slug: str,
+    start_date: str,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+) -> WorkoutPreviewResult:
+    """Dispatch session preview generation by mode."""
+    if mode == "race-week":
+        return preview_trail_race_week_from_db(
+            race_slug=race_slug,
+            start_date=start_date,
+            slug_prefix=slug_prefix,
+            plan_id=plan_id,
+        )
+    if mode == "post-race":
+        return preview_post_trail_race_week_from_db(
+            race_slug=race_slug,
+            start_date=start_date,
+            slug_prefix=slug_prefix,
+            plan_id=plan_id,
+        )
+    return WorkoutPreviewResult(
+        race_slug=race_slug,
+        race_name="",
+        window_start=start_date,
+        window_end=start_date,
+        previews=[],
+        error="unsupported_mode",
+    )
+
+
 def format_preview_text(
     *,
     race_name: str,
@@ -203,6 +333,8 @@ def format_preview_text(
         if item.field_diffs:
             lines.append(f"  diffs: {', '.join(item.field_diffs)}")
         if item.action == "skip":
+            lines.append(f"  reason: {item.reason}")
+        if item.action == "cancel":
             lines.append(f"  reason: {item.reason}")
         lines.append("")
     return "\n".join(lines).rstrip()
@@ -280,3 +412,8 @@ def _default_slug_prefix(race_slug: str) -> str:
     if len(parts) > 3 and all(part.isdigit() for part in parts[:3]):
         return "-".join(parts[3:])
     return race_slug
+
+
+def _is_strength_event(event: Event) -> bool:
+    text = f"{event.slug} {event.name} {event.summary or ''}".lower()
+    return "strength" in text
