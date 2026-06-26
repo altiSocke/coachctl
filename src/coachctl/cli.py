@@ -368,6 +368,118 @@ def backfill_event_tss_cmd(
         )
 
 
+@app.command("preview-sessions", help="Preview deterministic generated sessions without writing.")
+def preview_sessions_cmd(
+    race: str = typer.Option(..., "--race", help="Race event slug."),
+    start: str = typer.Option(..., "--start", help="Preview start date YYYY-MM-DD."),
+    slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
+    plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id."),
+    output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
+) -> None:
+    from .db import init_db
+    from .workout_preview import (
+        format_preview_json,
+        format_preview_text,
+        preview_trail_race_week_from_db,
+    )
+
+    init_db()
+    result = preview_trail_race_week_from_db(
+        race_slug=race,
+        start_date=start,
+        slug_prefix=slug_prefix or None,
+        plan_id=plan_id,
+    )
+    if result.error:
+        typer.echo(f"Error: {result.error}", err=True)
+        raise typer.Exit(1)
+    if output_format == "json":
+        typer.echo(format_preview_json(result.previews))
+    elif output_format == "text":
+        typer.echo(
+            format_preview_text(
+                race_name=result.race_name,
+                window_start=result.window_start,
+                window_end=result.window_end,
+                previews=result.previews,
+            )
+        )
+    else:
+        typer.echo("Error: --format must be 'text' or 'json'", err=True)
+        raise typer.Exit(1)
+
+
+@app.command("apply-sessions", help="Apply deterministic generated sessions to events.")
+def apply_sessions_cmd(
+    race: str = typer.Option(..., "--race", help="Race event slug."),
+    start: str = typer.Option(..., "--start", help="Preview/apply start date YYYY-MM-DD."),
+    slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
+    plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id override."),
+    output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
+    yes: bool = typer.Option(False, "--yes", help="Actually write changes."),
+    allow_skips: bool = typer.Option(False, "--allow-skips", help="Apply non-skipped rows."),
+) -> None:
+    from .db import init_db
+    from .workout_apply import (
+        apply_trail_race_week_from_db,
+        format_apply_json,
+        format_apply_text,
+    )
+    from .workout_preview import (
+        format_preview_json,
+        format_preview_text,
+        preview_trail_race_week_from_db,
+    )
+
+    init_db()
+    if not yes:
+        result = preview_trail_race_week_from_db(
+            race_slug=race,
+            start_date=start,
+            slug_prefix=slug_prefix or None,
+            plan_id=plan_id,
+        )
+        if result.error:
+            typer.echo(f"Error: {result.error}", err=True)
+            raise typer.Exit(1)
+        typer.echo("Dry run only. Re-run with --yes to apply.\n")
+        if output_format == "json":
+            typer.echo(format_preview_json(result.previews))
+        elif output_format == "text":
+            typer.echo(
+                format_preview_text(
+                    race_name=result.race_name,
+                    window_start=result.window_start,
+                    window_end=result.window_end,
+                    previews=result.previews,
+                )
+            )
+        else:
+            typer.echo("Error: --format must be 'text' or 'json'", err=True)
+            raise typer.Exit(1)
+        return
+
+    try:
+        result = apply_trail_race_week_from_db(
+            race_slug=race,
+            start_date=start,
+            slug_prefix=slug_prefix or None,
+            plan_id=plan_id,
+            allow_skips=allow_skips,
+        )
+    except RuntimeError as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(1)
+
+    if output_format == "json":
+        typer.echo(format_apply_json(result))
+    elif output_format == "text":
+        typer.echo(format_apply_text(result))
+    else:
+        typer.echo("Error: --format must be 'text' or 'json'", err=True)
+        raise typer.Exit(1)
+
+
 # ── Signal bot sub-app ─────────────────────────────────────────────────────
 
 

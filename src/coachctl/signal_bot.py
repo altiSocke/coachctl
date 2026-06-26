@@ -234,7 +234,7 @@ def format_daily_plan(
     from datetime import datetime
 
     dt = datetime.strptime(target_date, "%Y-%m-%d")
-    day_label = dt.strftime("%a %-d %b")  # "Mon 15 Jun"
+    day_label = f"{dt:%a} {dt.day} {dt:%b}"  # "Mon 15 Jun"; portable across Windows/POSIX.
 
     # Week number from first training event payload
     week_num: int | None = None

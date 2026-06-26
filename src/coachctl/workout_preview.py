@@ -1,0 +1,282 @@
+"""Preview generated workouts against existing calendar events.
+
+This module is intentionally read-only. It converts structured workouts into
+``Event`` objects and decides what would happen if they were applied later.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import json
+from typing import Any, Literal
+
+from .events import KIND_RACE, KIND_TRAINING, STATUS_COMPLETED, Event, get_calendar, get_event
+from .workout_generators import generate_trail_race_week
+from .workouts import WorkoutSpec, workout_to_event
+
+PreviewAction = Literal["create", "update", "match", "skip"]
+
+
+@dataclass(frozen=True)
+class WorkoutEventPreview:
+    date: str
+    slug: str
+    target_slug: str
+    action: PreviewAction
+    reason: str
+    existing: Event | None
+    generated: Event | None
+    field_diffs: dict[str, tuple[Any, Any]]
+
+
+@dataclass(frozen=True)
+class WorkoutPreviewResult:
+    race_slug: str
+    race_name: str
+    window_start: str
+    window_end: str
+    previews: list[WorkoutEventPreview]
+    error: str | None = None
+
+
+def workouts_to_events(
+    workouts: list[WorkoutSpec],
+    *,
+    slug_prefix: str,
+    plan_id: int | None = None,
+    week_number: int | None = None,
+) -> list[Event]:
+    """Convert workouts to deterministic generated training events."""
+    return [
+        workout_to_event(
+            workout,
+            slug=f"{slug_prefix}-{workout.date}-{_slugify(workout.archetype)}",
+            plan_id=plan_id,
+            week_number=week_number,
+        )
+        for workout in workouts
+    ]
+
+
+def preview_workout_events(
+    generated: list[Event],
+    existing: list[Event],
+) -> list[WorkoutEventPreview]:
+    """Compare generated events to existing events without writing anything."""
+    existing_training = [event for event in existing if event.kind == KIND_TRAINING]
+    by_slug = {event.slug: event for event in existing_training}
+    by_date: dict[str, list[Event]] = {}
+    for event in existing_training:
+        by_date.setdefault(event.date, []).append(event)
+
+    previews: list[WorkoutEventPreview] = []
+    for event in generated:
+        match = by_slug.get(event.slug)
+        if match is None:
+            same_date = by_date.get(event.date, [])
+            if len(same_date) > 1:
+                previews.append(
+                    _preview(
+                        event,
+                        action="skip",
+                        reason="ambiguous_existing_events",
+                        existing=None,
+                    )
+                )
+                continue
+            match = same_date[0] if same_date else None
+
+        if match is None:
+            previews.append(_preview(event, action="create", reason="no_existing_event"))
+            continue
+
+        if match.status == STATUS_COMPLETED:
+            previews.append(
+                _preview(event, action="skip", reason="existing_completed", existing=match)
+            )
+            continue
+
+        if match.payload.get("locked") is True:
+            previews.append(_preview(event, action="skip", reason="existing_locked", existing=match))
+            continue
+
+        diffs = _event_diffs(match, event)
+        if diffs:
+            previews.append(
+                _preview(
+                    event,
+                    action="update",
+                    reason="fields_differ",
+                    existing=match,
+                    field_diffs=diffs,
+                )
+            )
+        else:
+            previews.append(
+                _preview(event, action="match", reason="no_changes", existing=match, field_diffs={})
+            )
+
+    return previews
+
+
+def preview_trail_race_week_from_db(
+    *,
+    race_slug: str,
+    start_date: str,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+) -> WorkoutPreviewResult:
+    """Build a read-only trail race-week preview from the events table."""
+    race = get_event(race_slug)
+    if race is None:
+        return WorkoutPreviewResult(
+            race_slug=race_slug,
+            race_name="",
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="race_not_found",
+        )
+    if race.kind != KIND_RACE:
+        return WorkoutPreviewResult(
+            race_slug=race_slug,
+            race_name=race.name,
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="event_is_not_race",
+        )
+
+    from datetime import date, timedelta
+
+    window_end = (date.fromisoformat(race.date) - timedelta(days=1)).isoformat()
+    prefix = slug_prefix or _default_slug_prefix(race_slug)
+    workouts = generate_trail_race_week(
+        race_date=race.date,
+        race_name=race.name,
+        start_date=start_date,
+        simulation_title=f"90min trail run - {race.name.split()[-1]} race simulation (05:30)",
+        start_time="05:30",
+    )
+    generated = workouts_to_events(workouts, slug_prefix=prefix, plan_id=plan_id)
+    existing = get_calendar(start_date, window_end, kinds=[KIND_TRAINING])
+    previews = preview_workout_events(generated, existing)
+    return WorkoutPreviewResult(
+        race_slug=race_slug,
+        race_name=race.name,
+        window_start=start_date,
+        window_end=window_end,
+        previews=previews,
+    )
+
+
+def format_preview_text(
+    *,
+    race_name: str,
+    window_start: str,
+    window_end: str,
+    previews: list[WorkoutEventPreview],
+) -> str:
+    """Format a compact human-readable preview."""
+    lines = [
+        f"Preview: {race_name} race week".rstrip(),
+        f"Window: {window_start} -> {window_end}",
+        "",
+    ]
+    for item in previews:
+        generated = item.generated
+        existing = item.existing
+        archetype = ""
+        if generated and isinstance(generated.payload.get("workout"), dict):
+            archetype = generated.payload["workout"].get("archetype", "")
+        header = f"{item.date} {item.action.upper()}"
+        if archetype:
+            header += f"  {archetype}"
+        lines.append(header)
+        if existing:
+            lines.append(f"  target: {item.target_slug}")
+            lines.append(f"  existing: {existing.slug} | {existing.name}")
+        elif generated:
+            lines.append(f"  target: {item.target_slug}")
+        if generated:
+            lines.append(f"  generated: {generated.slug} | {generated.name}")
+        if item.field_diffs:
+            lines.append(f"  diffs: {', '.join(item.field_diffs)}")
+        if item.action == "skip":
+            lines.append(f"  reason: {item.reason}")
+        lines.append("")
+    return "\n".join(lines).rstrip()
+
+
+def format_preview_json(previews: list[WorkoutEventPreview]) -> str:
+    """Serialize preview rows without full payloads by default."""
+    rows = []
+    for item in previews:
+        rows.append(
+            {
+                "date": item.date,
+                "slug": item.slug,
+                "target_slug": item.target_slug,
+                "action": item.action,
+                "reason": item.reason,
+                "existing_slug": item.existing.slug if item.existing else None,
+                "existing_name": item.existing.name if item.existing else None,
+                "generated_slug": item.generated.slug if item.generated else None,
+                "generated_name": item.generated.name if item.generated else None,
+                "diff_fields": list(item.field_diffs),
+            }
+        )
+    return json.dumps(rows, indent=2)
+
+
+def _preview(
+    generated: Event,
+    *,
+    action: PreviewAction,
+    reason: str,
+    existing: Event | None = None,
+    field_diffs: dict[str, tuple[Any, Any]] | None = None,
+) -> WorkoutEventPreview:
+    return WorkoutEventPreview(
+        date=generated.date,
+        slug=generated.slug,
+        target_slug=existing.slug if existing else generated.slug,
+        action=action,
+        reason=reason,
+        existing=existing,
+        generated=generated,
+        field_diffs=field_diffs or {},
+    )
+
+
+def _event_diffs(existing: Event, generated: Event) -> dict[str, tuple[Any, Any]]:
+    fields = (
+        "date",
+        "name",
+        "duration_min",
+        "summary",
+        "estimated_tss",
+        "status",
+        "payload",
+        "plan_id",
+    )
+    diffs: dict[str, tuple[Any, Any]] = {}
+    for field in fields:
+        old = getattr(existing, field)
+        new = getattr(generated, field)
+        if field == "plan_id" and new is None:
+            continue
+        if old != new:
+            diffs[field] = (old, new)
+    return diffs
+
+
+def _slugify(value: str) -> str:
+    return value.replace("_", "-").replace(" ", "-").lower()
+
+
+def _default_slug_prefix(race_slug: str) -> str:
+    parts = race_slug.split("-")
+    if len(parts) > 3 and all(part.isdigit() for part in parts[:3]):
+        return "-".join(parts[3:])
+    return race_slug

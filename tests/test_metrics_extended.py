@@ -174,10 +174,11 @@ def test_zone_distribution_no_hr_data(mem_db):
 def test_zone_distribution_with_hr_data(mem_db):
     with mem_db() as conn:
         # Insert activity with HR data in the last 8 weeks
+        start_date = (date.today() - timedelta(days=7)).isoformat() + "T07:00:00Z"
         conn.execute(
             """INSERT INTO activities (id, name, sport_type, start_date, moving_time, average_heartrate, tss)
                VALUES (?,?,?,?,?,?,?)""",
-            (100, "Easy Run", "Run", "2026-04-25T07:00:00Z", 3600, 140.0, 70.0),
+            (100, "Easy Run", "Run", start_date, 3600, 140.0, 70.0),
         )
         result = get_zone_distribution_from_db(conn, weeks=8)
     assert "zone_pct" in result
