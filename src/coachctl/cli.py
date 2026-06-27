@@ -437,10 +437,10 @@ def _log_weight(
         typer.echo(f"{'date':12} {'kg':>6} {'W/kg':>6}  source / note")
         typer.echo("-" * 50)
         for r in rows:
-            wkg = f"{ftp / r['weight_kg']:.2f}" if ftp and r["weight_kg"] else "—"
+            wkg = f"{ftp / r['weight_kg']:.2f}" if ftp and r["weight_kg"] else "-"
             tail = r["source"] or ""
             if r["note"]:
-                tail = f"{tail} — {r['note']}" if tail else r["note"]
+                tail = f"{tail} - {r['note']}" if tail else r["note"]
             typer.echo(f"{r['date']:12} {r['weight_kg']:6.1f} {wkg:>6}  {tail}")
         return
 
@@ -451,11 +451,11 @@ def _log_weight(
     try:
         iso = _date.fromisoformat(date_str).isoformat()
     except ValueError:
-        typer.echo(f"Error: invalid date '{date_str}' — expected YYYY-MM-DD.", err=True)
+        typer.echo(f"Error: invalid date '{date_str}' - expected YYYY-MM-DD.", err=True)
         raise typer.Exit(1)
     if not (30.0 <= weight <= 200.0):
         typer.echo(
-            f"Error: weight {weight} kg out of sane range (30–200).", err=True
+            f"Error: weight {weight} kg out of sane range (30-200).", err=True
         )
         raise typer.Exit(1)
 
@@ -475,7 +475,7 @@ def _log_weight(
 
     athlete = load_athlete()
     ftp = athlete.get("ftp")
-    extra = f"  (FTP {ftp}W → {ftp / weight:.2f} W/kg)" if ftp else ""
+    extra = f"  (FTP {ftp}W -> {ftp / weight:.2f} W/kg)" if ftp else ""
     typer.echo(f"Logged {weight} kg on {iso}.{extra}")
 
 

@@ -190,6 +190,22 @@ def test_log_weight_cmd_list(patched_db, monkeypatch, capsys):
     assert "87.0" in out and "85.5" in out
 
 
+def test_log_weight_output_is_cp1252_safe(patched_db, monkeypatch, capsys):
+    """Console output must encode on a legacy Windows console (cp1252).
+
+    Regression: the success line and --list used non-ASCII arrow/dash glyphs
+    that crashed with UnicodeEncodeError on Windows' default cp1252 stdout.
+    pytest captures as UTF-8, so assert encodability explicitly.
+    """
+    monkeypatch.setattr("coachctl.config.load_athlete", lambda: {"ftp": 280, "weight_kg": 87})
+    from coachctl.cli import _log_weight
+
+    _log_weight("2026-06-27", 85.5, note="morning")  # success line
+    _log_weight("", 0.0, list_history=True)           # history table
+    out = capsys.readouterr().out
+    out.encode("cp1252")  # must not raise
+
+
 def test_log_weight_cmd_list_empty(patched_db, monkeypatch, capsys):
     monkeypatch.setattr("coachctl.config.load_athlete", lambda: {"weight_kg": 87})
     from coachctl.cli import _log_weight
