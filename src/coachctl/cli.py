@@ -276,13 +276,27 @@ def startup_cmd(
         athlete_yaml = _paths.athlete_yaml()
         if athlete_yaml.exists():
             cfg = _yaml.safe_load(athlete_yaml.read_text("utf-8")) or {}
+            # Date-aware current weight: latest weight_log entry, else YAML scalar.
+            weight_kg = cfg.get("weight_kg")
+            try:
+                from datetime import date as _date
+
+                from .config import weight_on
+                from .db import get_conn
+
+                with get_conn() as _conn:
+                    resolved = weight_on(_conn, _date.today())
+                if resolved is not None:
+                    weight_kg = resolved
+            except Exception:
+                pass  # fall back to YAML scalar
             result["profile"] = {
                 "ftp": cfg.get("ftp"),
                 "rftp_sec_per_km": cfg.get("rftp"),
                 "rftp_watts": cfg.get("rftp_watts"),
                 "threshold_hr": cfg.get("threshold_hr"),
                 "max_hr": cfg.get("max_hr"),
-                "weight_kg": cfg.get("weight_kg"),
+                "weight_kg": weight_kg,
                 "vo2max": cfg.get("vo2max"),
                 "goals": cfg.get("goals", {}),
             }
@@ -347,6 +361,122 @@ def recalculate_cmd(
     n = recalculate_activity_metrics(verbose=verbose)
     if verbose:
         typer.echo(f"Done — {n} activities recalculated.")
+
+
+@app.command(
+    "log-weight",
+    help=(
+        "Record body weight on a date (YYYY-MM-DD). With --list, print the "
+        "weight history instead. Weight drives display W/kg and cycling VO2max; "
+        "it does NOT change stored TSS/CTL/ATL/TSB."
+    ),
+)
+def log_weight_cmd(
+    date_str: str = typer.Argument(
+        "", metavar="DATE", help="Date YYYY-MM-DD (omit with --list)."
+    ),
+    weight: float = typer.Argument(
+        0.0, metavar="KG", help="Body weight in kg (omit with --list)."
+    ),
+    source: str = typer.Option("manual", "--source", help="Measurement source label."),
+    note: str = typer.Option("", "--note", help="Optional context note."),
+    list_history: bool = typer.Option(
+        False, "--list", help="Print weight history and exit (ignores DATE/KG)."
+    ),
+) -> None:
+    """
+    Log or view body weight.
+
+    Examples
+    --------
+        coachctl log-weight 2026-06-27 85.5
+        coachctl log-weight 2026-05-16 87 --source scale --note "morning, fasted"
+        coachctl log-weight --list
+    """
+    _log_weight(
+        date_str=date_str,
+        weight=weight,
+        source=source,
+        note=note,
+        list_history=list_history,
+    )
+
+
+def _log_weight(
+    date_str: str = "",
+    weight: float = 0.0,
+    source: str = "manual",
+    note: str = "",
+    list_history: bool = False,
+) -> None:
+    """Implementation of ``log-weight`` (plain function, directly testable).
+
+    Kept separate from the Typer command wrapper because Typer replaces a
+    command function's parameter defaults with sentinel ``ArgumentInfo`` /
+    ``OptionInfo`` objects, which makes the decorated function non-callable
+    with real values in unit tests.
+    """
+    from datetime import date as _date
+
+    from .config import load_athlete
+    from .db import get_conn, init_db
+
+    init_db()
+
+    if list_history:
+        athlete = load_athlete()
+        ftp = athlete.get("ftp")
+        with get_conn() as conn:
+            rows = conn.execute(
+                "SELECT date, weight_kg, source, note FROM weight_log ORDER BY date ASC"
+            ).fetchall()
+        if not rows:
+            typer.echo("No weight entries logged. Falling back to athlete.yaml "
+                       f"weight_kg = {athlete.get('weight_kg')}.")
+            return
+        typer.echo(f"{'date':12} {'kg':>6} {'W/kg':>6}  source / note")
+        typer.echo("-" * 50)
+        for r in rows:
+            wkg = f"{ftp / r['weight_kg']:.2f}" if ftp and r["weight_kg"] else "—"
+            tail = r["source"] or ""
+            if r["note"]:
+                tail = f"{tail} — {r['note']}" if tail else r["note"]
+            typer.echo(f"{r['date']:12} {r['weight_kg']:6.1f} {wkg:>6}  {tail}")
+        return
+
+    # ── Logging path: validate inputs ────────────────────────────────────────
+    if not date_str:
+        typer.echo("Error: DATE is required (or use --list).", err=True)
+        raise typer.Exit(1)
+    try:
+        iso = _date.fromisoformat(date_str).isoformat()
+    except ValueError:
+        typer.echo(f"Error: invalid date '{date_str}' — expected YYYY-MM-DD.", err=True)
+        raise typer.Exit(1)
+    if not (30.0 <= weight <= 200.0):
+        typer.echo(
+            f"Error: weight {weight} kg out of sane range (30–200).", err=True
+        )
+        raise typer.Exit(1)
+
+    with get_conn() as conn:
+        conn.execute(
+            """
+            INSERT INTO weight_log (date, weight_kg, source, note, updated_at)
+            VALUES (?, ?, ?, ?, datetime('now'))
+            ON CONFLICT(date) DO UPDATE SET
+                weight_kg = excluded.weight_kg,
+                source    = excluded.source,
+                note      = excluded.note,
+                updated_at = datetime('now')
+            """,
+            (iso, weight, source or None, note or None),
+        )
+
+    athlete = load_athlete()
+    ftp = athlete.get("ftp")
+    extra = f"  (FTP {ftp}W → {ftp / weight:.2f} W/kg)" if ftp else ""
+    typer.echo(f"Logged {weight} kg on {iso}.{extra}")
 
 
 @app.command(

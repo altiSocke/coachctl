@@ -968,7 +968,7 @@ def estimate_vo2max_cycling(ftp_watts: float, weight_kg: float) -> float:
     return round(vo2max, 1)
 
 
-def estimate_vo2max_from_athlete(athlete: dict) -> dict:
+def estimate_vo2max_from_athlete(athlete: dict, weight_override: float | None = None) -> dict:
     """
     Compute VO2max estimates from available athlete config.
     Returns all available estimates with their method and confidence level.
@@ -976,6 +976,10 @@ def estimate_vo2max_from_athlete(athlete: dict) -> dict:
     Parameters
     ----------
     athlete : dict from ``load_athlete()``
+    weight_override : optional body weight (kg) to use instead of
+        ``athlete["weight_kg"]``. Pass the date-aware value from
+        ``config.weight_on(conn, date)`` so the cycling estimate reflects
+        current body weight rather than the static YAML scalar.
 
     Returns
     -------
@@ -996,7 +1000,7 @@ def estimate_vo2max_from_athlete(athlete: dict) -> dict:
         )
 
     ftp = athlete.get("ftp")
-    weight = athlete.get("weight_kg")
+    weight = weight_override if weight_override is not None else athlete.get("weight_kg")
     if ftp and weight and ftp > 0 and weight > 0:
         val = estimate_vo2max_cycling(ftp, weight)
         estimates.append(

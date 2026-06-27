@@ -121,3 +121,25 @@ def test_init_db_adds_week_tss_json_column(patched_db):
 def test_init_db_sets_flag(patched_db):
     db_module.init_db()
     assert db_module._DB_INITIALISED is True
+
+
+def test_init_db_creates_weight_log(patched_db):
+    """weight_log table must exist with the expected columns after init."""
+    db_module.init_db()
+    with db_module.get_conn() as conn:
+        tables = {row[0] for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ).fetchall()}
+        assert "weight_log" in tables
+        cols = {row[1] for row in conn.execute("PRAGMA table_info(weight_log)").fetchall()}
+    assert {"date", "weight_kg", "source", "note", "updated_at"}.issubset(cols)
+
+
+def test_weight_log_date_is_primary_key(patched_db):
+    """Second insert on the same date must conflict (date is PK)."""
+    db_module.init_db()
+    with db_module.get_conn() as conn:
+        conn.execute("INSERT INTO weight_log (date, weight_kg) VALUES ('2026-01-01', 80)")
+    with pytest.raises(sqlite3.IntegrityError):
+        with db_module.get_conn() as conn:
+            conn.execute("INSERT INTO weight_log (date, weight_kg) VALUES ('2026-01-01', 81)")

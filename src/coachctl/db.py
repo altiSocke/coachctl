@@ -223,6 +223,20 @@ def init_db():
             );
             CREATE UNIQUE INDEX IF NOT EXISTS idx_best_efforts_type
                 ON best_efforts(sport, effort_type);
+
+            -- Body-weight log: time series of athlete body weight.
+            -- weight_on(conn, date) resolves the most recent entry with
+            -- date <= target, falling back to athlete.yaml weight_kg when empty.
+            -- Body weight does NOT affect stored TSS/CTL/ATL/TSB (those are
+            -- weight-independent); it drives display W/kg, specific power and
+            -- cycling VO2max only.
+            CREATE TABLE IF NOT EXISTS weight_log (
+                date        TEXT PRIMARY KEY,        -- YYYY-MM-DD
+                weight_kg   REAL NOT NULL,           -- body weight in kg
+                source      TEXT,                    -- 'manual','scale','strava',...
+                note        TEXT,                    -- optional context
+                updated_at  TEXT DEFAULT (datetime('now'))
+            );
         """)
 
         # Idempotent column additions (ALTER TABLE IF NOT EXISTS not supported in older SQLite)

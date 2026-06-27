@@ -473,10 +473,15 @@ def register(mcp) -> None:  # noqa: ANN001
 
         Returns estimates per method, a consensus average, and interpretation.
         """
-        from ..config import load_athlete
+        from ..config import load_athlete, weight_on
+        from ..db import get_conn
 
         athlete = load_athlete()
-        result = estimate_vo2max_from_athlete(athlete)
+        from datetime import date as _date
+
+        with get_conn() as conn:
+            current_weight = weight_on(conn, _date.today())
+        result = estimate_vo2max_from_athlete(athlete, weight_override=current_weight)
         return json.dumps(result, indent=2)
 
     # ── Efficiency Factor Trend ────────────────────────────────────────────────
