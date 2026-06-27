@@ -241,6 +241,14 @@ def _render_target(target: dict[str, Any]) -> list[str]:
         out.append(f"RPE max {target['rpe_max']}")
     if "power_cap_watts" in target:
         out.append(f"power cap {target['power_cap_watts']}W")
+    if "power_range_watts" in target:
+        out.append(f"power {_fmt_range(target['power_range_watts'])}W")
+    if "rep_distance_km" in target:
+        out.append(f"rep {target['rep_distance_km']}km")
+    if "float_distance_km" in target:
+        out.append(f"float {target['float_distance_km']}km")
+    if "pace_range_sec_per_km" in target:
+        out.append(f"pace {_fmt_pace_range(target['pace_range_sec_per_km'])}/km")
     if "terrain" in target:
         out.append(f"terrain {_fmt_label(target['terrain'])}")
     if "cadence_spm" in target:
@@ -293,3 +301,14 @@ def _fmt_num(value: float) -> str:
 
 def _fmt_label(value: Any) -> str:
     return str(value).replace("_", " ")
+
+
+def _fmt_pace_range(value: Any) -> str:
+    if isinstance(value, (list, tuple)) and len(value) == 2:
+        return f"{_fmt_pace(value[0])}-{_fmt_pace(value[1])}"
+    return str(value)
+
+
+def _fmt_pace(seconds: int | float) -> str:
+    seconds_int = int(seconds)
+    return f"{seconds_int // 60}:{seconds_int % 60:02d}"

@@ -6,20 +6,24 @@ from dataclasses import replace
 from datetime import date, timedelta
 
 from .workout_archetypes import (
+    cruise_intervals,
     easy_aerobic_run,
     easy_run,
     hill_activation,
     mechanics_check_run,
     mobility_rest,
+    progressive_long_run,
     recovery_spin,
     rest_day,
     shakeout,
     trail_race_simulation,
+    z2_ride,
 )
 from .workouts import WorkoutSpec
 
 TRAIL_RACE_WEEK_GENERATOR_VERSION = "trail_race_week.v1"
 POST_TRAIL_RACE_WEEK_GENERATOR_VERSION = "post_trail_race_week.v1"
+HALF_MARATHON_BUILD_WEEK_GENERATOR_VERSION = "half_marathon_build_week.v1"
 
 
 def generate_trail_race_week(
@@ -175,6 +179,190 @@ def generate_post_trail_race_week(
     return [
         _with_generator_context(w, race_name, POST_TRAIL_RACE_WEEK_GENERATOR_VERSION)
         for w in workouts
+    ]
+
+
+def generate_half_marathon_build_week(
+    *,
+    week_start: str,
+    target_tss: int,
+    phase: str,
+    freshness: str = "normal",
+) -> list[WorkoutSpec]:
+    """Generate one deterministic half-marathon training week.
+
+    This is intentionally preview-first: it encodes the weekly skeleton and
+    safety rules, but does not read or write database state.
+    """
+    start = date.fromisoformat(week_start)
+    if phase not in {"build", "recovery"}:
+        raise ValueError("phase must be 'build' or 'recovery'")
+    if freshness == "fatigued":
+        workouts = _half_marathon_fatigued_week(start)
+    elif phase == "recovery":
+        workouts = _half_marathon_recovery_week(start)
+    else:
+        workouts = _half_marathon_build_week(start, target_tss)
+    return [
+        _with_generator_context(
+            w,
+            "half_marathon",
+            HALF_MARATHON_BUILD_WEEK_GENERATOR_VERSION,
+        )
+        for w in workouts
+    ]
+
+
+def _half_marathon_build_week(start: date, target_tss: int) -> list[WorkoutSpec]:
+    # Keep the first version explicit and auditable; later versions can scale
+    # durations/TSS from target_tss once the weekly shape is proven.
+    return [
+        easy_run(
+            date=_iso(start),
+            duration_min=55,
+            hr_cap=154,
+            title="55min easy Z2 run",
+            estimated_tss=45.0,
+        ),
+        z2_ride(
+            date=_iso(start + timedelta(days=1)),
+            title="90min Z2 ride + cadence drills",
+            duration_min=90,
+            estimated_tss=70.0,
+            notes=["Include 3x5min high cadence 100-110rpm inside Z2."],
+        ),
+        cruise_intervals(
+            date=_iso(start + timedelta(days=2)),
+            title="70min cruise intervals",
+            duration_min=70,
+            reps=5,
+            rep_distance_km=1.0,
+            float_distance_km=0.5,
+            pace_range_sec_per_km=(248, 252),
+            estimated_tss=85.0,
+        ),
+        easy_run(
+            date=_iso(start + timedelta(days=3)),
+            duration_min=50,
+            hr_cap=154,
+            title="50min easy Z2 run",
+            estimated_tss=40.0,
+        ),
+        rest_day(date=_iso(start + timedelta(days=4))),
+        progressive_long_run(
+            date=_iso(start + timedelta(days=5)),
+            title="105min progressive HM long run",
+            duration_min=105,
+            estimated_tss=110.0,
+            easy_duration_min=70,
+            finish_blocks=3,
+            finish_block_min=10,
+        ),
+        z2_ride(
+            date=_iso(start + timedelta(days=6)),
+            title="60-75min recovery Z2 ride",
+            duration_min=70,
+            estimated_tss=35.0,
+            power_range_watts=(154, 190),
+            notes=["Easy spin only; absorb Saturday's long run."],
+        ),
+    ]
+
+
+def _half_marathon_recovery_week(start: date) -> list[WorkoutSpec]:
+    return [
+        easy_run(
+            date=_iso(start),
+            duration_min=45,
+            hr_cap=150,
+            title="45min easy Z2 run",
+            estimated_tss=35.0,
+        ),
+        z2_ride(
+            date=_iso(start + timedelta(days=1)),
+            title="60min easy Z2 ride",
+            duration_min=60,
+            estimated_tss=45.0,
+            power_range_watts=(154, 185),
+        ),
+        easy_run(
+            date=_iso(start + timedelta(days=2)),
+            duration_min=40,
+            hr_cap=150,
+            title="40min easy run",
+            estimated_tss=30.0,
+        ),
+        rest_day(date=_iso(start + timedelta(days=3))),
+        easy_run(
+            date=_iso(start + timedelta(days=4)),
+            duration_min=35,
+            hr_cap=150,
+            title="35min easy run",
+            estimated_tss=25.0,
+        ),
+        easy_aerobic_run(
+            date=_iso(start + timedelta(days=5)),
+            title="60min easy aerobic run",
+            duration_min=60,
+            estimated_tss=50.0,
+            hr_cap=150,
+        ),
+        recovery_spin(
+            date=_iso(start + timedelta(days=6)),
+            title="45min recovery spin",
+            duration_min=45,
+            estimated_tss=30.0,
+            power_cap_watts=170,
+        ),
+    ]
+
+
+def _half_marathon_fatigued_week(start: date) -> list[WorkoutSpec]:
+    return [
+        easy_run(
+            date=_iso(start),
+            duration_min=40,
+            hr_cap=148,
+            title="40min easy run",
+            estimated_tss=30.0,
+        ),
+        recovery_spin(
+            date=_iso(start + timedelta(days=1)),
+            title="45min recovery spin",
+            duration_min=45,
+            estimated_tss=25.0,
+            power_cap_watts=170,
+        ),
+        easy_run(
+            date=_iso(start + timedelta(days=2)),
+            duration_min=35,
+            hr_cap=148,
+            title="35min easy run",
+            estimated_tss=25.0,
+        ),
+        rest_day(date=_iso(start + timedelta(days=3))),
+        easy_run(
+            date=_iso(start + timedelta(days=4)),
+            duration_min=40,
+            hr_cap=148,
+            title="40min easy run",
+            estimated_tss=30.0,
+        ),
+        easy_aerobic_run(
+            date=_iso(start + timedelta(days=5)),
+            title="60min easy aerobic run or Z2 ride",
+            duration_min=60,
+            estimated_tss=45.0,
+            hr_cap=148,
+            fallback="60min_Z2_ride",
+        ),
+        recovery_spin(
+            date=_iso(start + timedelta(days=6)),
+            title="60min optional recovery ride",
+            duration_min=60,
+            estimated_tss=25.0,
+            power_cap_watts=170,
+        ),
     ]
 
 

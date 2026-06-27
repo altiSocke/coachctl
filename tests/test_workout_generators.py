@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from coachctl.workout_generators import generate_post_trail_race_week, generate_trail_race_week
+from coachctl.workout_generators import (
+    generate_half_marathon_build_week,
+    generate_post_trail_race_week,
+    generate_trail_race_week,
+)
 from coachctl.workouts import render_workout_summary
 
 
@@ -165,3 +169,79 @@ def test_generate_post_trail_race_week_summary_is_stable() -> None:
         "hamstring warning. First run back is mechanics-gated, not load-gated."
     )
     assert "No strength yet" in summaries[4]
+
+
+def test_generate_half_marathon_build_week_is_deterministic() -> None:
+    workouts = generate_half_marathon_build_week(
+        week_start="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+    )
+
+    assert [(w.date, w.archetype, w.title) for w in workouts] == [
+        ("2026-07-13", "easy_run", "55min easy Z2 run"),
+        ("2026-07-14", "z2_ride", "90min Z2 ride + cadence drills"),
+        ("2026-07-15", "cruise_intervals", "70min cruise intervals"),
+        ("2026-07-16", "easy_run", "50min easy Z2 run"),
+        ("2026-07-17", "rest", "Rest"),
+        ("2026-07-18", "progressive_long_run", "105min progressive HM long run"),
+        ("2026-07-19", "z2_ride", "60-75min recovery Z2 ride"),
+    ]
+    assert generate_half_marathon_build_week(
+        week_start="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+    ) == workouts
+
+
+def test_generate_half_marathon_build_week_load_and_spacing_rules() -> None:
+    workouts = generate_half_marathon_build_week(
+        week_start="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+    )
+
+    assert sum(w.estimated_tss or 0 for w in workouts) == 385.0
+    assert abs(sum(w.estimated_tss or 0 for w in workouts) - 400) <= 40
+    quality_dates = [w.date for w in workouts if w.priority == "key"]
+    assert quality_dates == ["2026-07-15", "2026-07-18"]
+    assert all(w.date != "2026-07-17" or w.intensity == "rest" for w in workouts)
+    assert all(w.generator["generator_version"] == "half_marathon_build_week.v1" for w in workouts)
+
+
+def test_generate_half_marathon_recovery_week_is_conservative() -> None:
+    workouts = generate_half_marathon_build_week(
+        week_start="2026-07-20",
+        target_tss=220,
+        phase="recovery",
+        freshness="normal",
+    )
+
+    assert [(w.date, w.archetype) for w in workouts] == [
+        ("2026-07-20", "easy_run"),
+        ("2026-07-21", "z2_ride"),
+        ("2026-07-22", "easy_run"),
+        ("2026-07-23", "rest"),
+        ("2026-07-24", "easy_run"),
+        ("2026-07-25", "easy_aerobic_run"),
+        ("2026-07-26", "recovery_spin"),
+    ]
+    assert sum(w.estimated_tss or 0 for w in workouts) == 215.0
+    assert all(w.priority != "key" for w in workouts)
+    assert all(w.intensity in {"rest", "recovery", "easy"} for w in workouts)
+
+
+def test_generate_half_marathon_build_week_suppresses_quality_when_fatigued() -> None:
+    workouts = generate_half_marathon_build_week(
+        week_start="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="fatigued",
+    )
+
+    assert all(w.priority != "key" for w in workouts)
+    assert all(w.intensity in {"rest", "recovery", "easy"} for w in workouts)
+    assert sum(w.estimated_tss or 0 for w in workouts) <= 280

@@ -387,6 +387,123 @@ def mobility_rest(
     )
 
 
+def z2_ride(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    estimated_tss: float | None,
+    power_range_watts: tuple[int, int] = (154, 210),
+    notes: list[str] | None = None,
+) -> WorkoutSpec:
+    """Build an aerobic Z2 ride."""
+    return WorkoutSpec(
+        date=date,
+        sport="ride",
+        archetype="z2_ride",
+        title=title,
+        duration_min=duration_min,
+        intensity="easy",
+        priority="support",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(
+                kind="main",
+                duration_min=duration_min,
+                target={"power_range_watts": list(power_range_watts), "effort": "easy"},
+                cue="Keep pressure aerobic; no sweet spot unless explicitly prescribed.",
+            )
+        ],
+        notes=notes or [],
+        generator=_generator("z2_ride.v1"),
+    )
+
+
+def cruise_intervals(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    reps: int,
+    rep_distance_km: float,
+    float_distance_km: float,
+    pace_range_sec_per_km: tuple[int, int],
+    estimated_tss: float | None,
+) -> WorkoutSpec:
+    """Build controlled threshold/cruise intervals for HM preparation."""
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="cruise_intervals",
+        title=title,
+        duration_min=duration_min,
+        intensity="threshold",
+        priority="key",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(kind="warmup", duration_min=15, target={"effort": "easy"}),
+            WorkoutStep(
+                kind="interval",
+                reps=reps,
+                target={
+                    "rep_distance_km": rep_distance_km,
+                    "float_distance_km": float_distance_km,
+                    "pace_range_sec_per_km": list(pace_range_sec_per_km),
+                },
+                cue="Float is controlled, not another rep.",
+            ),
+            WorkoutStep(kind="cooldown", duration_min=10, target={"effort": "easy"}),
+        ],
+        constraints={"stop_if": ["hamstring_warning", "mechanics_fade"]},
+        generator=_generator("cruise_intervals.v1"),
+    )
+
+
+def progressive_long_run(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    estimated_tss: float | None,
+    easy_duration_min: int,
+    finish_blocks: int,
+    finish_block_min: int,
+    fuel_carbs_g_per_hr: tuple[int, int] = (55, 65),
+) -> WorkoutSpec:
+    """Build a half-marathon progressive long run."""
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="progressive_long_run",
+        title=title,
+        duration_min=duration_min,
+        intensity="tempo",
+        priority="key",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(
+                kind="main",
+                duration_min=easy_duration_min,
+                target={"hr_cap": 154, "effort": "easy"},
+                cue="Do not race the first hour.",
+            ),
+            WorkoutStep(
+                kind="interval",
+                reps=finish_blocks,
+                repeat_duration_min=finish_block_min,
+                recovery_min=3,
+                target={"effort": "hm_steady"},
+                cue="Progress only if mechanics stay clean.",
+            ),
+        ],
+        constraints={
+            "fuel_carbs_g_per_hr": list(fuel_carbs_g_per_hr),
+            "stop_if": ["hamstring_warning", "mechanics_fade", "hr_drift_high"],
+        },
+        generator=_generator("progressive_long_run.v1"),
+    )
+
+
 def _generator(archetype_version: str) -> dict[str, str]:
     return {
         "name": GENERATOR_NAME,
