@@ -89,6 +89,29 @@ These tools are for **Run and TrailRun sessions only**. Do not use for rides.
 - **propose_wiki_update** — propose a change to a wiki section, returns diff for athlete to review
 - **apply_wiki_update** — write a confirmed wiki update (only after athlete approves)
 
+### Deterministic plan engine (structured, reconcile-based)
+
+Use this **instead of `save_plan`** when the athlete wants a reproducible,
+template-driven plan that must **coexist with the existing multi-sport calendar**
+(rides, strength, races already scheduled). `save_plan` writes blindly per
+session; this engine reconciles — it preserves existing event names, never
+touches strength, drops generated sessions on race days, and skips ambiguous
+two-session days. Free-text / bespoke / heavily-narrated plans still go through
+`save_plan` + the `plan-builder` skill.
+
+- **list_plan_templates** — list available templates (name, weeks, per-week TSS).
+- **preview_plan** — expand a template over N weeks and show what would change
+  against the real calendar (create/update/match/skip). **Writes nothing.**
+  Always run this first and show the athlete.
+- **apply_plan** — apply the previewed plan, **sandbox-validated** (applied to a
+  throwaway DB copy and re-previewed for convergence before touching live data).
+  Skips are rejected unless `allow_skips=true`. **After applying, call `bake`.**
+
+> `seed` convention: `-1` (default) = fully deterministic (base variant, no
+> jitter); any `>= 0` = reproducible seeded variation (quality-session rotation +
+> ±5min jitter on easy/long runs). Same `(template, start, seed)` → identical
+> plan. CLI equivalents exist (`coachctl preview-plan` / `apply-plan`) for Path B.
+
 #### Lazy-load reference (which tool, when)
 
 | Tool | Load when (intent) | Never load at |
@@ -333,6 +356,7 @@ Call `bake` (MCP tool or `uv run coachctl bake`) after any of these:
 - Startup (unconditionally, after data load)
 - New activities marked reviewed (`mark_activities_reviewed`)
 - Plan saved (`save_plan`)
+- Deterministic plan applied (`apply_plan` — it writes events only, never bakes)
 - Schedule change applied (`update_event`)
 - Race card section applied (`apply_race_*`)
 - Wiki update applied (`apply_wiki_update` or `apply_general_wiki_update`)

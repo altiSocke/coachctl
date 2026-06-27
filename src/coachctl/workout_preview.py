@@ -6,7 +6,7 @@ This module is intentionally read-only. It converts structured workouts into
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import json
 from typing import Any, Literal
 
@@ -301,6 +301,125 @@ def _preview_ignore_strength_events(
     return preview_workout_events(generated, non_strength)
 
 
+def preview_plan_from_db(
+    *,
+    template_name: str,
+    start_date: str,
+    weeks: int,
+    seed: int | None = None,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+    create_rest_days: bool = False,
+) -> WorkoutPreviewResult:
+    """Preview an expanded multi-week plan template against the real calendar.
+
+    Reconcile semantics (reuse of the single-week machinery):
+
+    * Existing endurance sessions on a generated day are updated (names
+      preserved) or matched.
+    * Strength sessions are ignored (never created/updated/overwritten) via
+      :func:`_preview_ignore_strength_events`.
+    * Races block training on their date: any generated session that lands on a
+      race day is dropped here (and counted as ``suppressed_race_days``), so the
+      engine never proposes creating/updating training there.
+    * Two or more existing endurance sessions on the same day yield a ``skip``
+      (ambiguous) row from the underlying engine.
+    * Rest-day creates are suppressed unless ``create_rest_days`` is set.
+
+    The summary's ``target_tss`` is the sum of the expanded weeks' hardcoded
+    per-week targets.
+    """
+    from datetime import date, timedelta
+
+    from .plan_expander import expand_template
+    from .plan_templates import get_template
+
+    template = get_template(template_name)
+    start = date.fromisoformat(start_date)
+    prefix = slug_prefix or "plan"
+
+    if template is None:
+        return WorkoutPreviewResult(
+            race_slug="",
+            race_name=f"Plan: {template_name}",
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="unknown_template",
+        )
+
+    available = len(template.weeks)
+    if weeks < 1 or weeks > available:
+        return WorkoutPreviewResult(
+            race_slug="",
+            race_name=f"Plan: {template.name}",
+            window_start=start_date,
+            window_end=start_date,
+            previews=[],
+            error="weeks_out_of_range",
+        )
+
+    window_end = (start + timedelta(days=7 * weeks - 1)).isoformat()
+
+    # Expand only the requested number of weeks by slicing the template, then
+    # laying out dates from start_date.
+    trimmed = replace(template, weeks=template.weeks[:weeks])
+    workouts = expand_template(trimmed, start_date, seed=seed)
+    generated = workouts_to_events(workouts, slug_prefix=prefix, plan_id=plan_id)
+
+    # Load training AND races over the window. Races block training on their
+    # date: drop any generated session that lands on a race day so the engine
+    # never proposes creating/updating training there. (get_calendar's own
+    # conflict resolution only fires when races are in the returned set, which
+    # is why we must request them explicitly and filter generated here.)
+    calendar = get_calendar(start_date, window_end, kinds=[KIND_TRAINING, KIND_RACE])
+    race_dates = {
+        event.date
+        for event in calendar
+        if event.kind == KIND_RACE and event.status != STATUS_CANCELLED
+    }
+    existing = [event for event in calendar if event.kind == KIND_TRAINING]
+
+    suppressed_race_days = 0
+    if race_dates:
+        kept_generated: list[Event] = []
+        for event in generated:
+            if event.date in race_dates:
+                suppressed_race_days += 1
+                continue
+            kept_generated.append(event)
+        generated = kept_generated
+
+    previews = _preview_ignore_strength_events(generated, existing)
+
+    suppressed_rest_creates = 0
+    if not create_rest_days:
+        kept: list[WorkoutEventPreview] = []
+        for item in previews:
+            if item.action == "create" and item.generated and _is_rest_event(item.generated):
+                suppressed_rest_creates += 1
+                continue
+            kept.append(item)
+        previews = kept
+
+    target_tss = sum(week.target_tss for week in trimmed.weeks)
+    return WorkoutPreviewResult(
+        race_slug="",
+        race_name=f"Plan: {template.name}",
+        window_start=start_date,
+        window_end=window_end,
+        previews=previews,
+        summary=_preview_summary(
+            target_tss=target_tss,
+            generated=generated,
+            existing=existing,
+            previews=previews,
+            suppressed_rest_creates=suppressed_rest_creates,
+            extra={"suppressed_race_days": suppressed_race_days},
+        ),
+    )
+
+
 def _preview_post_race_events(
     generated: list[Event],
     existing: list[Event],
@@ -513,6 +632,8 @@ def _format_summary_lines(summary: dict[str, Any]) -> list[str]:
         lines.append(f"Strength preserved: {summary['strength_preserved']}")
     if "suppressed_rest_creates" in summary:
         lines.append(f"Suppressed rest creates: {summary['suppressed_rest_creates']}")
+    if "suppressed_race_days" in summary:
+        lines.append(f"Suppressed (race day): {summary['suppressed_race_days']}")
     return lines
 
 
@@ -523,6 +644,7 @@ def _preview_summary(
     existing: list[Event],
     previews: list[WorkoutEventPreview],
     suppressed_rest_creates: int,
+    extra: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     generated_tss = sum(float(event.estimated_tss or 0.0) for event in generated)
     existing_tss = sum(
@@ -538,7 +660,7 @@ def _preview_summary(
         for event in existing
         if event.status != STATUS_CANCELLED and _is_strength_event(event)
     )
-    return {
+    summary = {
         "target_tss": target_tss,
         "generated_tss": round(generated_tss, 1),
         "existing_tss": round(existing_tss, 1),
@@ -547,6 +669,9 @@ def _preview_summary(
         "strength_preserved": strength_preserved,
         "suppressed_rest_creates": suppressed_rest_creates,
     }
+    if extra:
+        summary.update(extra)
+    return summary
 
 
 def _preview(
@@ -569,10 +694,31 @@ def _preview(
     )
 
 
+_NORMALIZED_TEXT_FIELDS = frozenset({"summary"})
+
+
+def _normalize_text(value: Any) -> Any:
+    """Normalize cosmetic text differences before reconcile comparison.
+
+    Maps en/em dashes to ``-`` and ``×`` to ``x``, then collapses and trims
+    runs of whitespace. Non-string values pass through unchanged. This makes
+    cosmetic-only deltas (typography, spacing) compare equal so they do not
+    force ``update`` actions on existing events.
+    """
+    if not isinstance(value, str):
+        return value
+    out = value.replace("\u2013", "-").replace("\u2014", "-")  # – —  -> -
+    out = out.replace("\u00d7", "x")  # ×    -> x
+    return " ".join(out.split())  # collapse + trim whitespace
+
+
 def _event_diffs(existing: Event, generated: Event) -> dict[str, tuple[Any, Any]]:
+    # ``name`` is intentionally excluded: in reconcile mode the existing
+    # (human/prior) name is preserved on update (see _apply_update). An
+    # author/regenerate path, if added later, owns names itself and must not
+    # rely on this exclusion.
     fields = (
         "date",
-        "name",
         "duration_min",
         "summary",
         "estimated_tss",
@@ -585,6 +731,10 @@ def _event_diffs(existing: Event, generated: Event) -> dict[str, tuple[Any, Any]
         old = getattr(existing, field)
         new = getattr(generated, field)
         if field == "plan_id" and new is None:
+            continue
+        if field in _NORMALIZED_TEXT_FIELDS:
+            if _normalize_text(old) != _normalize_text(new):
+                diffs[field] = (old, new)
             continue
         if old != new:
             diffs[field] = (old, new)

@@ -459,6 +459,103 @@ def cruise_intervals(
     )
 
 
+def ladder_intervals(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    rungs_min: tuple[int, ...],
+    pace_range_sec_per_km: tuple[int, int],
+    recovery_min: float,
+    estimated_tss: float | None,
+) -> WorkoutSpec:
+    """Build a threshold ladder: one interval rung per entry in ``rungs_min``.
+
+    ``rungs_min`` is the ordered sequence of rep durations in minutes (e.g.
+    ``(3, 4, 5, 4, 3)`` for an up-and-down ladder). Each rung is a single rep
+    at the target pace, separated by ``recovery_min`` of easy floating.
+    """
+    if not rungs_min:
+        raise ValueError("ladder_intervals requires at least one rung")
+    rung_steps = [
+        WorkoutStep(
+            kind="interval",
+            reps=1,
+            repeat_duration_min=float(minutes),
+            recovery_min=recovery_min,
+            target={"pace_range_sec_per_km": list(pace_range_sec_per_km)},
+            cue="Hold pace as the rung length changes.",
+        )
+        for minutes in rungs_min
+    ]
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="ladder_intervals",
+        title=title,
+        duration_min=duration_min,
+        intensity="threshold",
+        priority="key",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(kind="warmup", duration_min=15, target={"effort": "easy"}),
+            *rung_steps,
+            WorkoutStep(kind="cooldown", duration_min=10, target={"effort": "easy"}),
+        ],
+        constraints={"stop_if": ["hamstring_warning", "mechanics_fade"]},
+        generator=_generator("ladder_intervals.v1"),
+    )
+
+
+def mona_fartlek(
+    *,
+    date: str,
+    title: str,
+    duration_min: int,
+    estimated_tss: float | None,
+) -> WorkoutSpec:
+    """Build the canonical 20-minute Mona fartlek.
+
+    Surge ladder with equal-time floating recoveries: 2x90s, 4x60s, 4x30s,
+    4x15s. Floats are easy running, not standing rest, so the whole block is
+    continuous.
+    """
+    surge_groups = (
+        (2, 1.5),   # 2 x 90s
+        (4, 1.0),   # 4 x 60s
+        (4, 0.5),   # 4 x 30s
+        (4, 0.25),  # 4 x 15s
+    )
+    surge_steps = [
+        WorkoutStep(
+            kind="interval",
+            reps=reps,
+            repeat_duration_min=surge_min,
+            recovery_min=surge_min,
+            target={"effort": "mona_fartlek"},
+            cue="Float is easy running, not standing rest.",
+        )
+        for reps, surge_min in surge_groups
+    ]
+    return WorkoutSpec(
+        date=date,
+        sport="run",
+        archetype="mona_fartlek",
+        title=title,
+        duration_min=duration_min,
+        intensity="threshold",
+        priority="key",
+        estimated_tss=estimated_tss,
+        steps=[
+            WorkoutStep(kind="warmup", duration_min=15, target={"effort": "easy"}),
+            *surge_steps,
+            WorkoutStep(kind="cooldown", duration_min=10, target={"effort": "easy"}),
+        ],
+        constraints={"stop_if": ["hamstring_warning", "mechanics_fade"]},
+        generator=_generator("mona_fartlek.v1"),
+    )
+
+
 def progressive_long_run(
     *,
     date: str,

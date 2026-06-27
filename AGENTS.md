@@ -60,6 +60,14 @@ src/coachctl/         ← Python package
   sync.py                  — Strava OAuth2 + incremental activity sync
   metrics.py               — TSS, CTL/ATL/TSB, NGP, zone calculations
   plan_parser.py           — Markdown plan → dataclasses
+  workouts.py              — WorkoutSpec/WorkoutStep schema + Event bridge
+  workout_archetypes.py    — pure WorkoutSpec constructors (one per session type)
+  workout_generators.py    — week generators (race-week, post-race, half-marathon)
+  plan_templates.py        — plan templates as Python data (DaySlot/WeekTemplate/PlanTemplate)
+  plan_expander.py         — expand_template(template, start, seed) → list[WorkoutSpec]
+  workout_preview.py       — reconcile engine (preview create/update/match/skip; no writes)
+  workout_apply.py         — apply previews to events (the only writer); sandbox-first plan apply
+  sandbox.py               — sandboxed_db() — temp DB copy for validate-before-write
   site.py                  — bake data.json
   new_profile.py           — scaffolds a new coachctl-personal repo
   update.py                — sync + bake + git push (in personal repo)
@@ -259,6 +267,69 @@ A coaching session that updates both layers will commit to two repos:
   `AGENT_DATA_ROOT`.
 - **Code-data decoupling.** UI updates flow to deployed dashboards through a
   `pip install -U coachctl` bump in the personal repo's `requirements.txt`.
+
+## Deterministic workout engine
+
+A structured, reproducible alternative to free-text plan markdown. Generates
+sessions from Python data, reconciles them against the real multi-sport
+calendar, and never overwrites non-endurance work. Two plan paths coexist:
+
+| Path | Entry | Use when |
+|---|---|---|
+| **Markdown plan** | `save_plan(markdown)` MCP tool (`plan_tools.py`) → `plan_parser` → blind `upsert_event` per session | bespoke, narrative, athlete-reviewed plans; full prose control |
+| **Deterministic engine** | `preview_plan` / `apply_plan` MCP tools (`workout_tools.py`) | reproducible, template-driven plans that must coexist with existing rides / strength / races |
+
+### Pipeline (one-way)
+
+```
+plan_templates.py   (PlanTemplate = weeks[] of DaySlot, hardcoded per-week TSS)
+      │  expand_template(template, start, seed)
+      ▼
+plan_expander.py    → list[WorkoutSpec]   (seed=None deterministic; seed=N reproducible variation)
+      │  workout_archetypes.py  (pure WorkoutSpec constructors)
+      ▼
+workout_preview.py  → preview_plan_from_db   (read-only reconcile: create/update/match/skip)
+      │
+      ▼
+workout_apply.py    → apply_plan_from_db   (sandbox-validated; the ONLY writer)
+      │  sandbox.py: copy DB → apply → re-preview (must converge) → bake → then live
+      ▼
+events table
+```
+
+### Reconcile rules (apply never clobbers the calendar)
+
+- **Names preserved on update.** An existing event's `name` is kept; only
+  `summary`/`estimated_tss`/`duration`/`payload`/`status` are updated. New dates
+  get the generated name. (Reconcile-scoped — an author/regenerate path, if
+  added, would own names.)
+- **Strength untouched.** Strength sessions are never created, updated, or
+  overwritten — only counted (`strength_preserved`).
+- **Races block their day.** Generated sessions landing on a race date are
+  dropped (`suppressed_race_days`).
+- **Ambiguous days skipped.** Two existing endurance sessions on one date →
+  `skip`, never a blind overwrite.
+- **Rest creates suppressed** unless `create_rest_days=True`.
+- **Semantic diff.** Cosmetic-only deltas (en/em dash, `×`→`x`, whitespace) in
+  `summary` do not force an update.
+
+### Determinism & variation
+
+- `seed=None` (or MCP `seed=-1`) — fully deterministic, no PRNG: base variant,
+  no jitter. Same `(template, start)` → identical output.
+- `seed=N` — one `random.Random(N)` drives quality-session rotation
+  (`cruise_intervals` / `ladder_intervals` / `mona_fartlek`) and ±5min jitter on
+  easy/long runs. Same `(template, start, seed)` → identical output.
+
+### Sandbox-first apply
+
+`apply_plan_from_db` validates before writing live: it copies the DB to a temp
+file (`sandboxed_db()`, via `paths.set_db_path_override`), applies there,
+re-previews (must converge to no further create/update or it raises
+`sandbox_not_converged`), and bakes into an isolated `data.json` override — only
+then replays the same changes against the live DB. `apply_plan` writes events
+only; it does **not** publish `data.json` (call `bake` separately, like every
+other apply path). CLI equivalents: `coachctl preview-plan` / `apply-plan`.
 
 ## Key metrics
 

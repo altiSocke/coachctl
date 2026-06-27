@@ -288,3 +288,5 @@ Set `SIGNAL_DASHBOARD_URL` in `.env` to append your Vercel dashboard link to eve
 - [ ] Persist stream data for key workouts for retrospective comparison
 - [ ] Dashboard: athlete profile card (thresholds, W/kg, VO₂max, weight) with edit link
 - [ ] Dashboard: race map panel showing GPX routes for available upcoming races
+- [ ] Deterministic plan engine: more templates + recovery/taper weeks (see `NEXT_STEPS.md`)
+- [ ] Unify plan creation: single front door for `save_plan` vs `preview_plan`/`apply_plan` (see `NEXT_STEPS.md`)

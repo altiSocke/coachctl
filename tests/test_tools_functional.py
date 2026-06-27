@@ -14,6 +14,8 @@ from contextlib import contextmanager
 from datetime import date, timedelta
 from unittest.mock import patch
 
+import pytest
+
 
 # ---------------------------------------------------------------------------
 # CaptureMCP — captures decorated functions so we can call them in tests
@@ -43,6 +45,23 @@ def _patch_tool_get_conn(monkeypatch, module_name: str, get_conn_factory):
 
     mod = importlib.import_module(module_name)
     monkeypatch.setattr(mod, "get_conn", get_conn_factory, raising=False)
+
+
+@pytest.fixture
+def real_db_tool_env(tmp_data_root):
+    """Real resolved DB (no paths.db_path monkeypatch) for sandbox-using tools.
+
+    ``mem_db`` patches ``paths.db_path`` to a fixed lambda, which the sandbox
+    override cannot redirect. Tools that go through ``sandboxed_db`` (apply_plan)
+    need the genuine resolver, so this fixture just initialises the schema in the
+    ``tmp_data_root`` data root and resets the process-global init guard.
+    """
+    import coachctl.db as db_module
+
+    db_module._DB_INITIALISED = False
+    db_module.init_db()
+    yield
+    db_module._DB_INITIALISED = False
 
 
 # ---------------------------------------------------------------------------
@@ -1404,6 +1423,93 @@ class TestSiteTools:
         cap = CaptureMCP()
         m.register(cap)
         assert "bake" in cap.tools
+
+
+# ---------------------------------------------------------------------------
+# workout_tools (deterministic plan engine — preview/apply)
+# ---------------------------------------------------------------------------
+
+
+class TestWorkoutTools:
+    def _tools(self):
+        import coachctl.tools.workout_tools as m
+
+        cap = CaptureMCP()
+        m.register(cap)
+        return cap.tools
+
+    def test_list_plan_templates(self, mem_db):
+        tools = self._tools()
+        out = json.loads(tools["list_plan_templates"]())
+        names = {t["name"] for t in out}
+        assert "half_marathon_build" in names
+        hmb = next(t for t in out if t["name"] == "half_marathon_build")
+        assert hmb["weeks"] == 4
+        assert hmb["week_target_tss"] == [400, 400, 400, 400]
+
+    def test_preview_plan_deterministic(self, mem_db):
+        tools = self._tools()
+        out = tools["preview_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=1
+        )
+        assert "Preview: Plan: half_marathon_build" in out
+        assert "Target TSS: 400" in out
+        # Fri rest suppressed by default -> 6 creates
+        assert "6 create" in out
+
+    def test_preview_plan_unknown_template_returns_error(self, mem_db):
+        tools = self._tools()
+        out = tools["preview_plan"](template="nope", start="2026-07-13", weeks=1)
+        assert out.startswith("Error: unknown_template")
+
+    def test_preview_plan_weeks_out_of_range_returns_error(self, mem_db):
+        tools = self._tools()
+        out = tools["preview_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=99
+        )
+        assert out.startswith("Error: weeks_out_of_range")
+
+    def test_preview_plan_is_read_only(self, mem_db):
+        from coachctl.events import get_event
+
+        tools = self._tools()
+        tools["preview_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=1
+        )
+        # nothing written
+        assert get_event("plan-2026-07-13-easy-run") is None
+
+    def test_preview_plan_seed_default_is_deterministic(self, mem_db):
+        tools = self._tools()
+        a = tools["preview_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=2
+        )
+        b = tools["preview_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=2
+        )
+        assert a == b
+
+    # apply_plan uses the sandbox (paths.db_path override), so it needs a REAL
+    # resolved DB rather than the mem_db monkeypatch.
+    def test_apply_plan_writes_and_is_idempotent(self, real_db_tool_env):
+        from coachctl.events import get_event
+
+        tools = self._tools()
+        first = tools["apply_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=1
+        )
+        assert "6 created" in first
+        assert get_event("plan-2026-07-13-easy-run") is not None
+
+        second = tools["apply_plan"](
+            template="half_marathon_build", start="2026-07-13", weeks=1
+        )
+        assert "6 matched" in second
+
+    def test_apply_plan_unknown_template_returns_error(self, real_db_tool_env):
+        tools = self._tools()
+        out = tools["apply_plan"](template="nope", start="2026-07-13", weeks=1)
+        assert out.startswith("Error: unknown_template")
 
 
 # ---------------------------------------------------------------------------

@@ -313,6 +313,117 @@ def delete_event(slug: str) -> bool:
         return cur.rowcount > 0
 
 
+def _event_sport(name: str, summary: str | None, payload: dict) -> str | None:
+    """Resolve a planned training event's sport (structured payload → text)."""
+    from .plan_parser import resolve_sport
+
+    structured = ""
+    workout = payload.get("workout") if isinstance(payload, dict) else None
+    if isinstance(workout, dict):
+        structured = (workout.get("sport") or "").strip()
+    return resolve_sport(
+        structured_sport=structured or None,
+        text=f"{name or ''} {summary or ''}",
+    )
+
+
+def link_completed_activities(*, on_date: str | None = None) -> dict:
+    """Link past planned training events to the activity that fulfilled them.
+
+    For each ``training`` event that is still ``planned``, unlinked, and dated on
+    or before today (or exactly ``on_date`` if given), find same-date activities
+    whose Strava sport matches the event's resolved sport. When exactly one
+    candidate matches, set ``activity_id`` and mark the event ``completed``.
+
+    The planned ``estimated_tss`` is left intact (it remains the *planned*
+    number); the linked activity supplies the *actual* TSS via its own row. This
+    is deliberately conservative: ambiguous days (0 or >1 sport matches) are
+    skipped rather than guessed, and an activity is never linked to two events.
+
+    Returns ``{linked, skipped_ambiguous, already_linked, candidates}``.
+    """
+    from .plan_parser import normalize_strava_sport
+
+    today = Date.today().isoformat()
+    cutoff = on_date or today
+
+    linked = 0
+    skipped_ambiguous = 0
+    already_linked = 0
+    candidates = 0
+
+    with get_conn() as conn:
+        if on_date is not None:
+            ev_rows = conn.execute(
+                "SELECT id, slug, date, name, summary, payload_json, activity_id, status "
+                "FROM events WHERE kind='training' AND date = ?",
+                (on_date,),
+            ).fetchall()
+        else:
+            ev_rows = conn.execute(
+                "SELECT id, slug, date, name, summary, payload_json, activity_id, status "
+                "FROM events WHERE kind='training' AND date <= ?",
+                (cutoff,),
+            ).fetchall()
+
+        # Activities already claimed by an event must not be linked twice.
+        used = {
+            r["activity_id"]
+            for r in conn.execute(
+                "SELECT activity_id FROM events WHERE activity_id IS NOT NULL"
+            ).fetchall()
+        }
+
+        for ev in ev_rows:
+            if ev["activity_id"] is not None:
+                already_linked += 1
+                continue
+            if ev["status"] != STATUS_PLANNED:
+                continue
+
+            payload: dict[str, Any] = {}
+            if ev["payload_json"]:
+                try:
+                    payload = json.loads(ev["payload_json"])
+                except json.JSONDecodeError:
+                    payload = {}
+            want = _event_sport(ev["name"], ev["summary"], payload)
+            if want in (None, "rest"):
+                continue
+
+            acts = conn.execute(
+                "SELECT id, sport_type FROM activities WHERE substr(start_date,1,10) = ?",
+                (ev["date"],),
+            ).fetchall()
+            matches = [
+                a
+                for a in acts
+                if a["id"] not in used and normalize_strava_sport(a["sport_type"]) == want
+            ]
+            if not matches:
+                continue
+            candidates += 1
+            if len(matches) != 1:
+                skipped_ambiguous += 1
+                continue
+
+            act_id = matches[0]["id"]
+            conn.execute(
+                "UPDATE events SET activity_id = ?, status = ?, "
+                "updated_at = datetime('now') WHERE id = ?",
+                (act_id, STATUS_COMPLETED, ev["id"]),
+            )
+            used.add(act_id)
+            linked += 1
+
+    return {
+        "linked": linked,
+        "skipped_ambiguous": skipped_ambiguous,
+        "already_linked": already_linked,
+        "candidates": candidates,
+    }
+
+
 def date_has_event(d: str, kinds: Iterable[str] | None = None) -> bool:
     """Quick guard for date-validation in write tools."""
     placeholders = ""

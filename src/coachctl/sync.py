@@ -415,6 +415,17 @@ def sync(full: bool = False, access_token: str | None = None):
     # Recompute and persist CTL/ATL/TSB for all sport categories
     _refresh_fitness_table()
 
+    # Link past planned training events to the activities that fulfilled them
+    # (sets activity_id + status=completed for unambiguous same-date sport matches).
+    try:
+        from .events import link_completed_activities
+
+        link_result = link_completed_activities()
+        if link_result["linked"]:
+            print(f"Linked {link_result['linked']} completed session(s) to activities.")
+    except Exception as exc:  # never let linkage break a sync
+        print(f"  (activity linkage skipped: {exc})")
+
     print(f"Sync complete — {count} activities processed.")
 
 

@@ -35,6 +35,46 @@ import warnings
 from functools import lru_cache
 from pathlib import Path
 
+# Optional process-wide override for the database path. When set (e.g. by the
+# sandbox apply harness), ``db_path()`` returns this instead of the resolved
+# ``<DATA_ROOT>/data/activities.db``. ``None`` means "use normal resolution".
+_db_path_override: Path | None = None
+
+# Optional process-wide override for the baked dashboard payload path. Set by the
+# sandbox apply harness so a validation ``bake()`` writes into a throwaway file
+# instead of publishing the real ``<DATA_ROOT>/deploy/dist/data.json``.
+_data_json_override: Path | None = None
+
+
+def set_db_path_override(path: Path | None) -> None:
+    """Force ``db_path()`` to return ``path`` (or clear with ``None``).
+
+    Intended for the sandbox apply harness, which copies the live DB to a temp
+    file and redirects all reads/writes to it before validating an apply.
+    """
+    global _db_path_override
+    _db_path_override = Path(path) if path is not None else None
+
+
+def get_db_path_override() -> Path | None:
+    """Return the current DB path override, or ``None`` if unset."""
+    return _db_path_override
+
+
+def set_data_json_override(path: Path | None) -> None:
+    """Force ``data_json()`` to return ``path`` (or clear with ``None``).
+
+    Intended for the sandbox apply harness so a validation bake stays isolated
+    and never overwrites the published dashboard payload.
+    """
+    global _data_json_override
+    _data_json_override = Path(path) if path is not None else None
+
+
+def get_data_json_override() -> Path | None:
+    """Return the current data.json path override, or ``None`` if unset."""
+    return _data_json_override
+
 # ── Code repo ────────────────────────────────────────────────────────────────
 
 
@@ -137,7 +177,9 @@ def env_file() -> Path:
 
 
 def db_path() -> Path:
-    """``<DATA_ROOT>/data/activities.db``."""
+    """``<DATA_ROOT>/data/activities.db`` (or the sandbox override, if set)."""
+    if _db_path_override is not None:
+        return _db_path_override
     r = _resolve_data_root()
     if isinstance(r, _LegacyRoot):
         return code_root() / "data" / "profiles" / r.profile / "activities.db"
@@ -150,8 +192,10 @@ def data_json() -> Path:
     Lives inside ``deploy/`` (the Vercel project root) so the artifact is
     bundled into the serverless function alongside ``web.py``. The legacy
     fallback keeps the historical location under ``wiki/personal/<profile>/``
-    for back-compat.
+    for back-compat. Returns the sandbox override when set.
     """
+    if _data_json_override is not None:
+        return _data_json_override
     r = _resolve_data_root()
     if isinstance(r, _LegacyRoot):
         return code_root() / "wiki" / "personal" / r.profile / "data.json"

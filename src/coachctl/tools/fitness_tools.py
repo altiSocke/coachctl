@@ -255,18 +255,25 @@ def register(mcp) -> None:  # noqa: ANN001
         """
         Estimate TSS for a planned session from duration and intensity label.
 
-        Intensity options (maps to approximate IF):
-        - recovery   → IF 0.65 (Z1, very easy)
-        - easy       → IF 0.72 (Z2, aerobic base)
-        - moderate   → IF 0.80 (Z2/Z3, comfortable endurance)
-        - tempo      → IF 0.88 (Z3, comfortably hard)
-        - threshold  → IF 1.00 (Z4, ~1hr race pace)
-        - vo2max     → IF 1.12 (Z5, intervals)
-        - anaerobic  → IF 1.30 (Z6, short hard efforts)
+        IF is sport-specific (cyclists coast, runners don't), so pass ``sport``
+        (``run``/``trailrun`` or ``ride``/``virtualride``/``gravelride``/
+        ``mountainbikeride``; anything else uses the run table). Approximate IF:
+
+        | intensity | run IF | ride IF |
+        |-----------|--------|---------|
+        | recovery  | 0.65   | 0.55    |
+        | easy      | 0.75   | 0.63    |
+        | moderate  | 0.83   | 0.72    |
+        | tempo     | 0.90   | 0.82    |
+        | threshold | 1.00   | 0.95    |
+        | vo2max    | 1.10   | 1.05    |
+        | anaerobic | 1.25   | 1.20    |
 
         Formula: TSS = (duration_min / 60) × IF² × 100
 
         Use this to validate week TSS targets when building a training plan.
+        Always pass the correct ``sport`` — an easy ride is ~30% less TSS than an
+        easy run of the same duration.
         """
         try:
             result = estimate_session_tss(duration_min, intensity, sport)

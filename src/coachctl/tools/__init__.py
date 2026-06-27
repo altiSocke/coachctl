@@ -18,6 +18,7 @@ from . import (
     sync_tools,
     untracked_tools,
     wiki_tools,
+    workout_tools,
 )
 
 _MODULES = [
@@ -33,6 +34,7 @@ _MODULES = [
     untracked_tools,
     readiness_tools,
     site_tools,
+    workout_tools,
 ]
 
 

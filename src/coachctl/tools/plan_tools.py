@@ -19,7 +19,11 @@ def _insert_plan_and_events(
 ) -> int | None:
     """Parse a saved plan, insert a plans row, and upsert training events for each dated session."""
     try:
-        from ..plan_parser import parse_plan_file, parse_session_duration_intensity
+        from ..plan_parser import (
+            detect_session_sport,
+            parse_plan_file,
+            parse_session_duration_intensity,
+        )
         from ..metrics import estimate_session_tss
         from ..events import Event, KIND_TRAINING, STATUS_PLANNED, upsert_event
     except Exception:
@@ -77,13 +81,18 @@ def _insert_plan_and_events(
             if "rest" in (s.name or "").lower():
                 continue
 
-            # Estimate TSS from duration + intensity in the details string
+            # Estimate TSS from duration + intensity in the details string,
+            # using the sport-specific IF table (run vs ride differ markedly at
+            # easy/endurance intensities).
             estimated_tss: float | None = None
             details_text = s.details or ""
             duration_min, intensity = parse_session_duration_intensity(details_text)
             if duration_min is not None and intensity is not None:
+                sport = detect_session_sport(f"{s.name or ''} {details_text}")
                 try:
-                    estimated_tss = estimate_session_tss(duration_min, intensity)["tss_estimate"]
+                    estimated_tss = estimate_session_tss(
+                        duration_min, intensity, sport=sport
+                    )["tss_estimate"]
                 except Exception:
                     pass
 
@@ -110,15 +119,22 @@ def _insert_plan_and_events(
     return plan_id
 
 
-def backfill_event_tss() -> dict:
-    """Backfill estimated_tss for training events that currently have NULL.
+def backfill_event_tss(recompute: bool = False) -> dict:
+    """Backfill ``estimated_tss`` for training events from their text.
 
     Reads ``summary`` / ``payload_json`` details from the events table,
-    re-parses duration + intensity, and updates ``estimated_tss`` in place.
+    re-parses duration + intensity, detects sport, and writes the sport-aware
+    TSS estimate in place.
+
+    Parameters
+    ----------
+    recompute : if False (default) only fills events whose ``estimated_tss`` is
+        NULL. If True, recomputes ALL training events — use this after changing
+        the IF model to correct previously-stored estimates.
 
     Returns a summary dict: {updated, skipped_no_duration, already_set}.
     """
-    from ..plan_parser import parse_session_duration_intensity
+    from ..plan_parser import resolve_sport, parse_session_duration_intensity
     from ..metrics import estimate_session_tss
 
     updated = 0
@@ -126,17 +142,36 @@ def backfill_event_tss() -> dict:
     already_set = 0
 
     with get_conn() as conn:
-        rows = conn.execute(
-            "SELECT id, summary, payload_json FROM events WHERE kind = 'training' AND estimated_tss IS NULL"
-        ).fetchall()
+        # LEFT JOIN the linked activity so we can use Strava's authoritative
+        # sport_type when the planned event has been fulfilled.
+        base = (
+            "SELECT e.id AS id, e.name AS name, e.summary AS summary, "
+            "e.payload_json AS payload_json, a.sport_type AS strava_sport "
+            "FROM events e LEFT JOIN activities a ON a.id = e.activity_id "
+            "WHERE e.kind = 'training'"
+        )
+        if recompute:
+            # Never recompute completed/linked events: their estimate is the
+            # planned baseline and their summary text may have drifted from the
+            # real session. Recomputing from stale text would corrupt good values.
+            rows = conn.execute(
+                base + " AND e.status != 'completed' AND e.activity_id IS NULL"
+            ).fetchall()
+        else:
+            rows = conn.execute(base + " AND e.estimated_tss IS NULL").fetchall()
 
         for row in rows:
-            # Prefer full details from payload_json, fall back to summary
+            # Prefer full details from payload_json, fall back to summary.
             details = ""
+            payload_sport = ""
             if row["payload_json"]:
                 try:
                     payload = json.loads(row["payload_json"])
                     details = payload.get("details", "") or ""
+                    # Deterministic-engine events carry an explicit sport.
+                    workout = payload.get("workout")
+                    if isinstance(workout, dict):
+                        payload_sport = (workout.get("sport") or "").strip()
                 except Exception:
                     pass
             if not details and row["summary"]:
@@ -147,8 +182,18 @@ def backfill_event_tss() -> dict:
                 skipped += 1
                 continue
 
+            # Resolve sport best-first: linked Strava activity (authoritative)
+            # → structured engine payload → free-text keyword heuristic.
+            sport = resolve_sport(
+                strava_sport_type=row["strava_sport"],
+                structured_sport=payload_sport,
+                text=f"{row['name'] or ''} {details}",
+            )
+
             try:
-                tss = estimate_session_tss(duration_min, intensity)["tss_estimate"]
+                tss = estimate_session_tss(duration_min, intensity, sport=sport)[
+                    "tss_estimate"
+                ]
                 conn.execute(
                     "UPDATE events SET estimated_tss = ? WHERE id = ?",
                     (tss, row["id"]),

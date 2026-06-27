@@ -101,6 +101,13 @@ def test_wiki_tools_register():
     assert mcp.tool.called
 
 
+def test_workout_tools_register():
+    from coachctl.tools import workout_tools
+    mcp = _make_mock_mcp()
+    workout_tools.register(mcp)
+    assert mcp.tool.called
+
+
 def test_tools_init_register_all():
     """tools/__init__.py register_all should call every sub-module."""
     from coachctl.tools import register_all

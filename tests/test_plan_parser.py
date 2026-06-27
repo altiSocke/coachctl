@@ -13,8 +13,11 @@ from coachctl.plan_parser import (
     Session,
     Week,
     _parse_date,
+    detect_session_sport,
+    normalize_strava_sport,
     parse_plan_file,
     parse_session_duration_intensity,
+    resolve_sport,
 )
 
 
@@ -211,3 +214,83 @@ def test_duration_intensity_fractional():
     dur, intensity = parse_session_duration_intensity("90 minutes easy aerobic")
     assert dur == 90.0
     assert intensity == "easy"
+
+
+# ── detect_session_sport ──────────────────────────────────────────────────────
+
+
+def test_detect_sport_ride():
+    assert detect_session_sport("90min Z2 ride, power 180-210W") == "ride"
+    assert detect_session_sport("60min trainer session, sweet spot") == "ride"
+    assert detect_session_sport("Zwift race") == "ride"
+
+
+def test_detect_sport_run():
+    assert detect_session_sport("55min easy run, HR <148") == "run"
+    assert detect_session_sport("Long run 105min") == "run"
+    assert detect_session_sport("Mona fartlek") == "run"
+
+
+def test_detect_sport_ride_wins_over_generic():
+    # a brick-ish description mentioning both -> ride keyword wins
+    assert detect_session_sport("ride then short run off the bike") == "ride"
+
+
+def test_detect_sport_strength_and_rest():
+    assert detect_session_sport("Strength: squats, step-ups") == "strength"
+    assert detect_session_sport("Rest") == "rest"
+    assert detect_session_sport("") == "rest"
+
+
+def test_detect_sport_defaults_to_run():
+    # no clear signal -> conservative run default
+    assert detect_session_sport("threshold intervals") == "run"
+
+
+def test_detect_sport_strides_is_not_ride():
+    # regression: 'strides' contains the substring 'ride' but is a run cue
+    assert detect_session_sport("50min easy Z2 run + strides") == "run"
+    assert detect_session_sport("6x20s strides") == "run"
+
+
+# ── normalize_strava_sport / resolve_sport (authoritative sources) ────────────
+
+
+def test_normalize_strava_sport_maps_known_types():
+    assert normalize_strava_sport("Ride") == "ride"
+    assert normalize_strava_sport("VirtualRide") == "ride"
+    assert normalize_strava_sport("GravelRide") == "ride"
+    assert normalize_strava_sport("Run") == "run"
+    assert normalize_strava_sport("TrailRun") == "run"
+    assert normalize_strava_sport("WeightTraining") == "strength"
+
+
+def test_normalize_strava_sport_returns_none_for_unmodelled():
+    # swim/ski/hike don't map to the run/ride IF model
+    assert normalize_strava_sport("Swim") is None
+    assert normalize_strava_sport("AlpineSki") is None
+    assert normalize_strava_sport("Hike") is None
+    assert normalize_strava_sport("") is None
+
+
+def test_resolve_sport_prefers_strava_over_text():
+    # text says "ride" but the linked Strava activity says it was a Run
+    assert (
+        resolve_sport(strava_sport_type="Run", text="90min Z2 ride")
+        == "run"
+    )
+
+
+def test_resolve_sport_falls_back_to_structured_then_text():
+    # no strava -> use structured payload sport
+    assert resolve_sport(structured_sport="ride", text="something vague") == "ride"
+    # trail_run structured label maps to run
+    assert resolve_sport(structured_sport="trail_run", text="x") == "run"
+    # nothing structured -> text heuristic
+    assert resolve_sport(text="60min Z2 ride") == "ride"
+    assert resolve_sport(text="easy run") == "run"
+
+
+def test_resolve_sport_skips_unmodelled_strava_and_uses_text():
+    # Strava 'Swim' doesn't map; fall through to the text signal
+    assert resolve_sport(strava_sport_type="Swim", text="60min Z2 ride") == "ride"

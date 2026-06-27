@@ -1,7 +1,17 @@
 from __future__ import annotations
 
-from coachctl.workout_archetypes import easy_run, hill_activation, trail_race_simulation
-from coachctl.workouts import render_workout_summary
+from coachctl.workout_archetypes import (
+    easy_run,
+    hill_activation,
+    ladder_intervals,
+    mona_fartlek,
+    trail_race_simulation,
+)
+from coachctl.workouts import (
+    render_workout_summary,
+    workout_from_payload,
+    workout_to_payload,
+)
 
 
 def test_easy_run_archetype_is_stable() -> None:
@@ -111,3 +121,98 @@ def test_trail_race_simulation_archetype_matches_saturday_fixture() -> None:
         "or higher altitude if possible. Stop if hamstring warning, quad pain, mechanics fade. "
         "Race rehearsal only; do not turn this into a fitness test."
     )
+
+
+def test_ladder_intervals_builds_one_rung_per_entry() -> None:
+    workout = ladder_intervals(
+        date="2026-07-15",
+        title="Threshold ladder 3-4-5-4-3",
+        duration_min=70,
+        rungs_min=(3, 4, 5, 4, 3),
+        pace_range_sec_per_km=(248, 252),
+        recovery_min=2,
+        estimated_tss=72.0,
+    )
+
+    assert workout.archetype == "ladder_intervals"
+    assert workout.sport == "run"
+    assert workout.intensity == "threshold"
+    assert workout.priority == "key"
+    assert workout.estimated_tss == 72.0
+    assert workout.generator == {
+        "name": "deterministic",
+        "version": "0.1",
+        "archetype_version": "ladder_intervals.v1",
+    }
+    # warmup + 5 rungs + cooldown
+    assert [step.kind for step in workout.steps] == [
+        "warmup",
+        "interval",
+        "interval",
+        "interval",
+        "interval",
+        "interval",
+        "cooldown",
+    ]
+    rung_durations = [
+        step.repeat_duration_min for step in workout.steps if step.kind == "interval"
+    ]
+    assert rung_durations == [3.0, 4.0, 5.0, 4.0, 3.0]
+    # pace range is cast to a list so payload round-trips stay stable
+    assert workout.steps[1].target["pace_range_sec_per_km"] == [248, 252]
+    assert workout.steps[1].recovery_min == 2
+
+
+def test_ladder_intervals_payload_round_trips() -> None:
+    workout = ladder_intervals(
+        date="2026-07-15",
+        title="Threshold ladder",
+        duration_min=70,
+        rungs_min=(3, 4, 3),
+        pace_range_sec_per_km=(248, 252),
+        recovery_min=2,
+        estimated_tss=70.0,
+    )
+    restored = workout_from_payload(workout_to_payload(workout))
+    assert restored == workout
+
+
+def test_mona_fartlek_has_canonical_surge_ladder() -> None:
+    workout = mona_fartlek(
+        date="2026-07-15",
+        title="Mona fartlek",
+        duration_min=50,
+        estimated_tss=68.0,
+    )
+
+    assert workout.archetype == "mona_fartlek"
+    assert workout.sport == "run"
+    assert workout.intensity == "threshold"
+    assert workout.priority == "key"
+    assert workout.generator == {
+        "name": "deterministic",
+        "version": "0.1",
+        "archetype_version": "mona_fartlek.v1",
+    }
+    surges = [step for step in workout.steps if step.kind == "interval"]
+    assert [(step.reps, step.repeat_duration_min) for step in surges] == [
+        (2, 1.5),
+        (4, 1.0),
+        (4, 0.5),
+        (4, 0.25),
+    ]
+    # floats are equal-time to the surge (continuous fartlek)
+    assert all(step.recovery_min == step.repeat_duration_min for step in surges)
+    assert workout.steps[0].kind == "warmup"
+    assert workout.steps[-1].kind == "cooldown"
+
+
+def test_mona_fartlek_payload_round_trips() -> None:
+    workout = mona_fartlek(
+        date="2026-07-15",
+        title="Mona fartlek",
+        duration_min=50,
+        estimated_tss=68.0,
+    )
+    restored = workout_from_payload(workout_to_payload(workout))
+    assert restored == workout

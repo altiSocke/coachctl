@@ -58,6 +58,37 @@ def test_apply_preview_create_inserts_generated_event(mem_db) -> None:
     assert result.updated == 0
 
 
+def test_reconcile_name_rule_create_uses_generated_update_preserves(mem_db) -> None:
+    # New date with no existing event -> create uses the generated name.
+    new_date = _generated(date="2026-06-30")
+    # Same generated workout on a date that already has an event -> update
+    # preserves the existing name.
+    existing = Event(
+        slug="legacy-2026-06-29",
+        kind=KIND_TRAINING,
+        date="2026-06-29",
+        name="Coach hand-named session",
+        status=STATUS_PLANNED,
+    )
+    upsert_event(existing)
+    update_target = _generated(date="2026-06-29")
+
+    previews = preview_workout_events([new_date, update_target], [existing])
+    result = apply_workout_previews(previews)
+
+    created = get_event(new_date.slug)
+    assert created is not None
+    assert created.name == new_date.name  # generated name on new date
+
+    updated = get_event(existing.slug)
+    assert updated is not None
+    assert updated.name == "Coach hand-named session"  # existing name preserved
+    assert updated.payload["schema"] == "workout_spec.v1"  # payload still updated
+
+    assert result.created == 1
+    assert result.updated == 1
+
+
 def test_apply_preview_update_preserves_existing_slug(mem_db) -> None:
     existing = Event(
         slug="legacy-2026-06-29",
@@ -75,7 +106,9 @@ def test_apply_preview_update_preserves_existing_slug(mem_db) -> None:
     assert get_event(generated.slug) is None
     fetched = get_event(existing.slug)
     assert fetched is not None
-    assert fetched.name == generated.name
+    # reconcile preserves the existing name on update (generated title discarded)
+    assert fetched.name == existing.name
+    assert fetched.name != generated.name
     assert fetched.slug == existing.slug
     assert fetched.payload["schema"] == "workout_spec.v1"
     assert result.updated == 1
@@ -215,7 +248,8 @@ def test_apply_post_trail_race_week_from_db_is_idempotent(mem_db) -> None:
     assert result.updated == 1
     updated = get_event("legacy-2026-07-08")
     assert updated is not None
-    assert updated.name == "35-45min easy run"
+    # reconcile preserves the existing name; only payload/summary/load change
+    assert updated.name == "Mona fartlek"
     assert updated.plan_id == 2
     assert updated.payload["workout"]["archetype"] == "easy_aerobic_run"
 

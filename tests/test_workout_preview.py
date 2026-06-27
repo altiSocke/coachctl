@@ -8,6 +8,7 @@ from coachctl.workout_preview import (
     format_preview_text,
     preview_post_trail_race_week_from_db,
     preview_half_marathon_week_from_db,
+    preview_plan_from_db,
     preview_sessions_from_db,
     preview_trail_race_week_from_db,
     preview_workout_events,
@@ -71,7 +72,9 @@ def test_preview_updates_same_date_planned_event() -> None:
     assert preview[0].target_slug == existing.slug
     assert preview[0].existing == existing
     assert preview[0].generated == generated
-    assert preview[0].field_diffs["name"] == (existing.name, generated.name)
+    # name is reconcile-preserved, so it is never reported as a diff
+    assert "name" not in preview[0].field_diffs
+    assert "summary" in preview[0].field_diffs
     assert "payload" in preview[0].field_diffs
 
 
@@ -555,3 +558,227 @@ def test_format_preview_text_includes_summary() -> None:
     assert "Actions: 1 create, 0 update, 0 match, 0 skip, 0 cancel" in text
     assert "Strength preserved: 1" in text
     assert "Suppressed rest creates: 1" in text
+
+
+def _clone_event(event: Event, **overrides: object) -> Event:
+    fields = {
+        "slug": event.slug,
+        "kind": event.kind,
+        "date": event.date,
+        "name": event.name,
+        "start_time": event.start_time,
+        "duration_min": event.duration_min,
+        "summary": event.summary,
+        "estimated_tss": event.estimated_tss,
+        "status": event.status,
+        "payload": event.payload,
+        "plan_id": event.plan_id,
+        "activity_id": event.activity_id,
+        "notes": event.notes,
+    }
+    fields.update(overrides)
+    return Event(**fields)  # type: ignore[arg-type]
+
+
+def test_normalize_text_maps_typography_and_whitespace() -> None:
+    from coachctl.workout_preview import _normalize_text
+
+    assert _normalize_text("5 \u2013 10min") == _normalize_text("5 - 10min")
+    assert _normalize_text("5\u201410min") == "5-10min"
+    assert _normalize_text("3\u00d72min") == "3x2min"
+    assert _normalize_text("a   b\t c ") == "a b c"
+    # non-strings pass through untouched
+    assert _normalize_text(42) == 42
+    assert _normalize_text(None) is None
+
+
+def test_preview_matches_when_summary_differs_only_cosmetically() -> None:
+    generated = _generated_event()
+    base = generated.summary or ""
+    # same text, but with en-dashes for hyphens, × for x, and padded/extra spaces
+    cosmetic = "  " + base.replace("-", "\u2013").replace("x", "\u00d7") + "   "
+    cosmetic = cosmetic.replace(" ", "  ")  # double every space
+    existing = _clone_event(generated, slug="legacy-cosmetic", summary=cosmetic)
+
+    assert existing.summary != generated.summary  # genuinely different bytes
+    preview = preview_workout_events([generated], [existing])
+
+    assert preview[0].action == "match"
+    assert preview[0].field_diffs == {}
+
+
+def test_preview_matches_when_only_name_differs() -> None:
+    generated = _generated_event()
+    existing = _clone_event(generated, slug="legacy-named", name="Human-edited title")
+
+    preview = preview_workout_events([generated], [existing])
+
+    assert preview[0].action == "match"
+    assert "name" not in preview[0].field_diffs
+    assert preview[0].field_diffs == {}
+
+
+# ── preview_plan_from_db (multi-week, reconcile) ─────────────────────────────
+
+
+def test_preview_plan_rejects_unknown_template(mem_db) -> None:
+    result = preview_plan_from_db(
+        template_name="nope",
+        start_date="2026-07-13",
+        weeks=1,
+    )
+    assert result.error == "unknown_template"
+    assert result.previews == []
+
+
+def test_preview_plan_rejects_weeks_out_of_range(mem_db) -> None:
+    too_many = preview_plan_from_db(
+        template_name="half_marathon_build",
+        start_date="2026-07-13",
+        weeks=99,
+    )
+    assert too_many.error == "weeks_out_of_range"
+
+    zero = preview_plan_from_db(
+        template_name="half_marathon_build",
+        start_date="2026-07-13",
+        weeks=0,
+    )
+    assert zero.error == "weeks_out_of_range"
+
+
+def test_preview_plan_is_deterministic_for_seed_none(mem_db) -> None:
+    a = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=2
+    )
+    b = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=2
+    )
+    assert [(p.date, p.action, p.target_slug) for p in a.previews] == [
+        (p.date, p.action, p.target_slug) for p in b.previews
+    ]
+    assert a.summary == b.summary
+
+
+def test_preview_plan_target_tss_is_sum_of_week_targets(mem_db) -> None:
+    result = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=2
+    )
+    # two build weeks at 400 each
+    assert result.summary is not None
+    assert result.summary["target_tss"] == 800
+    assert result.window_start == "2026-07-13"
+    assert result.window_end == "2026-07-26"  # 14 days inclusive
+
+
+def test_preview_plan_updates_existing_ride_and_preserves_strength(mem_db) -> None:
+    # Tue endurance ride should be updated; Mon strength must be preserved.
+    upsert_event(
+        Event(
+            slug="my-ride-2026-07-14",
+            kind=KIND_TRAINING,
+            date="2026-07-14",
+            name="Coach-named endurance ride",
+            status=STATUS_PLANNED,
+            estimated_tss=50.0,
+            summary="endurance ride",
+        )
+    )
+    upsert_event(
+        Event(
+            slug="strength-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Strength M1 maintenance block",
+            status=STATUS_PLANNED,
+            estimated_tss=20.0,
+        )
+    )
+
+    result = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=1
+    )
+
+    tue = [p for p in result.previews if p.date == "2026-07-14"]
+    assert len(tue) == 1
+    assert tue[0].action == "update"
+    assert tue[0].target_slug == "my-ride-2026-07-14"
+    assert "name" not in tue[0].field_diffs  # name preserved
+
+    # strength session is never proposed for create/update and is counted
+    assert all(p.target_slug != "strength-2026-07-13" for p in result.previews)
+    assert result.summary is not None
+    assert result.summary["strength_preserved"] == 1
+
+
+def test_preview_plan_blocks_generated_session_on_race_day(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="2026-07-15-local-10k",
+            kind=KIND_RACE,
+            date="2026-07-15",  # Wednesday quality day
+            name="Local 10k race",
+            status=STATUS_PLANNED,
+        )
+    )
+
+    result = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=1
+    )
+
+    assert all(p.date != "2026-07-15" for p in result.previews)
+    assert result.summary is not None
+    assert result.summary["suppressed_race_days"] == 1
+
+
+def test_preview_plan_skips_ambiguous_same_day_endurance(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="ride-a-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Ride A",
+            status=STATUS_PLANNED,
+            summary="ride a",
+        )
+    )
+    upsert_event(
+        Event(
+            slug="ride-b-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Ride B",
+            status=STATUS_PLANNED,
+            summary="ride b",
+        )
+    )
+
+    result = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=1
+    )
+
+    mon = [p for p in result.previews if p.date == "2026-07-13"]
+    assert len(mon) == 1
+    assert mon[0].action == "skip"
+    assert mon[0].reason == "ambiguous_existing_events"
+
+
+def test_preview_plan_suppresses_rest_create_by_default(mem_db) -> None:
+    default = preview_plan_from_db(
+        template_name="half_marathon_build", start_date="2026-07-13", weeks=1
+    )
+    # Friday is a rest day; with no existing event it would be a create, which
+    # is suppressed by default.
+    assert all(p.date != "2026-07-17" for p in default.previews)
+    assert default.summary is not None
+    assert default.summary["suppressed_rest_creates"] == 1
+
+    explicit = preview_plan_from_db(
+        template_name="half_marathon_build",
+        start_date="2026-07-13",
+        weeks=1,
+        create_rest_days=True,
+    )
+    fri = [p for p in explicit.previews if p.date == "2026-07-17"]
+    assert len(fri) == 1
+    assert fri[0].action == "create"

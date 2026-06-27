@@ -23,6 +23,7 @@ from coachctl.events import (
     _row_to_event,
     get_calendar,
     get_event,
+    link_completed_activities,
 )
 
 
@@ -242,3 +243,99 @@ def test_get_event_estimated_tss(mem_db):
                   "Intervals", estimated_tss=95.0)
     ev = get_event("hard-session")
     assert ev.estimated_tss == pytest.approx(95.0)
+
+
+# ── link_completed_activities ─────────────────────────────────────────────────
+
+
+def test_link_matches_same_date_same_sport(mem_db):
+    _insert_event(mem_db, "plan-ride", KIND_TRAINING, "2020-01-05",
+                  "90min Z2 ride", estimated_tss=70.0)
+    _insert_activity(mem_db, 9001, "Endurance ride", "Ride", "2020-01-05T07:00:00Z",
+                     tss=63.0)
+
+    result = link_completed_activities()
+
+    assert result["linked"] == 1
+    ev = get_event("plan-ride")
+    assert ev.activity_id == 9001
+    assert ev.status == STATUS_COMPLETED
+    # planned estimate preserved (actual comes from the linked activity)
+    assert ev.estimated_tss == pytest.approx(70.0)
+
+
+def test_link_respects_sport_mismatch(mem_db):
+    # event is a ride; only a run happened that day -> no link
+    _insert_event(mem_db, "plan-ride2", KIND_TRAINING, "2020-01-06", "60min Z2 ride")
+    _insert_activity(mem_db, 9002, "Morning run", "Run", "2020-01-06T07:00:00Z")
+
+    result = link_completed_activities()
+
+    assert result["linked"] == 0
+    assert get_event("plan-ride2").activity_id is None
+
+
+def test_link_skips_ambiguous_multiple_same_sport(mem_db):
+    _insert_event(mem_db, "plan-run", KIND_TRAINING, "2020-01-07", "60min easy run")
+    _insert_activity(mem_db, 9003, "Run A", "Run", "2020-01-07T07:00:00Z")
+    _insert_activity(mem_db, 9004, "Run B", "TrailRun", "2020-01-07T17:00:00Z")
+
+    result = link_completed_activities()
+
+    assert result["linked"] == 0
+    assert result["skipped_ambiguous"] == 1
+    assert get_event("plan-run").activity_id is None
+
+
+def test_link_is_idempotent_and_no_double_claim(mem_db):
+    _insert_event(mem_db, "plan-a", KIND_TRAINING, "2020-01-08", "60min Z2 ride")
+    _insert_activity(mem_db, 9005, "Ride", "Ride", "2020-01-08T07:00:00Z")
+
+    first = link_completed_activities()
+    assert first["linked"] == 1
+
+    # second run: already linked, nothing new
+    second = link_completed_activities()
+    assert second["linked"] == 0
+    assert second["already_linked"] >= 1
+
+    # a second event on the same day cannot claim the already-used activity
+    _insert_event(mem_db, "plan-b", KIND_TRAINING, "2020-01-08", "45min Z2 ride")
+    third = link_completed_activities()
+    assert third["linked"] == 0
+    assert get_event("plan-b").activity_id is None
+
+
+def test_link_uses_structured_payload_sport(mem_db):
+    # summary says nothing useful; structured payload says ride
+    _insert_event(
+        mem_db, "plan-eng", KIND_TRAINING, "2020-01-09", "90min session",
+        payload={"schema": "workout_spec.v1", "workout": {"sport": "ride"}},
+    )
+    _insert_activity(mem_db, 9006, "Ride", "Ride", "2020-01-09T07:00:00Z")
+
+    result = link_completed_activities()
+    assert result["linked"] == 1
+    assert get_event("plan-eng").activity_id == 9006
+
+
+def test_link_ignores_future_and_rest_events(mem_db):
+    # rest event should never link even if an activity exists that day
+    _insert_event(mem_db, "rest-day", KIND_TRAINING, "2020-01-10", "Rest")
+    _insert_activity(mem_db, 9007, "Easy spin", "Ride", "2020-01-10T07:00:00Z")
+
+    result = link_completed_activities()
+    assert get_event("rest-day").activity_id is None
+    assert result["linked"] == 0
+
+
+def test_link_on_date_scopes_to_single_day(mem_db):
+    _insert_event(mem_db, "d1", KIND_TRAINING, "2020-02-01", "60min Z2 ride")
+    _insert_activity(mem_db, 9101, "Ride1", "Ride", "2020-02-01T07:00:00Z")
+    _insert_event(mem_db, "d2", KIND_TRAINING, "2020-02-02", "60min Z2 ride")
+    _insert_activity(mem_db, 9102, "Ride2", "Ride", "2020-02-02T07:00:00Z")
+
+    result = link_completed_activities(on_date="2020-02-01")
+    assert result["linked"] == 1
+    assert get_event("d1").activity_id == 9101
+    assert get_event("d2").activity_id is None  # other day untouched

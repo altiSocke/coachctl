@@ -341,6 +341,48 @@ def test_session_tss_sport_label_passthrough():
     assert result["sport"] == "run"
 
 
+def test_session_tss_ride_easy_lower_than_run_easy():
+    """Easy ride must estimate less TSS than easy run (cyclists coast)."""
+    ride = estimate_session_tss(60.0, "easy", sport="ride")
+    run = estimate_session_tss(60.0, "easy", sport="run")
+    assert ride["tss_estimate"] < run["tss_estimate"]
+    # ride easy IF 0.63 -> ~40 TSS/hr; run easy IF 0.75 -> ~56 TSS/hr
+    assert ride["tss_estimate"] == pytest.approx(0.63**2 * 100, abs=0.5)
+    assert run["tss_estimate"] == pytest.approx(0.75**2 * 100, abs=0.5)
+
+
+def test_session_tss_default_sport_uses_run_table():
+    """Unspecified / 'any' sport uses the run table (conservative default)."""
+    default = estimate_session_tss(60.0, "easy")
+    run = estimate_session_tss(60.0, "easy", sport="run")
+    any_ = estimate_session_tss(60.0, "easy", sport="any")
+    assert default["tss_estimate"] == run["tss_estimate"] == any_["tss_estimate"]
+
+
+def test_session_tss_threshold_one_hour_both_sports():
+    """Threshold for the default/run table stays exactly 100 TSS/hr."""
+    assert estimate_session_tss(60.0, "threshold")["tss_estimate"] == pytest.approx(
+        100.0, abs=0.1
+    )
+    assert estimate_session_tss(60.0, "threshold", sport="run")[
+        "tss_estimate"
+    ] == pytest.approx(100.0, abs=0.1)
+
+
+def test_session_tss_ride_variants_all_use_ride_table():
+    """All cycling sport labels resolve to the ride IF table."""
+    base = estimate_session_tss(60.0, "easy", sport="ride")["tss_estimate"]
+    for sp in ("Ride", "VirtualRide", "GravelRide", "MountainBikeRide", "cycling"):
+        assert estimate_session_tss(60.0, "easy", sport=sp)["tss_estimate"] == base
+
+
+def test_session_tss_intensity_ordering_holds_for_ride_table():
+    levels = ["recovery", "easy", "moderate", "tempo", "threshold", "vo2max", "anaerobic"]
+    vals = [estimate_session_tss(60.0, lvl, sport="ride")["tss_estimate"] for lvl in levels]
+    for i in range(len(vals) - 1):
+        assert vals[i] < vals[i + 1]
+
+
 def test_estimate_week_tss_sums_correctly():
     sessions = [
         {"duration_min": 60, "intensity": "easy"},

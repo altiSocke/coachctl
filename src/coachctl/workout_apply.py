@@ -149,6 +149,83 @@ def apply_sessions_from_db(
     )
 
 
+def apply_plan_from_db(
+    *,
+    template_name: str,
+    start_date: str,
+    weeks: int,
+    seed: int | None = None,
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+    allow_skips: bool = False,
+    create_rest_days: bool = False,
+) -> WorkoutApplyResult:
+    """Apply an expanded plan template, sandbox-validated before touching live.
+
+    Protocol:
+
+    1. In a sandbox (a temp copy of the live DB), preview the plan, apply it,
+       then re-preview. The re-preview must contain no ``create``/``update``
+       rows — proving the apply is idempotent (it converged). Then ``bake`` in
+       the sandbox to prove the payload is serialisable.
+    2. Only if the sandbox run succeeds, re-preview against the live DB and apply
+       for real.
+
+    Reconcile rules are inherited from :func:`preview_plan_from_db` and
+    :func:`apply_workout_previews`: existing names/plan_id/strength are
+    preserved, rest days are not created unless ``create_rest_days``, and skips
+    are rejected unless ``allow_skips``.
+    """
+    from .sandbox import sandboxed_db
+    from .workout_preview import preview_plan_from_db
+
+    def _preview():
+        return preview_plan_from_db(
+            template_name=template_name,
+            start_date=start_date,
+            weeks=weeks,
+            seed=seed,
+            slug_prefix=slug_prefix,
+            plan_id=plan_id,
+            create_rest_days=create_rest_days,
+        )
+
+    # ── Phase 1: validate in a throwaway copy of the live DB ──────────────────
+    with sandboxed_db():
+        preview = _preview()
+        if preview.error:
+            raise RuntimeError(preview.error)
+        apply_workout_previews(preview.previews, allow_skips=allow_skips)
+
+        reverify = _preview()
+        if reverify.error:
+            raise RuntimeError(reverify.error)
+        residual = [
+            item for item in reverify.previews if item.action in ("create", "update")
+        ]
+        if residual:
+            slugs = ", ".join(sorted(item.target_slug for item in residual))
+            raise RuntimeError(f"sandbox_not_converged: {slugs}")
+
+        # Prove the payload bakes cleanly inside the sandbox.
+        from .site import bake
+
+        bake()
+
+    # ── Phase 2: replay against the live DB ───────────────────────────────────
+    live_preview = _preview()
+    if live_preview.error:
+        raise RuntimeError(live_preview.error)
+    result = apply_workout_previews(live_preview.previews, allow_skips=allow_skips)
+    return WorkoutApplyResult(
+        race_slug=live_preview.race_slug,
+        race_name=live_preview.race_name,
+        window_start=live_preview.window_start,
+        window_end=live_preview.window_end,
+        rows=result.rows or [],
+    )
+
+
 def format_apply_text(result: WorkoutApplyResult) -> str:
     """Format a compact apply result."""
     lines = [
@@ -281,9 +358,14 @@ def _apply_update(item: WorkoutEventPreview) -> None:
     if generated.kind != KIND_TRAINING or existing.kind != KIND_TRAINING:
         raise RuntimeError(f"refusing to update non-training event: {item.target_slug}")
 
+    # Reconcile: preserve the existing (human/prior) name on update. Summary,
+    # estimated_tss, duration, status and payload are taken from the generated
+    # event. An author/regenerate path, if added later, is generator-owned and
+    # must set the name itself rather than relying on this preservation.
     event = _copy_event(
         generated,
         slug=existing.slug,
+        name=existing.name,
         plan_id=existing.plan_id if generated.plan_id is None else generated.plan_id,
         activity_id=existing.activity_id,
         notes=existing.notes,
@@ -314,6 +396,7 @@ def _copy_event(
     event: Event,
     *,
     slug: str,
+    name: str | object = _UNSET,
     plan_id: int | None | object = _UNSET,
     activity_id: int | None | object = _UNSET,
     notes: str | None | object = _UNSET,
@@ -324,7 +407,7 @@ def _copy_event(
         date=event.date,
         start_time=event.start_time,
         duration_min=event.duration_min,
-        name=event.name,
+        name=event.name if name is _UNSET else name,
         summary=event.summary,
         estimated_tss=event.estimated_tss,
         status=event.status,

@@ -480,17 +480,40 @@ def _log_weight(
 
 
 @app.command(
+    "link-activities",
+    help="Link past planned training events to the activities that fulfilled them (sets activity_id + completed).",
+)
+def link_activities_cmd(
+    on_date: str = typer.Option("", "--date", help="Only link this date (YYYY-MM-DD); default = all past."),
+) -> None:
+    from .db import init_db
+    from .events import link_completed_activities
+
+    init_db()
+    result = link_completed_activities(on_date=on_date or None)
+    typer.echo(
+        f"Linked: {result['linked']}, ambiguous (skipped): {result['skipped_ambiguous']}, "
+        f"already linked: {result['already_linked']}, candidates: {result['candidates']}"
+    )
+
+
+@app.command(
     "backfill-event-tss",
     help="Backfill estimated_tss for training events that have NULL (re-parses duration + intensity from details).",
 )
 def backfill_event_tss_cmd(
     verbose: bool = typer.Option(True, "--verbose/--quiet"),
+    recompute: bool = typer.Option(
+        False,
+        "--recompute",
+        help="Recompute ALL training events (not just NULL) — use after changing the IF model.",
+    ),
 ) -> None:
     from .db import init_db
     from .tools.plan_tools import backfill_event_tss
 
     init_db()
-    result = backfill_event_tss()
+    result = backfill_event_tss(recompute=recompute)
     if verbose:
         typer.echo(
             f"Backfill complete — updated: {result['updated']}, "
@@ -528,6 +551,54 @@ def preview_sessions_cmd(
         target_tss=target_tss,
         phase=phase or None,
         freshness=freshness,
+        create_rest_days=create_rest_days,
+    )
+    if result.error:
+        typer.echo(f"Error: {result.error}", err=True)
+        raise typer.Exit(1)
+    if output_format == "json":
+        typer.echo(format_preview_json(result.previews))
+    elif output_format == "text":
+        typer.echo(
+            format_preview_text(
+                race_name=result.race_name,
+                window_start=result.window_start,
+                window_end=result.window_end,
+                previews=result.previews,
+                summary=result.summary,
+            )
+        )
+    else:
+        typer.echo("Error: --format must be 'text' or 'json'", err=True)
+        raise typer.Exit(1)
+
+
+@app.command("preview-plan", help="Preview an expanded multi-week plan template against the calendar.")
+def preview_plan_cmd(
+    template: str = typer.Option(..., "--template", help="Plan template name, e.g. half_marathon_build."),
+    start: str = typer.Option(..., "--start", help="Plan start date YYYY-MM-DD (Monday)."),
+    weeks: int = typer.Option(..., "--weeks", help="Number of weeks to expand."),
+    seed: int | None = typer.Option(None, "--seed", help="Variation seed; omit for deterministic output."),
+    slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
+    plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id."),
+    create_rest_days: bool = typer.Option(False, "--create-rest-days", help="Create explicit rest-day rows."),
+    output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
+) -> None:
+    from .db import init_db
+    from .workout_preview import (
+        format_preview_json,
+        format_preview_text,
+        preview_plan_from_db,
+    )
+
+    init_db()
+    result = preview_plan_from_db(
+        template_name=template,
+        start_date=start,
+        weeks=weeks,
+        seed=seed,
+        slug_prefix=slug_prefix or None,
+        plan_id=plan_id,
         create_rest_days=create_rest_days,
     )
     if result.error:
@@ -622,6 +693,87 @@ def apply_sessions_cmd(
             target_tss=target_tss,
             phase=phase or None,
             freshness=freshness,
+        )
+    except RuntimeError as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(1)
+
+    if output_format == "json":
+        typer.echo(format_apply_json(result))
+    elif output_format == "text":
+        typer.echo(format_apply_text(result))
+    else:
+        typer.echo("Error: --format must be 'text' or 'json'", err=True)
+        raise typer.Exit(1)
+
+
+@app.command("apply-plan", help="Apply an expanded multi-week plan template (sandbox-validated).")
+def apply_plan_cmd(
+    template: str = typer.Option(..., "--template", help="Plan template name, e.g. half_marathon_build."),
+    start: str = typer.Option(..., "--start", help="Plan start date YYYY-MM-DD (Monday)."),
+    weeks: int = typer.Option(..., "--weeks", help="Number of weeks to expand."),
+    seed: int | None = typer.Option(None, "--seed", help="Variation seed; omit for deterministic output."),
+    slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
+    plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id."),
+    output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
+    yes: bool = typer.Option(False, "--yes", help="Actually write changes."),
+    allow_skips: bool = typer.Option(False, "--allow-skips", help="Apply non-skipped rows."),
+    create_rest_days: bool = typer.Option(False, "--create-rest-days", help="Create explicit rest-day rows."),
+) -> None:
+    from .db import init_db
+    from .workout_apply import (
+        apply_plan_from_db,
+        format_apply_json,
+        format_apply_text,
+    )
+    from .workout_preview import (
+        format_preview_json,
+        format_preview_text,
+        preview_plan_from_db,
+    )
+
+    init_db()
+    if not yes:
+        result = preview_plan_from_db(
+            template_name=template,
+            start_date=start,
+            weeks=weeks,
+            seed=seed,
+            slug_prefix=slug_prefix or None,
+            plan_id=plan_id,
+            create_rest_days=create_rest_days,
+        )
+        if result.error:
+            typer.echo(f"Error: {result.error}", err=True)
+            raise typer.Exit(1)
+        typer.echo("Dry run only. Re-run with --yes to apply.\n")
+        if output_format == "json":
+            typer.echo(format_preview_json(result.previews))
+        elif output_format == "text":
+            typer.echo(
+                format_preview_text(
+                    race_name=result.race_name,
+                    window_start=result.window_start,
+                    window_end=result.window_end,
+                    previews=result.previews,
+                    summary=result.summary,
+                )
+            )
+        else:
+            typer.echo("Error: --format must be 'text' or 'json'", err=True)
+            raise typer.Exit(1)
+        return
+
+    try:
+        result = apply_plan_from_db(
+            template_name=template,
+            start_date=start,
+            weeks=weeks,
+            seed=seed,
+            slug_prefix=slug_prefix or None,
+            plan_id=plan_id,
+            allow_skips=allow_skips,
+            create_rest_days=create_rest_days,
         )
     except RuntimeError as exc:
         typer.echo(f"Error: {exc}", err=True)

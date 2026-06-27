@@ -828,16 +828,60 @@ def get_acwr_from_db(conn, sport_category: str = "all") -> dict:
 # ── Session TSS Estimation ────────────────────────────────────────────────────
 
 # Intensity Factor lookup by session intensity label (as fraction of threshold).
-# Based on Coggan power zone midpoints / running equivalent.
-_INTENSITY_IF: dict[str, float] = {
-    "recovery": 0.65,  # Z1 — very easy, active recovery
-    "easy": 0.72,  # Z2 — aerobic base
-    "moderate": 0.80,  # Z2/Z3 boundary — comfortable endurance
-    "tempo": 0.88,  # Z3 — comfortably hard
+# Intensity → Intensity Factor (IF), used for planned-session TSS estimation
+# via TSS = hours × IF² × 100. The tables are sport-specific because the same
+# subjective intensity costs differently per sport:
+#
+#   * Cycling: freewheeling / coasting drags normalised power down, so easy and
+#     endurance rides land at a markedly lower IF than running. Measured athlete
+#     Z2 rides cluster around IF 0.62–0.65.
+#   * Running: little to no coasting, plus higher cardiovascular cost per minute,
+#     so even easy runs sit higher (measured median ~0.80).
+#
+# Threshold and above converge near 1.0 for both (threshold is threshold). The
+# divergence is concentrated in the recovery/easy/endurance range — exactly
+# where the old single (cycling-mislabelled) table over-credited easy rides.
+#
+# ``threshold`` for the running/default table is held at exactly 1.00 so that
+# "1 hour at threshold = 100 TSS" remains true by definition.
+_INTENSITY_IF_RUN: dict[str, float] = {
+    "recovery": 0.65,  # Z1 — very easy jog / walk-run
+    "easy": 0.75,  # Z2 — aerobic base run
+    "moderate": 0.83,  # Z2/Z3 — steady endurance
+    "tempo": 0.90,  # Z3 — comfortably hard
     "threshold": 1.00,  # Z4 — lactate threshold, ~1h pace
-    "vo2max": 1.12,  # Z5 — VO2max intervals
-    "anaerobic": 1.30,  # Z6 — short hard efforts
+    "vo2max": 1.10,  # Z5 — VO2max intervals
+    "anaerobic": 1.25,  # Z6 — short hard efforts
 }
+
+_INTENSITY_IF_RIDE: dict[str, float] = {
+    "recovery": 0.55,  # Z1 — active-recovery spin (lots of soft-pedalling)
+    "easy": 0.63,  # Z2 — aerobic base ride
+    "moderate": 0.72,  # Z2/Z3 — endurance / low sweet-spot
+    "tempo": 0.82,  # Z3 — tempo / sweet-spot
+    "threshold": 0.95,  # Z4 — FTP work (rarely pure 1.0 NP outdoors)
+    "vo2max": 1.05,  # Z5 — VO2max intervals
+    "anaerobic": 1.20,  # Z6 — short hard efforts
+}
+
+# Sport label → IF table. Running and unspecified ("any") default to the run
+# table (the more conservative/general case); all cycling variants use the ride
+# table. Backwards-compatible default is the run table so existing callers that
+# omit ``sport`` keep "threshold 1h = 100 TSS".
+_RIDE_SPORTS = {"ride", "virtualride", "gravelride", "mountainbikeride", "cycling", "bike"}
+_RUN_SPORTS = {"run", "trailrun", "trail_run", "running"}
+
+# Back-compat alias: some code/tests may import the old name. Points at the run
+# table (which preserves the historical threshold=1.00 behaviour).
+_INTENSITY_IF = _INTENSITY_IF_RUN
+
+
+def _intensity_table_for_sport(sport: str) -> dict[str, float]:
+    """Return the IF table for a sport label (defaults to the run/any table)."""
+    key = (sport or "").lower().strip()
+    if key in _RIDE_SPORTS:
+        return _INTENSITY_IF_RIDE
+    return _INTENSITY_IF_RUN
 
 
 def estimate_session_tss(
@@ -849,35 +893,38 @@ def estimate_session_tss(
     Estimate TSS for a planned session from duration and qualitative intensity.
 
     Uses the standard Coggan formula:
-        TSS = (duration_s × IF²) × 100
+        TSS = (duration_hours) × IF² × 100
 
-    The IF is looked up from ``intensity``:
-        recovery  → IF 0.65 (Z1)
-        easy      → IF 0.72 (Z2)
-        moderate  → IF 0.80 (Z2/Z3)
-        tempo     → IF 0.88 (Z3)
-        threshold → IF 1.00 (Z4)
-        vo2max    → IF 1.12 (Z5)
-        anaerobic → IF 1.30 (Z6)
+    The IF is looked up from ``intensity`` in a **sport-specific** table, because
+    the same subjective intensity costs differently per sport (cyclists coast,
+    runners do not). For example ``easy``:
+        run  → IF 0.75 (≈ 56 TSS/hr)
+        ride → IF 0.63 (≈ 40 TSS/hr)
 
-    This is athlete-agnostic: the IF ratios are the same regardless of FTP or
-    rFTP because TSS is normalised to 100 = 1hr at threshold.
+    ``sport`` is normalised: ``ride``/``virtualride``/``gravelride``/
+    ``mountainbikeride`` use the cycling table; ``run``/``trailrun`` and anything
+    else (including ``"any"``) use the running table. Threshold and above are
+    near-identical across sports; the divergence is in the easy/endurance range.
+
+    The IF ratios are athlete-agnostic (TSS is normalised to 100 = 1h at
+    threshold), so they do not depend on FTP or rFTP.
 
     Parameters
     ----------
     duration_min : session duration in minutes
     intensity    : one of the labels above (case-insensitive)
-    sport        : optional label for the return dict (not used in calculation)
+    sport        : sport label selecting the IF table (see above)
 
     Returns
     -------
     dict with: tss_estimate, duration_min, intensity, intensity_factor, sport
     """
     key = intensity.lower().strip()
-    if key not in _INTENSITY_IF:
-        valid = ", ".join(sorted(_INTENSITY_IF))
+    table = _intensity_table_for_sport(sport)
+    if key not in table:
+        valid = ", ".join(sorted(table))
         raise ValueError(f"Unknown intensity '{intensity}'. Valid values: {valid}")
-    if_val = _INTENSITY_IF[key]
+    if_val = table[key]
     duration_s = duration_min * 60
     tss = round((duration_s / 3600) * (if_val**2) * 100, 1)
     return {

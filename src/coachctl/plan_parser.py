@@ -208,6 +208,112 @@ def parse_session_duration_intensity(details: str) -> tuple[float | None, str | 
     return duration_min, intensity
 
 
+# Sport detection keywords, matched as WHOLE WORDS (so "strides" does not match
+# "ride", "running" does match "run" via the stem list). Cycling terms win over
+# generic ones only when a real cycling word is present. Anything unmatched
+# defaults to "run" (the conservative, higher-IF table).
+_RIDE_KEYWORDS = ("ride", "rides", "bike", "biking", "cycling", "spin", "trainer", "zwift", "gravel", "mtb")
+_RUN_KEYWORDS = ("run", "runs", "running", "jog", "jogging", "fartlek", "strides", "shakeout")
+_STRENGTH_KEYWORDS = ("strength", "gym", "lifting", "weights", "core")
+
+
+def _has_word(text: str, words: tuple[str, ...]) -> bool:
+    """True if any of ``words`` appears as a whole word in ``text``."""
+    import re
+
+    return any(re.search(rf"\b{re.escape(w)}\b", text) for w in words)
+
+
+def detect_session_sport(text: str) -> str:
+    """Infer a coarse sport label from a session's name/details text.
+
+    Returns one of ``"ride"``, ``"run"``, ``"strength"`` or ``"rest"``. Used to
+    pick the correct intensity→IF table for planned-TSS estimation. Matching is
+    whole-word (so "strides" is not read as "ride"). Defaults to ``"run"`` when
+    no cycling/strength/rest signal is present, since running is the more
+    conservative (higher-IF) assumption.
+
+    For mixed sessions that name both sports (e.g. "Z2 ride + run off the bike"),
+    the cycling label wins — the dominant block in such combos is the ride.
+
+    NOTE: this is a *last-resort* heuristic for free-text planned sessions. When
+    a structured sport (deterministic-engine payload) or an authoritative Strava
+    ``sport_type`` (a linked completed activity) is available, prefer those via
+    :func:`resolve_sport`.
+    """
+    t = (text or "").lower()
+    if not t.strip():
+        return "rest"
+    has_ride = _has_word(t, _RIDE_KEYWORDS)
+    has_run = _has_word(t, _RUN_KEYWORDS)
+    if "rest" in t and not has_ride and not has_run:
+        return "rest"
+    if has_ride:
+        return "ride"
+    if has_run:
+        return "run"
+    if _has_word(t, _STRENGTH_KEYWORDS):
+        return "strength"
+    return "run"
+
+
+# Strava sport_type → coarse sport label. Authoritative when a completed
+# activity is linked to a planned event.
+_STRAVA_RIDE = {"ride", "virtualride", "gravelride", "mountainbikeride", "ebikeride", "road bike"}
+_STRAVA_RUN = {"run", "running", "trailrun", "virtualrun"}
+_STRAVA_STRENGTH = {"weighttraining", "workout", "crossfit"}
+
+
+def normalize_strava_sport(sport_type: str) -> str | None:
+    """Map a Strava ``sport_type`` to ``ride``/``run``/``strength`` (or None).
+
+    Returns ``None`` for sports that don't map to the run/ride IF model (swim,
+    ski, hike, etc.), so callers can fall back to other signals.
+    """
+    key = (sport_type or "").lower().strip()
+    if key in _STRAVA_RIDE:
+        return "ride"
+    if key in _STRAVA_RUN:
+        return "run"
+    if key in _STRAVA_STRENGTH:
+        return "strength"
+    return None
+
+
+def resolve_sport(
+    *,
+    strava_sport_type: str | None = None,
+    structured_sport: str | None = None,
+    text: str | None = None,
+) -> str:
+    """Resolve the best sport label from the available signals, best-first.
+
+    Priority:
+      1. ``strava_sport_type`` — authoritative (a linked completed activity).
+      2. ``structured_sport`` — deterministic-engine payload ``workout.sport``.
+      3. ``text`` — free-text keyword heuristic (``detect_session_sport``).
+
+    Only signals that resolve to a known run/ride/strength label are used;
+    otherwise the next signal is tried. Falls back to the text heuristic (which
+    itself defaults to ``"run"``).
+    """
+    if strava_sport_type:
+        mapped = normalize_strava_sport(strava_sport_type)
+        if mapped is not None:
+            return mapped
+    if structured_sport:
+        s = structured_sport.lower().strip()
+        if s in {"ride", "run", "strength"}:
+            return s
+        # structured sport may be a Strava-style or trail label
+        mapped = normalize_strava_sport(s)
+        if mapped is not None:
+            return mapped
+        if s in {"trail_run", "trailrun"}:
+            return "run"
+    return detect_session_sport(text or "")
+
+
 def parse_plan_file(path: Path) -> Plan:
     """Parse a plan from a file path."""
     return parse_plan(path.read_text(encoding="utf-8"))
