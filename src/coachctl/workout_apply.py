@@ -115,19 +115,27 @@ def apply_post_trail_race_week_from_db(
 def apply_sessions_from_db(
     *,
     mode: str,
-    race_slug: str,
+    race_slug: str | None,
     start_date: str,
     slug_prefix: str | None = None,
     plan_id: int | None = None,
     allow_skips: bool = False,
+    target_tss: int | None = None,
+    phase: str | None = None,
+    freshness: str = "normal",
 ) -> WorkoutApplyResult:
     """Dispatch session apply by mode."""
+    if mode == "half-marathon-week":
+        raise RuntimeError("apply_unsupported_for_half_marathon_week")
     preview = preview_sessions_from_db(
         mode=mode,
         race_slug=race_slug,
         start_date=start_date,
         slug_prefix=slug_prefix,
         plan_id=plan_id,
+        target_tss=target_tss,
+        phase=phase,
+        freshness=freshness,
     )
     if preview.error:
         raise RuntimeError(preview.error)

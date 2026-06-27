@@ -371,11 +371,14 @@ def backfill_event_tss_cmd(
 @app.command("preview-sessions", help="Preview deterministic generated sessions without writing.")
 def preview_sessions_cmd(
     mode: str = typer.Option("race-week", "--mode", help="Generation mode: race-week or post-race."),
-    race: str = typer.Option(..., "--race", help="Race event slug."),
+    race: str = typer.Option("", "--race", help="Race event slug."),
     start: str = typer.Option(..., "--start", help="Preview start date YYYY-MM-DD."),
     slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
     plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id."),
     output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
+    target_tss: int | None = typer.Option(None, "--target-tss", help="Target week TSS."),
+    phase: str = typer.Option("", "--phase", help="Training phase: build or recovery."),
+    freshness: str = typer.Option("normal", "--freshness", help="Freshness: normal or fatigued."),
 ) -> None:
     from .db import init_db
     from .workout_preview import (
@@ -387,10 +390,13 @@ def preview_sessions_cmd(
     init_db()
     result = preview_sessions_from_db(
         mode=mode,
-        race_slug=race,
+        race_slug=race or None,
         start_date=start,
         slug_prefix=slug_prefix or None,
         plan_id=plan_id,
+        target_tss=target_tss,
+        phase=phase or None,
+        freshness=freshness,
     )
     if result.error:
         typer.echo(f"Error: {result.error}", err=True)
@@ -414,13 +420,16 @@ def preview_sessions_cmd(
 @app.command("apply-sessions", help="Apply deterministic generated sessions to events.")
 def apply_sessions_cmd(
     mode: str = typer.Option("race-week", "--mode", help="Generation mode: race-week or post-race."),
-    race: str = typer.Option(..., "--race", help="Race event slug."),
+    race: str = typer.Option("", "--race", help="Race event slug."),
     start: str = typer.Option(..., "--start", help="Preview/apply start date YYYY-MM-DD."),
     slug_prefix: str = typer.Option("", "--slug-prefix", help="Generated slug prefix."),
     plan_id: int | None = typer.Option(None, "--plan-id", help="Optional plan id override."),
     output_format: str = typer.Option("text", "--format", help="Output format: text or json."),
     yes: bool = typer.Option(False, "--yes", help="Actually write changes."),
     allow_skips: bool = typer.Option(False, "--allow-skips", help="Apply non-skipped rows."),
+    target_tss: int | None = typer.Option(None, "--target-tss", help="Target week TSS."),
+    phase: str = typer.Option("", "--phase", help="Training phase: build or recovery."),
+    freshness: str = typer.Option("normal", "--freshness", help="Freshness: normal or fatigued."),
 ) -> None:
     from .db import init_db
     from .workout_apply import (
@@ -438,10 +447,13 @@ def apply_sessions_cmd(
     if not yes:
         result = preview_sessions_from_db(
             mode=mode,
-            race_slug=race,
+            race_slug=race or None,
             start_date=start,
             slug_prefix=slug_prefix or None,
             plan_id=plan_id,
+            target_tss=target_tss,
+            phase=phase or None,
+            freshness=freshness,
         )
         if result.error:
             typer.echo(f"Error: {result.error}", err=True)
@@ -466,11 +478,14 @@ def apply_sessions_cmd(
     try:
         result = apply_sessions_from_db(
             mode=mode,
-            race_slug=race,
+            race_slug=race or None,
             start_date=start,
             slug_prefix=slug_prefix or None,
             plan_id=plan_id,
             allow_skips=allow_skips,
+            target_tss=target_tss,
+            phase=phase or None,
+            freshness=freshness,
         )
     except RuntimeError as exc:
         typer.echo(f"Error: {exc}", err=True)

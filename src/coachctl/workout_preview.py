@@ -19,7 +19,11 @@ from .events import (
     get_calendar,
     get_event,
 )
-from .workout_generators import generate_post_trail_race_week, generate_trail_race_week
+from .workout_generators import (
+    generate_half_marathon_build_week,
+    generate_post_trail_race_week,
+    generate_trail_race_week,
+)
 from .workouts import WorkoutSpec, workout_to_event
 
 PreviewAction = Literal["create", "update", "match", "skip", "cancel"]
@@ -227,6 +231,58 @@ def preview_post_trail_race_week_from_db(
     )
 
 
+def preview_half_marathon_week_from_db(
+    *,
+    start_date: str,
+    target_tss: int,
+    phase: str,
+    freshness: str = "normal",
+    slug_prefix: str | None = None,
+    plan_id: int | None = None,
+) -> WorkoutPreviewResult:
+    """Build a read-only half-marathon training week preview from the events table."""
+    from datetime import date, timedelta
+
+    start = date.fromisoformat(start_date)
+    window_end = (start + timedelta(days=6)).isoformat()
+    prefix = slug_prefix or "hm-week"
+    try:
+        workouts = generate_half_marathon_build_week(
+            week_start=start_date,
+            target_tss=target_tss,
+            phase=phase,
+            freshness=freshness,
+        )
+    except ValueError as exc:
+        return WorkoutPreviewResult(
+            race_slug="",
+            race_name="Half-marathon build week",
+            window_start=start_date,
+            window_end=window_end,
+            previews=[],
+            error=str(exc),
+        )
+    generated = workouts_to_events(workouts, slug_prefix=prefix, plan_id=plan_id)
+    existing = get_calendar(start_date, window_end, kinds=[KIND_TRAINING])
+    previews = _preview_ignore_strength_events(generated, existing)
+    return WorkoutPreviewResult(
+        race_slug="",
+        race_name="Half-marathon build week",
+        window_start=start_date,
+        window_end=window_end,
+        previews=previews,
+    )
+
+
+def _preview_ignore_strength_events(
+    generated: list[Event],
+    existing: list[Event],
+) -> list[WorkoutEventPreview]:
+    """Preview generated endurance sessions while leaving strength untouched."""
+    non_strength = [event for event in existing if not _is_strength_event(event)]
+    return preview_workout_events(generated, non_strength)
+
+
 def _preview_post_race_events(
     generated: list[Event],
     existing: list[Event],
@@ -270,13 +326,25 @@ def _preview_post_race_events(
 def preview_sessions_from_db(
     *,
     mode: str,
-    race_slug: str,
+    race_slug: str | None,
     start_date: str,
     slug_prefix: str | None = None,
     plan_id: int | None = None,
+    target_tss: int | None = None,
+    phase: str | None = None,
+    freshness: str = "normal",
 ) -> WorkoutPreviewResult:
     """Dispatch session preview generation by mode."""
     if mode == "race-week":
+        if not race_slug:
+            return WorkoutPreviewResult(
+                race_slug="",
+                race_name="",
+                window_start=start_date,
+                window_end=start_date,
+                previews=[],
+                error="race_required",
+            )
         return preview_trail_race_week_from_db(
             race_slug=race_slug,
             start_date=start_date,
@@ -284,9 +352,45 @@ def preview_sessions_from_db(
             plan_id=plan_id,
         )
     if mode == "post-race":
+        if not race_slug:
+            return WorkoutPreviewResult(
+                race_slug="",
+                race_name="",
+                window_start=start_date,
+                window_end=start_date,
+                previews=[],
+                error="race_required",
+            )
         return preview_post_trail_race_week_from_db(
             race_slug=race_slug,
             start_date=start_date,
+            slug_prefix=slug_prefix,
+            plan_id=plan_id,
+        )
+    if mode == "half-marathon-week":
+        if target_tss is None:
+            return WorkoutPreviewResult(
+                race_slug="",
+                race_name="Half-marathon build week",
+                window_start=start_date,
+                window_end=start_date,
+                previews=[],
+                error="target_tss_required",
+            )
+        if not phase:
+            return WorkoutPreviewResult(
+                race_slug="",
+                race_name="Half-marathon build week",
+                window_start=start_date,
+                window_end=start_date,
+                previews=[],
+                error="phase_required",
+            )
+        return preview_half_marathon_week_from_db(
+            start_date=start_date,
+            target_tss=target_tss,
+            phase=phase,
+            freshness=freshness,
             slug_prefix=slug_prefix,
             plan_id=plan_id,
         )
@@ -309,7 +413,7 @@ def format_preview_text(
 ) -> str:
     """Format a compact human-readable preview."""
     lines = [
-        f"Preview: {race_name} race week".rstrip(),
+        f"Preview: {race_name}".rstrip(),
         f"Window: {window_start} -> {window_end}",
         "",
     ]

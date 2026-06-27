@@ -7,6 +7,7 @@ from coachctl.workout_preview import (
     format_preview_json,
     format_preview_text,
     preview_post_trail_race_week_from_db,
+    preview_half_marathon_week_from_db,
     preview_sessions_from_db,
     preview_trail_race_week_from_db,
     preview_workout_events,
@@ -373,6 +374,108 @@ def test_preview_sessions_from_db_rejects_unknown_mode(mem_db) -> None:
     assert result.error == "unsupported_mode"
 
 
+def test_preview_half_marathon_week_ignores_same_day_strength(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="plan-run-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Old easy run",
+            status=STATUS_PLANNED,
+        )
+    )
+    upsert_event(
+        Event(
+            slug="strength-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Strength M2 maintenance block",
+            status=STATUS_PLANNED,
+        )
+    )
+
+    result = preview_half_marathon_week_from_db(
+        start_date="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+        slug_prefix="hm-build",
+    )
+
+    jul13 = [p for p in result.previews if p.date == "2026-07-13"]
+    assert len(jul13) == 1
+    assert jul13[0].action == "update"
+    assert jul13[0].target_slug == "plan-run-2026-07-13"
+
+
+def test_preview_half_marathon_week_creates_when_only_strength_exists(mem_db) -> None:
+    upsert_event(
+        Event(
+            slug="strength-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Strength M2 maintenance block",
+            status=STATUS_PLANNED,
+        )
+    )
+
+    result = preview_half_marathon_week_from_db(
+        start_date="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+        slug_prefix="hm-build",
+    )
+
+    jul13 = [p for p in result.previews if p.date == "2026-07-13"]
+    assert len(jul13) == 1
+    assert jul13[0].action == "create"
+    assert jul13[0].target_slug == "hm-build-2026-07-13-easy-run"
+
+
+def test_preview_half_marathon_week_skips_multiple_endurance_events(mem_db) -> None:
+    upsert_event(Event(slug="run-a", kind=KIND_TRAINING, date="2026-07-13", name="Run A"))
+    upsert_event(Event(slug="run-b", kind=KIND_TRAINING, date="2026-07-13", name="Run B"))
+    upsert_event(
+        Event(
+            slug="strength-2026-07-13",
+            kind=KIND_TRAINING,
+            date="2026-07-13",
+            name="Strength",
+        )
+    )
+
+    result = preview_half_marathon_week_from_db(
+        start_date="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+        slug_prefix="hm-build",
+    )
+
+    jul13 = [p for p in result.previews if p.date == "2026-07-13"]
+    assert len(jul13) == 1
+    assert jul13[0].action == "skip"
+    assert jul13[0].reason == "ambiguous_existing_events"
+
+
+def test_preview_sessions_from_db_dispatches_half_marathon_mode(mem_db) -> None:
+    result = preview_sessions_from_db(
+        mode="half-marathon-week",
+        race_slug=None,
+        start_date="2026-07-13",
+        slug_prefix="hm-build",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+    )
+
+    assert result.race_name == "Half-marathon build week"
+    assert result.window_start == "2026-07-13"
+    assert result.window_end == "2026-07-19"
+    assert len(result.previews) == 7
+
+
 def test_format_preview_text_and_json() -> None:
     generated = [_generated_event()]
     preview = preview_workout_events(generated, existing=[])
@@ -385,7 +488,7 @@ def test_format_preview_text_and_json() -> None:
     )
     json_text = format_preview_json(preview)
 
-    assert "Preview: Bernina Ultraks Steinbock race week" in text
+    assert "Preview: Bernina Ultraks Steinbock" in text
     assert "2026-06-29 CREATE" in text
     assert "target: steinbock-2026-06-29-easy-run" in text
     assert "generated: steinbock-2026-06-29-easy-run" in text

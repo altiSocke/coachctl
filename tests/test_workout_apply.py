@@ -286,3 +286,16 @@ def test_apply_sessions_from_db_rejects_unknown_mode(mem_db) -> None:
             race_slug="whatever",
             start_date="2026-07-05",
         )
+
+
+def test_apply_sessions_from_db_rejects_half_marathon_mode(mem_db) -> None:
+    with pytest.raises(RuntimeError, match="apply_unsupported"):
+        apply_sessions_from_db(
+            mode="half-marathon-week",
+            race_slug=None,
+            start_date="2026-07-13",
+            slug_prefix="hm-build",
+            target_tss=400,
+            phase="build",
+            freshness="normal",
+        )
