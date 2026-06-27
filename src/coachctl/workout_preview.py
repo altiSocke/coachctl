@@ -49,6 +49,7 @@ class WorkoutPreviewResult:
     window_end: str
     previews: list[WorkoutEventPreview]
     error: str | None = None
+    summary: dict[str, Any] | None = None
 
 
 def workouts_to_events(
@@ -239,6 +240,7 @@ def preview_half_marathon_week_from_db(
     freshness: str = "normal",
     slug_prefix: str | None = None,
     plan_id: int | None = None,
+    create_rest_days: bool = False,
 ) -> WorkoutPreviewResult:
     """Build a read-only half-marathon training week preview from the events table."""
     from datetime import date, timedelta
@@ -265,12 +267,28 @@ def preview_half_marathon_week_from_db(
     generated = workouts_to_events(workouts, slug_prefix=prefix, plan_id=plan_id)
     existing = get_calendar(start_date, window_end, kinds=[KIND_TRAINING])
     previews = _preview_ignore_strength_events(generated, existing)
+    suppressed_rest_creates = 0
+    if not create_rest_days:
+        kept: list[WorkoutEventPreview] = []
+        for item in previews:
+            if item.action == "create" and item.generated and _is_rest_event(item.generated):
+                suppressed_rest_creates += 1
+                continue
+            kept.append(item)
+        previews = kept
     return WorkoutPreviewResult(
         race_slug="",
         race_name="Half-marathon build week",
         window_start=start_date,
         window_end=window_end,
         previews=previews,
+        summary=_preview_summary(
+            target_tss=target_tss,
+            generated=generated,
+            existing=existing,
+            previews=previews,
+            suppressed_rest_creates=suppressed_rest_creates,
+        ),
     )
 
 
@@ -333,6 +351,7 @@ def preview_sessions_from_db(
     target_tss: int | None = None,
     phase: str | None = None,
     freshness: str = "normal",
+    create_rest_days: bool = False,
 ) -> WorkoutPreviewResult:
     """Dispatch session preview generation by mode."""
     if mode == "race-week":
@@ -393,6 +412,7 @@ def preview_sessions_from_db(
             freshness=freshness,
             slug_prefix=slug_prefix,
             plan_id=plan_id,
+            create_rest_days=create_rest_days,
         )
     return WorkoutPreviewResult(
         race_slug=race_slug,
@@ -410,6 +430,7 @@ def format_preview_text(
     window_start: str,
     window_end: str,
     previews: list[WorkoutEventPreview],
+    summary: dict[str, Any] | None = None,
 ) -> str:
     """Format a compact human-readable preview."""
     lines = [
@@ -417,6 +438,9 @@ def format_preview_text(
         f"Window: {window_start} -> {window_end}",
         "",
     ]
+    if summary:
+        lines.extend(_format_summary_lines(summary))
+        lines.append("")
     for item in previews:
         generated = item.generated
         existing = item.existing
@@ -463,6 +487,66 @@ def format_preview_json(previews: list[WorkoutEventPreview]) -> str:
             }
         )
     return json.dumps(rows, indent=2)
+
+
+def _format_summary_lines(summary: dict[str, Any]) -> list[str]:
+    lines: list[str] = []
+    if "target_tss" in summary:
+        lines.append(f"Target TSS: {summary['target_tss']}")
+    if "generated_tss" in summary:
+        lines.append(f"Generated TSS: {summary['generated_tss']:.0f}")
+    if "existing_tss" in summary:
+        lines.append(f"Existing planned TSS: {summary['existing_tss']:.0f}")
+    if "delta_tss" in summary:
+        lines.append(f"Delta: {summary['delta_tss']:+.0f}")
+    actions = summary.get("actions")
+    if isinstance(actions, dict):
+        lines.append(
+            "Actions: "
+            f"{actions.get('create', 0)} create, "
+            f"{actions.get('update', 0)} update, "
+            f"{actions.get('match', 0)} match, "
+            f"{actions.get('skip', 0)} skip, "
+            f"{actions.get('cancel', 0)} cancel"
+        )
+    if "strength_preserved" in summary:
+        lines.append(f"Strength preserved: {summary['strength_preserved']}")
+    if "suppressed_rest_creates" in summary:
+        lines.append(f"Suppressed rest creates: {summary['suppressed_rest_creates']}")
+    return lines
+
+
+def _preview_summary(
+    *,
+    target_tss: int,
+    generated: list[Event],
+    existing: list[Event],
+    previews: list[WorkoutEventPreview],
+    suppressed_rest_creates: int,
+) -> dict[str, Any]:
+    generated_tss = sum(float(event.estimated_tss or 0.0) for event in generated)
+    existing_tss = sum(
+        float(event.estimated_tss or 0.0)
+        for event in existing
+        if event.status != STATUS_CANCELLED and not _is_strength_event(event)
+    )
+    actions = {action: 0 for action in ("create", "update", "match", "skip", "cancel")}
+    for item in previews:
+        actions[item.action] += 1
+    strength_preserved = sum(
+        1
+        for event in existing
+        if event.status != STATUS_CANCELLED and _is_strength_event(event)
+    )
+    return {
+        "target_tss": target_tss,
+        "generated_tss": round(generated_tss, 1),
+        "existing_tss": round(existing_tss, 1),
+        "delta_tss": round(generated_tss - existing_tss, 1),
+        "actions": actions,
+        "strength_preserved": strength_preserved,
+        "suppressed_rest_creates": suppressed_rest_creates,
+    }
 
 
 def _preview(
@@ -521,3 +605,10 @@ def _default_slug_prefix(race_slug: str) -> str:
 def _is_strength_event(event: Event) -> bool:
     text = f"{event.slug} {event.name} {event.summary or ''}".lower()
     return "strength" in text
+
+
+def _is_rest_event(event: Event) -> bool:
+    workout = event.payload.get("workout") if isinstance(event.payload, dict) else None
+    if isinstance(workout, dict) and workout.get("sport") == "rest":
+        return True
+    return event.name.strip().lower() == "rest"

@@ -433,6 +433,35 @@ def test_preview_half_marathon_week_creates_when_only_strength_exists(mem_db) ->
     assert jul13[0].target_slug == "hm-build-2026-07-13-easy-run"
 
 
+def test_preview_half_marathon_week_suppresses_rest_day_create_by_default(mem_db) -> None:
+    result = preview_half_marathon_week_from_db(
+        start_date="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+        slug_prefix="hm-build",
+    )
+
+    assert not any(p.date == "2026-07-17" for p in result.previews)
+    assert result.summary["suppressed_rest_creates"] == 1
+
+
+def test_preview_half_marathon_week_can_create_rest_days_when_requested(mem_db) -> None:
+    result = preview_half_marathon_week_from_db(
+        start_date="2026-07-13",
+        target_tss=400,
+        phase="build",
+        freshness="normal",
+        slug_prefix="hm-build",
+        create_rest_days=True,
+    )
+
+    jul17 = [p for p in result.previews if p.date == "2026-07-17"]
+    assert len(jul17) == 1
+    assert jul17[0].action == "create"
+    assert result.summary["suppressed_rest_creates"] == 0
+
+
 def test_preview_half_marathon_week_skips_multiple_endurance_events(mem_db) -> None:
     upsert_event(Event(slug="run-a", kind=KIND_TRAINING, date="2026-07-13", name="Run A"))
     upsert_event(Event(slug="run-b", kind=KIND_TRAINING, date="2026-07-13", name="Run B"))
@@ -473,7 +502,10 @@ def test_preview_sessions_from_db_dispatches_half_marathon_mode(mem_db) -> None:
     assert result.race_name == "Half-marathon build week"
     assert result.window_start == "2026-07-13"
     assert result.window_end == "2026-07-19"
-    assert len(result.previews) == 7
+    assert len(result.previews) == 6
+    assert result.summary["target_tss"] == 400
+    assert result.summary["generated_tss"] == 385.0
+    assert result.summary["actions"]["create"] == 6
 
 
 def test_format_preview_text_and_json() -> None:
@@ -495,3 +527,31 @@ def test_format_preview_text_and_json() -> None:
     assert '"action": "create"' in json_text
     assert '"target_slug": "steinbock-2026-06-29-easy-run"' in json_text
     assert '"diff_fields": []' in json_text
+
+
+def test_format_preview_text_includes_summary() -> None:
+    generated = [_generated_event()]
+    preview = preview_workout_events(generated, existing=[])
+
+    text = format_preview_text(
+        race_name="Half-marathon build week",
+        window_start="2026-07-13",
+        window_end="2026-07-19",
+        previews=preview,
+        summary={
+            "target_tss": 400,
+            "generated_tss": 385.0,
+            "existing_tss": 405.0,
+            "delta_tss": -20.0,
+            "actions": {"create": 1, "update": 0, "match": 0, "skip": 0, "cancel": 0},
+            "strength_preserved": 1,
+            "suppressed_rest_creates": 1,
+        },
+    )
+
+    assert "Target TSS: 400" in text
+    assert "Generated TSS: 385" in text
+    assert "Existing planned TSS: 405" in text
+    assert "Actions: 1 create, 0 update, 0 match, 0 skip, 0 cancel" in text
+    assert "Strength preserved: 1" in text
+    assert "Suppressed rest creates: 1" in text

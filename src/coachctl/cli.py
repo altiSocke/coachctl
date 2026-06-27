@@ -379,6 +379,7 @@ def preview_sessions_cmd(
     target_tss: int | None = typer.Option(None, "--target-tss", help="Target week TSS."),
     phase: str = typer.Option("", "--phase", help="Training phase: build or recovery."),
     freshness: str = typer.Option("normal", "--freshness", help="Freshness: normal or fatigued."),
+    create_rest_days: bool = typer.Option(False, "--create-rest-days", help="Create explicit rest-day rows."),
 ) -> None:
     from .db import init_db
     from .workout_preview import (
@@ -397,6 +398,7 @@ def preview_sessions_cmd(
         target_tss=target_tss,
         phase=phase or None,
         freshness=freshness,
+        create_rest_days=create_rest_days,
     )
     if result.error:
         typer.echo(f"Error: {result.error}", err=True)
@@ -410,6 +412,7 @@ def preview_sessions_cmd(
                 window_start=result.window_start,
                 window_end=result.window_end,
                 previews=result.previews,
+                summary=result.summary,
             )
         )
     else:
@@ -430,6 +433,7 @@ def apply_sessions_cmd(
     target_tss: int | None = typer.Option(None, "--target-tss", help="Target week TSS."),
     phase: str = typer.Option("", "--phase", help="Training phase: build or recovery."),
     freshness: str = typer.Option("normal", "--freshness", help="Freshness: normal or fatigued."),
+    create_rest_days: bool = typer.Option(False, "--create-rest-days", help="Create explicit rest-day rows."),
 ) -> None:
     from .db import init_db
     from .workout_apply import (
@@ -454,6 +458,7 @@ def apply_sessions_cmd(
             target_tss=target_tss,
             phase=phase or None,
             freshness=freshness,
+            create_rest_days=create_rest_days,
         )
         if result.error:
             typer.echo(f"Error: {result.error}", err=True)
@@ -468,6 +473,7 @@ def apply_sessions_cmd(
                     window_start=result.window_start,
                     window_end=result.window_end,
                     previews=result.previews,
+                    summary=result.summary,
                 )
             )
         else:
